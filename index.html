@@ -2,6 +2,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Property Desk — 2BHK Bengaluru</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500;6..72,600&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -29,6 +31,17 @@ header.masthead{padding:30px 0 18px;border-bottom:1.5px solid var(--ink)}
 .heatzone h3{margin-bottom:3px}
 .heatzone .zh{font-size:12.5px;color:var(--graphite);margin-bottom:10px}
 .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(146px,1fr));gap:3px}
+#heatMap{height:520px;margin:14px 0 6px;border:1px solid var(--rule);background:var(--raised)}
+@media(max-width:720px){#heatMap{height:380px}}
+#heatMap.dead{display:none}
+.mapnote{font-size:11.5px;color:var(--graphite);margin:0 0 16px;display:flex;gap:10px;flex-wrap:wrap}
+.mapnote .warn{color:var(--seal)}
+.leaflet-container{font-family:var(--sans);background:var(--raised)}
+.leaflet-popup-content-wrapper{border-radius:0;background:var(--raised);color:var(--ink);box-shadow:0 2px 10px rgba(0,0,0,.18)}
+.leaflet-popup-content{margin:9px 11px;font-size:12.5px;line-height:1.35}
+.leaflet-popup-content b{font-size:13px}
+.leaflet-popup-tip{background:var(--raised)}
+.mapdot{cursor:pointer}
 .tile{padding:10px 11px;cursor:pointer;border:1px solid transparent;min-height:82px;
   display:flex;flex-direction:column;justify-content:space-between}
 .tile:hover{border-color:var(--ink)}
@@ -1209,6 +1222,11 @@ alter publication supabase_realtime add table desk_activity;</pre>
       <button data-zf="Central" aria-pressed="false">Central</button>
     </span>
   </div>
+  <div id="heatMap"></div>
+  <div class="mapnote" id="heatMapNote">
+    <span>Circle colour matches the tiles below · size is the sweet-spot score · click any circle for the full read.</span>
+    <span class="warn">Pins are approximate locality centres, for orientation only — not plot boundaries.</span>
+  </div>
   <div class="hk" id="heatKey"></div>
   <div id="heatGrid"></div>
   <div id="heatDetail"></div>
@@ -1354,6 +1372,7 @@ document.querySelectorAll('nav.rail button').forEach(b=>b.addEventListener('clic
  if(b.dataset.t==='compare'){fillPropSelects();renderCompare();}
  if(b.dataset.t==='negotiate'){fillPropSelects();calcNeg();}
  if(b.dataset.t==='visits'){renderVisits();renderRoute();}
+ if(b.dataset.t==='heat'){renderHeatMap();}
  if(b.dataset.t==='setup'){renderFeed();prefillCfgForm();}
 }));
 
@@ -1620,96 +1639,96 @@ calcUDS();
  py = price YoY %, ry = rent growth %, rent = typical 2BHK. c: 2 corroborated, 1 ranged, 0 thin. */
 const AREAS=[
 /* ---------- EAST ---------- */
-{n:'Whitefield',z:'East',cor:'Whitefield belt',ask:13550,lo:10150,hi:16350,reg:0,py:8,rent:35000,ry:14,c:2,drv:'Purple Line operational, ITPL and EPIP. Ready-to-move stock quotes near ₹9,050 while under-construction quotes ₹14,300 — same postcode, different markets.'},
-{n:'Hoodi',z:'East',cor:'Whitefield belt',ask:9800,lo:8300,hi:11500,reg:0,py:18,rent:30000,ry:13,c:1,drv:'Whitefield adjacency at a discount. Among the sharper movers in the east.'},
-{n:'Kadugodi',z:'East',cor:'Whitefield belt',ask:10800,lo:9000,hi:12500,reg:0,py:12,rent:29000,ry:12,c:1,drv:'Purple Line terminus, large township supply.'},
-{n:'Varthur',z:'East',cor:'Whitefield belt',ask:11200,lo:9500,hi:13000,reg:0,py:11,rent:31000,ry:12,c:1,drv:'Prestige and Brigade townships. Lake buffer zones are a real risk here — check separately from khata.'},
-{n:'Brookefield',z:'East',cor:'Whitefield belt',ask:11800,lo:10000,hi:13500,reg:0,py:9,rent:33000,ry:11,c:1,drv:'Mature IT-adjacent, very little new land.'},
-{n:'Immadihalli',z:'East',cor:'Whitefield belt',ask:8200,lo:7000,hi:9500,reg:0,py:13,rent:26000,ry:12,c:1,drv:'Low-rise older stock inside the Whitefield postcode. Cheapest way into the address.'},
-{n:'Marathahalli',z:'East',cor:'ORR east',ask:13900,lo:8050,hi:17300,reg:0,py:12,rent:34000,ry:12,c:1,drv:'Portals show 69.5% YoY, which is a mix effect from luxury listings, not real appreciation. Treat the headline growth as noise; the ₹13,900 average is real.'},
-{n:'Bellandur',z:'East',cor:'ORR east',ask:13500,lo:12000,hi:15000,reg:0,py:9,rent:45000,ry:12,c:1,drv:'Highest 2BHK rents in the city at a median ₹45,000. Entry price already reflects it.'},
-{n:'Panathur / Balagere',z:'East',cor:'ORR east',ask:10800,lo:10000,hi:11500,reg:0,py:12,rent:32000,ry:13,c:2,drv:'Between ORR and Whitefield. Tier-1 supply, weak internal roads.'},
-{n:'Kundalahalli',z:'East',cor:'ORR east',ask:12200,lo:11000,hi:13500,reg:0,py:14,rent:33000,ry:12,c:1,drv:'Ran 151% over three years on IT-park catch-up. Most of that move has already happened.'},
-{n:'Mahadevapura',z:'East',cor:'ORR east',ask:11000,lo:9000,hi:13000,reg:0,py:11,rent:31000,ry:11,c:1,drv:'Core ORR employment belt, dense and mature.'},
-{n:'KR Puram',z:'East',cor:'Old Madras Road',ask:9500,lo:6750,hi:12500,reg:0,py:13,rent:26000,ry:11,c:2,drv:'Purple Line plus Old Madras Road. Under-priced relative to its connectivity.'},
-{n:'Ramamurthy Nagar',z:'East',cor:'Old Madras Road',ask:6800,lo:5500,hi:8000,reg:0,py:12,rent:20000,ry:10,c:1,drv:'Named among East Bengaluru\u2019s affordable pockets. Metro-adjacent via KR Puram.'},
-{n:'Budigere Cross',z:'East',cor:'Old Madras Road',ask:8500,lo:7000,hi:10000,reg:0,py:14,rent:23000,ry:10,c:2,drv:'Greater Whitefield expansion. Heavy 2028–29 supply will cap price growth; rental market is thin today.'},
-{n:'Hoskote',z:'East',cor:'Old Madras Road',ask:6500,lo:5500,hi:7500,reg:0,py:15,rent:16000,ry:8,c:1,drv:'Very early. Sobha township scale arriving. Long hold.'},
-{n:'CV Raman Nagar',z:'East',cor:'Inner east',ask:11500,lo:9500,hi:13500,reg:0,py:10,rent:30000,ry:10,c:1,drv:'Defence and ITI belt, Purple Line served, established.'},
-{n:'Kasturi Nagar',z:'East',cor:'Inner east',ask:10500,lo:9000,hi:12000,reg:0,py:11,rent:28000,ry:10,c:1,drv:'Quiet, well-established, good schools. Low supply.'},
-{n:'Banaswadi / Kammanahalli',z:'East',cor:'Inner east',ask:9500,lo:8000,hi:11000,reg:0,py:11,rent:26000,ry:10,c:1,drv:'Dense inner-east residential with a strong rental catchment.'},
-{n:'Horamavu',z:'East',cor:'Inner east',ask:7200,lo:6000,hi:8500,reg:0,py:13,rent:20000,ry:10,c:1,drv:'Cheap entry with Hennur and Old Madras Road access.'},
-{n:'Sarjapur Road',z:'East',cor:'Sarjapur corridor',ask:12150,lo:10050,hi:14950,reg:9420,py:14,rent:38000,ry:15,c:2,drv:'Fastest rent growth in the city. Registered deeds at ₹9,420 against ₹12,150 asking — the gap is new-launch pricing.'},
-{n:'Sarjapur town',z:'East',cor:'Sarjapur corridor',ask:11800,lo:8100,hi:13950,reg:4419,py:5,rent:24000,ry:12,c:2,drv:'The widest asking-to-registered gap in the city — ₹11,800 asked, ₹4,419 registered. Almost all the asking price is new-launch marketing on land that transacts far lower.'},
-{n:'Harlur / Haralur',z:'East',cor:'Sarjapur corridor',ask:10800,lo:10000,hi:11500,reg:0,py:13,rent:35000,ry:14,c:1,drv:'Between HSR and Sarjapur. Mature mid-2010s gated stock.'},
-{n:'Carmelaram / Dommasandra',z:'East',cor:'Sarjapur corridor',ask:9500,lo:8000,hi:11000,reg:0,py:13,rent:27000,ry:13,c:1,drv:'Phase 3A metro alignment passes here. State-approved, central approval still pending.'},
+{n:'Whitefield',lat:12.9698,lng:77.75,z:'East',cor:'Whitefield belt',ask:13550,lo:10150,hi:16350,reg:0,py:8,rent:35000,ry:14,c:2,drv:'Purple Line operational, ITPL and EPIP. Ready-to-move stock quotes near ₹9,050 while under-construction quotes ₹14,300 — same postcode, different markets.'},
+{n:'Hoodi',lat:12.9922,lng:77.7167,z:'East',cor:'Whitefield belt',ask:9800,lo:8300,hi:11500,reg:0,py:18,rent:30000,ry:13,c:1,drv:'Whitefield adjacency at a discount. Among the sharper movers in the east.'},
+{n:'Kadugodi',lat:12.995,lng:77.76,z:'East',cor:'Whitefield belt',ask:10800,lo:9000,hi:12500,reg:0,py:12,rent:29000,ry:12,c:1,drv:'Purple Line terminus, large township supply.'},
+{n:'Varthur',lat:12.94,lng:77.748,z:'East',cor:'Whitefield belt',ask:11200,lo:9500,hi:13000,reg:0,py:11,rent:31000,ry:12,c:1,drv:'Prestige and Brigade townships. Lake buffer zones are a real risk here — check separately from khata.'},
+{n:'Brookefield',lat:12.966,lng:77.717,z:'East',cor:'Whitefield belt',ask:11800,lo:10000,hi:13500,reg:0,py:9,rent:33000,ry:11,c:1,drv:'Mature IT-adjacent, very little new land.'},
+{n:'Immadihalli',lat:12.977,lng:77.737,z:'East',cor:'Whitefield belt',ask:8200,lo:7000,hi:9500,reg:0,py:13,rent:26000,ry:12,c:1,drv:'Low-rise older stock inside the Whitefield postcode. Cheapest way into the address.'},
+{n:'Marathahalli',lat:12.9591,lng:77.6974,z:'East',cor:'ORR east',ask:13900,lo:8050,hi:17300,reg:0,py:12,rent:34000,ry:12,c:1,drv:'Portals show 69.5% YoY, which is a mix effect from luxury listings, not real appreciation. Treat the headline growth as noise; the ₹13,900 average is real.'},
+{n:'Bellandur',lat:12.926,lng:77.6762,z:'East',cor:'ORR east',ask:13500,lo:12000,hi:15000,reg:0,py:9,rent:45000,ry:12,c:1,drv:'Highest 2BHK rents in the city at a median ₹45,000. Entry price already reflects it.'},
+{n:'Panathur / Balagere',lat:12.937,lng:77.696,z:'East',cor:'ORR east',ask:10800,lo:10000,hi:11500,reg:0,py:12,rent:32000,ry:13,c:2,drv:'Between ORR and Whitefield. Tier-1 supply, weak internal roads.'},
+{n:'Kundalahalli',lat:12.972,lng:77.712,z:'East',cor:'ORR east',ask:12200,lo:11000,hi:13500,reg:0,py:14,rent:33000,ry:12,c:1,drv:'Ran 151% over three years on IT-park catch-up. Most of that move has already happened.'},
+{n:'Mahadevapura',lat:12.991,lng:77.687,z:'East',cor:'ORR east',ask:11000,lo:9000,hi:13000,reg:0,py:11,rent:31000,ry:11,c:1,drv:'Core ORR employment belt, dense and mature.'},
+{n:'KR Puram',lat:13.007,lng:77.696,z:'East',cor:'Old Madras Road',ask:9500,lo:6750,hi:12500,reg:0,py:13,rent:26000,ry:11,c:2,drv:'Purple Line plus Old Madras Road. Under-priced relative to its connectivity.'},
+{n:'Ramamurthy Nagar',lat:13.016,lng:77.671,z:'East',cor:'Old Madras Road',ask:6800,lo:5500,hi:8000,reg:0,py:12,rent:20000,ry:10,c:1,drv:'Named among East Bengaluru\u2019s affordable pockets. Metro-adjacent via KR Puram.'},
+{n:'Budigere Cross',lat:13.048,lng:77.748,z:'East',cor:'Old Madras Road',ask:8500,lo:7000,hi:10000,reg:0,py:14,rent:23000,ry:10,c:2,drv:'Greater Whitefield expansion. Heavy 2028–29 supply will cap price growth; rental market is thin today.'},
+{n:'Hoskote',lat:13.0707,lng:77.798,z:'East',cor:'Old Madras Road',ask:6500,lo:5500,hi:7500,reg:0,py:15,rent:16000,ry:8,c:1,drv:'Very early. Sobha township scale arriving. Long hold.'},
+{n:'CV Raman Nagar',lat:12.985,lng:77.663,z:'East',cor:'Inner east',ask:11500,lo:9500,hi:13500,reg:0,py:10,rent:30000,ry:10,c:1,drv:'Defence and ITI belt, Purple Line served, established.'},
+{n:'Kasturi Nagar',lat:13.008,lng:77.654,z:'East',cor:'Inner east',ask:10500,lo:9000,hi:12000,reg:0,py:11,rent:28000,ry:10,c:1,drv:'Quiet, well-established, good schools. Low supply.'},
+{n:'Banaswadi / Kammanahalli',lat:13.013,lng:77.641,z:'East',cor:'Inner east',ask:9500,lo:8000,hi:11000,reg:0,py:11,rent:26000,ry:10,c:1,drv:'Dense inner-east residential with a strong rental catchment.'},
+{n:'Horamavu',lat:13.028,lng:77.656,z:'East',cor:'Inner east',ask:7200,lo:6000,hi:8500,reg:0,py:13,rent:20000,ry:10,c:1,drv:'Cheap entry with Hennur and Old Madras Road access.'},
+{n:'Sarjapur Road',lat:12.91,lng:77.685,z:'East',cor:'Sarjapur corridor',ask:12150,lo:10050,hi:14950,reg:9420,py:14,rent:38000,ry:15,c:2,drv:'Fastest rent growth in the city. Registered deeds at ₹9,420 against ₹12,150 asking — the gap is new-launch pricing.'},
+{n:'Sarjapur town',lat:12.86,lng:77.786,z:'East',cor:'Sarjapur corridor',ask:11800,lo:8100,hi:13950,reg:4419,py:5,rent:24000,ry:12,c:2,drv:'The widest asking-to-registered gap in the city — ₹11,800 asked, ₹4,419 registered. Almost all the asking price is new-launch marketing on land that transacts far lower.'},
+{n:'Harlur / Haralur',lat:12.907,lng:77.656,z:'East',cor:'Sarjapur corridor',ask:10800,lo:10000,hi:11500,reg:0,py:13,rent:35000,ry:14,c:1,drv:'Between HSR and Sarjapur. Mature mid-2010s gated stock.'},
+{n:'Carmelaram / Dommasandra',lat:12.904,lng:77.713,z:'East',cor:'Sarjapur corridor',ask:9500,lo:8000,hi:11000,reg:0,py:13,rent:27000,ry:13,c:1,drv:'Phase 3A metro alignment passes here. State-approved, central approval still pending.'},
 /* ---------- SOUTH ---------- */
-{n:'HSR Layout',z:'South',cor:'Inner south-east',ask:12750,lo:8700,hi:15850,reg:7454,py:12,rent:37000,ry:11,c:2,drv:'Deepest rental market, two metro axes. Registered deeds at ₹7,454 against asking up to ₹17,638 — the largest credibility gap on this page.'},
-{n:'BTM Layout',z:'South',cor:'Inner south-east',ask:11800,lo:10000,hi:13500,reg:0,py:10,rent:30000,ry:10,c:1,drv:'Central-south, very high tenant churn, almost no new supply.'},
-{n:'Koramangala',z:'South',cor:'Inner south-east',ask:20000,lo:18000,hi:25000,reg:0,py:8,rent:35000,ry:9,c:1,drv:'Prime and scarce. Appreciation now comes from scarcity, not growth.'},
-{n:'Bommanahalli',z:'South',cor:'Hosur Road',ask:8800,lo:8000,hi:9500,reg:0,py:12,rent:26000,ry:11,c:1,drv:'Yellow Line adjacency and Silk Board junction works.'},
-{n:'Kudlu / Kudlu Gate',z:'South',cor:'Hosur Road',ask:9000,lo:8500,hi:9500,reg:0,py:12,rent:28000,ry:12,c:1,drv:'A third below HSR with similar access. Quietly one of the better-value belts.'},
-{n:'Hosa Road',z:'South',cor:'Hosur Road',ask:8700,lo:8000,hi:9500,reg:0,py:12,rent:27000,ry:11,c:1,drv:'Corridor between HSR and Electronic City.'},
-{n:'Electronic City Ph 1',z:'South',cor:'Electronic City',ask:7400,lo:6500,hi:9000,reg:4435,py:11,rent:24000,ry:10,c:2,drv:'Yellow Line opened August 2025 and this corridor has repriced least. Registered rate ₹4,435 reflects a lot of older stock — real value sits between the two numbers.'},
-{n:'Electronic City Ph 2',z:'South',cor:'Electronic City',ask:7750,lo:7000,hi:8500,reg:5780,py:11,rent:21000,ry:10,c:2,drv:'Cheaper half of the corridor, and the tighter asking-to-registered gap of the two.'},
-{n:'Bommasandra / Chandapura',z:'South',cor:'Electronic City',ask:5500,lo:4500,hi:6500,reg:0,py:13,rent:15000,ry:9,c:1,drv:'Yellow Line extension and the industrial belt. Early, cheap, thin.'},
-{n:'Attibele / Anekal',z:'South',cor:'Electronic City',ask:4800,lo:4000,hi:5800,reg:0,py:12,rent:13000,ry:8,c:0,drv:'Tamil Nadu border belt. Among the cheapest entries in the metro. Very long hold.'},
-{n:'Jigani',z:'South',cor:'Electronic City',ask:5600,lo:5000,hi:6500,reg:0,py:12,rent:15000,ry:8,c:0,drv:'Industrial-led. Nearing-possession supply on Jigani Link Road.'},
-{n:'Jayanagar',z:'South',cor:'Old south',ask:22550,lo:18000,hi:26000,reg:0,py:12,rent:38000,ry:10,c:1,drv:'Prime old Bengaluru. The 57% YoY portals show is a mix effect, not real appreciation.'},
-{n:'Basavanagudi',z:'South',cor:'Old south',ask:16850,lo:11550,hi:27250,reg:0,py:14,rent:35000,ry:9,c:1,drv:'Scarcity-driven. Redevelopment plays only.'},
-{n:'JP Nagar',z:'South',cor:'Old south',ask:11500,lo:10000,hi:13500,reg:0,py:11,rent:32000,ry:11,c:1,drv:'Mature and leafy. Tier-1 buildings 15–20 years old trade below ₹10,000 — the best age-for-address arbitrage in the city.'},
-{n:'Padmanabhanagar / Girinagar',z:'South',cor:'Old south',ask:10500,lo:9000,hi:12000,reg:0,py:11,rent:26000,ry:9,c:0,drv:'Established, low supply, mostly builder floors.'},
-{n:'Banashankari overall',z:'South',cor:'Banashankari belt',ask:9500,lo:6550,hi:13050,reg:8973,py:19,rent:28000,ry:11,c:2,drv:'Tight asking-to-registered gap, which is a good sign. But enormous internal spread — treat each stage as its own market.'},
-{n:'Banashankari 2nd Stage',z:'South',cor:'Banashankari belt',ask:17250,lo:15000,hi:19000,reg:0,py:20,rent:36000,ry:11,c:1,drv:'The premium pocket. Portal YoY of 43.8% is not credible as real appreciation.'},
-{n:'Banashankari 3rd Stage',z:'South',cor:'Banashankari belt',ask:8200,lo:6750,hi:12550,reg:4260,py:11,rent:24000,ry:9,c:2,drv:'Cheap end of BSK with a wide registered gap. Older stock, uneven quality.'},
-{n:'Banashankari 6th Stage',z:'South',cor:'Banashankari belt',ask:11800,lo:6650,hi:15000,reg:11552,py:18,rent:33000,ry:12,c:2,drv:'Registered ₹11,552 against ₹11,800 asking — almost no gap, which means the price is genuinely supported. The most trustworthy number in this table.'},
-{n:'Uttarahalli',z:'South',cor:'Banashankari belt',ask:8200,lo:7500,hi:9000,reg:0,py:13,rent:22000,ry:10,c:1,drv:'Kanakapura and Mysore Road catchment.'},
-{n:'Bannerghatta Road',z:'South',cor:'Bannerghatta',ask:9650,lo:6500,hi:14150,reg:6348,py:11,rent:28000,ry:11,c:2,drv:'Published rental yield of 4% is among the best in the city. Registered ₹6,348 against ₹9,650 asking.'},
-{n:'Begur / Yelenahalli',z:'South',cor:'Bannerghatta',ask:8250,lo:7000,hi:10500,reg:3349,py:12,rent:26000,ry:11,c:1,drv:'Prestige township scale nearby. Very wide registered gap — negotiate hard here.'},
-{n:'Arekere / Hulimavu',z:'South',cor:'Bannerghatta',ask:9200,lo:8000,hi:10500,reg:0,py:11,rent:26000,ry:10,c:0,drv:'Established Bannerghatta Road residential with good schools.'},
-{n:'Kanakapura Road',z:'South',cor:'Kanakapura',ask:8400,lo:7500,hi:9500,reg:0,py:12,rent:22000,ry:10,c:2,drv:'Green Line operational. Cheapest metro-served corridor in the city.'},
-{n:'Anjanapura',z:'South',cor:'Kanakapura',ask:7300,lo:6500,hi:8000,reg:0,py:20,rent:19000,ry:11,c:1,drv:'Ran 205% over three years on the metro extension. The catch-up has largely happened.'},
-{n:'Konanakunte / Thalaghattapura',z:'South',cor:'Kanakapura',ask:7800,lo:7000,hi:8800,reg:0,py:13,rent:21000,ry:10,c:0,drv:'Green Line southern end, plotted and mid-rise supply.'},
-{n:'Kathreguppe',z:'South',cor:'Kanakapura',ask:8350,lo:7500,hi:9200,reg:0,py:12,rent:22000,ry:10,c:1,drv:'Between BSK and Kanakapura Road.'},
+{n:'HSR Layout',lat:12.9116,lng:77.6389,z:'South',cor:'Inner south-east',ask:12750,lo:8700,hi:15850,reg:7454,py:12,rent:37000,ry:11,c:2,drv:'Deepest rental market, two metro axes. Registered deeds at ₹7,454 against asking up to ₹17,638 — the largest credibility gap on this page.'},
+{n:'BTM Layout',lat:12.9166,lng:77.6101,z:'South',cor:'Inner south-east',ask:11800,lo:10000,hi:13500,reg:0,py:10,rent:30000,ry:10,c:1,drv:'Central-south, very high tenant churn, almost no new supply.'},
+{n:'Koramangala',lat:12.9352,lng:77.6245,z:'South',cor:'Inner south-east',ask:20000,lo:18000,hi:25000,reg:0,py:8,rent:35000,ry:9,c:1,drv:'Prime and scarce. Appreciation now comes from scarcity, not growth.'},
+{n:'Bommanahalli',lat:12.899,lng:77.618,z:'South',cor:'Hosur Road',ask:8800,lo:8000,hi:9500,reg:0,py:12,rent:26000,ry:11,c:1,drv:'Yellow Line adjacency and Silk Board junction works.'},
+{n:'Kudlu / Kudlu Gate',lat:12.887,lng:77.642,z:'South',cor:'Hosur Road',ask:9000,lo:8500,hi:9500,reg:0,py:12,rent:28000,ry:12,c:1,drv:'A third below HSR with similar access. Quietly one of the better-value belts.'},
+{n:'Hosa Road',lat:12.876,lng:77.648,z:'South',cor:'Hosur Road',ask:8700,lo:8000,hi:9500,reg:0,py:12,rent:27000,ry:11,c:1,drv:'Corridor between HSR and Electronic City.'},
+{n:'Electronic City Ph 1',lat:12.8452,lng:77.6602,z:'South',cor:'Electronic City',ask:7400,lo:6500,hi:9000,reg:4435,py:11,rent:24000,ry:10,c:2,drv:'Yellow Line opened August 2025 and this corridor has repriced least. Registered rate ₹4,435 reflects a lot of older stock — real value sits between the two numbers.'},
+{n:'Electronic City Ph 2',lat:12.838,lng:77.678,z:'South',cor:'Electronic City',ask:7750,lo:7000,hi:8500,reg:5780,py:11,rent:21000,ry:10,c:2,drv:'Cheaper half of the corridor, and the tighter asking-to-registered gap of the two.'},
+{n:'Bommasandra / Chandapura',lat:12.808,lng:77.702,z:'South',cor:'Electronic City',ask:5500,lo:4500,hi:6500,reg:0,py:13,rent:15000,ry:9,c:1,drv:'Yellow Line extension and the industrial belt. Early, cheap, thin.'},
+{n:'Attibele / Anekal',lat:12.765,lng:77.74,z:'South',cor:'Electronic City',ask:4800,lo:4000,hi:5800,reg:0,py:12,rent:13000,ry:8,c:0,drv:'Tamil Nadu border belt. Among the cheapest entries in the metro. Very long hold.'},
+{n:'Jigani',lat:12.786,lng:77.64,z:'South',cor:'Electronic City',ask:5600,lo:5000,hi:6500,reg:0,py:12,rent:15000,ry:8,c:0,drv:'Industrial-led. Nearing-possession supply on Jigani Link Road.'},
+{n:'Jayanagar',lat:12.925,lng:77.583,z:'South',cor:'Old south',ask:22550,lo:18000,hi:26000,reg:0,py:12,rent:38000,ry:10,c:1,drv:'Prime old Bengaluru. The 57% YoY portals show is a mix effect, not real appreciation.'},
+{n:'Basavanagudi',lat:12.942,lng:77.573,z:'South',cor:'Old south',ask:16850,lo:11550,hi:27250,reg:0,py:14,rent:35000,ry:9,c:1,drv:'Scarcity-driven. Redevelopment plays only.'},
+{n:'JP Nagar',lat:12.908,lng:77.585,z:'South',cor:'Old south',ask:11500,lo:10000,hi:13500,reg:0,py:11,rent:32000,ry:11,c:1,drv:'Mature and leafy. Tier-1 buildings 15–20 years old trade below ₹10,000 — the best age-for-address arbitrage in the city.'},
+{n:'Padmanabhanagar / Girinagar',lat:12.92,lng:77.556,z:'South',cor:'Old south',ask:10500,lo:9000,hi:12000,reg:0,py:11,rent:26000,ry:9,c:0,drv:'Established, low supply, mostly builder floors.'},
+{n:'Banashankari overall',lat:12.925,lng:77.546,z:'South',cor:'Banashankari belt',ask:9500,lo:6550,hi:13050,reg:8973,py:19,rent:28000,ry:11,c:2,drv:'Tight asking-to-registered gap, which is a good sign. But enormous internal spread — treat each stage as its own market.'},
+{n:'Banashankari 2nd Stage',lat:12.933,lng:77.566,z:'South',cor:'Banashankari belt',ask:17250,lo:15000,hi:19000,reg:0,py:20,rent:36000,ry:11,c:1,drv:'The premium pocket. Portal YoY of 43.8% is not credible as real appreciation.'},
+{n:'Banashankari 3rd Stage',lat:12.925,lng:77.549,z:'South',cor:'Banashankari belt',ask:8200,lo:6750,hi:12550,reg:4260,py:11,rent:24000,ry:9,c:2,drv:'Cheap end of BSK with a wide registered gap. Older stock, uneven quality.'},
+{n:'Banashankari 6th Stage',lat:12.906,lng:77.515,z:'South',cor:'Banashankari belt',ask:11800,lo:6650,hi:15000,reg:11552,py:18,rent:33000,ry:12,c:2,drv:'Registered ₹11,552 against ₹11,800 asking — almost no gap, which means the price is genuinely supported. The most trustworthy number in this table.'},
+{n:'Uttarahalli',lat:12.907,lng:77.542,z:'South',cor:'Banashankari belt',ask:8200,lo:7500,hi:9000,reg:0,py:13,rent:22000,ry:10,c:1,drv:'Kanakapura and Mysore Road catchment.'},
+{n:'Bannerghatta Road',lat:12.888,lng:77.597,z:'South',cor:'Bannerghatta',ask:9650,lo:6500,hi:14150,reg:6348,py:11,rent:28000,ry:11,c:2,drv:'Published rental yield of 4% is among the best in the city. Registered ₹6,348 against ₹9,650 asking.'},
+{n:'Begur / Yelenahalli',lat:12.872,lng:77.626,z:'South',cor:'Bannerghatta',ask:8250,lo:7000,hi:10500,reg:3349,py:12,rent:26000,ry:11,c:1,drv:'Prestige township scale nearby. Very wide registered gap — negotiate hard here.'},
+{n:'Arekere / Hulimavu',lat:12.884,lng:77.6,z:'South',cor:'Bannerghatta',ask:9200,lo:8000,hi:10500,reg:0,py:11,rent:26000,ry:10,c:0,drv:'Established Bannerghatta Road residential with good schools.'},
+{n:'Kanakapura Road',lat:12.885,lng:77.557,z:'South',cor:'Kanakapura',ask:8400,lo:7500,hi:9500,reg:0,py:12,rent:22000,ry:10,c:2,drv:'Green Line operational. Cheapest metro-served corridor in the city.'},
+{n:'Anjanapura',lat:12.858,lng:77.559,z:'South',cor:'Kanakapura',ask:7300,lo:6500,hi:8000,reg:0,py:20,rent:19000,ry:11,c:1,drv:'Ran 205% over three years on the metro extension. The catch-up has largely happened.'},
+{n:'Konanakunte / Thalaghattapura',lat:12.876,lng:77.551,z:'South',cor:'Kanakapura',ask:7800,lo:7000,hi:8800,reg:0,py:13,rent:21000,ry:10,c:0,drv:'Green Line southern end, plotted and mid-rise supply.'},
+{n:'Kathreguppe',lat:12.928,lng:77.554,z:'South',cor:'Kanakapura',ask:8350,lo:7500,hi:9200,reg:0,py:12,rent:22000,ry:10,c:1,drv:'Between BSK and Kanakapura Road.'},
 /* ---------- NORTH ---------- */
-{n:'Hebbal',z:'North',cor:'Hebbal belt',ask:16450,lo:12000,hi:19000,reg:11535,py:10,rent:34000,ry:11,c:2,drv:'Manyata and airport corridor. Registered ₹11,535 against ₹16,450 asking — a premium market with a real gap.'},
-{n:'Nagawara / RT Nagar',z:'North',cor:'Hebbal belt',ask:9000,lo:8000,hi:10000,reg:0,py:10,rent:26000,ry:10,c:0,drv:'Inner north, Manyata adjacency, older stock.'},
-{n:'Sahakar Nagar',z:'North',cor:'Hebbal belt',ask:8800,lo:8000,hi:9500,reg:0,py:9,rent:24000,ry:9,c:0,drv:'Established, airport road access.'},
-{n:'Thanisandra',z:'North',cor:'Thanisandra corridor',ask:11500,lo:10750,hi:14700,reg:8609,py:10,rent:26000,ry:12,c:2,drv:'Manyata demand. Land rates jumped 55.6% in a year, far ahead of flats at 10% — the land market is pricing something the flat market has not yet.'},
-{n:'Thanisandra Main Road',z:'North',cor:'Thanisandra corridor',ask:11750,lo:10700,hi:15300,reg:0,py:11,rent:27000,ry:12,c:2,drv:'2BHK listings run ₹1.02–1.51 Cr. Directly in your budget band.'},
-{n:'Hennur Road',z:'North',cor:'Hennur corridor',ask:6800,lo:5800,hi:8500,reg:0,py:12,rent:25000,ry:11,c:1,drv:'99acres places Hennur in the ₹6,000–7,000 band while other sources say ₹8,500. One of the widest source disagreements here — verify before acting.'},
-{n:'Kothanur / Kothnur',z:'North',cor:'Hennur corridor',ask:6500,lo:6000,hi:7000,reg:0,py:12,rent:20000,ry:10,c:1,drv:'Hennur corridor, affordable band, improving retail.'},
-{n:'Jakkur',z:'North',cor:'Hennur corridor',ask:8700,lo:8000,hi:9500,reg:0,py:11,rent:25000,ry:10,c:1,drv:'Lake, low density, Hebbal and airport access.'},
-{n:'Yelahanka',z:'North',cor:'Airport corridor',ask:6500,lo:5500,hi:8000,reg:0,py:8,rent:20000,ry:9,c:1,drv:'Established, planned, metro-served. Steady rather than fast.'},
-{n:'Devanahalli',z:'North',cor:'Airport corridor',ask:9000,lo:5500,hi:13000,reg:0,py:13,rent:19000,ry:8,c:1,drv:'12–15% appreciation, but 15,000+ planned units around it will cap the run. Sources split hard between ₹5,500 and ₹13,000.'},
-{n:'Shettigere',z:'North',cor:'Airport corridor',ask:10500,lo:9500,hi:11500,reg:0,py:13,rent:19000,ry:8,c:1,drv:'Godrej MSR City anchoring the corridor at ₹11,000.'},
-{n:'Bagalur',z:'North',cor:'Airport corridor',ask:6200,lo:5000,hi:7000,reg:0,py:15,rent:16000,ry:9,c:1,drv:'Aerospace park and Peripheral Ring Road alignment. Early-stage land play.'},
-{n:'Vidyaranyapura',z:'North',cor:'Airport corridor',ask:6500,lo:6000,hi:7000,reg:0,py:10,rent:18000,ry:9,c:1,drv:'Affordable, established, weak commercial base.'},
-{n:'Doddaballapur Road',z:'North',cor:'Airport corridor',ask:5200,lo:4500,hi:6000,reg:0,py:13,rent:13000,ry:8,c:0,drv:'Outer north industrial belt. Earliest stage in this zone.'},
+{n:'Hebbal',lat:13.0358,lng:77.597,z:'North',cor:'Hebbal belt',ask:16450,lo:12000,hi:19000,reg:11535,py:10,rent:34000,ry:11,c:2,drv:'Manyata and airport corridor. Registered ₹11,535 against ₹16,450 asking — a premium market with a real gap.'},
+{n:'Nagawara / RT Nagar',lat:13.033,lng:77.61,z:'North',cor:'Hebbal belt',ask:9000,lo:8000,hi:10000,reg:0,py:10,rent:26000,ry:10,c:0,drv:'Inner north, Manyata adjacency, older stock.'},
+{n:'Sahakar Nagar',lat:13.062,lng:77.581,z:'North',cor:'Hebbal belt',ask:8800,lo:8000,hi:9500,reg:0,py:9,rent:24000,ry:9,c:0,drv:'Established, airport road access.'},
+{n:'Thanisandra',lat:13.058,lng:77.63,z:'North',cor:'Thanisandra corridor',ask:11500,lo:10750,hi:14700,reg:8609,py:10,rent:26000,ry:12,c:2,drv:'Manyata demand. Land rates jumped 55.6% in a year, far ahead of flats at 10% — the land market is pricing something the flat market has not yet.'},
+{n:'Thanisandra Main Road',lat:13.066,lng:77.625,z:'North',cor:'Thanisandra corridor',ask:11750,lo:10700,hi:15300,reg:0,py:11,rent:27000,ry:12,c:2,drv:'2BHK listings run ₹1.02–1.51 Cr. Directly in your budget band.'},
+{n:'Hennur Road',lat:13.033,lng:77.642,z:'North',cor:'Hennur corridor',ask:6800,lo:5800,hi:8500,reg:0,py:12,rent:25000,ry:11,c:1,drv:'99acres places Hennur in the ₹6,000–7,000 band while other sources say ₹8,500. One of the widest source disagreements here — verify before acting.'},
+{n:'Kothanur / Kothnur',lat:13.062,lng:77.642,z:'North',cor:'Hennur corridor',ask:6500,lo:6000,hi:7000,reg:0,py:12,rent:20000,ry:10,c:1,drv:'Hennur corridor, affordable band, improving retail.'},
+{n:'Jakkur',lat:13.077,lng:77.606,z:'North',cor:'Hennur corridor',ask:8700,lo:8000,hi:9500,reg:0,py:11,rent:25000,ry:10,c:1,drv:'Lake, low density, Hebbal and airport access.'},
+{n:'Yelahanka',lat:13.1007,lng:77.5963,z:'North',cor:'Airport corridor',ask:6500,lo:5500,hi:8000,reg:0,py:8,rent:20000,ry:9,c:1,drv:'Established, planned, metro-served. Steady rather than fast.'},
+{n:'Devanahalli',lat:13.248,lng:77.713,z:'North',cor:'Airport corridor',ask:9000,lo:5500,hi:13000,reg:0,py:13,rent:19000,ry:8,c:1,drv:'12–15% appreciation, but 15,000+ planned units around it will cap the run. Sources split hard between ₹5,500 and ₹13,000.'},
+{n:'Shettigere',lat:13.19,lng:77.66,z:'North',cor:'Airport corridor',ask:10500,lo:9500,hi:11500,reg:0,py:13,rent:19000,ry:8,c:1,drv:'Godrej MSR City anchoring the corridor at ₹11,000.'},
+{n:'Bagalur',lat:13.133,lng:77.665,z:'North',cor:'Airport corridor',ask:6200,lo:5000,hi:7000,reg:0,py:15,rent:16000,ry:9,c:1,drv:'Aerospace park and Peripheral Ring Road alignment. Early-stage land play.'},
+{n:'Vidyaranyapura',lat:13.076,lng:77.556,z:'North',cor:'Airport corridor',ask:6500,lo:6000,hi:7000,reg:0,py:10,rent:18000,ry:9,c:1,drv:'Affordable, established, weak commercial base.'},
+{n:'Doddaballapur Road',lat:13.16,lng:77.57,z:'North',cor:'Airport corridor',ask:5200,lo:4500,hi:6000,reg:0,py:13,rent:13000,ry:8,c:0,drv:'Outer north industrial belt. Earliest stage in this zone.'},
 /* ---------- WEST ---------- */
-{n:'Rajajinagar',z:'West',cor:'Inner west',ask:13500,lo:12000,hi:16000,reg:0,py:9,rent:34000,ry:9,c:1,drv:'Prime west, metro-served, very limited land.'},
-{n:'Malleswaram',z:'West',cor:'Inner west',ask:17000,lo:15000,hi:20000,reg:0,py:8,rent:38000,ry:8,c:1,drv:'Scarcity asset. Redevelopment only.'},
-{n:'Yeshwanthpur',z:'West',cor:'Inner west',ask:12000,lo:10000,hi:14000,reg:0,py:10,rent:30000,ry:10,c:1,drv:'Metro plus commercial. Godrej and Phoenix supply.'},
-{n:'Vijayanagar',z:'West',cor:'Inner west',ask:10000,lo:9000,hi:11000,reg:0,py:10,rent:26000,ry:10,c:1,drv:'Purple Line, established residential.'},
-{n:'Mathikere / Sanjay Nagar',z:'West',cor:'Inner west',ask:10500,lo:9000,hi:12000,reg:0,py:10,rent:26000,ry:9,c:0,drv:'Institutional belt, steady tenant demand.'},
-{n:'Rajarajeshwari Nagar',z:'West',cor:'Mysore Road belt',ask:10150,lo:5000,hi:12000,reg:0,py:25,rent:30000,ry:12,c:1,drv:'25.3% YoY on apartments with rents already ₹26,400–34,300, and its own Purple Line station. Sources split between ₹5,000 and ₹10,150 — the single most worthwhile number on this page to verify yourself.'},
-{n:'Kengeri',z:'West',cor:'Mysore Road belt',ask:7600,lo:6900,hi:9700,reg:5490,py:18,rent:22000,ry:11,c:2,drv:'Purple Line terminus. 17.8% apartment growth on a ₹7,600 average, registered at ₹5,490. Genuine infrastructure catch-up.'},
-{n:'Nagarbhavi',z:'West',cor:'Mysore Road belt',ask:9000,lo:8000,hi:10000,reg:0,py:12,rent:24000,ry:10,c:1,drv:'University belt, established, metro-adjacent.'},
-{n:'Mysore Road',z:'West',cor:'Mysore Road belt',ask:6800,lo:6000,hi:7750,reg:0,py:12,rent:20000,ry:10,c:1,drv:'NICE Road and metro. Cheapest large-supply corridor in the city.'},
-{n:'Kumbalgodu / Bidadi',z:'West',cor:'Mysore Road belt',ask:4700,lo:4000,hi:5500,reg:0,py:13,rent:12000,ry:8,c:0,drv:'Industrial corridor toward Mysore. Earliest stage on this list.'},
-{n:'Magadi Road',z:'West',cor:'North-west',ask:6500,lo:6000,hi:7000,reg:0,py:11,rent:18000,ry:9,c:1,drv:'Inner west, improving slowly.'},
-{n:'Tumkur Road / Peenya',z:'West',cor:'North-west',ask:7000,lo:6000,hi:8000,reg:0,py:11,rent:19000,ry:9,c:1,drv:'Industrial belt, metro-served, strong worker rental demand.'},
-{n:'Jalahalli',z:'West',cor:'North-west',ask:7800,lo:7000,hi:8500,reg:0,py:10,rent:22000,ry:9,c:1,drv:'Defence and industrial catchment, metro access.'},
-{n:'Nelamangala',z:'West',cor:'North-west',ask:5000,lo:4500,hi:5500,reg:0,py:12,rent:13000,ry:8,c:0,drv:'Outer ring, STRR alignment. Very long hold.'},
+{n:'Rajajinagar',lat:12.991,lng:77.555,z:'West',cor:'Inner west',ask:13500,lo:12000,hi:16000,reg:0,py:9,rent:34000,ry:9,c:1,drv:'Prime west, metro-served, very limited land.'},
+{n:'Malleswaram',lat:13.003,lng:77.569,z:'West',cor:'Inner west',ask:17000,lo:15000,hi:20000,reg:0,py:8,rent:38000,ry:8,c:1,drv:'Scarcity asset. Redevelopment only.'},
+{n:'Yeshwanthpur',lat:13.028,lng:77.554,z:'West',cor:'Inner west',ask:12000,lo:10000,hi:14000,reg:0,py:10,rent:30000,ry:10,c:1,drv:'Metro plus commercial. Godrej and Phoenix supply.'},
+{n:'Vijayanagar',lat:12.972,lng:77.538,z:'West',cor:'Inner west',ask:10000,lo:9000,hi:11000,reg:0,py:10,rent:26000,ry:10,c:1,drv:'Purple Line, established residential.'},
+{n:'Mathikere / Sanjay Nagar',lat:13.03,lng:77.57,z:'West',cor:'Inner west',ask:10500,lo:9000,hi:12000,reg:0,py:10,rent:26000,ry:9,c:0,drv:'Institutional belt, steady tenant demand.'},
+{n:'Rajarajeshwari Nagar',lat:12.926,lng:77.518,z:'West',cor:'Mysore Road belt',ask:10150,lo:5000,hi:12000,reg:0,py:25,rent:30000,ry:12,c:1,drv:'25.3% YoY on apartments with rents already ₹26,400–34,300, and its own Purple Line station. Sources split between ₹5,000 and ₹10,150 — the single most worthwhile number on this page to verify yourself.'},
+{n:'Kengeri',lat:12.908,lng:77.482,z:'West',cor:'Mysore Road belt',ask:7600,lo:6900,hi:9700,reg:5490,py:18,rent:22000,ry:11,c:2,drv:'Purple Line terminus. 17.8% apartment growth on a ₹7,600 average, registered at ₹5,490. Genuine infrastructure catch-up.'},
+{n:'Nagarbhavi',lat:12.96,lng:77.51,z:'West',cor:'Mysore Road belt',ask:9000,lo:8000,hi:10000,reg:0,py:12,rent:24000,ry:10,c:1,drv:'University belt, established, metro-adjacent.'},
+{n:'Mysore Road',lat:12.945,lng:77.52,z:'West',cor:'Mysore Road belt',ask:6800,lo:6000,hi:7750,reg:0,py:12,rent:20000,ry:10,c:1,drv:'NICE Road and metro. Cheapest large-supply corridor in the city.'},
+{n:'Kumbalgodu / Bidadi',lat:12.85,lng:77.42,z:'West',cor:'Mysore Road belt',ask:4700,lo:4000,hi:5500,reg:0,py:13,rent:12000,ry:8,c:0,drv:'Industrial corridor toward Mysore. Earliest stage on this list.'},
+{n:'Magadi Road',lat:12.976,lng:77.53,z:'West',cor:'North-west',ask:6500,lo:6000,hi:7000,reg:0,py:11,rent:18000,ry:9,c:1,drv:'Inner west, improving slowly.'},
+{n:'Tumkur Road / Peenya',lat:13.028,lng:77.519,z:'West',cor:'North-west',ask:7000,lo:6000,hi:8000,reg:0,py:11,rent:19000,ry:9,c:1,drv:'Industrial belt, metro-served, strong worker rental demand.'},
+{n:'Jalahalli',lat:13.043,lng:77.548,z:'West',cor:'North-west',ask:7800,lo:7000,hi:8500,reg:0,py:10,rent:22000,ry:9,c:1,drv:'Defence and industrial catchment, metro access.'},
+{n:'Nelamangala',lat:13.099,lng:77.394,z:'West',cor:'North-west',ask:5000,lo:4500,hi:5500,reg:0,py:12,rent:13000,ry:8,c:0,drv:'Outer ring, STRR alignment. Very long hold.'},
 /* ---------- CENTRAL ---------- */
-{n:'Indiranagar',z:'Central',cor:'CBD east',ask:21000,lo:18000,hi:25000,reg:0,py:8,rent:45000,ry:10,c:1,drv:'Prime. Excellent rental depth; entry price makes yields thin.'},
-{n:'Domlur / Ulsoor',z:'Central',cor:'CBD east',ask:17000,lo:15000,hi:20000,reg:0,py:9,rent:42000,ry:9,c:1,drv:'Old Airport Road belt, walkable to CBD offices.'},
-{n:'Frazer Town / Cooke Town',z:'Central',cor:'CBD north',ask:15000,lo:13000,hi:17000,reg:0,py:9,rent:36000,ry:9,c:1,drv:'Old Bengaluru character, redevelopment-driven, mostly builder floors.'},
-{n:'MG Road / CBD',z:'Central',cor:'CBD core',ask:13450,lo:11000,hi:18000,reg:0,py:-4,rent:42000,ry:8,c:1,drv:'The one zone showing a negative move in 2026 data, at -3.83%. Commercial-led with thin residential supply.'},
-{n:'Richmond / Langford Town',z:'Central',cor:'CBD core',ask:21000,lo:18000,hi:24000,reg:0,py:7,rent:44000,ry:8,c:0,drv:'Scarcity and heritage stock.'},
-{n:'Sudhama Nagar',z:'Central',cor:'CBD core',ask:22450,lo:20000,hi:24000,reg:0,py:8,rent:40000,ry:8,c:0,drv:'Central, very limited supply. Purva Orient Grand nearing possession here.'},
-{n:'Chamrajpet',z:'Central',cor:'CBD west',ask:30000,lo:25000,hi:34000,reg:0,py:8,rent:38000,ry:6,c:0,drv:'Highest quoted rate in this dataset. Extremely low supply, old-city stock.'},
-{n:'Seshadripuram / Shivajinagar',z:'Central',cor:'CBD west',ask:14000,lo:12000,hi:17000,reg:0,py:8,rent:32000,ry:8,c:0,drv:'Dense central, mostly redevelopment and small floors.'}
+{n:'Indiranagar',lat:12.9784,lng:77.6408,z:'Central',cor:'CBD east',ask:21000,lo:18000,hi:25000,reg:0,py:8,rent:45000,ry:10,c:1,drv:'Prime. Excellent rental depth; entry price makes yields thin.'},
+{n:'Domlur / Ulsoor',lat:12.97,lng:77.627,z:'Central',cor:'CBD east',ask:17000,lo:15000,hi:20000,reg:0,py:9,rent:42000,ry:9,c:1,drv:'Old Airport Road belt, walkable to CBD offices.'},
+{n:'Frazer Town / Cooke Town',lat:12.997,lng:77.618,z:'Central',cor:'CBD north',ask:15000,lo:13000,hi:17000,reg:0,py:9,rent:36000,ry:9,c:1,drv:'Old Bengaluru character, redevelopment-driven, mostly builder floors.'},
+{n:'MG Road / CBD',lat:12.975,lng:77.606,z:'Central',cor:'CBD core',ask:13450,lo:11000,hi:18000,reg:0,py:-4,rent:42000,ry:8,c:1,drv:'The one zone showing a negative move in 2026 data, at -3.83%. Commercial-led with thin residential supply.'},
+{n:'Richmond / Langford Town',lat:12.96,lng:77.596,z:'Central',cor:'CBD core',ask:21000,lo:18000,hi:24000,reg:0,py:7,rent:44000,ry:8,c:0,drv:'Scarcity and heritage stock.'},
+{n:'Sudhama Nagar',lat:12.959,lng:77.579,z:'Central',cor:'CBD core',ask:22450,lo:20000,hi:24000,reg:0,py:8,rent:40000,ry:8,c:0,drv:'Central, very limited supply. Purva Orient Grand nearing possession here.'},
+{n:'Chamrajpet',lat:12.96,lng:77.565,z:'Central',cor:'CBD west',ask:30000,lo:25000,hi:34000,reg:0,py:8,rent:38000,ry:6,c:0,drv:'Highest quoted rate in this dataset. Extremely low supply, old-city stock.'},
+{n:'Seshadripuram / Shivajinagar',lat:12.989,lng:77.591,z:'Central',cor:'CBD west',ask:14000,lo:12000,hi:17000,reg:0,py:8,rent:32000,ry:8,c:0,drv:'Dense central, mostly redevelopment and small floors.'}
 ];
 
 const ZONEINFO={
@@ -1781,6 +1800,63 @@ function textOn(hex){
  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
  return (r*299+g*587+b*114)/1000>150 ? 'var(--ink)' : '#F4F7F5';
 }
+/* ========== zone map ==========
+ Leaflet + OpenStreetMap tiles, no key and no account. Coordinates on AREAS are
+ approximate locality centres — enough to place an area, not plot boundaries.
+ Everything here degrades quietly: if the Leaflet CDN is unreachable the map
+ hides itself and the tiles below carry on unchanged. */
+let HMAP=null, HDOTS=null, HMAPFAIL=false;
+const BLR=[12.9716,77.5946];
+
+function dotRadius(s){                       /* sweet score 20-85 -> 5-20px */
+ return Math.max(5,Math.min(20, 5+15*(s-20)/65));
+}
+function heatMapAreas(){ return AREAS.filter(a=>(!ZF||a.z===ZF)&&typeof a.lat==='number'); }
+
+function ensureHeatMap(){
+ if(HMAPFAIL)return false;
+ const el=document.getElementById('heatMap'); if(!el)return false;
+ if(typeof L==='undefined'){            /* CDN blocked or offline */
+  HMAPFAIL=true; el.classList.add('dead');
+  const note=document.getElementById('heatMapNote');
+  if(note)note.innerHTML='<span class="warn">Map library did not load \u2014 the zone tiles below still work.</span>';
+  return false;}
+ if(HMAP){HMAP.invalidateSize(); return true;}
+ if(!el.clientHeight)return false;      /* panel still hidden \u2014 wait for the tab */
+ try{
+  HMAP=L.map(el,{scrollWheelZoom:false,zoomControl:true,attributionControl:true}).setView(BLR,11);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+   maxZoom:18,minZoom:9,
+   attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(HMAP);
+  HDOTS=L.layerGroup().addTo(HMAP);
+ }catch(e){HMAPFAIL=true; el.classList.add('dead'); return false;}
+ return true;
+}
+
+function renderHeatMap(){
+ if(!ensureHeatMap())return;
+ HDOTS.clearLayers();
+ const list=heatMapAreas();
+ list.forEach(a=>{
+  const s=sweetScore(a), fill=heatColor(a);
+  const dot=L.circleMarker([a.lat,a.lng],{
+   radius:dotRadius(s), className:'mapdot',
+   fillColor:fill, fillOpacity:.88,
+   color:'#12211D', weight:1, opacity:.55
+  });
+  dot.bindTooltip(a.n+' \u2014 '+heatVal(a),{direction:'top',offset:[0,-2]});
+  dot.bindPopup('<b>'+a.n+'</b><br>'+a.z+' \u00b7 '+a.cor
+   +'<br>ask \u20b9'+a.ask.toLocaleString('en-IN')+'/sqft'
+   +'<br>sweet-spot score '+s);
+  dot.on('click',()=>showArea(a.n));
+  dot.addTo(HDOTS);
+ });
+ if(list.length){
+  try{HMAP.fitBounds(L.latLngBounds(list.map(a=>[a.lat,a.lng])),{padding:[34,34],maxZoom:13});}catch(e){}
+ }
+}
+
 function renderHeat(){
  const zones=ZF?[ZF]:['East','South','North','West','Central'];
  document.getElementById('heatGrid').innerHTML=zones.map(z=>{
@@ -1811,6 +1887,7 @@ function renderHeat(){
   : [['under 8%','#DCE2DD'],['8–10%','#E8D9A8'],['10–12%','#E5B96B'],['12–14%','#DC9440'],['14–16%','#C7642A'],['16%+','#A3282F']];
  document.getElementById('heatKey').innerHTML=keys.map(k=>`<span><i style="background:${k[1]}"></i>${k[0]}</span>`).join('')
   +'<span style="margin-left:auto">Tap any area for detail</span>';
+ renderHeatMap();
 }
 function showArea(name){
  const a=AREAS.find(x=>x.n===name); if(!a)return;
