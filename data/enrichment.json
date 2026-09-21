@@ -1,0 +1,6751 @@
+{
+ "areas": {
+  "Anjanapura": {
+   "drive": {
+    "cbd": [
+     20,
+     36,
+     17.8
+    ],
+    "ecity": [
+     17,
+     31,
+     17.4
+    ],
+    "itpl": [
+     38,
+     57,
+     34.2
+    ],
+    "orr": [
+     24,
+     43,
+     20.9
+    ]
+   },
+   "geo": {
+    "display_name": "Anjanapura, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560108, India",
+    "in_bbox": true,
+    "lat": 12.8601312,
+    "lon": 77.5540587,
+    "query": "Anjanapura, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 2.11,
+    "name": "Thalaghattapura"
+   }
+  },
+  "Arekere / Hulimavu": {
+   "drive": {
+    "cbd": [
+     15,
+     33,
+     10.7
+    ],
+    "ecity": [
+     16,
+     29,
+     17.1
+    ],
+    "itpl": [
+     31,
+     56,
+     26.5
+    ],
+    "orr": [
+     15,
+     33,
+     12.7
+    ]
+   },
+   "geo": {
+    "display_name": "Arekere, Doresanipalya, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560076, India",
+    "in_bbox": true,
+    "lat": 12.8872086,
+    "lon": 77.5960493,
+    "query": "Arekere, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 2.98,
+    "name": "Yelachenahalli"
+   }
+  },
+  "Attibele / Anekal": {
+   "drive": {
+    "cbd": [
+     38,
+     57,
+     31.7
+    ],
+    "ecity": [
+     17,
+     31,
+     16.1
+    ],
+    "itpl": [
+     38,
+     57,
+     35.2
+    ],
+    "orr": [
+     32,
+     58,
+     28.1
+    ]
+   },
+   "geo": {
+    "display_name": "Attibele, Anekal, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.7751249,
+    "lon": 77.7709216,
+    "query": "Attibele / Anekal, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 10.22,
+    "name": "Delta Electronics Bommasandra"
+   }
+  },
+  "BTM Layout": {
+   "drive": {
+    "cbd": [
+     14,
+     31,
+     8.0
+    ],
+    "ecity": [
+     15,
+     33,
+     11.8
+    ],
+    "itpl": [
+     25,
+     45,
+     22.9
+    ],
+    "orr": [
+     11,
+     24,
+     8.8
+    ]
+   },
+   "geo": {
+    "display_name": "BTM Layout, Viswamanava Kuvempu Ward, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560076, India",
+    "in_bbox": true,
+    "lat": 12.9140008,
+    "lon": 77.6102821,
+    "query": "BTM Layout, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.37,
+    "name": "BTM Layout"
+   }
+  },
+  "Bagalur": {
+   "drive": {
+    "cbd": [
+     8,
+     18,
+     5.7
+    ],
+    "ecity": [
+     31,
+     56,
+     24.4
+    ],
+    "itpl": [
+     20,
+     36,
+     16.4
+    ],
+    "orr": [
+     24,
+     43,
+     18.9
+    ]
+   },
+   "geo": {
+    "display_name": "New Bagalur Layout, Richards Town, Sagayapuram, Bengaluru North City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560084, India",
+    "in_bbox": true,
+    "lat": 13.0079918,
+    "lon": 77.6184726,
+    "query": "Bagalur, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 3.61,
+    "name": "Halasuru"
+   }
+  },
+  "Banashankari 2nd Stage": {
+   "drive": {
+    "cbd": [
+     12,
+     26,
+     9.7
+    ],
+    "ecity": [
+     22,
+     40,
+     17.6
+    ],
+    "itpl": [
+     29,
+     52,
+     26.1
+    ],
+    "orr": [
+     18,
+     40,
+     14.6
+    ]
+   },
+   "geo": {
+    "display_name": "Banashankari 2nd Stage, Ganesh Mandira Ward, Bengaluru West City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560070, India",
+    "in_bbox": true,
+    "lat": 12.9268667,
+    "lon": 77.5637191,
+    "query": "Banashankari 2nd Stage, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 1.68,
+    "name": "Banashankari"
+   }
+  },
+  "Banashankari 3rd Stage": {
+   "drive": {
+    "cbd": [
+     14,
+     31,
+     10.9
+    ],
+    "ecity": [
+     25,
+     45,
+     19.9
+    ],
+    "itpl": [
+     31,
+     56,
+     27.2
+    ],
+    "orr": [
+     21,
+     38,
+     16.9
+    ]
+   },
+   "geo": {
+    "display_name": "Banashankari 3rd Stage, Swamy Vivekananda Ward, Bengaluru West City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560085, India",
+    "in_bbox": true,
+    "lat": 12.9315578,
+    "lon": 77.5479272,
+    "query": "Banashankari 3rd Stage, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 2.56,
+    "name": "Mysore Road"
+   }
+  },
+  "Banashankari 6th Stage": {
+   "drive": {
+    "cbd": [
+     21,
+     38,
+     20.0
+    ],
+    "ecity": [
+     21,
+     38,
+     24.3
+    ],
+    "itpl": [
+     38,
+     57,
+     36.4
+    ],
+    "orr": [
+     25,
+     45,
+     22.9
+    ]
+   },
+   "geo": {
+    "display_name": "Banashankari 6th Stage, Talagattapura, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560062, India",
+    "in_bbox": true,
+    "lat": 12.8849238,
+    "lon": 77.5154846,
+    "query": "Banashankari 6th Stage, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 2.9,
+    "name": "Thalaghattapura"
+   }
+  },
+  "Banashankari overall": {
+   "drive": {
+    "cbd": [
+     13,
+     29,
+     10.2
+    ],
+    "ecity": [
+     24,
+     43,
+     18.7
+    ],
+    "itpl": [
+     30,
+     54,
+     26.5
+    ],
+    "orr": [
+     20,
+     36,
+     15.7
+    ]
+   },
+   "geo": {
+    "display_name": "Banashankari, Kathriguppe, Bengaluru West City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560085, India",
+    "in_bbox": true,
+    "lat": 12.9278196,
+    "lon": 77.556621,
+    "query": "Banashankari, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 2.31,
+    "name": "Banashankari"
+   }
+  },
+  "Banaswadi / Kammanahalli": {
+   "drive": {
+    "cbd": [
+     10,
+     22,
+     8.3
+    ],
+    "ecity": [
+     31,
+     56,
+     24.6
+    ],
+    "itpl": [
+     15,
+     33,
+     12.8
+    ],
+    "orr": [
+     23,
+     41,
+     17.0
+    ]
+   },
+   "geo": {
+    "display_name": "Banaswadi, Bengaluru North City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.0141618,
+    "lon": 77.6518539,
+    "query": "Banaswadi, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 2.6,
+    "name": "Baiyappanahalli"
+   }
+  },
+  "Bannerghatta Road": {
+   "drive": {
+    "cbd": [
+     10,
+     22,
+     5.8
+    ],
+    "ecity": [
+     18,
+     40,
+     14.3
+    ],
+    "itpl": [
+     26,
+     47,
+     23.4
+    ],
+    "orr": [
+     13,
+     29,
+     10.4
+    ]
+   },
+   "geo": {
+    "display_name": "Bannerghatta Road, BHEL Ward, Bengaluru Central City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560041, India",
+    "in_bbox": true,
+    "lat": 12.9297282,
+    "lon": 77.6004731,
+    "query": "Bannerghatta Road, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 1.45,
+    "name": "Jayadeva Hospital"
+   }
+  },
+  "Basavanagudi": {
+   "drive": {
+    "cbd": [
+     9,
+     20,
+     7.0
+    ],
+    "ecity": [
+     21,
+     38,
+     17.6
+    ],
+    "itpl": [
+     26,
+     47,
+     23.3
+    ],
+    "orr": [
+     18,
+     40,
+     14.6
+    ]
+   },
+   "geo": {
+    "display_name": "Basavanagudi, Sunkenahalli, Bengaluru Central City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560004, India",
+    "in_bbox": true,
+    "lat": 12.9417261,
+    "lon": 77.5755021,
+    "query": "Basavanagudi, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.63,
+    "name": "South End Circle"
+   }
+  },
+  "Begur / Yelenahalli": {
+   "drive": {
+    "cbd": [
+     19,
+     42,
+     13.3
+    ],
+    "ecity": [
+     13,
+     29,
+     9.5
+    ],
+    "itpl": [
+     33,
+     59,
+     26.4
+    ],
+    "orr": [
+     18,
+     40,
+     12.6
+    ]
+   },
+   "geo": {
+    "display_name": "State Bank of India, Begur - Hulimavu Road, Akshaynagar Layout, Vijaya Bank Layout, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560076, India",
+    "in_bbox": true,
+    "lat": 12.8762726,
+    "lon": 77.6163531,
+    "query": "Begur / Yelenahalli, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 2.91,
+    "name": "Kudlu Gate"
+   }
+  },
+  "Bellandur": {
+   "drive": {
+    "cbd": [
+     21,
+     38,
+     15.5
+    ],
+    "ecity": [
+     19,
+     42,
+     14.3
+    ],
+    "itpl": [
+     16,
+     35,
+     13.5
+    ],
+    "orr": [
+     1,
+     3,
+     0.8
+    ]
+   },
+   "geo": {
+    "display_name": "Bellandur, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9320495,
+    "lon": 77.6842915,
+    "query": "Bellandur, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 6.04,
+    "name": "Seetharampalya"
+   }
+  },
+  "Bommanahalli": {
+   "drive": {
+    "cbd": [
+     17,
+     37,
+     9.3
+    ],
+    "ecity": [
+     13,
+     29,
+     9.9
+    ],
+    "itpl": [
+     28,
+     50,
+     22.7
+    ],
+    "orr": [
+     13,
+     29,
+     8.9
+    ]
+   },
+   "geo": {
+    "display_name": "Bommanahalli, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9034581,
+    "lon": 77.6230028,
+    "query": "Bommanahalli, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.88,
+    "name": "Bommanahalli"
+   }
+  },
+  "Bommasandra / Chandapura": {
+   "drive": {
+    "cbd": [
+     29,
+     52,
+     22.1
+    ],
+    "ecity": [
+     8,
+     18,
+     6.5
+    ],
+    "itpl": [
+     31,
+     56,
+     27.8
+    ],
+    "orr": [
+     23,
+     41,
+     18.5
+    ]
+   },
+   "geo": {
+    "display_name": "The Rameshwaram Cafe, Hosur Road, Bommasandra, Bengaluru, Anekal, Bengaluru Urban, Karnataka, 560099, India",
+    "in_bbox": true,
+    "lat": 12.8079015,
+    "lon": 77.6967733,
+    "query": "Bommasandra / Chandapura, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 1.57,
+    "name": "Delta Electronics Bommasandra"
+   }
+  },
+  "Brookefield": {
+   "drive": {
+    "cbd": [
+     17,
+     31,
+     15.9
+    ],
+    "ecity": [
+     27,
+     49,
+     20.8
+    ],
+    "itpl": [
+     9,
+     20,
+     7.3
+    ],
+    "orr": [
+     11,
+     24,
+     7.6
+    ]
+   },
+   "geo": {
+    "display_name": "Brookefield, Priyadarshini Ward, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560037, India",
+    "in_bbox": true,
+    "lat": 12.9652094,
+    "lon": 77.717936,
+    "query": "Brookefield, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 1.4,
+    "name": "Kundalahalli"
+   }
+  },
+  "Budigere Cross": {
+   "drive": {
+    "cbd": [
+     17,
+     31,
+     18.6
+    ],
+    "ecity": [
+     36,
+     54,
+     33.0
+    ],
+    "itpl": [
+     13,
+     29,
+     11.6
+    ],
+    "orr": [
+     24,
+     43,
+     19.7
+    ]
+   },
+   "geo": {
+    "display_name": "Budigere Cross, Budigere Road, Konadasanapura, Konadasapura, Bangalore East, Bengaluru Urban, Karnataka, 560049, India",
+    "in_bbox": true,
+    "lat": 13.0462134,
+    "lon": 77.7504125,
+    "query": "Budigere Cross, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 5.67,
+    "name": "Whitefield (Kadugodi)"
+   }
+  },
+  "CV Raman Nagar": {
+   "drive": {
+    "cbd": [
+     10,
+     22,
+     8.3
+    ],
+    "ecity": [
+     28,
+     50,
+     22.7
+    ],
+    "itpl": [
+     13,
+     29,
+     10.8
+    ],
+    "orr": [
+     18,
+     40,
+     11.3
+    ]
+   },
+   "geo": {
+    "display_name": "HDFC Bank, Kaggadasapura Main Road, Kaggadasapura, Bengaluru Central City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560093, India",
+    "in_bbox": true,
+    "lat": 12.9855509,
+    "lon": 77.668072,
+    "query": "CV Raman Nagar, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 1.22,
+    "name": "Benniganahalli"
+   }
+  },
+  "Carmelaram / Dommasandra": {
+   "drive": {
+    "cbd": [
+     27,
+     49,
+     21.3
+    ],
+    "ecity": [
+     21,
+     38,
+     16.3
+    ],
+    "itpl": [
+     15,
+     33,
+     13.4
+    ],
+    "orr": [
+     14,
+     31,
+     9.8
+    ]
+   },
+   "geo": {
+    "display_name": "Carmelaram, Gunjur, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560087, India",
+    "in_bbox": true,
+    "lat": 12.9111998,
+    "lon": 77.7065133,
+    "query": "Carmelaram, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 7.39,
+    "name": "Hosa Road"
+   }
+  },
+  "Chamrajpet": {
+   "drive": {
+    "cbd": [
+     9,
+     20,
+     6.8
+    ],
+    "ecity": [
+     25,
+     45,
+     19.4
+    ],
+    "itpl": [
+     26,
+     47,
+     23.1
+    ],
+    "orr": [
+     20,
+     36,
+     15.5
+    ]
+   },
+   "geo": {
+    "display_name": "Chamarajapete, Chamarajpet, Bengaluru Central City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560018, India",
+    "in_bbox": true,
+    "lat": 12.9584184,
+    "lon": 77.5629161,
+    "query": "Chamrajpet, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 1.3,
+    "name": "Krishna Rajendra Market"
+   }
+  },
+  "Devanahalli": {
+   "drive": {
+    "cbd": [
+     38,
+     57,
+     37.4
+    ],
+    "ecity": [
+     60,
+     90,
+     54.7
+    ],
+    "itpl": [
+     37,
+     56,
+     40.8
+    ],
+    "orr": [
+     49,
+     74,
+     51.7
+    ]
+   },
+   "geo": {
+    "display_name": "Devanahalli, Devanahalli taluku, Bengaluru North, Karnataka, 562110, India",
+    "in_bbox": true,
+    "lat": 13.2483502,
+    "lon": 77.7134377,
+    "query": "Devanahalli, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 27.9,
+    "name": "Krishnarajapura"
+   }
+  },
+  "Doddaballapur Road": {
+   "drive": {
+    "cbd": [
+     21,
+     38,
+     20.1
+    ],
+    "ecity": [
+     43,
+     65,
+     37.4
+    ],
+    "itpl": [
+     35,
+     63,
+     29.1
+    ],
+    "orr": [
+     38,
+     57,
+     33.5
+    ]
+   },
+   "geo": {
+    "display_name": "Doddaballapur Road, Puttenahalli, Raja Kempegowda Ward, Bengaluru North City Corporation, Bengaluru, Yelahanka taluku, Bengaluru Urban, Karnataka, 560064, India",
+    "in_bbox": true,
+    "lat": 13.1112249,
+    "lon": 77.5798813,
+    "query": "Doddaballapur Road, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 10.06,
+    "name": "Peenya"
+   }
+  },
+  "Domlur / Ulsoor": {
+   "drive": {
+    "cbd": [
+     8,
+     18,
+     5.2
+    ],
+    "ecity": [
+     21,
+     38,
+     17.3
+    ],
+    "itpl": [
+     18,
+     32,
+     15.6
+    ],
+    "orr": [
+     14,
+     31,
+     11.8
+    ]
+   },
+   "geo": {
+    "display_name": "Domlur, Domluru, Bengaluru Central City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560071, India",
+    "in_bbox": true,
+    "lat": 12.9624669,
+    "lon": 77.6381958,
+    "query": "Domlur, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 1.76,
+    "name": "Indiranagar"
+   }
+  },
+  "Electronic City Ph 1": {
+   "drive": {
+    "cbd": [
+     26,
+     47,
+     18.1
+    ],
+    "ecity": [
+     5,
+     13,
+     2.9
+    ],
+    "itpl": [
+     36,
+     65,
+     28.4
+    ],
+    "orr": [
+     20,
+     44,
+     14.6
+    ]
+   },
+   "geo": {
+    "display_name": "Prime City Apartments, Electronic City, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560100, India",
+    "in_bbox": true,
+    "lat": 12.8487599,
+    "lon": 77.648253,
+    "query": "Electronic City Ph 1, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 1.87,
+    "name": "Electronic City"
+   }
+  },
+  "Electronic City Ph 2": {
+   "drive": {
+    "cbd": [
+     26,
+     47,
+     18.1
+    ],
+    "ecity": [
+     5,
+     13,
+     2.9
+    ],
+    "itpl": [
+     36,
+     65,
+     28.4
+    ],
+    "orr": [
+     20,
+     44,
+     14.6
+    ]
+   },
+   "geo": {
+    "display_name": "Prime City Apartments, Electronic City, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560100, India",
+    "in_bbox": true,
+    "lat": 12.8487599,
+    "lon": 77.648253,
+    "query": "Electronic City Ph 2, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 1.87,
+    "name": "Electronic City"
+   }
+  },
+  "Frazer Town / Cooke Town": {
+   "drive": {
+    "cbd": [
+     5,
+     13,
+     4.1
+    ],
+    "ecity": [
+     28,
+     50,
+     22.9
+    ],
+    "itpl": [
+     20,
+     36,
+     17.1
+    ],
+    "orr": [
+     22,
+     40,
+     17.3
+    ]
+   },
+   "geo": {
+    "display_name": "Frazer Town, Pulakeshi Nagar, Bengaluru North City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560005, India",
+    "in_bbox": true,
+    "lat": 12.9975851,
+    "lon": 77.6136744,
+    "query": "Frazer Town, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 2.54,
+    "name": "Cubbon Park"
+   }
+  },
+  "HSR Layout": {
+   "drive": {
+    "cbd": [
+     15,
+     33,
+     10.7
+    ],
+    "ecity": [
+     14,
+     31,
+     10.1
+    ],
+    "itpl": [
+     24,
+     43,
+     19.8
+    ],
+    "orr": [
+     9,
+     20,
+     6.0
+    ]
+   },
+   "geo": {
+    "display_name": "HSR Layout, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560102, India",
+    "in_bbox": true,
+    "lat": 12.9116225,
+    "lon": 77.6388622,
+    "query": "HSR Layout, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 1.33,
+    "name": "Hongasandra"
+   }
+  },
+  "Harlur / Haralur": {
+   "drive": {
+    "cbd": [
+     20,
+     44,
+     14.6
+    ],
+    "ecity": [
+     11,
+     24,
+     9.3
+    ],
+    "itpl": [
+     22,
+     40,
+     18.4
+    ],
+    "orr": [
+     7,
+     18,
+     4.6
+    ]
+   },
+   "geo": {
+    "display_name": "BRS Global Centre For Excellence, #15/3, Off Sarjapur Main Road, KPC Layout, Kasavanahalli, IAS Layout, Eastwood Twp, Harlur, Bengaluru, Karnataka 560035, Central Jail Road, Kasavanahalli, Kaikondrahalli, Kasavanahalli, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560035, India",
+    "in_bbox": true,
+    "lat": 12.9058923,
+    "lon": 77.675465,
+    "query": "Harlur, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 4.31,
+    "name": "Kudlu Gate"
+   }
+  },
+  "Hebbal": {
+   "drive": {
+    "cbd": [
+     11,
+     24,
+     9.3
+    ],
+    "ecity": [
+     33,
+     59,
+     26.6
+    ],
+    "itpl": [
+     27,
+     49,
+     21.3
+    ],
+    "orr": [
+     28,
+     50,
+     22.7
+    ]
+   },
+   "geo": {
+    "display_name": "Hebbal, Bengaluru North City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.0382184,
+    "lon": 77.5919,
+    "query": "Hebbal, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 4.85,
+    "name": "Yeshwantpur"
+   }
+  },
+  "Hennur Road": {
+   "drive": {
+    "cbd": [
+     12,
+     26,
+     9.6
+    ],
+    "ecity": [
+     35,
+     63,
+     28.4
+    ],
+    "itpl": [
+     21,
+     38,
+     16.7
+    ],
+    "orr": [
+     28,
+     50,
+     20.9
+    ]
+   },
+   "geo": {
+    "display_name": "Hennur Road, Telecom Layout 10th Block, HBR Layout 5th Block, Hennur, Bengaluru North City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560043, India",
+    "in_bbox": true,
+    "lat": 13.0377061,
+    "lon": 77.6303636,
+    "query": "Hennur Road, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 5.74,
+    "name": "Baiyappanahalli"
+   }
+  },
+  "Hoodi": {
+   "drive": {
+    "cbd": [
+     16,
+     35,
+     14.3
+    ],
+    "ecity": [
+     32,
+     58,
+     24.1
+    ],
+    "itpl": [
+     6,
+     16,
+     4.4
+    ],
+    "orr": [
+     16,
+     35,
+     11.0
+    ]
+   },
+   "geo": {
+    "display_name": "Hoodi, Kumbena Agrahara Main Road, Hoody Garden, Hoodi, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560048, India",
+    "in_bbox": true,
+    "lat": 12.9959233,
+    "lon": 77.7192796,
+    "query": "Hoodi, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 1.17,
+    "name": "Hoodi"
+   }
+  },
+  "Horamavu": {
+   "drive": {
+    "cbd": [
+     12,
+     26,
+     10.2
+    ],
+    "ecity": [
+     33,
+     59,
+     26.5
+    ],
+    "itpl": [
+     16,
+     35,
+     13.8
+    ],
+    "orr": [
+     25,
+     45,
+     16.5
+    ]
+   },
+   "geo": {
+    "display_name": "Horamavu, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.0273312,
+    "lon": 77.6601508,
+    "query": "Horamavu, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 3.54,
+    "name": "Benniganahalli"
+   }
+  },
+  "Hosa Road": {
+   "drive": {
+    "cbd": [
+     21,
+     46,
+     14.1
+    ],
+    "ecity": [
+     6,
+     16,
+     4.2
+    ],
+    "itpl": [
+     29,
+     52,
+     23.6
+    ],
+    "orr": [
+     13,
+     29,
+     9.9
+    ]
+   },
+   "geo": {
+    "display_name": "Hosa Road, Singasandra, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560068, India",
+    "in_bbox": true,
+    "lat": 12.8707029,
+    "lon": 77.6554218,
+    "query": "Hosa Road, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.32,
+    "name": "Hosa Road"
+   }
+  },
+  "Hoskote": {
+   "drive": {
+    "cbd": [
+     22,
+     40,
+     21.0
+    ],
+    "ecity": [
+     38,
+     57,
+     32.6
+    ],
+    "itpl": [
+     11,
+     24,
+     8.3
+    ],
+    "orr": [
+     23,
+     41,
+     19.2
+    ]
+   },
+   "geo": {
+    "display_name": "Sobha Amethyst & Adamus, Off Whitefiled Hoskote Main Road, Kannamangala, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560067, India",
+    "in_bbox": true,
+    "lat": 13.0318443,
+    "lon": 77.7618779,
+    "query": "Hoskote, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 4.04,
+    "name": "Whitefield (Kadugodi)"
+   }
+  },
+  "Immadihalli": {
+   "drive": {
+    "cbd": [
+     24,
+     43,
+     19.1
+    ],
+    "ecity": [
+     31,
+     56,
+     25.6
+    ],
+    "itpl": [
+     7,
+     18,
+     4.9
+    ],
+    "orr": [
+     16,
+     35,
+     12.2
+    ]
+   },
+   "geo": {
+    "display_name": "Immadihalli, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560066, India",
+    "in_bbox": true,
+    "lat": 12.9663991,
+    "lon": 77.762046,
+    "query": "Immadihalli, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 2.49,
+    "name": "Hopefarm Channasandra"
+   }
+  },
+  "Indiranagar": {
+   "drive": {
+    "cbd": [
+     6,
+     13,
+     5.1
+    ],
+    "ecity": [
+     23,
+     41,
+     18.5
+    ],
+    "itpl": [
+     15,
+     33,
+     13.8
+    ],
+    "orr": [
+     16,
+     35,
+     13.0
+    ]
+   },
+   "geo": {
+    "display_name": "Indiranagar, Jogpalya, Bengaluru Central City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560008, India",
+    "in_bbox": true,
+    "lat": 12.9732913,
+    "lon": 77.6404672,
+    "query": "Indiranagar, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.59,
+    "name": "Indiranagar"
+   }
+  },
+  "JP Nagar": {
+   "drive": {
+    "cbd": [
+     14,
+     31,
+     10.9
+    ],
+    "ecity": [
+     19,
+     34,
+     15.1
+    ],
+    "itpl": [
+     29,
+     52,
+     26.1
+    ],
+    "orr": [
+     16,
+     35,
+     12.1
+    ]
+   },
+   "geo": {
+    "display_name": "JP Nagar, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9096941,
+    "lon": 77.5866067,
+    "query": "JP Nagar, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.84,
+    "name": "Ragigudda"
+   }
+  },
+  "Jakkur": {
+   "drive": {
+    "cbd": [
+     20,
+     36,
+     15.6
+    ],
+    "ecity": [
+     42,
+     63,
+     32.9
+    ],
+    "itpl": [
+     29,
+     52,
+     23.4
+    ],
+    "orr": [
+     36,
+     65,
+     26.8
+    ]
+   },
+   "geo": {
+    "display_name": "Jakkur, Bengaluru North City Corporation, Bengaluru, Yelahanka taluku, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.0784743,
+    "lon": 77.6068938,
+    "query": "Jakkur, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 8.71,
+    "name": "Yeshwantpur"
+   }
+  },
+  "Jalahalli": {
+   "drive": {
+    "cbd": [
+     18,
+     32,
+     15.3
+    ],
+    "ecity": [
+     38,
+     57,
+     30.7
+    ],
+    "itpl": [
+     35,
+     63,
+     29.0
+    ],
+    "orr": [
+     33,
+     59,
+     26.8
+    ]
+   },
+   "geo": {
+    "display_name": "Jalahalli, Tumkur Road, Peenya Industrial Area, Peenya, Bengaluru West City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560058, India",
+    "in_bbox": true,
+    "lat": 13.0394104,
+    "lon": 77.5197351,
+    "query": "Jalahalli, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.0,
+    "name": "Jalahalli"
+   }
+  },
+  "Jayanagar": {
+   "drive": {
+    "cbd": [
+     11,
+     24,
+     8.2
+    ],
+    "ecity": [
+     20,
+     36,
+     15.9
+    ],
+    "itpl": [
+     28,
+     50,
+     24.5
+    ],
+    "orr": [
+     16,
+     35,
+     12.9
+    ]
+   },
+   "geo": {
+    "display_name": "Jayanagar, Tilak Nagara, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560011, India",
+    "in_bbox": true,
+    "lat": 12.9292731,
+    "lon": 77.5824229,
+    "query": "Jayanagar, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.25,
+    "name": "Jayanagar"
+   }
+  },
+  "Jigani": {
+   "drive": {
+    "cbd": [
+     32,
+     58,
+     27.0
+    ],
+    "ecity": [
+     17,
+     37,
+     13.3
+    ],
+    "itpl": [
+     43,
+     65,
+     38.1
+    ],
+    "orr": [
+     31,
+     56,
+     25.4
+    ]
+   },
+   "geo": {
+    "display_name": "K M Granites India Pvt Ltd, 98-G, Jigani, Bengaluru, Anekal, Bengaluru Urban, Karnataka, 560105, India",
+    "in_bbox": true,
+    "lat": 12.7764978,
+    "lon": 77.6326204,
+    "query": "Jigani, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 7.7,
+    "name": "Delta Electronics Bommasandra"
+   }
+  },
+  "KR Puram": {
+   "drive": {
+    "cbd": [
+     12,
+     26,
+     11.4
+    ],
+    "ecity": [
+     30,
+     54,
+     25.8
+    ],
+    "itpl": [
+     9,
+     20,
+     7.5
+    ],
+    "orr": [
+     20,
+     44,
+     14.1
+    ]
+   },
+   "geo": {
+    "display_name": "KR Puram, K.R Pura, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560036, India",
+    "in_bbox": true,
+    "lat": 13.007516,
+    "lon": 77.695935,
+    "query": "KR Puram, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 1.27,
+    "name": "Singayyanapalya"
+   }
+  },
+  "Kadugodi": {
+   "drive": {
+    "cbd": [
+     24,
+     43,
+     20.4
+    ],
+    "ecity": [
+     32,
+     58,
+     27.9
+    ],
+    "itpl": [
+     5,
+     13,
+     3.6
+    ],
+    "orr": [
+     17,
+     37,
+     14.4
+    ]
+   },
+   "geo": {
+    "display_name": "Whitefield (Kadugodi), SH35, Belathur, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560067, India",
+    "in_bbox": true,
+    "lat": 12.9957428,
+    "lon": 77.7579489,
+    "query": "Kadugodi, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.0,
+    "name": "Whitefield (Kadugodi)"
+   }
+  },
+  "Kanakapura Road": {
+   "drive": {
+    "cbd": [
+     17,
+     31,
+     16.4
+    ],
+    "ecity": [
+     17,
+     31,
+     21.1
+    ],
+    "itpl": [
+     34,
+     51,
+     32.8
+    ],
+    "orr": [
+     21,
+     38,
+     19.3
+    ]
+   },
+   "geo": {
+    "display_name": "Kanakapura Road, Vajrahalli, Talagattapura, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560062, India",
+    "in_bbox": true,
+    "lat": 12.875978,
+    "lon": 77.5441292,
+    "query": "Kanakapura Road, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.18,
+    "name": "Vajarahalli"
+   }
+  },
+  "Kasturi Nagar": {
+   "drive": {
+    "cbd": [
+     14,
+     31,
+     8.1
+    ],
+    "ecity": [
+     35,
+     63,
+     24.4
+    ],
+    "itpl": [
+     22,
+     40,
+     15.0
+    ],
+    "orr": [
+     27,
+     49,
+     16.8
+    ]
+   },
+   "geo": {
+    "display_name": "Kasturi Nagar, Bengaluru Central City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560033, India",
+    "in_bbox": true,
+    "lat": 13.0015277,
+    "lon": 77.6512362,
+    "query": "Kasturi Nagar, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 1.2,
+    "name": "Baiyappanahalli"
+   }
+  },
+  "Kathreguppe": {
+   "drive": {
+    "cbd": [
+     13,
+     29,
+     10.6
+    ],
+    "ecity": [
+     24,
+     43,
+     19.4
+    ],
+    "itpl": [
+     30,
+     54,
+     27.0
+    ],
+    "orr": [
+     20,
+     36,
+     16.4
+    ]
+   },
+   "geo": {
+    "display_name": "Kathriguppe, Bengaluru West City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.929217,
+    "lon": 77.549692,
+    "query": "Kathriguppe, Bengaluru"
+   },
+   "metro": {
+    "km": 2.88,
+    "name": "Mysore Road"
+   }
+  },
+  "Kengeri": {
+   "drive": {
+    "cbd": [
+     20,
+     36,
+     16.9
+    ],
+    "ecity": [
+     23,
+     41,
+     29.1
+    ],
+    "itpl": [
+     38,
+     57,
+     33.3
+    ],
+    "orr": [
+     30,
+     54,
+     25.3
+    ]
+   },
+   "geo": {
+    "display_name": "Kengeri, Kengeri Main Road, Kengeri, Bengaluru West City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560060, India",
+    "in_bbox": true,
+    "lat": 12.9176571,
+    "lon": 77.4837568,
+    "query": "Kengeri, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.55,
+    "name": "Kengeri Bus Terminal"
+   }
+  },
+  "Konanakunte / Thalaghattapura": {
+   "drive": {
+    "cbd": [
+     17,
+     31,
+     15.0
+    ],
+    "ecity": [
+     18,
+     32,
+     17.4
+    ],
+    "itpl": [
+     34,
+     51,
+     31.4
+    ],
+    "orr": [
+     21,
+     38,
+     17.9
+    ]
+   },
+   "geo": {
+    "display_name": "Konanakunte, Harinagar, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560062, India",
+    "in_bbox": true,
+    "lat": 12.8792861,
+    "lon": 77.5697529,
+    "query": "Konanakunte, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 1.32,
+    "name": "Konanakunte Cross"
+   }
+  },
+  "Koramangala": {
+   "drive": {
+    "cbd": [
+     11,
+     24,
+     7.3
+    ],
+    "ecity": [
+     16,
+     35,
+     12.6
+    ],
+    "itpl": [
+     21,
+     38,
+     19.3
+    ],
+    "orr": [
+     10,
+     22,
+     7.6
+    ]
+   },
+   "geo": {
+    "display_name": "Koramangala, Sri Lakshmi Devi Ward, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560095, India",
+    "in_bbox": true,
+    "lat": 12.9357366,
+    "lon": 77.624081,
+    "query": "Koramangala, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 2.16,
+    "name": "Central Silk Board"
+   }
+  },
+  "Kothanur / Kothnur": {
+   "drive": {
+    "cbd": [
+     16,
+     35,
+     13.6
+    ],
+    "ecity": [
+     18,
+     32,
+     17.3
+    ],
+    "itpl": [
+     32,
+     58,
+     29.0
+    ],
+    "orr": [
+     18,
+     40,
+     14.9
+    ]
+   },
+   "geo": {
+    "display_name": "United India Insurance Co. Ltd., Kothnur Main Road, Krishna Nagar, Kothnur, RBI Layout, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560076, India",
+    "in_bbox": true,
+    "lat": 12.8858154,
+    "lon": 77.5821221,
+    "query": "Kothanur / Kothnur, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 1.73,
+    "name": "Yelachenahalli"
+   }
+  },
+  "Kudlu / Kudlu Gate": {
+   "drive": {
+    "cbd": [
+     19,
+     42,
+     11.9
+    ],
+    "ecity": [
+     9,
+     20,
+     7.2
+    ],
+    "itpl": [
+     28,
+     50,
+     22.3
+    ],
+    "orr": [
+     12,
+     26,
+     8.5
+    ]
+   },
+   "geo": {
+    "display_name": "Kudlu Gate, Service Road, Singasandra, Bandepalya, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560068, India",
+    "in_bbox": true,
+    "lat": 12.8899174,
+    "lon": 77.6396808,
+    "query": "Kudlu / Kudlu Gate, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.05,
+    "name": "Kudlu Gate"
+   }
+  },
+  "Kumbalgodu / Bidadi": {
+   "drive": {
+    "cbd": [
+     38,
+     57,
+     35.0
+    ],
+    "ecity": [
+     37,
+     56,
+     43.7
+    ],
+    "itpl": [
+     55,
+     83,
+     51.3
+    ],
+    "orr": [
+     45,
+     68,
+     46.7
+    ]
+   },
+   "geo": {
+    "display_name": "Bidadi, Ramanagara taluk, Bengaluru South, Karnataka, 562109, India",
+    "in_bbox": true,
+    "lat": 12.7988507,
+    "lon": 77.3869947,
+    "query": "Bidadi, Karnataka, India"
+   },
+   "metro": {
+    "km": 13.6,
+    "name": "Challaghatta"
+   }
+  },
+  "Kundalahalli": {
+   "drive": {
+    "cbd": [
+     18,
+     32,
+     15.9
+    ],
+    "ecity": [
+     30,
+     54,
+     24.0
+    ],
+    "itpl": [
+     6,
+     16,
+     4.7
+    ],
+    "orr": [
+     14,
+     31,
+     10.8
+    ]
+   },
+   "geo": {
+    "display_name": "Kundalahalli, 2nd Road, Channama Layout, EPIP Zone, Bharath Aikya Ward, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560048, India",
+    "in_bbox": true,
+    "lat": 12.977594,
+    "lon": 77.7155586,
+    "query": "Kundalahalli, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.0,
+    "name": "Kundalahalli"
+   }
+  },
+  "MG Road / CBD": {
+   "drive": {
+    "cbd": [
+     1,
+     3,
+     0.3
+    ],
+    "ecity": [
+     24,
+     43,
+     17.1
+    ],
+    "itpl": [
+     19,
+     34,
+     16.7
+    ],
+    "orr": [
+     18,
+     40,
+     13.3
+    ]
+   },
+   "geo": {
+    "display_name": "Mahatma Gandhi Road, Shanthala Nagar, Ashokanagar, Bengaluru Central City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560001, India",
+    "in_bbox": true,
+    "lat": 12.9755264,
+    "lon": 77.6067902,
+    "query": "MG Road, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.0,
+    "name": "Mahatma Gandhi Road"
+   }
+  },
+  "Magadi Road": {
+   "drive": {
+    "cbd": [
+     9,
+     20,
+     8.2
+    ],
+    "ecity": [
+     28,
+     50,
+     21.7
+    ],
+    "itpl": [
+     27,
+     49,
+     24.5
+    ],
+    "orr": [
+     22,
+     40,
+     17.8
+    ]
+   },
+   "geo": {
+    "display_name": "Magadi Road, K.P Agrahara, Bengaluru West City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560023, India",
+    "in_bbox": true,
+    "lat": 12.975608,
+    "lon": 77.5553564,
+    "query": "Magadi Road, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.0,
+    "name": "Magadi Road"
+   }
+  },
+  "Mahadevapura": {
+   "drive": {
+    "cbd": [
+     12,
+     26,
+     11.1
+    ],
+    "ecity": [
+     31,
+     56,
+     25.4
+    ],
+    "itpl": [
+     7,
+     15,
+     6.3
+    ],
+    "orr": [
+     16,
+     35,
+     10.4
+    ]
+   },
+   "geo": {
+    "display_name": "Singayyanapalya, Whitefield Road, Devasandra, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560048, India",
+    "in_bbox": true,
+    "lat": 12.9965445,
+    "lon": 77.6927176,
+    "query": "Mahadevapura, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.0,
+    "name": "Singayyanapalya"
+   }
+  },
+  "Malleswaram": {
+   "drive": {
+    "cbd": [
+     9,
+     20,
+     6.9
+    ],
+    "ecity": [
+     30,
+     54,
+     23.2
+    ],
+    "itpl": [
+     27,
+     49,
+     21.8
+    ],
+    "orr": [
+     24,
+     43,
+     19.3
+    ]
+   },
+   "geo": {
+    "display_name": "Malleswaram, Malleshwaram, Bengaluru West City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560003, India",
+    "in_bbox": true,
+    "lat": 13.0027353,
+    "lon": 77.5703253,
+    "query": "Malleswaram, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 1.04,
+    "name": "Srirampura"
+   }
+  },
+  "Marathahalli": {
+   "drive": {
+    "cbd": [
+     16,
+     35,
+     11.8
+    ],
+    "ecity": [
+     25,
+     45,
+     18.7
+    ],
+    "itpl": [
+     12,
+     26,
+     10.8
+    ],
+    "orr": [
+     9,
+     20,
+     5.5
+    ]
+   },
+   "geo": {
+    "display_name": "Marathahalli, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9552572,
+    "lon": 77.6984163,
+    "query": "Marathahalli, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 3.06,
+    "name": "Seetharampalya"
+   }
+  },
+  "Mathikere / Sanjay Nagar": {
+   "drive": {
+    "cbd": [
+     14,
+     31,
+     11.0
+    ],
+    "ecity": [
+     35,
+     63,
+     27.9
+    ],
+    "itpl": [
+     29,
+     52,
+     25.3
+    ],
+    "orr": [
+     30,
+     54,
+     24.0
+    ]
+   },
+   "geo": {
+    "display_name": "Mathikere, Brundavana Nagara, Bengaluru North City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560054, India",
+    "in_bbox": true,
+    "lat": 13.0333587,
+    "lon": 77.5581786,
+    "query": "Mathikere, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 1.44,
+    "name": "Yeshwantpur"
+   }
+  },
+  "Mysore Road": {
+   "drive": {
+    "cbd": [
+     14,
+     31,
+     10.6
+    ],
+    "ecity": [
+     28,
+     50,
+     23.3
+    ],
+    "itpl": [
+     31,
+     56,
+     27.0
+    ],
+    "orr": [
+     24,
+     43,
+     20.3
+    ]
+   },
+   "geo": {
+    "display_name": "Mysore Road, KHR Colony, Avalahalli, Deepanjali Nagara, Bengaluru West City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560039, India",
+    "in_bbox": true,
+    "lat": 12.9466619,
+    "lon": 77.5300896,
+    "query": "Mysore Road, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.01,
+    "name": "Mysore Road"
+   }
+  },
+  "Nagarbhavi": {
+   "drive": {
+    "cbd": [
+     17,
+     37,
+     14.4
+    ],
+    "ecity": [
+     30,
+     54,
+     23.9
+    ],
+    "itpl": [
+     34,
+     51,
+     30.8
+    ],
+    "orr": [
+     26,
+     47,
+     20.9
+    ]
+   },
+   "geo": {
+    "display_name": "Nagarbhavi, Bengaluru West City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9512353,
+    "lon": 77.519054,
+    "query": "Nagarbhavi, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 1.25,
+    "name": "Pantharapalya - Nayandahalli"
+   }
+  },
+  "Nagawara / RT Nagar": {
+   "drive": {
+    "cbd": [
+     14,
+     31,
+     11.3
+    ],
+    "ecity": [
+     37,
+     56,
+     31.1
+    ],
+    "itpl": [
+     23,
+     41,
+     19.1
+    ],
+    "orr": [
+     30,
+     54,
+     22.5
+    ]
+   },
+   "geo": {
+    "display_name": "Ashwath Nagara, Thanisandra Main Road, Ashwath Nagar, Thanisandra, Bengaluru North City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560045, India",
+    "in_bbox": true,
+    "lat": 13.0529146,
+    "lon": 77.6312831,
+    "query": "Nagawara, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 7.28,
+    "name": "Baiyappanahalli"
+   }
+  },
+  "Nelamangala": {
+   "drive": {
+    "cbd": [
+     36,
+     54,
+     34.5
+    ],
+    "ecity": [
+     47,
+     71,
+     58.0
+    ],
+    "itpl": [
+     52,
+     78,
+     48.1
+    ],
+    "orr": [
+     50,
+     75,
+     45.9
+    ]
+   },
+   "geo": {
+    "display_name": "ABB India Limited, Sy No 88/3-88/6, Basavanahalli, Nelamangala, Nelamangala taluk, Bengaluru North, Karnataka, 562123, India",
+    "in_bbox": true,
+    "lat": 13.1149134,
+    "lon": 77.3825603,
+    "query": "Nelamangala, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 11.68,
+    "name": "Madavara"
+   }
+  },
+  "Padmanabhanagar / Girinagar": {
+   "drive": {
+    "cbd": [
+     13,
+     29,
+     11.1
+    ],
+    "ecity": [
+     22,
+     40,
+     17.7
+    ],
+    "itpl": [
+     31,
+     56,
+     27.5
+    ],
+    "orr": [
+     18,
+     40,
+     14.7
+    ]
+   },
+   "geo": {
+    "display_name": "Padmanabhanagar Park, Kadirenahalli, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9181024,
+    "lon": 77.5576638,
+    "query": "Padmanabhanagar, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 1.76,
+    "name": "Banashankari"
+   }
+  },
+  "Panathur / Balagere": {
+   "drive": {
+    "cbd": [
+     22,
+     40,
+     17.7
+    ],
+    "ecity": [
+     25,
+     45,
+     19.2
+    ],
+    "itpl": [
+     13,
+     29,
+     11.8
+    ],
+    "orr": [
+     9,
+     20,
+     5.6
+    ]
+   },
+   "geo": {
+    "display_name": "Panathuru Tree Park, Balagere, Panathur, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9295603,
+    "lon": 77.7157836,
+    "query": "Panathur / Balagere, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 5.33,
+    "name": "Nallurahalli"
+   }
+  },
+  "Rajajinagar": {
+   "drive": {
+    "cbd": [
+     12,
+     26,
+     9.6
+    ],
+    "ecity": [
+     32,
+     58,
+     25.6
+    ],
+    "itpl": [
+     29,
+     52,
+     26.0
+    ],
+    "orr": [
+     26,
+     47,
+     21.7
+    ]
+   },
+   "geo": {
+    "display_name": "Rajajinagar, Chord Road, Nagapura, Mahalakshmipuram, Nagapura, Bengaluru West City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560086, India",
+    "in_bbox": true,
+    "lat": 13.0005232,
+    "lon": 77.5496166,
+    "query": "Rajajinagar, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.0,
+    "name": "Rajajinagar"
+   }
+  },
+  "Rajarajeshwari Nagar": {
+   "drive": {
+    "cbd": [
+     17,
+     37,
+     13.5
+    ],
+    "ecity": [
+     27,
+     49,
+     29.6
+    ],
+    "itpl": [
+     34,
+     61,
+     29.9
+    ],
+    "orr": [
+     26,
+     47,
+     21.9
+    ]
+   },
+   "geo": {
+    "display_name": "Rajarajeshwari Nagar, Rajarajeshwari Nagara, Bengaluru West City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560098, India",
+    "in_bbox": true,
+    "lat": 12.9274413,
+    "lon": 77.5155224,
+    "query": "Rajarajeshwari Nagar, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.95,
+    "name": "Jnanabharathi"
+   }
+  },
+  "Ramamurthy Nagar": {
+   "drive": {
+    "cbd": [
+     13,
+     29,
+     11.2
+    ],
+    "ecity": [
+     32,
+     58,
+     27.4
+    ],
+    "itpl": [
+     12,
+     26,
+     10.6
+    ],
+    "orr": [
+     22,
+     48,
+     14.9
+    ]
+   },
+   "geo": {
+    "display_name": "Ramamurthy Nagar, Ramamurthy Nagara, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560016, India",
+    "in_bbox": true,
+    "lat": 13.0120218,
+    "lon": 77.6777817,
+    "query": "Ramamurthy Nagar, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 1.35,
+    "name": "Krishnarajapura"
+   }
+  },
+  "Richmond / Langford Town": {
+   "drive": {
+    "cbd": [
+     6,
+     16,
+     2.6
+    ],
+    "ecity": [
+     20,
+     36,
+     15.1
+    ],
+    "itpl": [
+     23,
+     41,
+     18.6
+    ],
+    "orr": [
+     15,
+     33,
+     11.2
+    ]
+   },
+   "geo": {
+    "display_name": "State Bank of India, Eagles Street, Langford Town, Richmond Town, Shanthinagar, Bengaluru Central City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560025, India",
+    "in_bbox": true,
+    "lat": 12.9581548,
+    "lon": 77.60537,
+    "query": "Richmond / Langford Town, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 1.94,
+    "name": "Mahatma Gandhi Road"
+   }
+  },
+  "Sahakar Nagar": {
+   "drive": {
+    "cbd": [
+     18,
+     40,
+     14.6
+    ],
+    "ecity": [
+     41,
+     62,
+     31.9
+    ],
+    "itpl": [
+     31,
+     56,
+     25.2
+    ],
+    "orr": [
+     35,
+     63,
+     27.9
+    ]
+   },
+   "geo": {
+    "display_name": "Sahakar Nagar Railway Underpass, Byatarayanapura, Bengaluru North City Corporation, Bengaluru, Yelahanka taluku, Bengaluru Urban, Karnataka, 560092, India",
+    "in_bbox": true,
+    "lat": 13.0705182,
+    "lon": 77.5869662,
+    "query": "Sahakar Nagar, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 6.61,
+    "name": "Yeshwantpur"
+   }
+  },
+  "Sarjapur Road": {
+   "drive": {
+    "cbd": [
+     13,
+     29,
+     9.7
+    ],
+    "ecity": [
+     16,
+     35,
+     13.4
+    ],
+    "itpl": [
+     22,
+     40,
+     18.5
+    ],
+    "orr": [
+     6,
+     16,
+     4.7
+    ]
+   },
+   "geo": {
+    "display_name": "Sarjapur Road, Sector 5, HSR Layout, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560034, India",
+    "in_bbox": true,
+    "lat": 12.9243414,
+    "lon": 77.6448784,
+    "query": "Sarjapur Road, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 2.51,
+    "name": "Bommanahalli"
+   }
+  },
+  "Sarjapur town": {
+   "drive": {
+    "cbd": [
+     36,
+     65,
+     29.5
+    ],
+    "ecity": [
+     25,
+     45,
+     16.6
+    ],
+    "itpl": [
+     23,
+     41,
+     19.4
+    ],
+    "orr": [
+     25,
+     45,
+     18.8
+    ]
+   },
+   "geo": {
+    "display_name": "Sarjapura, Anekal, Bengaluru Urban, Karnataka, 562125, India",
+    "in_bbox": true,
+    "lat": 12.8600866,
+    "lon": 77.7861352,
+    "query": "Sarjapura, Karnataka, India"
+   },
+   "metro": {
+    "km": 11.53,
+    "name": "Delta Electronics Bommasandra"
+   }
+  },
+  "Seshadripuram / Shivajinagar": {
+   "drive": {
+    "cbd": [
+     8,
+     18,
+     5.8
+    ],
+    "ecity": [
+     28,
+     50,
+     22.1
+    ],
+    "itpl": [
+     25,
+     45,
+     22.1
+    ],
+    "orr": [
+     23,
+     41,
+     18.2
+    ]
+   },
+   "geo": {
+    "display_name": "Seshadripuram, Bengaluru Central City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9946631,
+    "lon": 77.5747183,
+    "query": "Seshadripuram, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.64,
+    "name": "Mantri Square Sampige Road"
+   }
+  },
+  "Shettigere": {
+   "drive": {
+    "cbd": [
+     36,
+     54,
+     37.4
+    ],
+    "ecity": [
+     59,
+     89,
+     54.7
+    ],
+    "itpl": [
+     40,
+     60,
+     39.0
+    ],
+    "orr": [
+     52,
+     78,
+     47.1
+    ]
+   },
+   "geo": {
+    "display_name": "Shettigere, Yelahanka taluku, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.1954297,
+    "lon": 77.649453,
+    "query": "Shettigere, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 21.96,
+    "name": "Krishnarajapura"
+   }
+  },
+  "Sudhama Nagar": {
+   "drive": {
+    "cbd": [
+     11,
+     24,
+     8.7
+    ],
+    "ecity": [
+     24,
+     43,
+     19.2
+    ],
+    "itpl": [
+     17,
+     37,
+     14.9
+    ],
+    "orr": [
+     14,
+     31,
+     9.1
+    ]
+   },
+   "geo": {
+    "display_name": "Sudhama Nagar, Jeevan Bhima Nagar, Jeevan Bhimanagar, Bengaluru Central City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560075, India",
+    "in_bbox": true,
+    "lat": 12.9627471,
+    "lon": 77.6610345,
+    "query": "Sudhama Nagar, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 2.98,
+    "name": "Indiranagar"
+   }
+  },
+  "Thanisandra": {
+   "drive": {
+    "cbd": [
+     13,
+     29,
+     10.8
+    ],
+    "ecity": [
+     37,
+     56,
+     30.6
+    ],
+    "itpl": [
+     22,
+     40,
+     18.6
+    ],
+    "orr": [
+     29,
+     52,
+     22.0
+    ]
+   },
+   "geo": {
+    "display_name": "Thanisandra, Bengaluru North City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.0522499,
+    "lon": 77.6316152,
+    "query": "Thanisandra, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 7.2,
+    "name": "Baiyappanahalli"
+   }
+  },
+  "Thanisandra Main Road": {
+   "drive": {
+    "cbd": [
+     12,
+     26,
+     9.7
+    ],
+    "ecity": [
+     35,
+     63,
+     29.5
+    ],
+    "itpl": [
+     21,
+     38,
+     17.5
+    ],
+    "orr": [
+     28,
+     50,
+     20.9
+    ]
+   },
+   "geo": {
+    "display_name": "Thanisandra Main Road, Telecom Layout 10th Block, Nagavara, Hennur, Bengaluru North City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560045, India",
+    "in_bbox": true,
+    "lat": 13.0441254,
+    "lon": 77.626247,
+    "query": "Thanisandra Main Road, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 6.57,
+    "name": "Baiyappanahalli"
+   }
+  },
+  "Tumkur Road / Peenya": {
+   "drive": {
+    "cbd": [
+     19,
+     34,
+     15.7
+    ],
+    "ecity": [
+     37,
+     56,
+     48.7
+    ],
+    "itpl": [
+     35,
+     63,
+     29.4
+    ],
+    "orr": [
+     33,
+     59,
+     27.2
+    ]
+   },
+   "geo": {
+    "display_name": "Tumkur Road, Peenya Industrial Area, Peenya, Bengaluru West City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560058, India",
+    "in_bbox": true,
+    "lat": 13.0388814,
+    "lon": 77.5201056,
+    "query": "Tumkur Road / Peenya, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.07,
+    "name": "Jalahalli"
+   }
+  },
+  "Uttarahalli": {
+   "drive": {
+    "cbd": [
+     16,
+     35,
+     13.6
+    ],
+    "ecity": [
+     22,
+     40,
+     24.9
+    ],
+    "itpl": [
+     34,
+     51,
+     30.0
+    ],
+    "orr": [
+     21,
+     38,
+     16.6
+    ]
+   },
+   "geo": {
+    "display_name": "Uttarahalli, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9055682,
+    "lon": 77.5455438,
+    "query": "Uttarahalli, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 2.45,
+    "name": "Doddakallasandra"
+   }
+  },
+  "Varthur": {
+   "drive": {
+    "cbd": [
+     22,
+     40,
+     18.5
+    ],
+    "ecity": [
+     26,
+     47,
+     21.3
+    ],
+    "itpl": [
+     8,
+     18,
+     6.9
+    ],
+    "orr": [
+     14,
+     31,
+     10.5
+    ]
+   },
+   "geo": {
+    "display_name": "Varthur, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560087, India",
+    "in_bbox": true,
+    "lat": 12.9406508,
+    "lon": 77.746988,
+    "query": "Varthur, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 4.66,
+    "name": "Nallurahalli"
+   }
+  },
+  "Vidyaranyapura": {
+   "drive": {
+    "cbd": [
+     20,
+     36,
+     15.6
+    ],
+    "ecity": [
+     42,
+     63,
+     32.9
+    ],
+    "itpl": [
+     36,
+     65,
+     27.4
+    ],
+    "orr": [
+     37,
+     67,
+     28.9
+    ]
+   },
+   "geo": {
+    "display_name": "Vidyaranyapura, Singapura, Bengaluru North City Corporation, Bengaluru, Yelahanka taluku, Bengaluru Urban, Karnataka, 560097, India",
+    "in_bbox": true,
+    "lat": 13.0766407,
+    "lon": 77.5577315,
+    "query": "Vidyaranyapura, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 5.53,
+    "name": "Peenya"
+   }
+  },
+  "Vijayanagar": {
+   "drive": {
+    "cbd": [
+     11,
+     24,
+     10.2
+    ],
+    "ecity": [
+     30,
+     54,
+     23.8
+    ],
+    "itpl": [
+     29,
+     52,
+     26.6
+    ],
+    "orr": [
+     25,
+     45,
+     19.9
+    ]
+   },
+   "geo": {
+    "display_name": "Vijayanagar, Chord Road, M C Layout, Dr. Vishnuvardhan Ward, Bengaluru West City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560040, India",
+    "in_bbox": true,
+    "lat": 12.9709537,
+    "lon": 77.5373851,
+    "query": "Vijayanagar, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.0,
+    "name": "Vijayanagar"
+   }
+  },
+  "Whitefield": {
+   "drive": {
+    "cbd": [
+     24,
+     43,
+     20.4
+    ],
+    "ecity": [
+     32,
+     58,
+     27.9
+    ],
+    "itpl": [
+     5,
+     13,
+     3.6
+    ],
+    "orr": [
+     17,
+     37,
+     14.4
+    ]
+   },
+   "geo": {
+    "display_name": "Whitefield (Kadugodi), SH35, Belathur, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560067, India",
+    "in_bbox": true,
+    "lat": 12.9957428,
+    "lon": 77.7579489,
+    "query": "Whitefield, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.0,
+    "name": "Whitefield (Kadugodi)"
+   }
+  },
+  "Yelahanka": {
+   "drive": {
+    "cbd": [
+     19,
+     34,
+     17.2
+    ],
+    "ecity": [
+     41,
+     62,
+     34.5
+    ],
+    "itpl": [
+     33,
+     59,
+     28.6
+    ],
+    "orr": [
+     36,
+     54,
+     30.6
+    ]
+   },
+   "geo": {
+    "display_name": "Yelahanka, Yelahanka Old Town, Bengaluru North City Corporation, Bengaluru, Yelahanka taluku, Bengaluru Urban, Karnataka, 560064, India",
+    "in_bbox": true,
+    "lat": 13.1006982,
+    "lon": 77.5963454,
+    "query": "Yelahanka, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 9.97,
+    "name": "Yeshwantpur"
+   }
+  },
+  "Yeshwanthpur": {
+   "drive": {
+    "cbd": [
+     13,
+     29,
+     9.7
+    ],
+    "ecity": [
+     33,
+     59,
+     26.0
+    ],
+    "itpl": [
+     29,
+     52,
+     24.0
+    ],
+    "orr": [
+     28,
+     50,
+     22.1
+    ]
+   },
+   "geo": {
+    "display_name": "BMTC Depot 8 (Yeshwanthpura), Subedarpalya, Bengaluru West City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.0176937,
+    "lon": 77.5555009,
+    "query": "Yeshwanthpur, Bengaluru, Karnataka, India"
+   },
+   "metro": {
+    "km": 0.38,
+    "name": "Sandal Soap Factory"
+   }
+  }
+ },
+ "meta": {
+  "bbox": {
+   "east": 77.9,
+   "north": 13.25,
+   "south": 12.7,
+   "west": 77.3
+  },
+  "generated": "2026-09-21T11:36:55Z",
+  "hubs": [
+   {
+    "key": "itpl",
+    "label": "ITPL Whitefield",
+    "lat": 12.9856,
+    "lon": 77.7367
+   },
+   {
+    "key": "orr",
+    "label": "Bellandur ORR",
+    "lat": 12.9304,
+    "lon": 77.6784
+   },
+   {
+    "key": "ecity",
+    "label": "Electronic City",
+    "lat": 12.8452,
+    "lon": 77.6602
+   },
+   {
+    "key": "cbd",
+    "label": "MG Road CBD",
+    "lat": 12.9752,
+    "lon": 77.6069
+   }
+  ],
+  "note": "Peak drive time is a MODELLED ESTIMATE: OSRM free-flow time multiplied by a factor banded on road distance. It is not measured traffic and no traffic data was used.",
+  "peak_bands_km_to_multiplier": [
+   {
+    "multiplier": 2.6,
+    "under_km": 5
+   },
+   {
+    "multiplier": 2.2,
+    "under_km": 15
+   },
+   {
+    "multiplier": 1.8,
+    "under_km": 30
+   },
+   {
+    "multiplier": 1.5,
+    "under_km": null
+   }
+  ],
+  "sources": {
+   "geocode": "nominatim.openstreetmap.org",
+   "metro": "overpass-api.de",
+   "routing": "router.project-osrm.org"
+  }
+ },
+ "socs": {
+  "Adarsh Welkin Park": {
+   "drive": {
+    "cbd": [
+     27,
+     49,
+     18.2
+    ],
+    "ecity": [
+     11,
+     24,
+     8.3
+    ],
+    "itpl": [
+     29,
+     52,
+     23.7
+    ],
+    "orr": [
+     15,
+     33,
+     10.3
+    ]
+   },
+   "geo": {
+    "display_name": "Adarsh Welkin Park, Gattahalli, Sriramapura, Gattahalli, Anekal, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.8713621,
+    "lon": 77.685923,
+    "query": "Adarsh Welkin Park, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 2.94,
+    "name": "Electronic City"
+   }
+  },
+  "Anahata": {
+   "borrowedFrom": "Whitefield",
+   "drive": {
+    "cbd": [
+     24,
+     43,
+     20.4
+    ],
+    "ecity": [
+     32,
+     58,
+     27.9
+    ],
+    "itpl": [
+     5,
+     13,
+     3.6
+    ],
+    "orr": [
+     17,
+     37,
+     14.4
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Whitefield",
+    "in_bbox": true,
+    "lat": 12.9957428,
+    "lon": 77.7579489,
+    "query": "(borrowed from AREA Whitefield)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 0.0,
+    "name": "Whitefield (Kadugodi)"
+   }
+  },
+  "Aratt Firenza": {
+   "drive": {
+    "cbd": [
+     30,
+     54,
+     20.8
+    ],
+    "ecity": [
+     6,
+     16,
+     2.7
+    ],
+    "itpl": [
+     38,
+     68,
+     28.6
+    ],
+    "orr": [
+     24,
+     43,
+     17.2
+    ]
+   },
+   "geo": {
+    "display_name": "Aratt Firenza, Maragondanahalli, Bengaluru, Anekal, Bengaluru Urban, Karnataka, 560105, India",
+    "in_bbox": true,
+    "lat": 12.8291319,
+    "lon": 77.6619922,
+    "query": "Aratt Firenza, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 2.01,
+    "name": "Huskur Road"
+   }
+  },
+  "Assetz Marq": {
+   "drive": {
+    "cbd": [
+     24,
+     43,
+     22.3
+    ],
+    "ecity": [
+     37,
+     56,
+     31.7
+    ],
+    "itpl": [
+     10,
+     22,
+     7.4
+    ],
+    "orr": [
+     22,
+     40,
+     18.3
+    ]
+   },
+   "geo": {
+    "display_name": "Assetz Marq, Kannamangala, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560066, India",
+    "in_bbox": true,
+    "lat": 13.0249139,
+    "lon": 77.7643629,
+    "query": "Assetz Marq, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 3.32,
+    "name": "Whitefield (Kadugodi)"
+   }
+  },
+  "Assetz Zen and Sato": {
+   "drive": {
+    "cbd": [
+     21,
+     38,
+     19.1
+    ],
+    "ecity": [
+     44,
+     66,
+     38.9
+    ],
+    "itpl": [
+     30,
+     54,
+     26.9
+    ],
+    "orr": [
+     37,
+     56,
+     30.4
+    ]
+   },
+   "geo": {
+    "display_name": "Assetz Zen and Sato (u/c), Sathanuru, Satanuru, Yelahanka taluku, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.121935,
+    "lon": 77.6341567,
+    "query": "Assetz Zen and Sato, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 14.27,
+    "name": "Yeshwantpur"
+   }
+  },
+  "Birla Trimaya": {
+   "drive": {
+    "cbd": [
+     33,
+     50,
+     30.6
+    ],
+    "ecity": [
+     55,
+     83,
+     47.9
+    ],
+    "itpl": [
+     38,
+     57,
+     37.0
+    ],
+    "orr": [
+     50,
+     75,
+     44.0
+    ]
+   },
+   "geo": {
+    "display_name": "Birla Trimaya (u/c), Shettigere, Yartiganahalli, Devanahalli taluku, Bengaluru North, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.1893565,
+    "lon": 77.6699354,
+    "query": "Birla Trimaya, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 21.08,
+    "name": "Krishnarajapura"
+   }
+  },
+  "Brigade Citrine": {
+   "drive": {
+    "cbd": [
+     19,
+     34,
+     20.4
+    ],
+    "ecity": [
+     37,
+     56,
+     34.8
+    ],
+    "itpl": [
+     12,
+     26,
+     10.5
+    ],
+    "orr": [
+     24,
+     43,
+     21.3
+    ]
+   },
+   "geo": {
+    "display_name": "Brigade Citrine (u/c), Nimbekaipura, Nimbekayipura, Kattamanallur, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.0538171,
+    "lon": 77.7602137,
+    "query": "Brigade Citrine, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 6.46,
+    "name": "Whitefield (Kadugodi)"
+   }
+  },
+  "Brigade Cornerstone Utopia": {
+   "drive": {
+    "cbd": [
+     24,
+     43,
+     20.0
+    ],
+    "ecity": [
+     27,
+     49,
+     21.1
+    ],
+    "itpl": [
+     11,
+     24,
+     8.4
+    ],
+    "orr": [
+     15,
+     33,
+     10.2
+    ]
+   },
+   "geo": {
+    "display_name": "Brigade Cornerstone Utopia, Gunjur, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9312538,
+    "lon": 77.7455812,
+    "query": "Brigade Cornerstone Utopia, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 5.52,
+    "name": "Nallurahalli"
+   }
+  },
+  "Brigade Meadows": {
+   "drive": {
+    "cbd": [
+     28,
+     50,
+     26.0
+    ],
+    "ecity": [
+     25,
+     45,
+     25.9
+    ],
+    "itpl": [
+     45,
+     68,
+     42.4
+    ],
+    "orr": [
+     32,
+     58,
+     28.9
+    ]
+   },
+   "geo": {
+    "display_name": "Brigade Meadows, Kaggalipura, Udayapura, Bangalore South, Bengaluru Urban, Karnataka, 560082, India",
+    "in_bbox": true,
+    "lat": 12.8129454,
+    "lon": 77.5061736,
+    "query": "Brigade Meadows, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 6.01,
+    "name": "Silk Institute"
+   }
+  },
+  "Brigade Millennium": {
+   "drive": {
+    "cbd": [
+     16,
+     35,
+     13.1
+    ],
+    "ecity": [
+     18,
+     32,
+     18.0
+    ],
+    "itpl": [
+     32,
+     58,
+     28.5
+    ],
+    "orr": [
+     18,
+     40,
+     14.4
+    ]
+   },
+   "geo": {
+    "display_name": "Brigade Millennium, Puttenahalli, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560078, India",
+    "in_bbox": true,
+    "lat": 12.8912331,
+    "lon": 77.5825258,
+    "query": "Brigade Millennium, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 1.45,
+    "name": "Yelachenahalli"
+   }
+  },
+  "Brigade Omega": {
+   "drive": {
+    "cbd": [
+     20,
+     36,
+     18.3
+    ],
+    "ecity": [
+     21,
+     38,
+     24.3
+    ],
+    "itpl": [
+     37,
+     56,
+     34.6
+    ],
+    "orr": [
+     24,
+     43,
+     21.1
+    ]
+   },
+   "geo": {
+    "display_name": "Brigade Omega, Subramanyapura, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.89388,
+    "lon": 77.5295225,
+    "query": "Brigade Omega, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 2.46,
+    "name": "Vajarahalli"
+   }
+  },
+  "Brigade Valencia": {
+   "drive": {
+    "cbd": [
+     29,
+     52,
+     22.7
+    ],
+    "ecity": [
+     9,
+     20,
+     7.1
+    ],
+    "itpl": [
+     31,
+     56,
+     27.8
+    ],
+    "orr": [
+     23,
+     41,
+     19.1
+    ]
+   },
+   "geo": {
+    "display_name": "Brigade Valencia (u/c), Kitthiganahalli, Kittaganahalli, Anekal, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.8030421,
+    "lon": 77.6985026,
+    "query": "Brigade Valencia, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 2.13,
+    "name": "Delta Electronics Bommasandra"
+   }
+  },
+  "Century Breeze": {
+   "drive": {
+    "cbd": [
+     18,
+     32,
+     16.1
+    ],
+    "ecity": [
+     40,
+     60,
+     33.4
+    ],
+    "itpl": [
+     32,
+     58,
+     25.3
+    ],
+    "orr": [
+     35,
+     63,
+     29.5
+    ]
+   },
+   "geo": {
+    "display_name": "Century Breeze, Akash Ward, Bengaluru North City Corporation, Bengaluru, Yelahanka taluku, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.0955481,
+    "lon": 77.6012791,
+    "query": "Century Breeze, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 9.78,
+    "name": "Yeshwantpur"
+   }
+  },
+  "Century Marathahalli": {
+   "borrowedFrom": "Marathahalli",
+   "drive": {
+    "cbd": [
+     16,
+     35,
+     11.8
+    ],
+    "ecity": [
+     25,
+     45,
+     18.7
+    ],
+    "itpl": [
+     12,
+     26,
+     10.8
+    ],
+    "orr": [
+     9,
+     20,
+     5.5
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Marathahalli",
+    "in_bbox": true,
+    "lat": 12.9552572,
+    "lon": 77.6984163,
+    "query": "(borrowed from AREA Marathahalli)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 3.06,
+    "name": "Seetharampalya"
+   }
+  },
+  "Concorde Auriga": {
+   "drive": {
+    "cbd": [
+     16,
+     29,
+     15.3
+    ],
+    "ecity": [
+     34,
+     61,
+     29.7
+    ],
+    "itpl": [
+     12,
+     26,
+     9.8
+    ],
+    "orr": [
+     22,
+     40,
+     16.4
+    ]
+   },
+   "geo": {
+    "display_name": "Concorde Auriga, TC Palya, Bhattarahalli, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.0296662,
+    "lon": 77.7239386,
+    "query": "Concorde Auriga, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 4.59,
+    "name": "Garudacharpalya"
+   }
+  },
+  "Concorde Neo": {
+   "drive": {
+    "cbd": [
+     20,
+     36,
+     17.0
+    ],
+    "ecity": [
+     43,
+     65,
+     36.8
+    ],
+    "itpl": [
+     28,
+     50,
+     24.8
+    ],
+    "orr": [
+     36,
+     65,
+     28.2
+    ]
+   },
+   "geo": {
+    "display_name": "Concorde Neo (u/c), Kogilu, Bengaluru North City Corporation, Bengaluru, Yelahanka taluku, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.0978274,
+    "lon": 77.6336525,
+    "query": "Concorde Neo, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 11.88,
+    "name": "Benniganahalli"
+   }
+  },
+  "Concorde Wind Rush": {
+   "borrowedFrom": "Electronic City Ph 1",
+   "drive": {
+    "cbd": [
+     26,
+     47,
+     18.1
+    ],
+    "ecity": [
+     5,
+     13,
+     2.9
+    ],
+    "itpl": [
+     36,
+     65,
+     28.4
+    ],
+    "orr": [
+     20,
+     44,
+     14.6
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Electronic City Ph 1",
+    "in_bbox": true,
+    "lat": 12.8487599,
+    "lon": 77.648253,
+    "query": "(borrowed from AREA Electronic City Ph 1)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 1.87,
+    "name": "Electronic City"
+   }
+  },
+  "Cornerstone Akhinta": {
+   "drive": {
+    "cbd": [
+     13,
+     29,
+     7.3
+    ],
+    "ecity": [
+     15,
+     33,
+     11.6
+    ],
+    "itpl": [
+     24,
+     43,
+     22.2
+    ],
+    "orr": [
+     11,
+     24,
+     8.6
+    ]
+   },
+   "geo": {
+    "display_name": "Cornerstone Akhinta Residences (u/c), BTM Layout 1st Stage, New Tavarekere, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9179314,
+    "lon": 77.6120955,
+    "query": "Cornerstone Akhinta, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 0.46,
+    "name": "BTM Layout"
+   }
+  },
+  "DSR Highland Greens": {
+   "drive": {
+    "cbd": [
+     24,
+     43,
+     17.1
+    ],
+    "ecity": [
+     15,
+     33,
+     11.2
+    ],
+    "itpl": [
+     21,
+     38,
+     17.9
+    ],
+    "orr": [
+     11,
+     24,
+     7.3
+    ]
+   },
+   "geo": {
+    "display_name": "DSR Highland Greens, Chikkakanneli, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.8962342,
+    "lon": 77.6964322,
+    "query": "DSR Highland Greens, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 5.52,
+    "name": "Beratena Agrahara"
+   }
+  },
+  "DSR The Address": {
+   "drive": {
+    "cbd": [
+     28,
+     50,
+     23.7
+    ],
+    "ecity": [
+     23,
+     41,
+     15.7
+    ],
+    "itpl": [
+     15,
+     33,
+     13.7
+    ],
+    "orr": [
+     17,
+     37,
+     13.0
+    ]
+   },
+   "geo": {
+    "display_name": "DSR The Address (u/c), Thigalachowdadenahalli, Dommasandra, Anekal, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.8911683,
+    "lon": 77.7468337,
+    "query": "DSR The Address, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 9.49,
+    "name": "Huskur Road"
+   }
+  },
+  "Godrej Air": {
+   "drive": {
+    "cbd": [
+     17,
+     37,
+     14.3
+    ],
+    "ecity": [
+     33,
+     59,
+     23.4
+    ],
+    "itpl": [
+     10,
+     22,
+     7.0
+    ],
+    "orr": [
+     17,
+     37,
+     10.2
+    ]
+   },
+   "geo": {
+    "display_name": "Godrej Air, EPIP Zone, Bharath Aikya Ward, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560048, India",
+    "in_bbox": true,
+    "lat": 12.9873169,
+    "lon": 77.7116761,
+    "query": "Godrej Air, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 0.17,
+    "name": "Hoodi"
+   }
+  },
+  "Godrej Park Retreat": {
+   "drive": {
+    "cbd": [
+     27,
+     49,
+     18.3
+    ],
+    "ecity": [
+     20,
+     44,
+     12.8
+    ],
+    "itpl": [
+     20,
+     36,
+     16.5
+    ],
+    "orr": [
+     13,
+     29,
+     8.5
+    ]
+   },
+   "geo": {
+    "display_name": "Godrej Park Retreat, Kodati, Kodathi, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.8918889,
+    "lon": 77.7051978,
+    "query": "Godrej Park Retreat, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 5.99,
+    "name": "Electronic City"
+   }
+  },
+  "Godrej Woods": {
+   "drive": {
+    "cbd": [
+     22,
+     40,
+     18.5
+    ],
+    "ecity": [
+     46,
+     69,
+     38.4
+    ],
+    "itpl": [
+     31,
+     56,
+     26.3
+    ],
+    "orr": [
+     38,
+     68,
+     29.8
+    ]
+   },
+   "geo": {
+    "display_name": "Godrej Woods (u/c), Kogilu, Bengaluru North City Corporation, Bengaluru, Yelahanka taluku, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.1075691,
+    "lon": 77.6327549,
+    "query": "Godrej Woods, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 12.92,
+    "name": "Krishnarajapura"
+   }
+  },
+  "Godrej Woodscapes": {
+   "drive": {
+    "cbd": [
+     19,
+     34,
+     21.3
+    ],
+    "ecity": [
+     37,
+     56,
+     35.7
+    ],
+    "itpl": [
+     12,
+     26,
+     11.3
+    ],
+    "orr": [
+     24,
+     43,
+     22.2
+    ]
+   },
+   "geo": {
+    "display_name": "Godrej Woodscapes (u/c), Konadasanapura, Konadasapura, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.048991,
+    "lon": 77.7518665,
+    "query": "Godrej Woodscapes, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 5.96,
+    "name": "Whitefield (Kadugodi)"
+   }
+  },
+  "Keerthi Royal Palms": {
+   "drive": {
+    "cbd": [
+     24,
+     43,
+     16.5
+    ],
+    "ecity": [
+     5,
+     13,
+     2.7
+    ],
+    "itpl": [
+     33,
+     59,
+     26.7
+    ],
+    "orr": [
+     17,
+     37,
+     13.0
+    ]
+   },
+   "geo": {
+    "display_name": "Keerthi Royal Palms, Chikkathoguru, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.8627346,
+    "lon": 77.660668,
+    "query": "Keerthi Royal Palms, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 0.33,
+    "name": "Beratena Agrahara"
+   }
+  },
+  "Keya The Lake Terraces": {
+   "drive": {
+    "cbd": [
+     30,
+     54,
+     20.7
+    ],
+    "ecity": [
+     6,
+     16,
+     2.9
+    ],
+    "itpl": [
+     38,
+     68,
+     28.8
+    ],
+    "orr": [
+     24,
+     43,
+     17.1
+    ]
+   },
+   "geo": {
+    "display_name": "Keya The Lake Terraces, Gollahalli, Anekal, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.829702,
+    "lon": 77.6643501,
+    "query": "Keya The Lake Terraces, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 1.76,
+    "name": "Huskur Road"
+   }
+  },
+  "L&T Raintree Boulevard": {
+   "drive": {
+    "cbd": [
+     19,
+     42,
+     14.6
+    ],
+    "ecity": [
+     41,
+     62,
+     31.9
+    ],
+    "itpl": [
+     32,
+     58,
+     25.3
+    ],
+    "orr": [
+     36,
+     65,
+     28.0
+    ]
+   },
+   "geo": {
+    "display_name": "L&T Raintree Boulevard, Byatarayanapura, Bengaluru North City Corporation, Bengaluru, Yelahanka taluku, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.0692178,
+    "lon": 77.5898146,
+    "query": "L&T Raintree Boulevard, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 6.7,
+    "name": "Yeshwantpur"
+   }
+  },
+  "MJR Platina": {
+   "drive": {
+    "cbd": [
+     18,
+     40,
+     11.3
+    ],
+    "ecity": [
+     10,
+     22,
+     7.7
+    ],
+    "itpl": [
+     30,
+     54,
+     24.7
+    ],
+    "orr": [
+     14,
+     31,
+     10.9
+    ]
+   },
+   "geo": {
+    "display_name": "MJR Platina, Garvebavi Palya, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.888914,
+    "lon": 77.6384371,
+    "query": "MJR Platina, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 0.14,
+    "name": "Kudlu Gate"
+   }
+  },
+  "Mana Skandas": {
+   "borrowedFrom": "Sarjapur Road",
+   "drive": {
+    "cbd": [
+     13,
+     29,
+     9.7
+    ],
+    "ecity": [
+     16,
+     35,
+     13.4
+    ],
+    "itpl": [
+     22,
+     40,
+     18.5
+    ],
+    "orr": [
+     6,
+     16,
+     4.7
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Sarjapur Road",
+    "in_bbox": true,
+    "lat": 12.9243414,
+    "lon": 77.6448784,
+    "query": "(borrowed from AREA Sarjapur Road)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 2.51,
+    "name": "Bommanahalli"
+   }
+  },
+  "Mantri Alpyne": {
+   "drive": {
+    "cbd": [
+     19,
+     34,
+     16.0
+    ],
+    "ecity": [
+     23,
+     41,
+     26.4
+    ],
+    "itpl": [
+     36,
+     54,
+     32.3
+    ],
+    "orr": [
+     23,
+     41,
+     19.0
+    ]
+   },
+   "geo": {
+    "display_name": "Mantri Alpyne, Subramanyapura, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9035863,
+    "lon": 77.5272739,
+    "query": "Mantri Alpyne, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 3.47,
+    "name": "Vajarahalli"
+   }
+  },
+  "Mantri Lithos": {
+   "drive": {
+    "cbd": [
+     16,
+     35,
+     11.5
+    ],
+    "ecity": [
+     39,
+     59,
+     31.3
+    ],
+    "itpl": [
+     24,
+     43,
+     19.3
+    ],
+    "orr": [
+     32,
+     58,
+     22.7
+    ]
+   },
+   "geo": {
+    "display_name": "Mantri Lithos, Kempapura, Bengaluru North City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.0521683,
+    "lon": 77.6169879,
+    "query": "Mantri Lithos, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 7.83,
+    "name": "Baiyappanahalli"
+   }
+  },
+  "Mantri Serenity": {
+   "drive": {
+    "cbd": [
+     17,
+     31,
+     15.2
+    ],
+    "ecity": [
+     20,
+     36,
+     24.1
+    ],
+    "itpl": [
+     34,
+     51,
+     31.6
+    ],
+    "orr": [
+     21,
+     38,
+     18.0
+    ]
+   },
+   "geo": {
+    "display_name": "Mantri Serenity, Anjanapura, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.88645,
+    "lon": 77.5500908,
+    "query": "Mantri Serenity, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 0.35,
+    "name": "Doddakallasandra"
+   }
+  },
+  "Metro Urbano": {
+   "borrowedFrom": "Kudlu / Kudlu Gate",
+   "drive": {
+    "cbd": [
+     19,
+     42,
+     11.9
+    ],
+    "ecity": [
+     9,
+     20,
+     7.2
+    ],
+    "itpl": [
+     28,
+     50,
+     22.3
+    ],
+    "orr": [
+     12,
+     26,
+     8.5
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Kudlu / Kudlu Gate",
+    "in_bbox": true,
+    "lat": 12.8899174,
+    "lon": 77.6396808,
+    "query": "(borrowed from AREA Kudlu / Kudlu Gate)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 0.05,
+    "name": "Kudlu Gate"
+   }
+  },
+  "Mythri Sity": {
+   "borrowedFrom": "Sarjapur Road",
+   "drive": {
+    "cbd": [
+     13,
+     29,
+     9.7
+    ],
+    "ecity": [
+     16,
+     35,
+     13.4
+    ],
+    "itpl": [
+     22,
+     40,
+     18.5
+    ],
+    "orr": [
+     6,
+     16,
+     4.7
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Sarjapur Road",
+    "in_bbox": true,
+    "lat": 12.9243414,
+    "lon": 77.6448784,
+    "query": "(borrowed from AREA Sarjapur Road)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 2.51,
+    "name": "Bommanahalli"
+   }
+  },
+  "NBR Soul of the Seasons": {
+   "borrowedFrom": "Sarjapur Road",
+   "drive": {
+    "cbd": [
+     13,
+     29,
+     9.7
+    ],
+    "ecity": [
+     16,
+     35,
+     13.4
+    ],
+    "itpl": [
+     22,
+     40,
+     18.5
+    ],
+    "orr": [
+     6,
+     16,
+     4.7
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Sarjapur Road",
+    "in_bbox": true,
+    "lat": 12.9243414,
+    "lon": 77.6448784,
+    "query": "(borrowed from AREA Sarjapur Road)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 2.51,
+    "name": "Bommanahalli"
+   }
+  },
+  "Nambiar District 25": {
+   "drive": {
+    "cbd": [
+     38,
+     68,
+     24.1
+    ],
+    "ecity": [
+     22,
+     48,
+     12.7
+    ],
+    "itpl": [
+     25,
+     45,
+     19.0
+    ],
+    "orr": [
+     24,
+     53,
+     14.3
+    ]
+   },
+   "geo": {
+    "display_name": "Nambiar District 25 (u/c), Dommasandra, Anekal, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.8739161,
+    "lon": 77.743897,
+    "query": "Nambiar District 25, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 8.18,
+    "name": "Huskur Road"
+   }
+  },
+  "Navins Antheia Poetry": {
+   "borrowedFrom": "Bannerghatta Road",
+   "drive": {
+    "cbd": [
+     10,
+     22,
+     5.8
+    ],
+    "ecity": [
+     18,
+     40,
+     14.3
+    ],
+    "itpl": [
+     26,
+     47,
+     23.4
+    ],
+    "orr": [
+     13,
+     29,
+     10.4
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Bannerghatta Road",
+    "in_bbox": true,
+    "lat": 12.9297282,
+    "lon": 77.6004731,
+    "query": "(borrowed from AREA Bannerghatta Road)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 1.45,
+    "name": "Jayadeva Hospital"
+   }
+  },
+  "One Bangalore West": {
+   "drive": {
+    "cbd": [
+     13,
+     29,
+     11.1
+    ],
+    "ecity": [
+     33,
+     59,
+     26.4
+    ],
+    "itpl": [
+     31,
+     56,
+     27.4
+    ],
+    "orr": [
+     28,
+     50,
+     22.5
+    ]
+   },
+   "geo": {
+    "display_name": "Phoenix One Bangalore West, 1, Basaveshwaranagar, Kethamaranahalli, Bengaluru West City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560010, India",
+    "in_bbox": true,
+    "lat": 13.0096524,
+    "lon": 77.553047,
+    "query": "One Bangalore West, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 0.49,
+    "name": "Mahalakshmi"
+   }
+  },
+  "Park Square Avenue": {
+   "drive": {
+    "cbd": [
+     15,
+     33,
+     11.3
+    ],
+    "ecity": [
+     15,
+     33,
+     10.5
+    ],
+    "itpl": [
+     22,
+     40,
+     18.6
+    ],
+    "orr": [
+     6,
+     16,
+     4.8
+    ]
+   },
+   "geo": {
+    "display_name": "Park Square Avenue, Sector 4, HSR Layout, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9190094,
+    "lon": 77.6446191,
+    "query": "Park Square Avenue, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 2.18,
+    "name": "Bommanahalli"
+   }
+  },
+  "Prestige Ferns Residency": {
+   "drive": {
+    "cbd": [
+     23,
+     41,
+     15.5
+    ],
+    "ecity": [
+     14,
+     31,
+     8.5
+    ],
+    "itpl": [
+     26,
+     47,
+     18.8
+    ],
+    "orr": [
+     10,
+     22,
+     5.0
+    ]
+   },
+   "geo": {
+    "display_name": "Prestige Ferns Residency, Haralur Road, Haralur, Kasavanahalli, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560102, India",
+    "in_bbox": true,
+    "lat": 12.9018012,
+    "lon": 77.6641767,
+    "query": "Prestige Ferns Residency, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 3.01,
+    "name": "Kudlu Gate"
+   }
+  },
+  "Prestige Green Gables": {
+   "drive": {
+    "cbd": [
+     20,
+     44,
+     14.3
+    ],
+    "ecity": [
+     22,
+     40,
+     17.1
+    ],
+    "itpl": [
+     15,
+     33,
+     12.6
+    ],
+    "orr": [
+     6,
+     16,
+     3.5
+    ]
+   },
+   "geo": {
+    "display_name": "Prestige Green Gables, Kaadubeesanahalli, Panathur, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9401835,
+    "lon": 77.6988706,
+    "query": "Prestige Green Gables, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 4.54,
+    "name": "Kundalahalli"
+   }
+  },
+  "Prestige Lakeside Habitat": {
+   "drive": {
+    "cbd": [
+     25,
+     45,
+     20.8
+    ],
+    "ecity": [
+     27,
+     49,
+     21.1
+    ],
+    "itpl": [
+     12,
+     26,
+     9.3
+    ],
+    "orr": [
+     15,
+     33,
+     10.3
+    ]
+   },
+   "geo": {
+    "display_name": "Prestige Lakeside Habitat, Varthur, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560066, India",
+    "in_bbox": true,
+    "lat": 12.9315203,
+    "lon": 77.7344388,
+    "query": "Prestige Lakeside Habitat, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 5.12,
+    "name": "Nallurahalli"
+   }
+  },
+  "Prestige Park Grove": {
+   "drive": {
+    "cbd": [
+     21,
+     38,
+     19.5
+    ],
+    "ecity": [
+     37,
+     56,
+     31.8
+    ],
+    "itpl": [
+     10,
+     22,
+     7.5
+    ],
+    "orr": [
+     22,
+     40,
+     18.4
+    ]
+   },
+   "geo": {
+    "display_name": "Prestige Park Grove (u/c), Chikkabanahalli, Doddabanahalli, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.0157282,
+    "lon": 77.7539999,
+    "query": "Prestige Park Grove, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 2.26,
+    "name": "Whitefield (Kadugodi)"
+   }
+  },
+  "Prestige Primrose Hills": {
+   "drive": {
+    "cbd": [
+     21,
+     38,
+     19.0
+    ],
+    "ecity": [
+     19,
+     34,
+     20.2
+    ],
+    "itpl": [
+     39,
+     59,
+     35.4
+    ],
+    "orr": [
+     25,
+     45,
+     21.9
+    ]
+   },
+   "geo": {
+    "display_name": "Prestige Primrose Hills, Banashankari 6th Stage, Talagattapura, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560109, India",
+    "in_bbox": true,
+    "lat": 12.8669949,
+    "lon": 77.5225614,
+    "query": "Prestige Primrose Hills, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 0.99,
+    "name": "Silk Institute"
+   }
+  },
+  "Prestige Shantiniketan": {
+   "drive": {
+    "cbd": [
+     18,
+     32,
+     15.9
+    ],
+    "ecity": [
+     35,
+     63,
+     25.8
+    ],
+    "itpl": [
+     4,
+     10,
+     2.9
+    ],
+    "orr": [
+     18,
+     40,
+     12.6
+    ]
+   },
+   "geo": {
+    "display_name": "Prestige Shantiniketan, Hoodi, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.992269,
+    "lon": 77.7290258,
+    "query": "Prestige Shantiniketan, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 1.08,
+    "name": "Pattandur Agrahara"
+   }
+  },
+  "Prestige Song of the South": {
+   "drive": {
+    "cbd": [
+     24,
+     43,
+     15.7
+    ],
+    "ecity": [
+     16,
+     35,
+     11.5
+    ],
+    "itpl": [
+     37,
+     67,
+     28.6
+    ],
+    "orr": [
+     22,
+     48,
+     14.8
+    ]
+   },
+   "geo": {
+    "display_name": "Prestige Song of the South, Beguru, Yelenahalli, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.8639961,
+    "lon": 77.6104807,
+    "query": "Prestige Song of the South, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 4.17,
+    "name": "Singasandra"
+   }
+  },
+  "Prestige Southern Star": {
+   "drive": {
+    "cbd": [
+     20,
+     44,
+     13.9
+    ],
+    "ecity": [
+     13,
+     29,
+     9.6
+    ],
+    "itpl": [
+     34,
+     61,
+     27.0
+    ],
+    "orr": [
+     18,
+     40,
+     13.2
+    ]
+   },
+   "geo": {
+    "display_name": "Prestige Southern Star (u/c), Yelenahalli, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.8752312,
+    "lon": 77.621038,
+    "query": "Prestige Southern Star, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 2.56,
+    "name": "Kudlu Gate"
+   }
+  },
+  "Prestige Windgates": {
+   "borrowedFrom": "Thanisandra Main Road",
+   "drive": {
+    "cbd": [
+     12,
+     26,
+     9.7
+    ],
+    "ecity": [
+     35,
+     63,
+     29.5
+    ],
+    "itpl": [
+     21,
+     38,
+     17.5
+    ],
+    "orr": [
+     28,
+     50,
+     20.9
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Thanisandra Main Road",
+    "in_bbox": true,
+    "lat": 13.0441254,
+    "lon": 77.626247,
+    "query": "(borrowed from AREA Thanisandra Main Road)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 6.57,
+    "name": "Baiyappanahalli"
+   }
+  },
+  "Pride Euphora": {
+   "borrowedFrom": "KR Puram",
+   "drive": {
+    "cbd": [
+     12,
+     26,
+     11.4
+    ],
+    "ecity": [
+     30,
+     54,
+     25.8
+    ],
+    "itpl": [
+     9,
+     20,
+     7.5
+    ],
+    "orr": [
+     20,
+     44,
+     14.1
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: KR Puram",
+    "in_bbox": true,
+    "lat": 13.007516,
+    "lon": 77.695935,
+    "query": "(borrowed from AREA KR Puram)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 1.27,
+    "name": "Singayyanapalya"
+   }
+  },
+  "Provident Botanico": {
+   "drive": {
+    "cbd": [
+     29,
+     52,
+     25.2
+    ],
+    "ecity": [
+     37,
+     56,
+     32.7
+    ],
+    "itpl": [
+     10,
+     22,
+     8.3
+    ],
+    "orr": [
+     22,
+     40,
+     19.2
+    ]
+   },
+   "geo": {
+    "display_name": "Provident Botanico (u/c), Kacharakanahalli, Hosakote taluk, Bengaluru North, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9906032,
+    "lon": 77.8066303,
+    "query": "Provident Botanico, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 5.31,
+    "name": "Whitefield (Kadugodi)"
+   }
+  },
+  "Provident Park Square": {
+   "drive": {
+    "cbd": [
+     20,
+     36,
+     18.7
+    ],
+    "ecity": [
+     19,
+     34,
+     20.9
+    ],
+    "itpl": [
+     38,
+     57,
+     35.1
+    ],
+    "orr": [
+     24,
+     43,
+     21.6
+    ]
+   },
+   "geo": {
+    "display_name": "Puravankara Provident Park Square, Talagattapura, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.8621623,
+    "lon": 77.5416283,
+    "query": "Provident Park Square, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 1.09,
+    "name": "Thalaghattapura"
+   }
+  },
+  "Provident Sunworth": {
+   "drive": {
+    "cbd": [
+     29,
+     52,
+     22.2
+    ],
+    "ecity": [
+     27,
+     41,
+     30.9
+    ],
+    "itpl": [
+     46,
+     69,
+     38.6
+    ],
+    "orr": [
+     36,
+     54,
+     33.9
+    ]
+   },
+   "geo": {
+    "display_name": "Provident Sunworth, Venkatapura, Doddabele, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.8812765,
+    "lon": 77.4703169,
+    "query": "Provident Sunworth, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 2.04,
+    "name": "Challaghatta"
+   }
+  },
+  "Purva Meraki": {
+   "drive": {
+    "cbd": [
+     18,
+     40,
+     13.5
+    ],
+    "ecity": [
+     12,
+     26,
+     8.5
+    ],
+    "itpl": [
+     25,
+     45,
+     20.4
+    ],
+    "orr": [
+     9,
+     20,
+     6.6
+    ]
+   },
+   "geo": {
+    "display_name": "Purva Meraki (u/c), Agara, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9001054,
+    "lon": 77.6478787,
+    "query": "Purva Meraki, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 1.47,
+    "name": "Kudlu Gate"
+   }
+  },
+  "Purva Orient Grand": {
+   "drive": {
+    "cbd": [
+     6,
+     16,
+     4.8
+    ],
+    "ecity": [
+     22,
+     40,
+     17.2
+    ],
+    "itpl": [
+     24,
+     43,
+     21.1
+    ],
+    "orr": [
+     17,
+     37,
+     13.3
+    ]
+   },
+   "geo": {
+    "display_name": "Purva Orient Grand (u/c), Dharmaraya Swamy Temple Ward, Bengaluru Central City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9616185,
+    "lon": 77.5899258,
+    "query": "Purva Orient Grand, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 1.56,
+    "name": "Sir M. Visvesvaraya Stn., Central College"
+   }
+  },
+  "Purva Palm Beach": {
+   "borrowedFrom": "Hennur Road",
+   "drive": {
+    "cbd": [
+     12,
+     26,
+     9.6
+    ],
+    "ecity": [
+     35,
+     63,
+     28.4
+    ],
+    "itpl": [
+     21,
+     38,
+     16.7
+    ],
+    "orr": [
+     28,
+     50,
+     20.9
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Hennur Road",
+    "in_bbox": true,
+    "lat": 13.0377061,
+    "lon": 77.6303636,
+    "query": "(borrowed from AREA Hennur Road)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 5.74,
+    "name": "Baiyappanahalli"
+   }
+  },
+  "Purva Skydale": {
+   "drive": {
+    "cbd": [
+     21,
+     38,
+     15.3
+    ],
+    "ecity": [
+     11,
+     24,
+     7.4
+    ],
+    "itpl": [
+     27,
+     49,
+     21.9
+    ],
+    "orr": [
+     11,
+     24,
+     8.1
+    ]
+   },
+   "geo": {
+    "display_name": "Purva Skydale Apartments, Kudlu, Bengaluru South City Corporation, Bengaluru, Anekal, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.8936714,
+    "lon": 77.6621688,
+    "query": "Purva Skydale, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 2.36,
+    "name": "Singasandra"
+   }
+  },
+  "Purva Westend": {
+   "drive": {
+    "cbd": [
+     18,
+     40,
+     11.1
+    ],
+    "ecity": [
+     10,
+     22,
+     7.8
+    ],
+    "itpl": [
+     30,
+     54,
+     24.5
+    ],
+    "orr": [
+     14,
+     31,
+     10.7
+    ]
+   },
+   "geo": {
+    "display_name": "Purva Westend, Garvebavi Palya, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.8904704,
+    "lon": 77.6375101,
+    "query": "Purva Westend, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 0.19,
+    "name": "Kudlu Gate"
+   }
+  },
+  "Purva Zenium": {
+   "drive": {
+    "cbd": [
+     29,
+     52,
+     25.0
+    ],
+    "ecity": [
+     51,
+     77,
+     42.3
+    ],
+    "itpl": [
+     38,
+     57,
+     31.0
+    ],
+    "orr": [
+     45,
+     68,
+     34.5
+    ]
+   },
+   "geo": {
+    "display_name": "Purva Zenium (u/c), Hosahalli, Yelahanka taluku, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.1448975,
+    "lon": 77.6389756,
+    "query": "Purva Zenium, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 16.61,
+    "name": "Yeshwantpur"
+   }
+  },
+  "RBD Stillwaters": {
+   "drive": {
+    "cbd": [
+     23,
+     41,
+     15.8
+    ],
+    "ecity": [
+     14,
+     31,
+     8.6
+    ],
+    "itpl": [
+     28,
+     50,
+     19.6
+    ],
+    "orr": [
+     12,
+     26,
+     5.8
+    ]
+   },
+   "geo": {
+    "display_name": "RBD Stillwaters Apartments, Haralur, Kasavanahalli, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.8983507,
+    "lon": 77.6655348,
+    "query": "RBD Stillwaters, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 2.97,
+    "name": "Singasandra"
+   }
+  },
+  "Ramky Lumina": {
+   "borrowedFrom": "Hosa Road",
+   "drive": {
+    "cbd": [
+     21,
+     46,
+     14.1
+    ],
+    "ecity": [
+     6,
+     16,
+     4.2
+    ],
+    "itpl": [
+     29,
+     52,
+     23.6
+    ],
+    "orr": [
+     13,
+     29,
+     9.9
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Hosa Road",
+    "in_bbox": true,
+    "lat": 12.8707029,
+    "lon": 77.6554218,
+    "query": "(borrowed from AREA Hosa Road)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 0.32,
+    "name": "Hosa Road"
+   }
+  },
+  "Rohan Upavan": {
+   "drive": {
+    "cbd": [
+     16,
+     35,
+     13.3
+    ],
+    "ecity": [
+     39,
+     59,
+     32.1
+    ],
+    "itpl": [
+     21,
+     38,
+     17.2
+    ],
+    "orr": [
+     32,
+     58,
+     23.8
+    ]
+   },
+   "geo": {
+    "display_name": "Rohan Upavan, Horamavu, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.0534059,
+    "lon": 77.6610208,
+    "query": "Rohan Upavan, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 6.22,
+    "name": "Krishnarajapura"
+   }
+  },
+  "SNN Raj Etternia": {
+   "borrowedFrom": "Kudlu / Kudlu Gate",
+   "drive": {
+    "cbd": [
+     19,
+     42,
+     11.9
+    ],
+    "ecity": [
+     9,
+     20,
+     7.2
+    ],
+    "itpl": [
+     28,
+     50,
+     22.3
+    ],
+    "orr": [
+     12,
+     26,
+     8.5
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Kudlu / Kudlu Gate",
+    "in_bbox": true,
+    "lat": 12.8899174,
+    "lon": 77.6396808,
+    "query": "(borrowed from AREA Kudlu / Kudlu Gate)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 0.05,
+    "name": "Kudlu Gate"
+   }
+  },
+  "SNN Raj GreenBay": {
+   "drive": {
+    "cbd": [
+     27,
+     49,
+     18.0
+    ],
+    "ecity": [
+     6,
+     16,
+     3.5
+    ],
+    "itpl": [
+     33,
+     59,
+     24.3
+    ],
+    "orr": [
+     19,
+     42,
+     11.8
+    ]
+   },
+   "geo": {
+    "display_name": "SNN Raj Greenbay, Electronics City Phase 2 (East), Electronic City, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.8529415,
+    "lon": 77.6789215,
+    "query": "SNN Raj GreenBay, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 1.11,
+    "name": "Infosys Foundation Konappana Agrahara"
+   }
+  },
+  "SSVR Niyaara": {
+   "borrowedFrom": "Varthur",
+   "drive": {
+    "cbd": [
+     22,
+     40,
+     18.5
+    ],
+    "ecity": [
+     26,
+     47,
+     21.3
+    ],
+    "itpl": [
+     8,
+     18,
+     6.9
+    ],
+    "orr": [
+     14,
+     31,
+     10.5
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Varthur",
+    "in_bbox": true,
+    "lat": 12.9406508,
+    "lon": 77.746988,
+    "query": "(borrowed from AREA Varthur)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 4.66,
+    "name": "Nallurahalli"
+   }
+  },
+  "Salarpuria Sattva Cadenza": {
+   "drive": {
+    "cbd": [
+     18,
+     40,
+     11.4
+    ],
+    "ecity": [
+     9,
+     20,
+     6.7
+    ],
+    "itpl": [
+     28,
+     50,
+     21.9
+    ],
+    "orr": [
+     12,
+     26,
+     8.2
+    ]
+   },
+   "geo": {
+    "display_name": "Salarpuria Sattva Cadenza, Bandepalya, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.8903201,
+    "lon": 77.6421703,
+    "query": "Salarpuria Sattva Cadenza, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 0.32,
+    "name": "Kudlu Gate"
+   }
+  },
+  "Saranya Shantiniketan": {
+   "borrowedFrom": "Immadihalli",
+   "drive": {
+    "cbd": [
+     24,
+     43,
+     19.1
+    ],
+    "ecity": [
+     31,
+     56,
+     25.6
+    ],
+    "itpl": [
+     7,
+     18,
+     4.9
+    ],
+    "orr": [
+     16,
+     35,
+     12.2
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Immadihalli",
+    "in_bbox": true,
+    "lat": 12.9663991,
+    "lon": 77.762046,
+    "query": "(borrowed from AREA Immadihalli)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 2.49,
+    "name": "Hopefarm Channasandra"
+   }
+  },
+  "Sattva Aeropolis": {
+   "drive": {
+    "cbd": [
+     32,
+     48,
+     31.2
+    ],
+    "ecity": [
+     54,
+     81,
+     48.5
+    ],
+    "itpl": [
+     40,
+     60,
+     38.2
+    ],
+    "orr": [
+     48,
+     72,
+     44.6
+    ]
+   },
+   "geo": {
+    "display_name": "Salarpuria Sattva Aeropolis (u/c), Kannamangala, Devanahalli taluku, Bengaluru North, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.2103294,
+    "lon": 77.6740441,
+    "query": "Sattva Aeropolis, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 23.4,
+    "name": "Krishnarajapura"
+   }
+  },
+  "Sattva Aqua Vista": {
+   "drive": {
+    "cbd": [
+     18,
+     40,
+     13.2
+    ],
+    "ecity": [
+     14,
+     31,
+     14.6
+    ],
+    "itpl": [
+     34,
+     61,
+     29.0
+    ],
+    "orr": [
+     18,
+     32,
+     15.2
+    ]
+   },
+   "geo": {
+    "display_name": "Sattva Aqua Vista, Gottigere, Yelenahalli, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.864502,
+    "lon": 77.5905363,
+    "query": "Sattva Aqua Vista, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 4.07,
+    "name": "Konanakunte Cross"
+   }
+  },
+  "Sattva Greenage": {
+   "borrowedFrom": "Kudlu / Kudlu Gate",
+   "drive": {
+    "cbd": [
+     19,
+     42,
+     11.9
+    ],
+    "ecity": [
+     9,
+     20,
+     7.2
+    ],
+    "itpl": [
+     28,
+     50,
+     22.3
+    ],
+    "orr": [
+     12,
+     26,
+     8.5
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Kudlu / Kudlu Gate",
+    "in_bbox": true,
+    "lat": 12.8899174,
+    "lon": 77.6396808,
+    "query": "(borrowed from AREA Kudlu / Kudlu Gate)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 0.05,
+    "name": "Kudlu Gate"
+   }
+  },
+  "Sattva Misty Charm": {
+   "drive": {
+    "cbd": [
+     20,
+     36,
+     17.9
+    ],
+    "ecity": [
+     20,
+     36,
+     22.2
+    ],
+    "itpl": [
+     37,
+     56,
+     34.3
+    ],
+    "orr": [
+     24,
+     43,
+     20.8
+    ]
+   },
+   "geo": {
+    "display_name": "Sattva Misty Charm, Talagattapura, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.8646479,
+    "lon": 77.5447873,
+    "query": "Sattva Misty Charm, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 1.02,
+    "name": "Thalaghattapura"
+   }
+  },
+  "Shriram Greenfield": {
+   "drive": {
+    "cbd": [
+     22,
+     40,
+     24.1
+    ],
+    "ecity": [
+     40,
+     60,
+     38.5
+    ],
+    "itpl": [
+     16,
+     35,
+     14.2
+    ],
+    "orr": [
+     28,
+     50,
+     25.1
+    ]
+   },
+   "geo": {
+    "display_name": "Shriram Greenfield, Bommenehalli, Bommenahalli, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.0713448,
+    "lon": 77.7523097,
+    "query": "Shriram Greenfield, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 8.43,
+    "name": "Whitefield (Kadugodi)"
+   }
+  },
+  "Shriram Poem": {
+   "borrowedFrom": "Jalahalli",
+   "drive": {
+    "cbd": [
+     18,
+     32,
+     15.3
+    ],
+    "ecity": [
+     38,
+     57,
+     30.7
+    ],
+    "itpl": [
+     35,
+     63,
+     29.0
+    ],
+    "orr": [
+     33,
+     59,
+     26.8
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Jalahalli",
+    "in_bbox": true,
+    "lat": 13.0394104,
+    "lon": 77.5197351,
+    "query": "(borrowed from AREA Jalahalli)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 0.0,
+    "name": "Jalahalli"
+   }
+  },
+  "Signature Heights": {
+   "borrowedFrom": "Electronic City Ph 1",
+   "drive": {
+    "cbd": [
+     26,
+     47,
+     18.1
+    ],
+    "ecity": [
+     5,
+     13,
+     2.9
+    ],
+    "itpl": [
+     36,
+     65,
+     28.4
+    ],
+    "orr": [
+     20,
+     44,
+     14.6
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Electronic City Ph 1",
+    "in_bbox": true,
+    "lat": 12.8487599,
+    "lon": 77.648253,
+    "query": "(borrowed from AREA Electronic City Ph 1)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 1.87,
+    "name": "Electronic City"
+   }
+  },
+  "Sobha Arena": {
+   "drive": {
+    "cbd": [
+     19,
+     34,
+     18.0
+    ],
+    "ecity": [
+     17,
+     31,
+     20.1
+    ],
+    "itpl": [
+     36,
+     54,
+     34.3
+    ],
+    "orr": [
+     22,
+     40,
+     20.8
+    ]
+   },
+   "geo": {
+    "display_name": "Sobha Arena, Talagattapura, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.8635783,
+    "lon": 77.5368037,
+    "query": "Sobha Arena, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 0.77,
+    "name": "Silk Institute"
+   }
+  },
+  "Sobha Cinnamon": {
+   "drive": {
+    "cbd": [
+     21,
+     38,
+     15.3
+    ],
+    "ecity": [
+     11,
+     24,
+     7.3
+    ],
+    "itpl": [
+     28,
+     50,
+     22.1
+    ],
+    "orr": [
+     12,
+     26,
+     8.3
+    ]
+   },
+   "geo": {
+    "display_name": "Sobha Cinnamon & Sobha Saffron, Kudlu, Bengaluru South City Corporation, Bengaluru, Anekal, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.893319,
+    "lon": 77.6585803,
+    "query": "Sobha Cinnamon, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 2.04,
+    "name": "Singasandra"
+   }
+  },
+  "Sobha Dream Acres": {
+   "drive": {
+    "cbd": [
+     24,
+     43,
+     17.4
+    ],
+    "ecity": [
+     29,
+     52,
+     20.8
+    ],
+    "itpl": [
+     15,
+     33,
+     10.2
+    ],
+    "orr": [
+     13,
+     29,
+     7.3
+    ]
+   },
+   "geo": {
+    "display_name": "Sobha Dream Acres, Balagere, Panathur, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560087, India",
+    "in_bbox": true,
+    "lat": 12.9366924,
+    "lon": 77.7228489,
+    "query": "Sobha Dream Acres, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 4.45,
+    "name": "Nallurahalli"
+   }
+  },
+  "Sobha Forest View": {
+   "drive": {
+    "cbd": [
+     19,
+     34,
+     18.0
+    ],
+    "ecity": [
+     19,
+     34,
+     22.3
+    ],
+    "itpl": [
+     37,
+     56,
+     34.4
+    ],
+    "orr": [
+     23,
+     41,
+     20.9
+    ]
+   },
+   "geo": {
+    "display_name": "Sobha Forest View, 100FT VAJRAHALLI ROAD, Vajarahalli Main Road, Ganigarapalya, Vajrahalli, Talagattapura, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560062, India",
+    "in_bbox": true,
+    "lat": 12.8791559,
+    "lon": 77.5297021,
+    "query": "Sobha Forest View, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 1.28,
+    "name": "Thalaghattapura"
+   }
+  },
+  "Sobha Habitech": {
+   "borrowedFrom": "Whitefield",
+   "drive": {
+    "cbd": [
+     24,
+     43,
+     20.4
+    ],
+    "ecity": [
+     32,
+     58,
+     27.9
+    ],
+    "itpl": [
+     5,
+     13,
+     3.6
+    ],
+    "orr": [
+     17,
+     37,
+     14.4
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Whitefield",
+    "in_bbox": true,
+    "lat": 12.9957428,
+    "lon": 77.7579489,
+    "query": "(borrowed from AREA Whitefield)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 0.0,
+    "name": "Whitefield (Kadugodi)"
+   }
+  },
+  "Sobha Lake Gardens": {
+   "drive": {
+    "cbd": [
+     17,
+     31,
+     15.3
+    ],
+    "ecity": [
+     35,
+     63,
+     29.6
+    ],
+    "itpl": [
+     11,
+     24,
+     8.2
+    ],
+    "orr": [
+     22,
+     48,
+     14.8
+    ]
+   },
+   "geo": {
+    "display_name": "Sobha Lake Gardens, Medahalli, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 13.0189142,
+    "lon": 77.7226178,
+    "query": "Sobha Lake Gardens, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 3.5,
+    "name": "Garudacharpalya"
+   }
+  },
+  "Sobha Magnus": {
+   "borrowedFrom": "Bannerghatta Road",
+   "drive": {
+    "cbd": [
+     10,
+     22,
+     5.8
+    ],
+    "ecity": [
+     18,
+     40,
+     14.3
+    ],
+    "itpl": [
+     26,
+     47,
+     23.4
+    ],
+    "orr": [
+     13,
+     29,
+     10.4
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Bannerghatta Road",
+    "in_bbox": true,
+    "lat": 12.9297282,
+    "lon": 77.6004731,
+    "query": "(borrowed from AREA Bannerghatta Road)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 1.45,
+    "name": "Jayadeva Hospital"
+   }
+  },
+  "Sobha Royal Crest": {
+   "drive": {
+    "cbd": [
+     16,
+     35,
+     12.6
+    ],
+    "ecity": [
+     28,
+     42,
+     32.2
+    ],
+    "itpl": [
+     33,
+     59,
+     29.0
+    ],
+    "orr": [
+     24,
+     43,
+     19.1
+    ]
+   },
+   "geo": {
+    "display_name": "Sobha Royal Crest (u/c), Bangarappa Nagara, Bengaluru West City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.932216,
+    "lon": 77.5306712,
+    "query": "Sobha Royal Crest, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 1.21,
+    "name": "Pantharapalya - Nayandahalli"
+   }
+  },
+  "Sobha Royal Pavilion": {
+   "borrowedFrom": "Sarjapur Road",
+   "drive": {
+    "cbd": [
+     13,
+     29,
+     9.7
+    ],
+    "ecity": [
+     16,
+     35,
+     13.4
+    ],
+    "itpl": [
+     22,
+     40,
+     18.5
+    ],
+    "orr": [
+     6,
+     16,
+     4.7
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Sarjapur Road",
+    "in_bbox": true,
+    "lat": 12.9243414,
+    "lon": 77.6448784,
+    "query": "(borrowed from AREA Sarjapur Road)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 2.51,
+    "name": "Bommanahalli"
+   }
+  },
+  "Sobha Sentosa": {
+   "drive": {
+    "cbd": [
+     24,
+     43,
+     17.7
+    ],
+    "ecity": [
+     29,
+     52,
+     21.1
+    ],
+    "itpl": [
+     14,
+     31,
+     10.4
+    ],
+    "orr": [
+     13,
+     29,
+     7.5
+    ]
+   },
+   "geo": {
+    "display_name": "Sobha Sentosa, Balagere, Panathur, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9350961,
+    "lon": 77.7241065,
+    "query": "Sobha Sentosa, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 4.62,
+    "name": "Nallurahalli"
+   }
+  },
+  "Sobha Silicon Oasis": {
+   "drive": {
+    "cbd": [
+     21,
+     46,
+     14.6
+    ],
+    "ecity": [
+     6,
+     16,
+     4.7
+    ],
+    "itpl": [
+     29,
+     52,
+     23.6
+    ],
+    "orr": [
+     13,
+     29,
+     9.8
+    ]
+   },
+   "geo": {
+    "display_name": "Sobha Silicon Oasis, Chikkathoguru, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.868538,
+    "lon": 77.6601129,
+    "query": "Sobha Silicon Oasis, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 0.57,
+    "name": "Beratena Agrahara"
+   }
+  },
+  "Sri Garnet Park": {
+   "drive": {
+    "cbd": [
+     16,
+     35,
+     14.1
+    ],
+    "ecity": [
+     32,
+     58,
+     24.0
+    ],
+    "itpl": [
+     4,
+     10,
+     3.4
+    ],
+    "orr": [
+     16,
+     35,
+     10.8
+    ]
+   },
+   "geo": {
+    "display_name": "Sri Garnet Park Apartments, Footpath Under Construction, Rajpalya, Hoodi, Kaveri Nagara, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560048, India",
+    "in_bbox": true,
+    "lat": 12.9914453,
+    "lon": 77.7193404,
+    "query": "Sri Garnet Park, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 0.92,
+    "name": "Hoodi"
+   }
+  },
+  "Sumadhura Folium": {
+   "drive": {
+    "cbd": [
+     23,
+     41,
+     18.4
+    ],
+    "ecity": [
+     30,
+     54,
+     24.9
+    ],
+    "itpl": [
+     7,
+     15,
+     5.0
+    ],
+    "orr": [
+     15,
+     33,
+     11.5
+    ]
+   },
+   "geo": {
+    "display_name": "Sumadhura Folium, Whitefield, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9662654,
+    "lon": 77.7441777,
+    "query": "Sumadhura Folium, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 2.18,
+    "name": "Kadugodi Tree Park"
+   }
+  },
+  "Suncity Gloria": {
+   "borrowedFrom": "Sarjapur Road",
+   "drive": {
+    "cbd": [
+     13,
+     29,
+     9.7
+    ],
+    "ecity": [
+     16,
+     35,
+     13.4
+    ],
+    "itpl": [
+     22,
+     40,
+     18.5
+    ],
+    "orr": [
+     6,
+     16,
+     4.7
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Sarjapur Road",
+    "in_bbox": true,
+    "lat": 12.9243414,
+    "lon": 77.6448784,
+    "query": "(borrowed from AREA Sarjapur Road)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 2.51,
+    "name": "Bommanahalli"
+   }
+  },
+  "Sunny Groves": {
+   "borrowedFrom": "Sarjapur Road",
+   "drive": {
+    "cbd": [
+     13,
+     29,
+     9.7
+    ],
+    "ecity": [
+     16,
+     35,
+     13.4
+    ],
+    "itpl": [
+     22,
+     40,
+     18.5
+    ],
+    "orr": [
+     6,
+     16,
+     4.7
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Sarjapur Road",
+    "in_bbox": true,
+    "lat": 12.9243414,
+    "lon": 77.6448784,
+    "query": "(borrowed from AREA Sarjapur Road)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 2.51,
+    "name": "Bommanahalli"
+   }
+  },
+  "Trifecta Verde En Resplandor": {
+   "borrowedFrom": "Whitefield",
+   "drive": {
+    "cbd": [
+     24,
+     43,
+     20.4
+    ],
+    "ecity": [
+     32,
+     58,
+     27.9
+    ],
+    "itpl": [
+     5,
+     13,
+     3.6
+    ],
+    "orr": [
+     17,
+     37,
+     14.4
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Whitefield",
+    "in_bbox": true,
+    "lat": 12.9957428,
+    "lon": 77.7579489,
+    "query": "(borrowed from AREA Whitefield)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 0.0,
+    "name": "Whitefield (Kadugodi)"
+   }
+  },
+  "Vaishnavi Krishna Brindavan": {
+   "drive": {
+    "cbd": [
+     14,
+     31,
+     11.5
+    ],
+    "ecity": [
+     21,
+     38,
+     17.3
+    ],
+    "itpl": [
+     31,
+     56,
+     27.8
+    ],
+    "orr": [
+     17,
+     37,
+     14.3
+    ]
+   },
+   "geo": {
+    "display_name": "Vaishnavi Krishna Brindavan (u/c), Banashankari Temple Ward, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9116701,
+    "lon": 77.5692333,
+    "query": "Vaishnavi Krishna Brindavan, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 0.62,
+    "name": "Banashankari"
+   }
+  }
+ },
+ "stations": [
+  {
+   "lat": 13.0574214,
+   "lon": 77.4728055,
+   "name": "Madavara"
+  },
+  {
+   "lat": 13.0523616,
+   "lon": 77.4879154,
+   "name": "Chikkabidarakallu"
+  },
+  {
+   "lat": 13.0500898,
+   "lon": 77.4944461,
+   "name": "Manjunathanagara"
+  },
+  {
+   "lat": 12.916731,
+   "lon": 77.5999663,
+   "name": "Jayadeva Hospital"
+  },
+  {
+   "lat": 12.9957428,
+   "lon": 77.7579489,
+   "name": "Whitefield (Kadugodi)"
+  },
+  {
+   "lat": 12.9873426,
+   "lon": 77.7538033,
+   "name": "Hopefarm Channasandra"
+  },
+  {
+   "lat": 12.9876393,
+   "lon": 77.7377718,
+   "name": "Pattandur Agrahara"
+  },
+  {
+   "lat": 12.9811949,
+   "lon": 77.7275361,
+   "name": "Sri Sathya Sai Hospital"
+  },
+  {
+   "lat": 12.9766408,
+   "lon": 77.7248845,
+   "name": "Nallurahalli"
+  },
+  {
+   "lat": 12.977594,
+   "lon": 77.7155586,
+   "name": "Kundalahalli"
+  },
+  {
+   "lat": 12.9808558,
+   "lon": 77.7087854,
+   "name": "Seetharampalya"
+  },
+  {
+   "lat": 12.9888029,
+   "lon": 77.711326,
+   "name": "Hoodi"
+  },
+  {
+   "lat": 12.9934505,
+   "lon": 77.7036768,
+   "name": "Garudacharpalya"
+  },
+  {
+   "lat": 12.9965445,
+   "lon": 77.6927176,
+   "name": "Singayyanapalya"
+  },
+  {
+   "lat": 12.9999024,
+   "lon": 77.6776703,
+   "name": "Krishnarajapura"
+  },
+  {
+   "lat": 12.9965158,
+   "lon": 77.6684619,
+   "name": "Benniganahalli"
+  },
+  {
+   "lat": 12.8193944,
+   "lon": 77.6883453,
+   "name": "Delta Electronics Bommasandra"
+  },
+  {
+   "lat": 12.8391572,
+   "lon": 77.6773716,
+   "name": "Huskur Road"
+  },
+  {
+   "lat": 12.8464134,
+   "lon": 77.6711655,
+   "name": "Infosys Foundation Konappana Agrahara"
+  },
+  {
+   "lat": 12.8565053,
+   "lon": 77.6635228,
+   "name": "Electronic City"
+  },
+  {
+   "lat": 12.8638665,
+   "lon": 77.6578624,
+   "name": "Beratena Agrahara"
+  },
+  {
+   "lat": 12.8707491,
+   "lon": 77.652447,
+   "name": "Hosa Road"
+  },
+  {
+   "lat": 12.8808178,
+   "lon": 77.6448456,
+   "name": "Singasandra"
+  },
+  {
+   "lat": 12.8899259,
+   "lon": 77.6392156,
+   "name": "Kudlu Gate"
+  },
+  {
+   "lat": 12.9016952,
+   "lon": 77.6319861,
+   "name": "Hongasandra"
+  },
+  {
+   "lat": 12.9106157,
+   "lon": 77.6264782,
+   "name": "Bommanahalli"
+  },
+  {
+   "lat": 12.9165816,
+   "lon": 77.620567,
+   "name": "Central Silk Board"
+  },
+  {
+   "lat": 12.9165878,
+   "lon": 77.6081182,
+   "name": "BTM Layout"
+  },
+  {
+   "lat": 12.9170807,
+   "lon": 77.5883015,
+   "name": "Ragigudda"
+  },
+  {
+   "lat": 13.0432607,
+   "lon": 77.5125535,
+   "name": "Dasarahalli"
+  },
+  {
+   "lat": 13.0394104,
+   "lon": 77.5197351,
+   "name": "Jalahalli"
+  },
+  {
+   "lat": 12.9965253,
+   "lon": 77.5631963,
+   "name": "Srirampura"
+  },
+  {
+   "lat": 12.9907594,
+   "lon": 77.6523612,
+   "name": "Baiyappanahalli"
+  },
+  {
+   "lat": 12.9859306,
+   "lon": 77.644897,
+   "name": "Swami Vivekananda Road"
+  },
+  {
+   "lat": 12.9783325,
+   "lon": 77.6386612,
+   "name": "Indiranagar"
+  },
+  {
+   "lat": 12.9764992,
+   "lon": 77.626686,
+   "name": "Halasuru"
+  },
+  {
+   "lat": 12.9730218,
+   "lon": 77.6170205,
+   "name": "Trinity"
+  },
+  {
+   "lat": 12.9755264,
+   "lon": 77.6067902,
+   "name": "Mahatma Gandhi Road"
+  },
+  {
+   "lat": 12.9809575,
+   "lon": 77.5975756,
+   "name": "Cubbon Park"
+  },
+  {
+   "lat": 12.9787419,
+   "lon": 77.5916385,
+   "name": "Dr. B. R. Ambedkar Station, Vidhana Soudha"
+  },
+  {
+   "lat": 12.9745197,
+   "lon": 77.58422,
+   "name": "Sir M. Visvesvaraya Stn., Central College"
+  },
+  {
+   "lat": 12.9757079,
+   "lon": 77.5728757,
+   "name": "Nadaprabhu Kempegowda Station, Majestic"
+  },
+  {
+   "lat": 12.9758768,
+   "lon": 77.5653767,
+   "name": "Krantivira Sangolli Rayanna Railway Station"
+  },
+  {
+   "lat": 12.975632,
+   "lon": 77.5553523,
+   "name": "Magadi Road"
+  },
+  {
+   "lat": 12.9742933,
+   "lon": 77.5456215,
+   "name": "Sri Balagangadharanatha Swamiji Station, Hosahalli"
+  },
+  {
+   "lat": 12.9709559,
+   "lon": 77.5374044,
+   "name": "Vijayanagar"
+  },
+  {
+   "lat": 12.9618931,
+   "lon": 77.5335788,
+   "name": "Attiguppe"
+  },
+  {
+   "lat": 12.9520578,
+   "lon": 77.5370122,
+   "name": "Deepanjali Nagar"
+  },
+  {
+   "lat": 12.9467183,
+   "lon": 77.5301588,
+   "name": "Mysore Road"
+  },
+  {
+   "lat": 12.9904629,
+   "lon": 77.5707293,
+   "name": "Mantri Square Sampige Road"
+  },
+  {
+   "lat": 12.9985297,
+   "lon": 77.5568986,
+   "name": "Mahakavi Kuvempu Road"
+  },
+  {
+   "lat": 13.0005247,
+   "lon": 77.5496568,
+   "name": "Rajajinagar"
+  },
+  {
+   "lat": 13.0080475,
+   "lon": 77.5488066,
+   "name": "Mahalakshmi"
+  },
+  {
+   "lat": 13.0146544,
+   "lon": 77.5539839,
+   "name": "Sandal Soap Factory"
+  },
+  {
+   "lat": 13.0330189,
+   "lon": 77.533201,
+   "name": "Peenya"
+  },
+  {
+   "lat": 13.0363176,
+   "lon": 77.5254924,
+   "name": "Peenya Industry"
+  },
+  {
+   "lat": 12.8960498,
+   "lon": 77.5701194,
+   "name": "Yelachenahalli"
+  },
+  {
+   "lat": 12.9074747,
+   "lon": 77.5731279,
+   "name": "Jaya Prakash Nagar"
+  },
+  {
+   "lat": 12.9152208,
+   "lon": 77.573598,
+   "name": "Banashankari"
+  },
+  {
+   "lat": 12.9215807,
+   "lon": 77.5802015,
+   "name": "Rashtreeya Vidyalaya Road"
+  },
+  {
+   "lat": 12.9295069,
+   "lon": 77.5801439,
+   "name": "Jayanagar"
+  },
+  {
+   "lat": 12.9382573,
+   "lon": 77.5800556,
+   "name": "South End Circle"
+  },
+  {
+   "lat": 12.9465265,
+   "lon": 77.580016,
+   "name": "Lalbagh"
+  },
+  {
+   "lat": 12.9505266,
+   "lon": 77.5736898,
+   "name": "National College"
+  },
+  {
+   "lat": 12.9608788,
+   "lon": 77.5746578,
+   "name": "Krishna Rajendra Market"
+  },
+  {
+   "lat": 12.9668974,
+   "lon": 77.5745566,
+   "name": "Chickpete"
+  },
+  {
+   "lat": 12.9354357,
+   "lon": 77.5124063,
+   "name": "Jnanabharathi"
+  },
+  {
+   "lat": 12.9416715,
+   "lon": 77.5251166,
+   "name": "Pantharapalya - Nayandahalli"
+  },
+  {
+   "lat": 12.914689,
+   "lon": 77.4878557,
+   "name": "Kengeri Bus Terminal"
+  },
+  {
+   "lat": 12.9079105,
+   "lon": 77.4765784,
+   "name": "Kengeri"
+  },
+  {
+   "lat": 12.9365996,
+   "lon": 77.5196788,
+   "name": "Rajarajeshwari Nagar"
+  },
+  {
+   "lat": 12.9242505,
+   "lon": 77.4983509,
+   "name": "Pattanagere"
+  },
+  {
+   "lat": 12.8973539,
+   "lon": 77.4612877,
+   "name": "Challaghatta"
+  },
+  {
+   "lat": 12.8617298,
+   "lon": 77.5299545,
+   "name": "Silk Institute"
+  },
+  {
+   "lat": 12.8714097,
+   "lon": 77.5383958,
+   "name": "Thalaghattapura"
+  },
+  {
+   "lat": 12.8774369,
+   "lon": 77.5447414,
+   "name": "Vajarahalli"
+  },
+  {
+   "lat": 12.8846435,
+   "lon": 77.5527546,
+   "name": "Doddakallasandra"
+  },
+  {
+   "lat": 12.8889671,
+   "lon": 77.5626665,
+   "name": "Konanakunte Cross"
+  },
+  {
+   "lat": 12.8290325,
+   "lon": 77.6813744,
+   "name": "Biocon Hebbagodi"
+  },
+  {
+   "lat": 13.0479536,
+   "lon": 77.5001422,
+   "name": "Nagasandra"
+  },
+  {
+   "lat": 13.0232678,
+   "lon": 77.5498751,
+   "name": "Yeshwantpur"
+  },
+  {
+   "lat": 12.9856503,
+   "lon": 77.7470121,
+   "name": "Kadugodi Tree Park"
+  }
+ ]
+}

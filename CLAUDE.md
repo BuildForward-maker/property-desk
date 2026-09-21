@@ -32,10 +32,12 @@ The only external JS dependency is the Supabase client from jsdelivr:
 (Google Fonts stylesheets are also loaded and are fine to keep.) Do not add other
 libraries, frameworks, or CDN scripts without being asked.
 
-### 4. Maps: Leaflet + OpenStreetMap only
+### 4. Maps: Leaflet + a keyless basemap
 
-If a map is added, use Leaflet with OpenStreetMap tiles. **Never Google Maps** —
-it requires a billing account, which defeats the point of a file anyone can open.
+For maps, use Leaflet with a keyless raster basemap (currently Esri World Light
+Gray Canvas + Reference labels). Never Google Maps, CARTO, or Stadia — all now
+require an API key or billing account.
+
 Leaflet's CSS and JS may be loaded from a CDN as an exception to rule 3.
 
 ### 5. Supabase config lives in the URL hash
@@ -54,6 +56,47 @@ back to local mode and remains fully usable. Preserve this. Every Supabase call
 must be guarded (`if(MODE!=='shared')return;`) and wrapped so a failure degrades
 quietly instead of throwing.
 
+### 7. `tools/` and `data/` are offline tooling, not app code
+
+`tools/` holds one-time data-prep scripts, run by hand. They are never loaded by
+`index.html` and never run at build time or page load — there is still no build
+step. `data/` holds their inputs and outputs.
+
+`data/geocache.json` **must be preserved.** It is the record of every Nominatim
+query already made. The script reads it before requesting anything, so a re-run
+costs zero requests for places already resolved. Nominatim forbids systematic
+querying; deleting the cache means hitting them all over again. Misses are
+cached too, deliberately — an unresolvable name should not be re-asked.
+
+Rules 1 and 2 are about the app. A `tools/` script is not a violation of either.
+
+## Third-party services — swap plan
+
+Current (all keyless, free, non-commercial):
+- Tiles: Esri World Light Gray Canvas + Reference labels
+- Geocoding: Nominatim, one-time offline enrichment only
+- Routing: OSRM demo server, one-time offline enrichment only
+- POIs: Overpass API (kumi.systems mirror), one-time only
+
+RULE: none may be called from the browser at runtime. All results are
+precomputed by `tools/enrich.py` and baked into `index.html` as plain data. This
+keeps providers swappable and running costs zero.
+
+BEFORE CHARGING MONEY: the OSRM demo server and Nominatim are non-commercial use
+only. Self-host OSRM or move to a paid routing provider before taking payment.
+
+Swapping tiles is a one-line change. Swapping geocoders means re-running
+`tools/enrich.py`, not a migration.
+
+Geocode results are cached in `data/geocache.json`. Read the cache first; never
+re-query a place already resolved. Nominatim forbids systematic and bulk
+querying, so the script must hit it once only. Misses are cached too, so
+failures are not re-asked.
+
+Offline data-prep tools live in `tools/` and are written in Python 3 (stdlib
+only). The no-npm rule applies to the app; tools must not add any runtime
+dependency to `index.html`.
+
 ## Data
 
 Two arrays hold the domain data. Keep their shapes consistent when editing.
@@ -64,8 +107,17 @@ Two arrays hold the domain data. Keep their shapes consistent when editing.
   written read.
 - **`SOC`** (line ~1363) — the listings directory, one entry per society:
   `n` name, `a` micro-market, `z` zone, `b` builder, `t` tier 1–3, `age` years
-  (0 = new build), `st` status, `sz` 2BHK sqft, `psf` ₹/sqft, `lo`/`hi`
-  indicative price, `rent`, `c` 1 = seen listed, `r` the written read.
+  (0 = new build), `st` status, `seg` possession segment, `sz` 2BHK sqft,
+  `psf` ₹/sqft, `lo`/`hi` indicative price, `rent`, `c` 1 = seen listed,
+  `r` the written read.
+
+Both arrays also carry fields written by `tools/enrich.py` — do not hand-edit
+these, re-run the script instead: `lat`/`lng`, `dt` (drive times per hub, as
+`[free-flow min, peak estimate min, road km]`), `mx`/`mkm` (nearest metro and
+straight-line km). `SOC` additionally carries `geoPrecision`: `'building'` where
+Nominatim resolved the complex itself, `'area'` where it fell back to the
+micro-market's coordinates. Area-level entries are labelled as approximate in
+the UI; keep that distinction visible.
 
 ## Tabs
 
