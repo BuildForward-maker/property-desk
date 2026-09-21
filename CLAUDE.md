@@ -111,6 +111,22 @@ Two arrays hold the domain data. Keep their shapes consistent when editing.
   `psf` ₹/sqft, `lo`/`hi` indicative price, `rent`, `c` 1 = seen listed,
   `r` the written read.
 
+`SOC` also carries provenance, which is hand-maintained and must never be
+invented or averaged:
+
+- `src` — `rera` | `builder` | `broker` | `portal` | `derived`
+- `asOf` — `YYYY-MM`, when the figure was captured
+- `rera` — the registration number, or `pending`, or `unknown`
+- `inventory` — `available` | `limited` | `soldout`
+- `conflict` — optional note where sources disagree
+- `possReg` / `possTarget` — registered and marketed possession, where they differ
+- `lowconf` — set where the whole entry is disputed
+
+Do not average broker figures. Store the authoritative number, and where
+sources disagree store the observed range plus a `conflict` note. An averaged
+figure nobody quoted cannot be defended to a buyer. A `rera` figure must read
+as visibly more trustworthy in the UI than a `broker` one.
+
 Both arrays also carry fields written by `tools/enrich.py` — do not hand-edit
 these, re-run the script instead: `lat`/`lng`, `dt` (drive times per hub, as
 `[free-flow min, peak estimate min, road km]`), `mx`/`mkm` (nearest metro and
@@ -126,6 +142,17 @@ Seventeen tabs, wired by `data-t` on `nav.rail button` to `#p-<name>` panels:
 `money`, `yield`, `negotiate`, `prices`, `verify`, `plan`, `sources`, `setup`.
 Some re-render on activation in the tab click handler — add a case there if a new
 tab needs it.
+
+## How to verify
+
+Verify features through the user path — real click and input events, asserting
+the rendered DOM — not by calling the underlying function directly. Several
+bugs have shipped because a function tested correct while its wiring was
+broken.
+
+A ranking is only meaningful if the top result is actually good. Where every
+candidate scores badly, say so explicitly rather than presenting a sorted list
+of bad options.
 
 ## After any change
 

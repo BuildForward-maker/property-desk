@@ -3676,7 +3676,7 @@
    "south": 12.7,
    "west": 77.3
   },
-  "generated": "2026-09-21T13:16:29Z",
+  "generated": "2026-09-21T13:53:08Z",
   "hubs": [
    {
     "key": "itpl",
@@ -3765,6 +3765,57 @@
     "name": "Electronic City"
    },
    "metroJourney": null
+  },
+  "Amberstone Pride": {
+   "borrowedFrom": "JP Nagar",
+   "drive": {
+    "cbd": [
+     14,
+     31,
+     10.9
+    ],
+    "ecity": [
+     19,
+     34,
+     15.1
+    ],
+    "itpl": [
+     29,
+     52,
+     26.1
+    ],
+    "orr": [
+     16,
+     35,
+     12.1
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: JP Nagar",
+    "in_bbox": true,
+    "lat": 12.9096941,
+    "lon": 77.5866067,
+    "query": "(borrowed from AREA JP Nagar)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 0.84,
+    "name": "Ragigudda"
+   },
+   "metroJourney": {
+    "cbd": [
+     64,
+     2
+    ],
+    "ecity": [
+     46,
+     0
+    ],
+    "itpl": [
+     102,
+     2
+    ]
+   }
   },
   "Anahata": {
    "borrowedFrom": "Whitefield",
@@ -3938,6 +3989,44 @@
    "metro": {
     "km": 14.27,
     "name": "Yeshwantpur"
+   },
+   "metroJourney": null
+  },
+  "Avalon Park at The Prestige City": {
+   "borrowedFrom": "Sarjapur Road",
+   "drive": {
+    "cbd": [
+     13,
+     29,
+     9.7
+    ],
+    "ecity": [
+     16,
+     35,
+     13.4
+    ],
+    "itpl": [
+     22,
+     40,
+     18.5
+    ],
+    "orr": [
+     6,
+     16,
+     4.7
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Sarjapur Road",
+    "in_bbox": true,
+    "lat": 12.9243414,
+    "lon": 77.6448784,
+    "query": "(borrowed from AREA Sarjapur Road)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 2.51,
+    "name": "Bommanahalli"
    },
    "metroJourney": null
   },
@@ -4537,6 +4626,82 @@
    },
    "metroJourney": null
   },
+  "Eaton Park at The Prestige City": {
+   "borrowedFrom": "Sarjapur Road",
+   "drive": {
+    "cbd": [
+     13,
+     29,
+     9.7
+    ],
+    "ecity": [
+     16,
+     35,
+     13.4
+    ],
+    "itpl": [
+     22,
+     40,
+     18.5
+    ],
+    "orr": [
+     6,
+     16,
+     4.7
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Sarjapur Road",
+    "in_bbox": true,
+    "lat": 12.9243414,
+    "lon": 77.6448784,
+    "query": "(borrowed from AREA Sarjapur Road)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 2.51,
+    "name": "Bommanahalli"
+   },
+   "metroJourney": null
+  },
+  "Eden Park at The Prestige City": {
+   "borrowedFrom": "Sarjapur Road",
+   "drive": {
+    "cbd": [
+     13,
+     29,
+     9.7
+    ],
+    "ecity": [
+     16,
+     35,
+     13.4
+    ],
+    "itpl": [
+     22,
+     40,
+     18.5
+    ],
+    "orr": [
+     6,
+     16,
+     4.7
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Sarjapur Road",
+    "in_bbox": true,
+    "lat": 12.9243414,
+    "lon": 77.6448784,
+    "query": "(borrowed from AREA Sarjapur Road)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 2.51,
+    "name": "Bommanahalli"
+   },
+   "metroJourney": null
+  },
   "Godrej Air": {
    "drive": {
     "cbd": [
@@ -4623,6 +4788,12 @@
     "name": "Electronic City"
    },
    "metroJourney": null
+  },
+  "Godrej Regent Park": {
+   "drive": null,
+   "geo": null,
+   "geoPrecision": null,
+   "metro": null
   },
   "Godrej Woods": {
    "drive": {
@@ -4832,6 +5003,44 @@
    "metro": {
     "km": 6.7,
     "name": "Yeshwantpur"
+   },
+   "metroJourney": null
+  },
+  "Living Walls True North": {
+   "borrowedFrom": "Bagalur",
+   "drive": {
+    "cbd": [
+     8,
+     18,
+     5.7
+    ],
+    "ecity": [
+     31,
+     56,
+     24.4
+    ],
+    "itpl": [
+     20,
+     36,
+     16.4
+    ],
+    "orr": [
+     24,
+     43,
+     18.9
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Bagalur",
+    "in_bbox": true,
+    "lat": 13.0079918,
+    "lon": 77.6184726,
+    "query": "(borrowed from AREA Bagalur)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 3.61,
+    "name": "Halasuru"
    },
    "metroJourney": null
   },
@@ -5047,6 +5256,50 @@
     ]
    }
   },
+  "Meridian Park at The Prestige City": {
+   "borrowedFrom": "Sarjapur Road",
+   "drive": {
+    "cbd": [
+     13,
+     29,
+     9.7
+    ],
+    "ecity": [
+     16,
+     35,
+     13.4
+    ],
+    "itpl": [
+     22,
+     40,
+     18.5
+    ],
+    "orr": [
+     6,
+     16,
+     4.7
+    ]
+   },
+   "geo": {
+    "display_name": "area-level: Sarjapur Road",
+    "in_bbox": true,
+    "lat": 12.9243414,
+    "lon": 77.6448784,
+    "query": "(borrowed from AREA Sarjapur Road)"
+   },
+   "geoPrecision": "area",
+   "metro": {
+    "km": 2.51,
+    "name": "Bommanahalli"
+   },
+   "metroJourney": null
+  },
+  "Merusri Serenova": {
+   "drive": null,
+   "geo": null,
+   "geoPrecision": null,
+   "metro": null
+  },
   "Metro Urbano": {
    "borrowedFrom": "Kudlu / Kudlu Gate",
    "drive": {
@@ -5174,39 +5427,113 @@
    },
    "metroJourney": null
   },
-  "Nambiar District 25": {
+  "Nambiar District 25 Phase 1": {
    "drive": {
     "cbd": [
-     38,
-     68,
-     24.1
+     33,
+     59,
+     22.8
     ],
     "ecity": [
-     22,
-     48,
-     12.7
+     17,
+     37,
+     11.3
     ],
     "itpl": [
-     25,
-     45,
-     19.0
+     20,
+     36,
+     17.7
     ],
     "orr": [
-     24,
-     53,
-     14.3
+     19,
+     42,
+     13.0
     ]
    },
    "geo": {
-    "display_name": "Nambiar District 25 (u/c), Dommasandra, Anekal, Bengaluru Urban, Karnataka, India",
+    "display_name": "Nambiar District 25, Dommasandra, Kommasandra, Anekal, Bengaluru Urban, Karnataka, India",
     "in_bbox": true,
-    "lat": 12.8739161,
-    "lon": 77.743897,
-    "query": "Nambiar District 25, Bengaluru, Karnataka, India"
+    "lat": 12.8747325,
+    "lon": 77.736087,
+    "query": "Nambiar District 25 Phase 1, Bengaluru, Karnataka, India"
    },
    "geoPrecision": "building",
    "metro": {
-    "km": 8.18,
+    "km": 7.49,
+    "name": "Huskur Road"
+   },
+   "metroJourney": null
+  },
+  "Nambiar District 25 Phase 2": {
+   "drive": {
+    "cbd": [
+     33,
+     59,
+     22.8
+    ],
+    "ecity": [
+     17,
+     37,
+     11.3
+    ],
+    "itpl": [
+     20,
+     36,
+     17.7
+    ],
+    "orr": [
+     19,
+     42,
+     13.0
+    ]
+   },
+   "geo": {
+    "display_name": "Nambiar District 25, Dommasandra, Kommasandra, Anekal, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.8747325,
+    "lon": 77.736087,
+    "query": "Nambiar District 25 Phase 2, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 7.49,
+    "name": "Huskur Road"
+   },
+   "metroJourney": null
+  },
+  "Nambiar District 25 Phase 3": {
+   "drive": {
+    "cbd": [
+     33,
+     59,
+     22.8
+    ],
+    "ecity": [
+     17,
+     37,
+     11.3
+    ],
+    "itpl": [
+     20,
+     36,
+     17.7
+    ],
+    "orr": [
+     19,
+     42,
+     13.0
+    ]
+   },
+   "geo": {
+    "display_name": "Nambiar District 25, Dommasandra, Kommasandra, Anekal, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.8747325,
+    "lon": 77.736087,
+    "query": "Nambiar District 25 Phase 3, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 7.49,
     "name": "Huskur Road"
    },
    "metroJourney": null
@@ -5349,6 +5676,43 @@
    },
    "metroJourney": null
   },
+  "Prestige Evergreen": {
+   "drive": {
+    "cbd": [
+     24,
+     43,
+     20.1
+    ],
+    "ecity": [
+     29,
+     52,
+     24.0
+    ],
+    "itpl": [
+     11,
+     24,
+     8.6
+    ],
+    "orr": [
+     16,
+     35,
+     13.2
+    ]
+   },
+   "geo": {
+    "display_name": "Prestige Evergreen, Varthur, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9543438,
+    "lon": 77.749161,
+    "query": "Prestige Evergreen, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 3.49,
+    "name": "Kadugodi Tree Park"
+   },
+   "metroJourney": null
+  },
   "Prestige Ferns Residency": {
    "drive": {
     "cbd": [
@@ -5383,6 +5747,43 @@
    "metro": {
     "km": 3.01,
     "name": "Kudlu Gate"
+   },
+   "metroJourney": null
+  },
+  "Prestige Garden Breeze": {
+   "drive": {
+    "cbd": [
+     36,
+     65,
+     28.9
+    ],
+    "ecity": [
+     29,
+     52,
+     18.8
+    ],
+    "itpl": [
+     22,
+     40,
+     19.0
+    ],
+    "orr": [
+     25,
+     45,
+     18.1
+    ]
+   },
+   "geo": {
+    "display_name": "Prestige Garden Breeze (u/c), Ittangur, Ittanguru, Valagere Kallahalli, Anekal, Bengaluru Urban, Karnataka, 562125, India",
+    "in_bbox": true,
+    "lat": 12.8807739,
+    "lon": 77.7857876,
+    "query": "Prestige Garden Breeze, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 12.35,
+    "name": "Hopefarm Channasandra"
    },
    "metroJourney": null
   },
@@ -5457,6 +5858,43 @@
    "metro": {
     "km": 5.12,
     "name": "Nallurahalli"
+   },
+   "metroJourney": null
+  },
+  "Prestige Oakville": {
+   "drive": {
+    "cbd": [
+     13,
+     29,
+     8.8
+    ],
+    "ecity": [
+     18,
+     40,
+     13.6
+    ],
+    "itpl": [
+     24,
+     43,
+     20.8
+    ],
+    "orr": [
+     10,
+     22,
+     6.8
+    ]
+   },
+   "geo": {
+    "display_name": "Prestige Oakville (u/c), Kormangala East, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9316635,
+    "lon": 77.6379319,
+    "query": "Prestige Oakville, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 2.52,
+    "name": "Central Silk Board"
    },
    "metroJourney": null
   },
@@ -5596,6 +6034,43 @@
      0
     ]
    }
+  },
+  "Prestige Smart City": {
+   "drive": {
+    "cbd": [
+     12,
+     26,
+     10.5
+    ],
+    "ecity": [
+     30,
+     54,
+     23.0
+    ],
+    "itpl": [
+     30,
+     54,
+     26.9
+    ],
+    "orr": [
+     25,
+     45,
+     19.0
+    ]
+   },
+   "geo": {
+    "display_name": "Prestige Smart Kitchen, Chord Road, Hosahalli, Bengaluru West City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560040, India",
+    "in_bbox": true,
+    "lat": 12.9686867,
+    "lon": 77.5373687,
+    "query": "Prestige Smart City, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 0.25,
+    "name": "Vijayanagar"
+   },
+   "metroJourney": null
   },
   "Prestige Song of the South": {
    "drive": {
@@ -7376,6 +7851,56 @@
     ]
    }
   },
+  "Sumadhura Aikya": {
+   "drive": {
+    "cbd": [
+     19,
+     34,
+     16.0
+    ],
+    "ecity": [
+     31,
+     56,
+     24.1
+    ],
+    "itpl": [
+     8,
+     18,
+     5.9
+    ],
+    "orr": [
+     15,
+     33,
+     10.9
+    ]
+   },
+   "geo": {
+    "display_name": "Sumadhura's Srinivasam, EPIP Zone, Bharath Aikya Ward, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.9844343,
+    "lon": 77.7121779,
+    "query": "Sumadhura Aikya, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 0.49,
+    "name": "Hoodi"
+   },
+   "metroJourney": {
+    "cbd": [
+     39,
+     0
+    ],
+    "ecity": [
+     112,
+     2
+    ],
+    "itpl": [
+     26,
+     0
+    ]
+   }
+  },
   "Sumadhura Folium": {
    "drive": {
     "cbd": [
@@ -7486,6 +8011,43 @@
    "metro": {
     "km": 2.51,
     "name": "Bommanahalli"
+   },
+   "metroJourney": null
+  },
+  "Trifecta Vanto": {
+   "drive": {
+    "cbd": [
+     30,
+     54,
+     20.6
+    ],
+    "ecity": [
+     16,
+     35,
+     10.5
+    ],
+    "itpl": [
+     20,
+     36,
+     15.6
+    ],
+    "orr": [
+     17,
+     37,
+     10.8
+    ]
+   },
+   "geo": {
+    "display_name": "Trifecta Vanto (u/c), Kodati, Kodathi, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "in_bbox": true,
+    "lat": 12.8811923,
+    "lon": 77.7161942,
+    "query": "Trifecta Vanto, Bengaluru, Karnataka, India"
+   },
+   "geoPrecision": "building",
+   "metro": {
+    "km": 6.23,
+    "name": "Infosys Foundation Konappana Agrahara"
    },
    "metroJourney": null
   },

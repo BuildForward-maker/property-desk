@@ -6,6 +6,8 @@
   "query_variant": 0,
   "type": "construction"
  },
+ "Amberstone Pride, Bengaluru, Karnataka, India": null,
+ "Amberstone Pride, JP Nagar 8th Phase, Bengaluru, Karnataka, India": null,
  "Anahata, Bengaluru, Karnataka, India": null,
  "Anahata, Whitefield, Bengaluru, Karnataka, India": null,
  "Anjanapura, Bengaluru, Karnataka, India": {
@@ -51,6 +53,8 @@
   "query_variant": 0,
   "type": "administrative"
  },
+ "Avalon Park at The Prestige City, Bengaluru, Karnataka, India": null,
+ "Avalon Park at The Prestige City, Sarjapur Road, Bengaluru, Karnataka, India": null,
  "BTM Layout, Bengaluru, Karnataka, India": {
   "display_name": "BTM Layout, Viswamanava Kuvempu Ward, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560076, India",
   "lat": 12.9140008,
@@ -305,6 +309,10 @@
   "query_variant": 1,
   "type": "quarter"
  },
+ "Eaton Park at The Prestige City, Bengaluru, Karnataka, India": null,
+ "Eaton Park at The Prestige City, Sarjapur Road, Bengaluru, Karnataka, India": null,
+ "Eden Park at The Prestige City, Bengaluru, Karnataka, India": null,
+ "Eden Park at The Prestige City, Sarjapur Road, Bengaluru, Karnataka, India": null,
  "Electronic City Ph 1, Bengaluru, Karnataka, India": {
   "display_name": "Prime City Apartments, Electronic City, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560100, India",
   "lat": 12.8487599,
@@ -341,6 +349,8 @@
   "query_variant": 0,
   "type": "residential"
  },
+ "Godrej Regent Park, Bengaluru, Karnataka, India": null,
+ "Godrej Regent Park, Kada Agrahara, Bengaluru, Karnataka, India": null,
  "Godrej Woods, Bengaluru, Karnataka, India": {
   "display_name": "Godrej Woods (u/c), Kogilu, Bengaluru North City Corporation, Bengaluru, Yelahanka taluku, Bengaluru Urban, Karnataka, India",
   "lat": 13.1075691,
@@ -564,6 +574,8 @@
   "query_variant": 0,
   "type": "residential"
  },
+ "Living Walls True North, Bengaluru, Karnataka, India": null,
+ "Living Walls True North, Hennur–Bagalur Road, Bengaluru, Karnataka, India": null,
  "MG Road / CBD, Bengaluru, Karnataka, India": null,
  "MG Road, Bengaluru, Karnataka, India": {
   "display_name": "Mahatma Gandhi Road, Shanthala Nagar, Ashokanagar, Bengaluru Central City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560001, India",
@@ -638,6 +650,10 @@
   "query_variant": 1,
   "type": "suburb"
  },
+ "Meridian Park at The Prestige City, Bengaluru, Karnataka, India": null,
+ "Meridian Park at The Prestige City, Sarjapur Road, Bengaluru, Karnataka, India": null,
+ "Merusri Serenova, Bengaluru, Karnataka, India": null,
+ "Merusri Serenova, Rajanukunte, off IVC Road, Bengaluru, Karnataka, India": null,
  "Metro Urbano, Bengaluru, Karnataka, India": null,
  "Metro Urbano, Kudlu Gate, Bengaluru, Karnataka, India": null,
  "Mysore Road, Bengaluru, Karnataka, India": {
@@ -665,6 +681,30 @@
   "lon": 77.6312831,
   "query_variant": 1,
   "type": "bus_stop"
+ },
+ "Nambiar District 25 Phase 1, Bengaluru, Karnataka, India": {
+  "class": "landuse",
+  "display_name": "Nambiar District 25, Dommasandra, Kommasandra, Anekal, Bengaluru Urban, Karnataka, India",
+  "lat": 12.8747325,
+  "lon": 77.736087,
+  "query_variant": 0,
+  "type": "commercial"
+ },
+ "Nambiar District 25 Phase 2, Bengaluru, Karnataka, India": {
+  "class": "landuse",
+  "display_name": "Nambiar District 25, Dommasandra, Kommasandra, Anekal, Bengaluru Urban, Karnataka, India",
+  "lat": 12.8747325,
+  "lon": 77.736087,
+  "query_variant": 0,
+  "type": "commercial"
+ },
+ "Nambiar District 25 Phase 3, Bengaluru, Karnataka, India": {
+  "class": "landuse",
+  "display_name": "Nambiar District 25, Dommasandra, Kommasandra, Anekal, Bengaluru Urban, Karnataka, India",
+  "lat": 12.8747325,
+  "lon": 77.736087,
+  "query_variant": 0,
+  "type": "commercial"
  },
  "Nambiar District 25, Bengaluru, Karnataka, India": {
   "display_name": "Nambiar District 25 (u/c), Dommasandra, Anekal, Bengaluru Urban, Karnataka, India",
@@ -711,12 +751,28 @@
   "query_variant": 0,
   "type": "residential"
  },
+ "Prestige Evergreen, Bengaluru, Karnataka, India": {
+  "class": "landuse",
+  "display_name": "Prestige Evergreen, Varthur, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
+  "lat": 12.9543438,
+  "lon": 77.749161,
+  "query_variant": 0,
+  "type": "construction"
+ },
  "Prestige Ferns Residency, Bengaluru, Karnataka, India": {
   "display_name": "Prestige Ferns Residency, Haralur Road, Haralur, Kasavanahalli, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560102, India",
   "lat": 12.9018012,
   "lon": 77.6641767,
   "query_variant": 0,
   "type": "residential"
+ },
+ "Prestige Garden Breeze, Bengaluru, Karnataka, India": {
+  "class": "landuse",
+  "display_name": "Prestige Garden Breeze (u/c), Ittangur, Ittanguru, Valagere Kallahalli, Anekal, Bengaluru Urban, Karnataka, 562125, India",
+  "lat": 12.8807739,
+  "lon": 77.7857876,
+  "query_variant": 0,
+  "type": "construction"
  },
  "Prestige Green Gables, Bengaluru, Karnataka, India": {
   "display_name": "Prestige Green Gables, Kaadubeesanahalli, Panathur, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
@@ -731,6 +787,14 @@
   "lon": 77.7344388,
   "query_variant": 0,
   "type": "residential"
+ },
+ "Prestige Oakville, Bengaluru, Karnataka, India": {
+  "class": "landuse",
+  "display_name": "Prestige Oakville (u/c), Kormangala East, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
+  "lat": 12.9316635,
+  "lon": 77.6379319,
+  "query_variant": 0,
+  "type": "construction"
  },
  "Prestige Park Grove, Bengaluru, Karnataka, India": {
   "display_name": "Prestige Park Grove (u/c), Chikkabanahalli, Doddabanahalli, Bangalore East, Bengaluru Urban, Karnataka, India",
@@ -752,6 +816,14 @@
   "lon": 77.7290258,
   "query_variant": 0,
   "type": "neighbourhood"
+ },
+ "Prestige Smart City, Bengaluru, Karnataka, India": {
+  "class": "shop",
+  "display_name": "Prestige Smart Kitchen, Chord Road, Hosahalli, Bengaluru West City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560040, India",
+  "lat": 12.9686867,
+  "lon": 77.5373687,
+  "query_variant": 0,
+  "type": "yes"
  },
  "Prestige Song of the South, Bengaluru, Karnataka, India": {
   "display_name": "Prestige Song of the South, Beguru, Yelenahalli, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, India",
@@ -1048,6 +1120,14 @@
   "query_variant": 0,
   "type": "neighbourhood"
  },
+ "Sumadhura Aikya, Bengaluru, Karnataka, India": {
+  "class": "landuse",
+  "display_name": "Sumadhura's Srinivasam, EPIP Zone, Bharath Aikya Ward, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
+  "lat": 12.9844343,
+  "lon": 77.7121779,
+  "query_variant": 0,
+  "type": "residential"
+ },
  "Sumadhura Folium, Bengaluru, Karnataka, India": {
   "display_name": "Sumadhura Folium, Whitefield, Bengaluru East City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
   "lat": 12.9662654,
@@ -1072,6 +1152,14 @@
   "lon": 77.6316152,
   "query_variant": 0,
   "type": "administrative"
+ },
+ "Trifecta Vanto, Bengaluru, Karnataka, India": {
+  "class": "landuse",
+  "display_name": "Trifecta Vanto (u/c), Kodati, Kodathi, Bangalore East, Bengaluru Urban, Karnataka, India",
+  "lat": 12.8811923,
+  "lon": 77.7161942,
+  "query_variant": 0,
+  "type": "construction"
  },
  "Trifecta Verde En Resplandor, Bengaluru, Karnataka, India": null,
  "Trifecta Verde En Resplandor, Whitefield, Bengaluru, Karnataka, India": null,
