@@ -1,0 +1,3245 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-07-15T15:22:01Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "relation",
+  "id": 1798771,
+  "members": [
+    {
+      "type": "node",
+      "ref": 10761647017,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647019,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647021,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647023,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647025,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647027,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647029,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1576856364,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 2643922981,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647033,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647035,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 4548694631,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 4548694596,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 568363732,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 850782866,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 850782880,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 431524247,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 428847118,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 850782876,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 3343297219,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 568344479,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1087823607,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5305932617,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1560067666,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1820408689,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099143,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099088,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099087,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 568345184,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 568345526,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1576912437,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1576912366,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 9048813176,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 9048813174,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 9048813173,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 9048813172,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 11248381605,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 549187816,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187817,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 494676178,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187818,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 458951605,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1240358637,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 458951602,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 458951609,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 458948592,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187823,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 458948600,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 259063035,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187824,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 458948598,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 144106294,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 537962221,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187827,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1190020854,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1190020852,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 408874877,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 141182198,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 133867980,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 141182197,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 575099769,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 133876199,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187829,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187830,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187831,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187832,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 508711042,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187834,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 44829220,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187836,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549277222,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 133867981,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187839,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187840,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 170931978,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187841,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187842,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 172895638,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187843,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187844,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 260442664,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187845,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187847,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187846,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 328283580,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 408874881,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187848,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 977931842,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "colour": "#e542de",
+    "duration": "01:20",
+    "from": "Whitefield (Kadugodi)",
+    "interval": "10",
+    "interval:conditional": "8 @ (Mo-Sa 10:57-15:21; Su 10:33-20:01; PH 07:14-20:01); 15 @ (Mo-Sa 22:01-00:00; Su,PH 22:45-00:00); 20 @ (Mo-Sa 05:00-05:20); 14 @ (Su,PH 22:31-22:45)",
+    "name": "Purple Line (Whitefield (Kadugodi) → Challaghatta)",
+    "name:kn": "ನೇರಳೆ ಪಥ (ವೈಟ್‌ಫೀಲ್ಡ್ (ಕಾಡುಗೋಡಿ) -> ಚಲ್ಲಘಟ್ಟ)",
+    "network": "Namma Metro",
+    "network:wikidata": "Q279343",
+    "opening_hours": "Mo 04:15-00:00; Tu-Sa,PH 05:00-00:00; Su 07:00-00:00",
+    "operator": "BMRCL",
+    "public_transport:version": "2",
+    "ref": "Purple",
+    "route": "subway",
+    "to": "Challaghatta",
+    "type": "route",
+    "wikidata": "Q7261433",
+    "wikipedia": "en:Purple Line (Namma Metro)"
+  }
+},
+{
+  "type": "relation",
+  "id": 1798772,
+  "members": [
+    {
+      "type": "node",
+      "ref": 7235263991,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198459,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198460,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 7235254982,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 7235254980,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198464,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198465,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198466,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198467,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198470,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198471,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198472,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198474,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198473,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198469,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198468,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198623,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099078,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198631,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198632,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198630,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198629,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198627,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198626,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198625,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198620,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5954688578,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5954688572,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5954688564,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 12316543765,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 12316543762,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 12316543760,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 607901275,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901276,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901277,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901278,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901279,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901280,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901281,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901282,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901283,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901284,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901287,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901288,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901291,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1352306002,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901290,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901286,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1352305993,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901292,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901295,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901296,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901297,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1352361301,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1352361298,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901311,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901308,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901304,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901301,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901300,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901299,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901294,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901293,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 630686436,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 630686435,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 630686434,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 630686433,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1240092403,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "colour": "#009933",
+    "duration": "01:01",
+    "from": "Silk Institute",
+    "interval": "10",
+    "name": "Green Line (Silk Institute -> Madavara)",
+    "name:kn": "ಹಸಿರು ಪಥ (ರೇಷ್ಮೆ ಸಂಸ್ಥೆ -> ಮದವರ)",
+    "network": "Namma Metro",
+    "opening_hours": "Mo 04:15-00:00; Tu-Sa,PH 05:00-00:00; Su 07:00-00:00",
+    "operator": "BMRCL",
+    "public_transport:version": "2",
+    "ref": "Green",
+    "route": "subway",
+    "to": "Madavara",
+    "type": "route",
+    "wikidata": "Q17054000",
+    "wikipedia": "en:Green Line (Namma Metro)"
+  }
+},
+{
+  "type": "relation",
+  "id": 7841331,
+  "members": [
+    {
+      "type": "node",
+      "ref": 11248381604,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 7784456820,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 7784456818,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 9048813175,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197776,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197777,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197778,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197781,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197782,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197783,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197784,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197785,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197786,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197788,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197800,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197802,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197799,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197798,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197795,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197794,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197793,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197792,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197790,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197769,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 11248381603,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647016,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647036,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647034,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647032,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10763340457,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647030,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647028,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647026,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647024,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647022,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647020,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647018,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 977931841,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901244,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901245,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901246,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 742634556,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901247,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901248,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901249,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901250,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901251,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901252,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901253,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901254,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901255,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901256,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901257,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901258,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901259,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901271,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901270,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901269,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901268,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901267,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901266,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901265,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901264,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901263,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901262,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901260,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901242,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901240,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901239,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901238,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1190020851,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1190020853,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901237,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901236,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901234,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901233,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901231,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901230,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901229,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901228,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901225,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901223,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901220,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901219,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1240358636,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901217,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901216,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901215,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1190025013,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1190024589,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "colour": "#e542de",
+    "duration": "01:20",
+    "from": "Challaghatta",
+    "interval": "10",
+    "interval:conditional": "8 @ (Mo-Sa 12:20-16:36; Su 12:00-21:28; PH 08:56-21:28); 15 @ (Mo-Sa 05:20-06:00,23:05-00:00; Su 07:00-07:50,23:05-00:00; PH 23:05-00:00); 11 @ (Mo-Sa 06:00-06:54); 20 @ (Mo-Sa 05:00-05:20)",
+    "name": "Purple Line (Challaghatta → Whitefield (Kadugodi))",
+    "name:kn": "ನೇರಳೆ ಪಥ (ಚಲ್ಲಘಟ್ಟ -> ವೈಟ್‌ಫೀಲ್ಡ್ (ಕಾಡುಗೋಡಿ))",
+    "network": "Namma Metro",
+    "network:wikidata": "Q279343",
+    "opening_hours": "Mo 04:15-00:00; Tu-Sa,PH 05:00-00:00; Su 07:00-00:00",
+    "operator": "BMRCL",
+    "public_transport:version": "2",
+    "ref": "Purple",
+    "route": "subway",
+    "to": "Whitefield (Kadugodi)",
+    "type": "route",
+    "wikidata": "Q7261433",
+    "wikipedia": "en:Purple Line (Namma Metro)"
+  }
+},
+{
+  "type": "relation",
+  "id": 7842287,
+  "members": [
+    {
+      "type": "way",
+      "ref": 359201105,
+      "role": ""
+    },
+    {
+      "type": "node",
+      "ref": 12316543761,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 12316543763,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 12316543764,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1485686845,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1485686896,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099155,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1485686846,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 3379412454,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 668972579,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 568362567,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099095,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099091,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099120,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099154,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198624,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1548828179,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5464787094,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1548300484,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1524381523,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1524381509,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1437223296,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 568351345,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099131,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099104,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1070314237,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099119,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 699576784,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 7235254981,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 7235254983,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 7235263986,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 7235263989,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198458,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 549256493,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 144116298,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256492,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256491,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 135267125,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256490,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256489,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 135267124,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 44830638,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256488,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256487,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256486,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1352469288,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1352361299,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1352361300,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 71519003,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256483,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 142484399,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1189861890,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 568709017,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256482,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256481,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1352306003,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256480,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256478,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256477,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256476,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256475,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256474,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 172930536,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256473,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256472,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256471,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256470,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256469,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 388100817,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "colour": "#009933",
+    "duration": "01:01",
+    "from": "Madavara",
+    "interval": "10",
+    "name": "Green Line (Madavara -> Silk Institute)",
+    "name:kn": "ಹಸಿರು ಪಥ (ಮದವರ -> ರೇಷ್ಮೆ ಸಂಸ್ಥೆ)",
+    "network": "Namma Metro",
+    "network:wikidata": "Q279343",
+    "opening_hours": "Mo 04:15-00:00; Tu-Sa,PH 05:00-00:00; Su 07:00-00:00",
+    "operator": "BMRCL",
+    "public_transport:version": "2",
+    "ref": "Green",
+    "route": "subway",
+    "to": "Silk Institute",
+    "type": "route",
+    "wikidata": "Q17054000",
+    "wikipedia": "en:Green Line (Namma Metro)"
+  }
+},
+{
+  "type": "relation",
+  "id": 16176489,
+  "members": [
+    {
+      "type": "node",
+      "ref": 7235263991,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198459,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198460,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 7235254982,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 7235254980,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198464,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198465,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198466,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198467,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198470,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198471,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198472,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198474,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198473,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198469,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198468,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198623,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099078,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198631,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198632,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198630,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198629,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198627,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198626,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198625,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198620,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 607901275,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901276,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901277,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901278,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901279,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901280,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901281,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901282,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901283,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901284,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901287,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901288,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901291,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1352306002,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901290,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901286,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1352305993,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901292,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901295,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901296,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901297,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1352361301,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1352361298,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901311,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901308,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901304,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901301,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901300,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901299,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901294,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901293,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "colour": "#009933",
+    "duration": "00:48",
+    "from": "Silk Institute",
+    "interval": "5",
+    "name": "Green Line (Silk Institute -> Peenya Industry)",
+    "name:kn": "ಹಸಿರು ಪಥ (ರೇಷ್ಮೆ ಸಂಸ್ಥೆ -> ಪೀಣ್ಯ ಕೈಗಾರಿಕ)",
+    "network": "Namma Metro",
+    "network:wikidata": "Q279343",
+    "opening_hours": "Mo-Sa 07:20-11:00,16:44-19:55",
+    "operator": "BMRCL",
+    "public_transport:version": "2",
+    "ref": "Green",
+    "route": "subway",
+    "to": "Peenya Industry",
+    "type": "route",
+    "wikidata": "Q17054000",
+    "wikipedia": "en:Green Line (Namma Metro)"
+  }
+},
+{
+  "type": "relation",
+  "id": 16176490,
+  "members": [
+    {
+      "type": "node",
+      "ref": 1485686846,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 3379412454,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 668972579,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 568362567,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099095,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099091,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099120,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099154,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198624,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1548828179,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5464787094,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1548300484,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1524381523,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1524381509,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1437223296,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 568351345,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099131,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099104,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1070314237,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099119,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 699576784,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 7235254981,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 7235254983,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 7235263986,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 7235263989,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760198458,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 135267125,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256490,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256489,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 135267124,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 44830638,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256488,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256487,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256486,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1352469288,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1352361299,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1352361300,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 71519003,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256483,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 142484399,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1189861890,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 568709017,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256482,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256481,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1352306003,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256480,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256478,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256477,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256476,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256475,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256474,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 172930536,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256473,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256472,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256471,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256470,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549256469,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 388100817,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "colour": "#009933",
+    "duration": "00:48",
+    "from": "Peenya Industry",
+    "interval": "5",
+    "name": "Green Line (Peenya Industry -> Silk Institute)",
+    "name:kn": "ಹಸಿರು ಪಥ (ಪೀಣ್ಯ ಕೈಗಾರಿಕ -> ರೇಷ್ಮೆ ಸಂಸ್ಥೆ)",
+    "network": "Namma Metro",
+    "network:wikidata": "Q279343",
+    "opening_hours": "Mo-Sa 06:36-10:16,16:31-19:08",
+    "operator": "BMRCL",
+    "public_transport:version": "2",
+    "ref": "Green",
+    "route": "subway",
+    "to": "Silk Institute",
+    "type": "route",
+    "wikidata": "Q17054000",
+    "wikipedia": "en:Green Line (Namma Metro)"
+  }
+},
+{
+  "type": "relation",
+  "id": 17038841,
+  "members": [
+    {
+      "type": "node",
+      "ref": 5760197781,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197782,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197783,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197784,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197785,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197786,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197788,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197800,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197802,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197799,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197798,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197795,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197794,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197793,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197792,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197790,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5760197769,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 11248381603,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647016,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647036,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647034,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647032,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10763340457,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647030,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647028,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647026,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647024,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 607901251,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901252,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901253,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901254,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901255,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901256,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901257,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901258,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901259,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901271,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901270,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901269,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901268,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901267,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901266,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901265,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901264,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901263,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901262,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901260,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901242,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901240,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901239,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901238,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1190020851,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1190020853,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901237,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901236,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901234,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901233,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901231,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901230,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901229,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901228,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901225,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901223,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901220,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 607901219,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "colour": "#e542de",
+    "duration": "00:57",
+    "from": "Mysuru Road",
+    "interval": "10",
+    "interval:conditional": "20 @ (Mo-Sa 05:00-05:20); 15 @ (Mo-Sa 05:20-06:17,23:22-24:00); 5 @ (Mo-Sa 07:22-11:34,17:27-21:27); 8 @ (Mo-Sa 12:37-17:22)",
+    "name": "Purple Line (Mysuru Road → Pattandur Agrahara)",
+    "name:kn": "ನೇರಳೆ ಪಥ (ಮೈಸೂರು ರಸ್ತೆ -> ಪಟ್ಟಂದೂರು ಅಗ್ರಹಾರ)",
+    "network": "Namma Metro",
+    "network:wikidata": "Q279343",
+    "opening_hours": "Mo-Sa 05:00-24:00",
+    "operator": "BMRCL",
+    "public_transport:version": "2",
+    "ref": "Purple",
+    "route": "subway",
+    "to": "Pattandur Agrahara",
+    "type": "route",
+    "wikidata": "Q7261433",
+    "wikipedia": "en:Purple Line (Namma Metro)"
+  }
+},
+{
+  "type": "relation",
+  "id": 17038842,
+  "members": [
+    {
+      "type": "node",
+      "ref": 10761647023,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647025,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647027,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647029,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1576856364,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 2643922981,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647033,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 10761647035,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 4548694631,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 4548694596,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 568363732,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 850782866,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 850782880,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 431524247,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 428847118,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 850782876,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 3343297219,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 568344479,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1087823607,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5305932617,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1560067666,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1820408689,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099143,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099088,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1565099087,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 568345184,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 568345526,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 1240358637,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 458951602,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 458951609,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 458948592,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187823,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 458948600,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 259063035,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187824,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 458948598,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 144106294,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 537962221,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187827,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1190020854,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1190020852,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 408874877,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 141182198,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 133867980,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 141182197,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 575099769,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 133876199,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187829,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187830,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187831,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187832,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 508711042,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187834,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 44829220,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187836,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549277222,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 133867981,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187839,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187840,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 170931978,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187841,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187842,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 172895638,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187843,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 549187844,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "colour": "#e542de",
+    "duration": "00:57",
+    "from": "Pattandur Agrahara",
+    "interval": "10",
+    "interval:conditional": "12 @ (Mo-Sa 05:08-05:25); 5 @ (Mo-Sa 08:25-11:02,17:56-20:26); 8 @ (Mo-Sa 11:02-15:26); 15 @ (Mo-Sa 22:06-24:00)",
+    "name": "Purple Line (Pattandur Agrahara → Mysuru Road)",
+    "name:kn": "ನೇರಳೆ ಪಥ (ಪಟ್ಟಂದೂರು ಅಗ್ರಹಾರ -> ಮೈಸೂರು ರಸ್ತೆ)",
+    "network": "Namma Metro",
+    "network:wikidata": "Q279343",
+    "opening_hours": "Mo-Sa 05:00-24:00",
+    "operator": "BMRCL",
+    "public_transport:version": "2",
+    "ref": "Purple",
+    "route": "subway",
+    "to": "Mysuru Road",
+    "type": "route",
+    "wikidata": "Q7261433",
+    "wikipedia": "en:Purple Line (Namma Metro)"
+  }
+},
+{
+  "type": "relation",
+  "id": 19421927,
+  "members": [
+    {
+      "type": "node",
+      "ref": 13046007538,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007540,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007542,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007548,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007556,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007562,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007564,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007567,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007569,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007570,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007572,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 12040966324,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007576,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007577,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046011005,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046011008,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 607901273,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 1299917515,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "colour": "yellow",
+    "duration": "00:40",
+    "from": "Delta Electronics Bommasandra",
+    "name": "Yellow Line (Delta Electronics Bommasandra → Rashtreeya Vidyalaya Road)",
+    "name:kn": "ಹಳಡಿ ಮಾರ್ಗ (ಡೆಲ್ಟಾ ಎಲೆಕ್ಟ್ರಾನಿಕ್ಸ್ ಬೊಮ್ಮಸಂದ್ರ → ರಾಷ್ಟ್ರೀಯ ವಿದ್ಯಾಲಯ ರಸ್ತೆ )",
+    "network": "Namma Metro",
+    "network:wikidata": "Q279343",
+    "opening_hours": "Mo-Sa,PH 06:30-00:00; Su 07:00-00:00",
+    "operator": "BMRCL",
+    "public_transport:version": "2",
+    "ref": "Yellow",
+    "route": "subway",
+    "start_date": "2025-08-11",
+    "to": "Rashtreeya Vidyalaya Road",
+    "type": "route",
+    "wikidata": "Q39071595",
+    "wikipedia": "en:Yellow Line (Namma Metro)"
+  }
+},
+{
+  "type": "relation",
+  "id": 19421944,
+  "members": [
+    {
+      "type": "node",
+      "ref": 13046011007,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046011006,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007578,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007575,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007574,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007573,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007571,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5018250572,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007568,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007566,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007563,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007557,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007549,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007543,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007541,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 13046007539,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 1299917516,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 513335365,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "colour": "yellow",
+    "duration": "00:40",
+    "from": "Rashtreeya Vidyalaya Road",
+    "name": "Yellow Line (Rashtreeya Vidyalaya Road → Delta Electronics Bommasandra)",
+    "name:kn": "ಹಳಡಿ ಮಾರ್ಗ (ರಾಷ್ಟ್ರೀಯ ವಿದ್ಯಾಲಯ ರಸ್ತೆ → ಡೆಲ್ಟಾ ಎಲೆಕ್ಟ್ರಾನಿಕ್ಸ್ ಬೊಮ್ಮಸಂದ್ರ)",
+    "network": "Namma Metro",
+    "network:wikidata": "Q279343",
+    "opening_hours": "Mo-Sa,PH 06:30-00:00; Su 07:00-00:00",
+    "operator": "BMRCL",
+    "public_transport:version": "2",
+    "ref": "Yellow",
+    "route": "subway",
+    "start_date": "2025-08-10",
+    "to": "Delta Electronics Bommasandra",
+    "type": "route",
+    "wikidata": "Q39071595",
+    "wikipedia": "en:Yellow Line (Namma Metro)"
+  }
+}
+
+  ]
+}

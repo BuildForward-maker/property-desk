@@ -33,7 +33,8 @@
    "metro": {
     "km": 2.11,
     "name": "Thalaghattapura"
-   }
+   },
+   "metroJourney": null
   },
   "Arekere / Hulimavu": {
    "drive": {
@@ -68,7 +69,8 @@
    "metro": {
     "km": 2.98,
     "name": "Yelachenahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Attibele / Anekal": {
    "drive": {
@@ -103,7 +105,8 @@
    "metro": {
     "km": 10.22,
     "name": "Delta Electronics Bommasandra"
-   }
+   },
+   "metroJourney": null
   },
   "BTM Layout": {
    "drive": {
@@ -138,6 +141,20 @@
    "metro": {
     "km": 0.37,
     "name": "BTM Layout"
+   },
+   "metroJourney": {
+    "cbd": [
+     63,
+     2
+    ],
+    "ecity": [
+     35,
+     0
+    ],
+    "itpl": [
+     101,
+     2
+    ]
    }
   },
   "Bagalur": {
@@ -173,7 +190,8 @@
    "metro": {
     "km": 3.61,
     "name": "Halasuru"
-   }
+   },
+   "metroJourney": null
   },
   "Banashankari 2nd Stage": {
    "drive": {
@@ -208,6 +226,20 @@
    "metro": {
     "km": 1.68,
     "name": "Banashankari"
+   },
+   "metroJourney": {
+    "cbd": [
+     66,
+     1
+    ],
+    "ecity": [
+     69,
+     1
+    ],
+    "itpl": [
+     104,
+     1
+    ]
    }
   },
   "Banashankari 3rd Stage": {
@@ -243,7 +275,8 @@
    "metro": {
     "km": 2.56,
     "name": "Mysore Road"
-   }
+   },
+   "metroJourney": null
   },
   "Banashankari 6th Stage": {
    "drive": {
@@ -278,7 +311,8 @@
    "metro": {
     "km": 2.9,
     "name": "Thalaghattapura"
-   }
+   },
+   "metroJourney": null
   },
   "Banashankari overall": {
    "drive": {
@@ -313,7 +347,8 @@
    "metro": {
     "km": 2.31,
     "name": "Banashankari"
-   }
+   },
+   "metroJourney": null
   },
   "Banaswadi / Kammanahalli": {
    "drive": {
@@ -348,7 +383,8 @@
    "metro": {
     "km": 2.6,
     "name": "Baiyappanahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Bannerghatta Road": {
    "drive": {
@@ -383,6 +419,20 @@
    "metro": {
     "km": 1.45,
     "name": "Jayadeva Hospital"
+   },
+   "metroJourney": {
+    "cbd": [
+     74,
+     2
+    ],
+    "ecity": [
+     50,
+     0
+    ],
+    "itpl": [
+     111,
+     2
+    ]
    }
   },
   "Basavanagudi": {
@@ -418,6 +468,20 @@
    "metro": {
     "km": 0.63,
     "name": "South End Circle"
+   },
+   "metroJourney": {
+    "cbd": [
+     46,
+     1
+    ],
+    "ecity": [
+     59,
+     1
+    ],
+    "itpl": [
+     84,
+     1
+    ]
    }
   },
   "Begur / Yelenahalli": {
@@ -453,7 +517,8 @@
    "metro": {
     "km": 2.91,
     "name": "Kudlu Gate"
-   }
+   },
+   "metroJourney": null
   },
   "Bellandur": {
    "drive": {
@@ -488,7 +553,8 @@
    "metro": {
     "km": 6.04,
     "name": "Seetharampalya"
-   }
+   },
+   "metroJourney": null
   },
   "Bommanahalli": {
    "drive": {
@@ -523,6 +589,20 @@
    "metro": {
     "km": 0.88,
     "name": "Bommanahalli"
+   },
+   "metroJourney": {
+    "cbd": [
+     75,
+     2
+    ],
+    "ecity": [
+     36,
+     0
+    ],
+    "itpl": [
+     112,
+     2
+    ]
    }
   },
   "Bommasandra / Chandapura": {
@@ -558,6 +638,20 @@
    "metro": {
     "km": 1.57,
     "name": "Delta Electronics Bommasandra"
+   },
+   "metroJourney": {
+    "cbd": [
+     108,
+     2
+    ],
+    "ecity": [
+     34,
+     0
+    ],
+    "itpl": [
+     145,
+     2
+    ]
    }
   },
   "Brookefield": {
@@ -593,6 +687,20 @@
    "metro": {
     "km": 1.4,
     "name": "Kundalahalli"
+   },
+   "metroJourney": {
+    "cbd": [
+     55,
+     0
+    ],
+    "ecity": [
+     128,
+     2
+    ],
+    "itpl": [
+     32,
+     0
+    ]
    }
   },
   "Budigere Cross": {
@@ -628,7 +736,8 @@
    "metro": {
     "km": 5.67,
     "name": "Whitefield (Kadugodi)"
-   }
+   },
+   "metroJourney": null
   },
   "CV Raman Nagar": {
    "drive": {
@@ -663,6 +772,20 @@
    "metro": {
     "km": 1.22,
     "name": "Benniganahalli"
+   },
+   "metroJourney": {
+    "cbd": [
+     38,
+     0
+    ],
+    "ecity": [
+     111,
+     2
+    ],
+    "itpl": [
+     45,
+     0
+    ]
    }
   },
   "Carmelaram / Dommasandra": {
@@ -698,7 +821,8 @@
    "metro": {
     "km": 7.39,
     "name": "Hosa Road"
-   }
+   },
+   "metroJourney": null
   },
   "Chamrajpet": {
    "drive": {
@@ -733,6 +857,20 @@
    "metro": {
     "km": 1.3,
     "name": "Krishna Rajendra Market"
+   },
+   "metroJourney": {
+    "cbd": [
+     47,
+     1
+    ],
+    "ecity": [
+     74,
+     1
+    ],
+    "itpl": [
+     84,
+     1
+    ]
    }
   },
   "Devanahalli": {
@@ -768,7 +906,8 @@
    "metro": {
     "km": 27.9,
     "name": "Krishnarajapura"
-   }
+   },
+   "metroJourney": null
   },
   "Doddaballapur Road": {
    "drive": {
@@ -803,7 +942,8 @@
    "metro": {
     "km": 10.06,
     "name": "Peenya"
-   }
+   },
+   "metroJourney": null
   },
   "Domlur / Ulsoor": {
    "drive": {
@@ -838,6 +978,20 @@
    "metro": {
     "km": 1.76,
     "name": "Indiranagar"
+   },
+   "metroJourney": {
+    "cbd": [
+     37,
+     0
+    ],
+    "ecity": [
+     110,
+     2
+    ],
+    "itpl": [
+     59,
+     0
+    ]
    }
   },
   "Electronic City Ph 1": {
@@ -873,6 +1027,20 @@
    "metro": {
     "km": 1.87,
     "name": "Electronic City"
+   },
+   "metroJourney": {
+    "cbd": [
+     101,
+     2
+    ],
+    "ecity": [
+     33,
+     0
+    ],
+    "itpl": [
+     139,
+     2
+    ]
    }
   },
   "Electronic City Ph 2": {
@@ -908,6 +1076,20 @@
    "metro": {
     "km": 1.87,
     "name": "Electronic City"
+   },
+   "metroJourney": {
+    "cbd": [
+     101,
+     2
+    ],
+    "ecity": [
+     33,
+     0
+    ],
+    "itpl": [
+     139,
+     2
+    ]
    }
   },
   "Frazer Town / Cooke Town": {
@@ -943,7 +1125,8 @@
    "metro": {
     "km": 2.54,
     "name": "Cubbon Park"
-   }
+   },
+   "metroJourney": null
   },
   "HSR Layout": {
    "drive": {
@@ -978,6 +1161,20 @@
    "metro": {
     "km": 1.33,
     "name": "Hongasandra"
+   },
+   "metroJourney": {
+    "cbd": [
+     82,
+     2
+    ],
+    "ecity": [
+     39,
+     0
+    ],
+    "itpl": [
+     120,
+     2
+    ]
    }
   },
   "Harlur / Haralur": {
@@ -1013,7 +1210,8 @@
    "metro": {
     "km": 4.31,
     "name": "Kudlu Gate"
-   }
+   },
+   "metroJourney": null
   },
   "Hebbal": {
    "drive": {
@@ -1048,7 +1246,8 @@
    "metro": {
     "km": 4.85,
     "name": "Yeshwantpur"
-   }
+   },
+   "metroJourney": null
   },
   "Hennur Road": {
    "drive": {
@@ -1083,7 +1282,8 @@
    "metro": {
     "km": 5.74,
     "name": "Baiyappanahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Hoodi": {
    "drive": {
@@ -1118,6 +1318,20 @@
    "metro": {
     "km": 1.17,
     "name": "Hoodi"
+   },
+   "metroJourney": {
+    "cbd": [
+     47,
+     0
+    ],
+    "ecity": [
+     121,
+     2
+    ],
+    "itpl": [
+     35,
+     0
+    ]
    }
   },
   "Horamavu": {
@@ -1153,7 +1367,8 @@
    "metro": {
     "km": 3.54,
     "name": "Benniganahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Hosa Road": {
    "drive": {
@@ -1188,6 +1403,20 @@
    "metro": {
     "km": 0.32,
     "name": "Hosa Road"
+   },
+   "metroJourney": {
+    "cbd": [
+     78,
+     2
+    ],
+    "ecity": [
+     19,
+     0
+    ],
+    "itpl": [
+     115,
+     2
+    ]
    }
   },
   "Hoskote": {
@@ -1223,7 +1452,8 @@
    "metro": {
     "km": 4.04,
     "name": "Whitefield (Kadugodi)"
-   }
+   },
+   "metroJourney": null
   },
   "Immadihalli": {
    "drive": {
@@ -1258,7 +1488,8 @@
    "metro": {
     "km": 2.49,
     "name": "Hopefarm Channasandra"
-   }
+   },
+   "metroJourney": null
   },
   "Indiranagar": {
    "drive": {
@@ -1293,6 +1524,20 @@
    "metro": {
     "km": 0.59,
     "name": "Indiranagar"
+   },
+   "metroJourney": {
+    "cbd": [
+     23,
+     0
+    ],
+    "ecity": [
+     96,
+     2
+    ],
+    "itpl": [
+     45,
+     0
+    ]
    }
   },
   "JP Nagar": {
@@ -1328,6 +1573,20 @@
    "metro": {
     "km": 0.84,
     "name": "Ragigudda"
+   },
+   "metroJourney": {
+    "cbd": [
+     64,
+     2
+    ],
+    "ecity": [
+     46,
+     0
+    ],
+    "itpl": [
+     102,
+     2
+    ]
    }
   },
   "Jakkur": {
@@ -1363,7 +1622,8 @@
    "metro": {
     "km": 8.71,
     "name": "Yeshwantpur"
-   }
+   },
+   "metroJourney": null
   },
   "Jalahalli": {
    "drive": {
@@ -1398,6 +1658,20 @@
    "metro": {
     "km": 0.0,
     "name": "Jalahalli"
+   },
+   "metroJourney": {
+    "cbd": [
+     51,
+     1
+    ],
+    "ecity": [
+     88,
+     1
+    ],
+    "itpl": [
+     88,
+     1
+    ]
    }
   },
   "Jayanagar": {
@@ -1433,6 +1707,20 @@
    "metro": {
     "km": 0.25,
     "name": "Jayanagar"
+   },
+   "metroJourney": {
+    "cbd": [
+     44,
+     1
+    ],
+    "ecity": [
+     52,
+     1
+    ],
+    "itpl": [
+     82,
+     1
+    ]
    }
   },
   "Jigani": {
@@ -1468,7 +1756,8 @@
    "metro": {
     "km": 7.7,
     "name": "Delta Electronics Bommasandra"
-   }
+   },
+   "metroJourney": null
   },
   "KR Puram": {
    "drive": {
@@ -1503,6 +1792,20 @@
    "metro": {
     "km": 1.27,
     "name": "Singayyanapalya"
+   },
+   "metroJourney": {
+    "cbd": [
+     43,
+     0
+    ],
+    "ecity": [
+     117,
+     2
+    ],
+    "itpl": [
+     41,
+     0
+    ]
    }
   },
   "Kadugodi": {
@@ -1538,6 +1841,20 @@
    "metro": {
     "km": 0.0,
     "name": "Whitefield (Kadugodi)"
+   },
+   "metroJourney": {
+    "cbd": [
+     53,
+     0
+    ],
+    "ecity": [
+     126,
+     2
+    ],
+    "itpl": [
+     16,
+     0
+    ]
    }
   },
   "Kanakapura Road": {
@@ -1573,6 +1890,20 @@
    "metro": {
     "km": 0.18,
     "name": "Vajarahalli"
+   },
+   "metroJourney": {
+    "cbd": [
+     61,
+     1
+    ],
+    "ecity": [
+     63,
+     1
+    ],
+    "itpl": [
+     98,
+     1
+    ]
    }
   },
   "Kasturi Nagar": {
@@ -1608,6 +1939,20 @@
    "metro": {
     "km": 1.2,
     "name": "Baiyappanahalli"
+   },
+   "metroJourney": {
+    "cbd": [
+     35,
+     0
+    ],
+    "ecity": [
+     108,
+     2
+    ],
+    "itpl": [
+     47,
+     0
+    ]
    }
   },
   "Kathreguppe": {
@@ -1643,7 +1988,8 @@
    "metro": {
     "km": 2.88,
     "name": "Mysore Road"
-   }
+   },
+   "metroJourney": null
   },
   "Kengeri": {
    "drive": {
@@ -1678,6 +2024,20 @@
    "metro": {
     "km": 0.55,
     "name": "Kengeri Bus Terminal"
+   },
+   "metroJourney": {
+    "cbd": [
+     50,
+     0
+    ],
+    "ecity": [
+     103,
+     2
+    ],
+    "itpl": [
+     87,
+     0
+    ]
    }
   },
   "Konanakunte / Thalaghattapura": {
@@ -1713,6 +2073,20 @@
    "metro": {
     "km": 1.32,
     "name": "Konanakunte Cross"
+   },
+   "metroJourney": {
+    "cbd": [
+     69,
+     1
+    ],
+    "ecity": [
+     72,
+     1
+    ],
+    "itpl": [
+     107,
+     1
+    ]
    }
   },
   "Koramangala": {
@@ -1748,7 +2122,8 @@
    "metro": {
     "km": 2.16,
     "name": "Central Silk Board"
-   }
+   },
+   "metroJourney": null
   },
   "Kothanur / Kothnur": {
    "drive": {
@@ -1783,6 +2158,20 @@
    "metro": {
     "km": 1.73,
     "name": "Yelachenahalli"
+   },
+   "metroJourney": {
+    "cbd": [
+     72,
+     1
+    ],
+    "ecity": [
+     74,
+     1
+    ],
+    "itpl": [
+     109,
+     1
+    ]
    }
   },
   "Kudlu / Kudlu Gate": {
@@ -1818,6 +2207,20 @@
    "metro": {
     "km": 0.05,
     "name": "Kudlu Gate"
+   },
+   "metroJourney": {
+    "cbd": [
+     70,
+     2
+    ],
+    "ecity": [
+     21,
+     0
+    ],
+    "itpl": [
+     107,
+     2
+    ]
    }
   },
   "Kumbalgodu / Bidadi": {
@@ -1853,7 +2256,8 @@
    "metro": {
     "km": 13.6,
     "name": "Challaghatta"
-   }
+   },
+   "metroJourney": null
   },
   "Kundalahalli": {
    "drive": {
@@ -1888,6 +2292,20 @@
    "metro": {
     "km": 0.0,
     "name": "Kundalahalli"
+   },
+   "metroJourney": {
+    "cbd": [
+     38,
+     0
+    ],
+    "ecity": [
+     112,
+     2
+    ],
+    "itpl": [
+     16,
+     0
+    ]
    }
   },
   "MG Road / CBD": {
@@ -1923,6 +2341,20 @@
    "metro": {
     "km": 0.0,
     "name": "Mahatma Gandhi Road"
+   },
+   "metroJourney": {
+    "cbd": [
+     8,
+     0
+    ],
+    "ecity": [
+     82,
+     2
+    ],
+    "itpl": [
+     46,
+     0
+    ]
    }
   },
   "Magadi Road": {
@@ -1958,6 +2390,20 @@
    "metro": {
     "km": 0.0,
     "name": "Magadi Road"
+   },
+   "metroJourney": {
+    "cbd": [
+     23,
+     0
+    ],
+    "ecity": [
+     76,
+     2
+    ],
+    "itpl": [
+     60,
+     0
+    ]
    }
   },
   "Mahadevapura": {
@@ -1993,6 +2439,20 @@
    "metro": {
     "km": 0.0,
     "name": "Singayyanapalya"
+   },
+   "metroJourney": {
+    "cbd": [
+     28,
+     0
+    ],
+    "ecity": [
+     102,
+     2
+    ],
+    "itpl": [
+     26,
+     0
+    ]
    }
   },
   "Malleswaram": {
@@ -2028,6 +2488,20 @@
    "metro": {
     "km": 1.04,
     "name": "Srirampura"
+   },
+   "metroJourney": {
+    "cbd": [
+     43,
+     1
+    ],
+    "ecity": [
+     81,
+     1
+    ],
+    "itpl": [
+     81,
+     1
+    ]
    }
   },
   "Marathahalli": {
@@ -2063,7 +2537,8 @@
    "metro": {
     "km": 3.06,
     "name": "Seetharampalya"
-   }
+   },
+   "metroJourney": null
   },
   "Mathikere / Sanjay Nagar": {
    "drive": {
@@ -2098,6 +2573,20 @@
    "metro": {
     "km": 1.44,
     "name": "Yeshwantpur"
+   },
+   "metroJourney": {
+    "cbd": [
+     61,
+     1
+    ],
+    "ecity": [
+     98,
+     1
+    ],
+    "itpl": [
+     98,
+     1
+    ]
    }
   },
   "Mysore Road": {
@@ -2133,6 +2622,20 @@
    "metro": {
     "km": 0.01,
     "name": "Mysore Road"
+   },
+   "metroJourney": {
+    "cbd": [
+     31,
+     0
+    ],
+    "ecity": [
+     84,
+     2
+    ],
+    "itpl": [
+     68,
+     0
+    ]
    }
   },
   "Nagarbhavi": {
@@ -2168,6 +2671,20 @@
    "metro": {
     "km": 1.25,
     "name": "Pantharapalya - Nayandahalli"
+   },
+   "metroJourney": {
+    "cbd": [
+     48,
+     0
+    ],
+    "ecity": [
+     102,
+     2
+    ],
+    "itpl": [
+     86,
+     0
+    ]
    }
   },
   "Nagawara / RT Nagar": {
@@ -2203,7 +2720,8 @@
    "metro": {
     "km": 7.28,
     "name": "Baiyappanahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Nelamangala": {
    "drive": {
@@ -2238,7 +2756,8 @@
    "metro": {
     "km": 11.68,
     "name": "Madavara"
-   }
+   },
+   "metroJourney": null
   },
   "Padmanabhanagar / Girinagar": {
    "drive": {
@@ -2273,6 +2792,20 @@
    "metro": {
     "km": 1.76,
     "name": "Banashankari"
+   },
+   "metroJourney": {
+    "cbd": [
+     67,
+     1
+    ],
+    "ecity": [
+     70,
+     1
+    ],
+    "itpl": [
+     105,
+     1
+    ]
    }
   },
   "Panathur / Balagere": {
@@ -2308,7 +2841,8 @@
    "metro": {
     "km": 5.33,
     "name": "Nallurahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Rajajinagar": {
    "drive": {
@@ -2343,6 +2877,20 @@
    "metro": {
     "km": 0.0,
     "name": "Rajajinagar"
+   },
+   "metroJourney": {
+    "cbd": [
+     36,
+     1
+    ],
+    "ecity": [
+     74,
+     1
+    ],
+    "itpl": [
+     74,
+     1
+    ]
    }
   },
   "Rajarajeshwari Nagar": {
@@ -2378,6 +2926,20 @@
    "metro": {
     "km": 0.95,
     "name": "Jnanabharathi"
+   },
+   "metroJourney": {
+    "cbd": [
+     49,
+     0
+    ],
+    "ecity": [
+     103,
+     2
+    ],
+    "itpl": [
+     87,
+     0
+    ]
    }
   },
   "Ramamurthy Nagar": {
@@ -2413,6 +2975,20 @@
    "metro": {
     "km": 1.35,
     "name": "Krishnarajapura"
+   },
+   "metroJourney": {
+    "cbd": [
+     42,
+     0
+    ],
+    "ecity": [
+     115,
+     2
+    ],
+    "itpl": [
+     44,
+     0
+    ]
    }
   },
   "Richmond / Langford Town": {
@@ -2448,6 +3024,20 @@
    "metro": {
     "km": 1.94,
     "name": "Mahatma Gandhi Road"
+   },
+   "metroJourney": {
+    "cbd": [
+     31,
+     0
+    ],
+    "ecity": [
+     105,
+     2
+    ],
+    "itpl": [
+     69,
+     0
+    ]
    }
   },
   "Sahakar Nagar": {
@@ -2483,7 +3073,8 @@
    "metro": {
     "km": 6.61,
     "name": "Yeshwantpur"
-   }
+   },
+   "metroJourney": null
   },
   "Sarjapur Road": {
    "drive": {
@@ -2518,7 +3109,8 @@
    "metro": {
     "km": 2.51,
     "name": "Bommanahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Sarjapur town": {
    "drive": {
@@ -2553,7 +3145,8 @@
    "metro": {
     "km": 11.53,
     "name": "Delta Electronics Bommasandra"
-   }
+   },
+   "metroJourney": null
   },
   "Seshadripuram / Shivajinagar": {
    "drive": {
@@ -2588,6 +3181,20 @@
    "metro": {
     "km": 0.64,
     "name": "Mantri Square Sampige Road"
+   },
+   "metroJourney": {
+    "cbd": [
+     36,
+     1
+    ],
+    "ecity": [
+     74,
+     1
+    ],
+    "itpl": [
+     74,
+     1
+    ]
    }
   },
   "Shettigere": {
@@ -2623,7 +3230,8 @@
    "metro": {
     "km": 21.96,
     "name": "Krishnarajapura"
-   }
+   },
+   "metroJourney": null
   },
   "Sudhama Nagar": {
    "drive": {
@@ -2658,7 +3266,8 @@
    "metro": {
     "km": 2.98,
     "name": "Indiranagar"
-   }
+   },
+   "metroJourney": null
   },
   "Thanisandra": {
    "drive": {
@@ -2693,7 +3302,8 @@
    "metro": {
     "km": 7.2,
     "name": "Baiyappanahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Thanisandra Main Road": {
    "drive": {
@@ -2728,7 +3338,8 @@
    "metro": {
     "km": 6.57,
     "name": "Baiyappanahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Tumkur Road / Peenya": {
    "drive": {
@@ -2763,6 +3374,20 @@
    "metro": {
     "km": 0.07,
     "name": "Jalahalli"
+   },
+   "metroJourney": {
+    "cbd": [
+     52,
+     1
+    ],
+    "ecity": [
+     89,
+     1
+    ],
+    "itpl": [
+     89,
+     1
+    ]
    }
   },
   "Uttarahalli": {
@@ -2798,7 +3423,8 @@
    "metro": {
     "km": 2.45,
     "name": "Doddakallasandra"
-   }
+   },
+   "metroJourney": null
   },
   "Varthur": {
    "drive": {
@@ -2833,7 +3459,8 @@
    "metro": {
     "km": 4.66,
     "name": "Nallurahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Vidyaranyapura": {
    "drive": {
@@ -2868,7 +3495,8 @@
    "metro": {
     "km": 5.53,
     "name": "Peenya"
-   }
+   },
+   "metroJourney": null
   },
   "Vijayanagar": {
    "drive": {
@@ -2903,7 +3531,8 @@
    "metro": {
     "km": 0.0,
     "name": "Vijayanagar"
-   }
+   },
+   "metroJourney": null
   },
   "Whitefield": {
    "drive": {
@@ -2938,6 +3567,20 @@
    "metro": {
     "km": 0.0,
     "name": "Whitefield (Kadugodi)"
+   },
+   "metroJourney": {
+    "cbd": [
+     53,
+     0
+    ],
+    "ecity": [
+     126,
+     2
+    ],
+    "itpl": [
+     16,
+     0
+    ]
    }
   },
   "Yelahanka": {
@@ -2973,7 +3616,8 @@
    "metro": {
     "km": 9.97,
     "name": "Yeshwantpur"
-   }
+   },
+   "metroJourney": null
   },
   "Yeshwanthpur": {
    "drive": {
@@ -3008,6 +3652,20 @@
    "metro": {
     "km": 0.38,
     "name": "Sandal Soap Factory"
+   },
+   "metroJourney": {
+    "cbd": [
+     46,
+     1
+    ],
+    "ecity": [
+     83,
+     1
+    ],
+    "itpl": [
+     83,
+     1
+    ]
    }
   }
  },
@@ -3018,7 +3676,7 @@
    "south": 12.7,
    "west": 77.3
   },
-  "generated": "2026-09-21T11:36:55Z",
+  "generated": "2026-09-21T13:16:29Z",
   "hubs": [
    {
     "key": "itpl",
@@ -3105,7 +3763,8 @@
    "metro": {
     "km": 2.94,
     "name": "Electronic City"
-   }
+   },
+   "metroJourney": null
   },
   "Anahata": {
    "borrowedFrom": "Whitefield",
@@ -3142,6 +3801,20 @@
    "metro": {
     "km": 0.0,
     "name": "Whitefield (Kadugodi)"
+   },
+   "metroJourney": {
+    "cbd": [
+     53,
+     0
+    ],
+    "ecity": [
+     126,
+     2
+    ],
+    "itpl": [
+     16,
+     0
+    ]
    }
   },
   "Aratt Firenza": {
@@ -3178,6 +3851,20 @@
    "metro": {
     "km": 2.01,
     "name": "Huskur Road"
+   },
+   "metroJourney": {
+    "cbd": [
+     108,
+     2
+    ],
+    "ecity": [
+     35,
+     0
+    ],
+    "itpl": [
+     146,
+     2
+    ]
    }
   },
   "Assetz Marq": {
@@ -3214,7 +3901,8 @@
    "metro": {
     "km": 3.32,
     "name": "Whitefield (Kadugodi)"
-   }
+   },
+   "metroJourney": null
   },
   "Assetz Zen and Sato": {
    "drive": {
@@ -3250,7 +3938,8 @@
    "metro": {
     "km": 14.27,
     "name": "Yeshwantpur"
-   }
+   },
+   "metroJourney": null
   },
   "Birla Trimaya": {
    "drive": {
@@ -3286,7 +3975,8 @@
    "metro": {
     "km": 21.08,
     "name": "Krishnarajapura"
-   }
+   },
+   "metroJourney": null
   },
   "Brigade Citrine": {
    "drive": {
@@ -3322,7 +4012,8 @@
    "metro": {
     "km": 6.46,
     "name": "Whitefield (Kadugodi)"
-   }
+   },
+   "metroJourney": null
   },
   "Brigade Cornerstone Utopia": {
    "drive": {
@@ -3358,7 +4049,8 @@
    "metro": {
     "km": 5.52,
     "name": "Nallurahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Brigade Meadows": {
    "drive": {
@@ -3394,7 +4086,8 @@
    "metro": {
     "km": 6.01,
     "name": "Silk Institute"
-   }
+   },
+   "metroJourney": null
   },
   "Brigade Millennium": {
    "drive": {
@@ -3430,6 +4123,20 @@
    "metro": {
     "km": 1.45,
     "name": "Yelachenahalli"
+   },
+   "metroJourney": {
+    "cbd": [
+     68,
+     1
+    ],
+    "ecity": [
+     71,
+     1
+    ],
+    "itpl": [
+     106,
+     1
+    ]
    }
   },
   "Brigade Omega": {
@@ -3466,7 +4173,8 @@
    "metro": {
     "km": 2.46,
     "name": "Vajarahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Brigade Valencia": {
    "drive": {
@@ -3502,7 +4210,8 @@
    "metro": {
     "km": 2.13,
     "name": "Delta Electronics Bommasandra"
-   }
+   },
+   "metroJourney": null
   },
   "Century Breeze": {
    "drive": {
@@ -3538,7 +4247,8 @@
    "metro": {
     "km": 9.78,
     "name": "Yeshwantpur"
-   }
+   },
+   "metroJourney": null
   },
   "Century Marathahalli": {
    "borrowedFrom": "Marathahalli",
@@ -3575,7 +4285,8 @@
    "metro": {
     "km": 3.06,
     "name": "Seetharampalya"
-   }
+   },
+   "metroJourney": null
   },
   "Concorde Auriga": {
    "drive": {
@@ -3611,7 +4322,8 @@
    "metro": {
     "km": 4.59,
     "name": "Garudacharpalya"
-   }
+   },
+   "metroJourney": null
   },
   "Concorde Neo": {
    "drive": {
@@ -3647,7 +4359,8 @@
    "metro": {
     "km": 11.88,
     "name": "Benniganahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Concorde Wind Rush": {
    "borrowedFrom": "Electronic City Ph 1",
@@ -3684,6 +4397,20 @@
    "metro": {
     "km": 1.87,
     "name": "Electronic City"
+   },
+   "metroJourney": {
+    "cbd": [
+     101,
+     2
+    ],
+    "ecity": [
+     33,
+     0
+    ],
+    "itpl": [
+     139,
+     2
+    ]
    }
   },
   "Cornerstone Akhinta": {
@@ -3720,6 +4447,20 @@
    "metro": {
     "km": 0.46,
     "name": "BTM Layout"
+   },
+   "metroJourney": {
+    "cbd": [
+     65,
+     2
+    ],
+    "ecity": [
+     36,
+     0
+    ],
+    "itpl": [
+     102,
+     2
+    ]
    }
   },
   "DSR Highland Greens": {
@@ -3756,7 +4497,8 @@
    "metro": {
     "km": 5.52,
     "name": "Beratena Agrahara"
-   }
+   },
+   "metroJourney": null
   },
   "DSR The Address": {
    "drive": {
@@ -3792,7 +4534,8 @@
    "metro": {
     "km": 9.49,
     "name": "Huskur Road"
-   }
+   },
+   "metroJourney": null
   },
   "Godrej Air": {
    "drive": {
@@ -3828,6 +4571,20 @@
    "metro": {
     "km": 0.17,
     "name": "Hoodi"
+   },
+   "metroJourney": {
+    "cbd": [
+     35,
+     0
+    ],
+    "ecity": [
+     109,
+     2
+    ],
+    "itpl": [
+     23,
+     0
+    ]
    }
   },
   "Godrej Park Retreat": {
@@ -3864,7 +4621,8 @@
    "metro": {
     "km": 5.99,
     "name": "Electronic City"
-   }
+   },
+   "metroJourney": null
   },
   "Godrej Woods": {
    "drive": {
@@ -3900,7 +4658,8 @@
    "metro": {
     "km": 12.92,
     "name": "Krishnarajapura"
-   }
+   },
+   "metroJourney": null
   },
   "Godrej Woodscapes": {
    "drive": {
@@ -3936,7 +4695,8 @@
    "metro": {
     "km": 5.96,
     "name": "Whitefield (Kadugodi)"
-   }
+   },
+   "metroJourney": null
   },
   "Keerthi Royal Palms": {
    "drive": {
@@ -3972,6 +4732,20 @@
    "metro": {
     "km": 0.33,
     "name": "Beratena Agrahara"
+   },
+   "metroJourney": {
+    "cbd": [
+     80,
+     2
+    ],
+    "ecity": [
+     17,
+     0
+    ],
+    "itpl": [
+     118,
+     2
+    ]
    }
   },
   "Keya The Lake Terraces": {
@@ -4008,6 +4782,20 @@
    "metro": {
     "km": 1.76,
     "name": "Huskur Road"
+   },
+   "metroJourney": {
+    "cbd": [
+     105,
+     2
+    ],
+    "ecity": [
+     32,
+     0
+    ],
+    "itpl": [
+     143,
+     2
+    ]
    }
   },
   "L&T Raintree Boulevard": {
@@ -4044,7 +4832,8 @@
    "metro": {
     "km": 6.7,
     "name": "Yeshwantpur"
-   }
+   },
+   "metroJourney": null
   },
   "MJR Platina": {
    "drive": {
@@ -4080,6 +4869,20 @@
    "metro": {
     "km": 0.14,
     "name": "Kudlu Gate"
+   },
+   "metroJourney": {
+    "cbd": [
+     71,
+     2
+    ],
+    "ecity": [
+     22,
+     0
+    ],
+    "itpl": [
+     108,
+     2
+    ]
    }
   },
   "Mana Skandas": {
@@ -4117,7 +4920,8 @@
    "metro": {
     "km": 2.51,
     "name": "Bommanahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Mantri Alpyne": {
    "drive": {
@@ -4153,7 +4957,8 @@
    "metro": {
     "km": 3.47,
     "name": "Vajarahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Mantri Lithos": {
    "drive": {
@@ -4189,7 +4994,8 @@
    "metro": {
     "km": 7.83,
     "name": "Baiyappanahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Mantri Serenity": {
    "drive": {
@@ -4225,6 +5031,20 @@
    "metro": {
     "km": 0.35,
     "name": "Doddakallasandra"
+   },
+   "metroJourney": {
+    "cbd": [
+     60,
+     1
+    ],
+    "ecity": [
+     63,
+     1
+    ],
+    "itpl": [
+     98,
+     1
+    ]
    }
   },
   "Metro Urbano": {
@@ -4262,6 +5082,20 @@
    "metro": {
     "km": 0.05,
     "name": "Kudlu Gate"
+   },
+   "metroJourney": {
+    "cbd": [
+     70,
+     2
+    ],
+    "ecity": [
+     21,
+     0
+    ],
+    "itpl": [
+     107,
+     2
+    ]
    }
   },
   "Mythri Sity": {
@@ -4299,7 +5133,8 @@
    "metro": {
     "km": 2.51,
     "name": "Bommanahalli"
-   }
+   },
+   "metroJourney": null
   },
   "NBR Soul of the Seasons": {
    "borrowedFrom": "Sarjapur Road",
@@ -4336,7 +5171,8 @@
    "metro": {
     "km": 2.51,
     "name": "Bommanahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Nambiar District 25": {
    "drive": {
@@ -4372,7 +5208,8 @@
    "metro": {
     "km": 8.18,
     "name": "Huskur Road"
-   }
+   },
+   "metroJourney": null
   },
   "Navins Antheia Poetry": {
    "borrowedFrom": "Bannerghatta Road",
@@ -4409,6 +5246,20 @@
    "metro": {
     "km": 1.45,
     "name": "Jayadeva Hospital"
+   },
+   "metroJourney": {
+    "cbd": [
+     74,
+     2
+    ],
+    "ecity": [
+     50,
+     0
+    ],
+    "itpl": [
+     111,
+     2
+    ]
    }
   },
   "One Bangalore West": {
@@ -4445,6 +5296,20 @@
    "metro": {
     "km": 0.49,
     "name": "Mahalakshmi"
+   },
+   "metroJourney": {
+    "cbd": [
+     44,
+     1
+    ],
+    "ecity": [
+     82,
+     1
+    ],
+    "itpl": [
+     82,
+     1
+    ]
    }
   },
   "Park Square Avenue": {
@@ -4481,7 +5346,8 @@
    "metro": {
     "km": 2.18,
     "name": "Bommanahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Prestige Ferns Residency": {
    "drive": {
@@ -4517,7 +5383,8 @@
    "metro": {
     "km": 3.01,
     "name": "Kudlu Gate"
-   }
+   },
+   "metroJourney": null
   },
   "Prestige Green Gables": {
    "drive": {
@@ -4553,7 +5420,8 @@
    "metro": {
     "km": 4.54,
     "name": "Kundalahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Prestige Lakeside Habitat": {
    "drive": {
@@ -4589,7 +5457,8 @@
    "metro": {
     "km": 5.12,
     "name": "Nallurahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Prestige Park Grove": {
    "drive": {
@@ -4625,7 +5494,8 @@
    "metro": {
     "km": 2.26,
     "name": "Whitefield (Kadugodi)"
-   }
+   },
+   "metroJourney": null
   },
   "Prestige Primrose Hills": {
    "drive": {
@@ -4661,6 +5531,20 @@
    "metro": {
     "km": 0.99,
     "name": "Silk Institute"
+   },
+   "metroJourney": {
+    "cbd": [
+     75,
+     1
+    ],
+    "ecity": [
+     78,
+     1
+    ],
+    "itpl": [
+     113,
+     1
+    ]
    }
   },
   "Prestige Shantiniketan": {
@@ -4697,6 +5581,20 @@
    "metro": {
     "km": 1.08,
     "name": "Pattandur Agrahara"
+   },
+   "metroJourney": {
+    "cbd": [
+     58,
+     0
+    ],
+    "ecity": [
+     132,
+     2
+    ],
+    "itpl": [
+     21,
+     0
+    ]
    }
   },
   "Prestige Song of the South": {
@@ -4733,7 +5631,8 @@
    "metro": {
     "km": 4.17,
     "name": "Singasandra"
-   }
+   },
+   "metroJourney": null
   },
   "Prestige Southern Star": {
    "drive": {
@@ -4769,7 +5668,8 @@
    "metro": {
     "km": 2.56,
     "name": "Kudlu Gate"
-   }
+   },
+   "metroJourney": null
   },
   "Prestige Windgates": {
    "borrowedFrom": "Thanisandra Main Road",
@@ -4806,7 +5706,8 @@
    "metro": {
     "km": 6.57,
     "name": "Baiyappanahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Pride Euphora": {
    "borrowedFrom": "KR Puram",
@@ -4843,6 +5744,20 @@
    "metro": {
     "km": 1.27,
     "name": "Singayyanapalya"
+   },
+   "metroJourney": {
+    "cbd": [
+     43,
+     0
+    ],
+    "ecity": [
+     117,
+     2
+    ],
+    "itpl": [
+     41,
+     0
+    ]
    }
   },
   "Provident Botanico": {
@@ -4879,7 +5794,8 @@
    "metro": {
     "km": 5.31,
     "name": "Whitefield (Kadugodi)"
-   }
+   },
+   "metroJourney": null
   },
   "Provident Park Square": {
    "drive": {
@@ -4915,6 +5831,20 @@
    "metro": {
     "km": 1.09,
     "name": "Thalaghattapura"
+   },
+   "metroJourney": {
+    "cbd": [
+     74,
+     1
+    ],
+    "ecity": [
+     77,
+     1
+    ],
+    "itpl": [
+     112,
+     1
+    ]
    }
   },
   "Provident Sunworth": {
@@ -4951,6 +5881,20 @@
    "metro": {
     "km": 2.04,
     "name": "Challaghatta"
+   },
+   "metroJourney": {
+    "cbd": [
+     72,
+     0
+    ],
+    "ecity": [
+     126,
+     2
+    ],
+    "itpl": [
+     110,
+     0
+    ]
    }
   },
   "Purva Meraki": {
@@ -4987,6 +5931,20 @@
    "metro": {
     "km": 1.47,
     "name": "Kudlu Gate"
+   },
+   "metroJourney": {
+    "cbd": [
+     87,
+     2
+    ],
+    "ecity": [
+     38,
+     0
+    ],
+    "itpl": [
+     124,
+     2
+    ]
    }
   },
   "Purva Orient Grand": {
@@ -5023,6 +5981,20 @@
    "metro": {
     "km": 1.56,
     "name": "Sir M. Visvesvaraya Stn., Central College"
+   },
+   "metroJourney": {
+    "cbd": [
+     34,
+     0
+    ],
+    "ecity": [
+     93,
+     2
+    ],
+    "itpl": [
+     72,
+     0
+    ]
    }
   },
   "Purva Palm Beach": {
@@ -5060,7 +6032,8 @@
    "metro": {
     "km": 5.74,
     "name": "Baiyappanahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Purva Skydale": {
    "drive": {
@@ -5096,7 +6069,8 @@
    "metro": {
     "km": 2.36,
     "name": "Singasandra"
-   }
+   },
+   "metroJourney": null
   },
   "Purva Westend": {
    "drive": {
@@ -5132,6 +6106,20 @@
    "metro": {
     "km": 0.19,
     "name": "Kudlu Gate"
+   },
+   "metroJourney": {
+    "cbd": [
+     71,
+     2
+    ],
+    "ecity": [
+     23,
+     0
+    ],
+    "itpl": [
+     109,
+     2
+    ]
    }
   },
   "Purva Zenium": {
@@ -5168,7 +6156,8 @@
    "metro": {
     "km": 16.61,
     "name": "Yeshwantpur"
-   }
+   },
+   "metroJourney": null
   },
   "RBD Stillwaters": {
    "drive": {
@@ -5204,7 +6193,8 @@
    "metro": {
     "km": 2.97,
     "name": "Singasandra"
-   }
+   },
+   "metroJourney": null
   },
   "Ramky Lumina": {
    "borrowedFrom": "Hosa Road",
@@ -5241,6 +6231,20 @@
    "metro": {
     "km": 0.32,
     "name": "Hosa Road"
+   },
+   "metroJourney": {
+    "cbd": [
+     78,
+     2
+    ],
+    "ecity": [
+     19,
+     0
+    ],
+    "itpl": [
+     115,
+     2
+    ]
    }
   },
   "Rohan Upavan": {
@@ -5277,7 +6281,8 @@
    "metro": {
     "km": 6.22,
     "name": "Krishnarajapura"
-   }
+   },
+   "metroJourney": null
   },
   "SNN Raj Etternia": {
    "borrowedFrom": "Kudlu / Kudlu Gate",
@@ -5314,6 +6319,20 @@
    "metro": {
     "km": 0.05,
     "name": "Kudlu Gate"
+   },
+   "metroJourney": {
+    "cbd": [
+     70,
+     2
+    ],
+    "ecity": [
+     21,
+     0
+    ],
+    "itpl": [
+     107,
+     2
+    ]
    }
   },
   "SNN Raj GreenBay": {
@@ -5350,6 +6369,20 @@
    "metro": {
     "km": 1.11,
     "name": "Infosys Foundation Konappana Agrahara"
+   },
+   "metroJourney": {
+    "cbd": [
+     95,
+     2
+    ],
+    "ecity": [
+     21,
+     0
+    ],
+    "itpl": [
+     132,
+     2
+    ]
    }
   },
   "SSVR Niyaara": {
@@ -5387,7 +6420,8 @@
    "metro": {
     "km": 4.66,
     "name": "Nallurahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Salarpuria Sattva Cadenza": {
    "drive": {
@@ -5423,6 +6457,20 @@
    "metro": {
     "km": 0.32,
     "name": "Kudlu Gate"
+   },
+   "metroJourney": {
+    "cbd": [
+     73,
+     2
+    ],
+    "ecity": [
+     24,
+     0
+    ],
+    "itpl": [
+     110,
+     2
+    ]
    }
   },
   "Saranya Shantiniketan": {
@@ -5460,7 +6508,8 @@
    "metro": {
     "km": 2.49,
     "name": "Hopefarm Channasandra"
-   }
+   },
+   "metroJourney": null
   },
   "Sattva Aeropolis": {
    "drive": {
@@ -5496,7 +6545,8 @@
    "metro": {
     "km": 23.4,
     "name": "Krishnarajapura"
-   }
+   },
+   "metroJourney": null
   },
   "Sattva Aqua Vista": {
    "drive": {
@@ -5532,7 +6582,8 @@
    "metro": {
     "km": 4.07,
     "name": "Konanakunte Cross"
-   }
+   },
+   "metroJourney": null
   },
   "Sattva Greenage": {
    "borrowedFrom": "Kudlu / Kudlu Gate",
@@ -5569,6 +6620,20 @@
    "metro": {
     "km": 0.05,
     "name": "Kudlu Gate"
+   },
+   "metroJourney": {
+    "cbd": [
+     70,
+     2
+    ],
+    "ecity": [
+     21,
+     0
+    ],
+    "itpl": [
+     107,
+     2
+    ]
    }
   },
   "Sattva Misty Charm": {
@@ -5605,6 +6670,20 @@
    "metro": {
     "km": 1.02,
     "name": "Thalaghattapura"
+   },
+   "metroJourney": {
+    "cbd": [
+     73,
+     1
+    ],
+    "ecity": [
+     76,
+     1
+    ],
+    "itpl": [
+     111,
+     1
+    ]
    }
   },
   "Shriram Greenfield": {
@@ -5641,7 +6720,8 @@
    "metro": {
     "km": 8.43,
     "name": "Whitefield (Kadugodi)"
-   }
+   },
+   "metroJourney": null
   },
   "Shriram Poem": {
    "borrowedFrom": "Jalahalli",
@@ -5678,6 +6758,20 @@
    "metro": {
     "km": 0.0,
     "name": "Jalahalli"
+   },
+   "metroJourney": {
+    "cbd": [
+     51,
+     1
+    ],
+    "ecity": [
+     88,
+     1
+    ],
+    "itpl": [
+     88,
+     1
+    ]
    }
   },
   "Signature Heights": {
@@ -5715,6 +6809,20 @@
    "metro": {
     "km": 1.87,
     "name": "Electronic City"
+   },
+   "metroJourney": {
+    "cbd": [
+     101,
+     2
+    ],
+    "ecity": [
+     33,
+     0
+    ],
+    "itpl": [
+     139,
+     2
+    ]
    }
   },
   "Sobha Arena": {
@@ -5751,6 +6859,20 @@
    "metro": {
     "km": 0.77,
     "name": "Silk Institute"
+   },
+   "metroJourney": {
+    "cbd": [
+     73,
+     1
+    ],
+    "ecity": [
+     75,
+     1
+    ],
+    "itpl": [
+     110,
+     1
+    ]
    }
   },
   "Sobha Cinnamon": {
@@ -5787,6 +6909,20 @@
    "metro": {
     "km": 2.04,
     "name": "Singasandra"
+   },
+   "metroJourney": {
+    "cbd": [
+     96,
+     2
+    ],
+    "ecity": [
+     42,
+     0
+    ],
+    "itpl": [
+     133,
+     2
+    ]
    }
   },
   "Sobha Dream Acres": {
@@ -5823,7 +6959,8 @@
    "metro": {
     "km": 4.45,
     "name": "Nallurahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Sobha Forest View": {
    "drive": {
@@ -5859,6 +6996,20 @@
    "metro": {
     "km": 1.28,
     "name": "Thalaghattapura"
+   },
+   "metroJourney": {
+    "cbd": [
+     76,
+     1
+    ],
+    "ecity": [
+     79,
+     1
+    ],
+    "itpl": [
+     114,
+     1
+    ]
    }
   },
   "Sobha Habitech": {
@@ -5896,6 +7047,20 @@
    "metro": {
     "km": 0.0,
     "name": "Whitefield (Kadugodi)"
+   },
+   "metroJourney": {
+    "cbd": [
+     53,
+     0
+    ],
+    "ecity": [
+     126,
+     2
+    ],
+    "itpl": [
+     16,
+     0
+    ]
    }
   },
   "Sobha Lake Gardens": {
@@ -5932,7 +7097,8 @@
    "metro": {
     "km": 3.5,
     "name": "Garudacharpalya"
-   }
+   },
+   "metroJourney": null
   },
   "Sobha Magnus": {
    "borrowedFrom": "Bannerghatta Road",
@@ -5969,6 +7135,20 @@
    "metro": {
     "km": 1.45,
     "name": "Jayadeva Hospital"
+   },
+   "metroJourney": {
+    "cbd": [
+     74,
+     2
+    ],
+    "ecity": [
+     50,
+     0
+    ],
+    "itpl": [
+     111,
+     2
+    ]
    }
   },
   "Sobha Royal Crest": {
@@ -6005,6 +7185,20 @@
    "metro": {
     "km": 1.21,
     "name": "Pantharapalya - Nayandahalli"
+   },
+   "metroJourney": {
+    "cbd": [
+     48,
+     0
+    ],
+    "ecity": [
+     101,
+     2
+    ],
+    "itpl": [
+     85,
+     0
+    ]
    }
   },
   "Sobha Royal Pavilion": {
@@ -6042,7 +7236,8 @@
    "metro": {
     "km": 2.51,
     "name": "Bommanahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Sobha Sentosa": {
    "drive": {
@@ -6078,7 +7273,8 @@
    "metro": {
     "km": 4.62,
     "name": "Nallurahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Sobha Silicon Oasis": {
    "drive": {
@@ -6114,6 +7310,20 @@
    "metro": {
     "km": 0.57,
     "name": "Beratena Agrahara"
+   },
+   "metroJourney": {
+    "cbd": [
+     83,
+     2
+    ],
+    "ecity": [
+     20,
+     0
+    ],
+    "itpl": [
+     121,
+     2
+    ]
    }
   },
   "Sri Garnet Park": {
@@ -6150,6 +7360,20 @@
    "metro": {
     "km": 0.92,
     "name": "Hoodi"
+   },
+   "metroJourney": {
+    "cbd": [
+     44,
+     0
+    ],
+    "ecity": [
+     118,
+     2
+    ],
+    "itpl": [
+     32,
+     0
+    ]
    }
   },
   "Sumadhura Folium": {
@@ -6186,7 +7410,8 @@
    "metro": {
     "km": 2.18,
     "name": "Kadugodi Tree Park"
-   }
+   },
+   "metroJourney": null
   },
   "Suncity Gloria": {
    "borrowedFrom": "Sarjapur Road",
@@ -6223,7 +7448,8 @@
    "metro": {
     "km": 2.51,
     "name": "Bommanahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Sunny Groves": {
    "borrowedFrom": "Sarjapur Road",
@@ -6260,7 +7486,8 @@
    "metro": {
     "km": 2.51,
     "name": "Bommanahalli"
-   }
+   },
+   "metroJourney": null
   },
   "Trifecta Verde En Resplandor": {
    "borrowedFrom": "Whitefield",
@@ -6297,6 +7524,20 @@
    "metro": {
     "km": 0.0,
     "name": "Whitefield (Kadugodi)"
+   },
+   "metroJourney": {
+    "cbd": [
+     53,
+     0
+    ],
+    "ecity": [
+     126,
+     2
+    ],
+    "itpl": [
+     16,
+     0
+    ]
    }
   },
   "Vaishnavi Krishna Brindavan": {
@@ -6333,6 +7574,20 @@
    "metro": {
     "km": 0.62,
     "name": "Banashankari"
+   },
+   "metroJourney": {
+    "cbd": [
+     53,
+     1
+    ],
+    "ecity": [
+     56,
+     1
+    ],
+    "itpl": [
+     91,
+     1
+    ]
    }
   }
  },

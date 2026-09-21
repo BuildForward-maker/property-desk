@@ -450,6 +450,188 @@ def nearest_metro(points, stations):
     return out
 
 
+# ------------------------------------------------ 3b2. metro journeys
+#
+# A metro commuter's journey is not the drive time. It is walk + ride +
+# interchange + walk, and scoring them on a car number describes somebody
+# else's commute. These are the only modelled constants; the network itself
+# comes from OSM route relations.
+WALK_MIN_PER_KM   = 12
+WALK_CAP_MIN      = 25     # past this nobody walks to a station
+RIDE_MIN_PER_STOP = 2.5
+INTERCHANGE_MIN   = 8
+DEST_WALK_MIN     = 8
+HUB_STATION_MAX_KM = 2.5
+
+# Bellandur / ORR sits on the Blue Line, which is under construction. There is
+# no journey to model and inventing one would be worse than saying so.
+HUB_METRO_OVERRIDE = {'orr': False}
+
+
+def fetch_metro_routes():
+    """Namma Metro route relations, in member order, so stations carry a line
+    and a position along it."""
+    q = """[out:json][timeout:200];
+rel["route"="subway"]["network"="Namma Metro"];
+out body;""" % BBOX
+    qs = urllib.parse.urlencode({'data': q})
+    last = None
+    for base in OVERPASS_MIRRORS:
+        try:
+            res = get(base + '?' + qs, timeout=240)
+            print('  routes via %s' % urllib.parse.urlsplit(base).netloc)
+            return res.get('elements', [])
+        except Exception as e:                              # noqa: BLE001
+            print('  ! %s: %s' % (urllib.parse.urlsplit(base).netloc, str(e)[:55]))
+            last = e
+    raise last if last else RuntimeError('no Overpass mirror reachable')
+
+
+def line_name(tags):
+    for k in ('colour', 'ref', 'name'):
+        v = (tags.get(k) or '').strip()
+        if not v:
+            continue
+        for c in ('Purple', 'Green', 'Yellow', 'Blue', 'Pink', 'Orange', 'Red'):
+            if c.lower() in v.lower():
+                return c
+    return (tags.get('ref') or tags.get('name') or 'Metro').strip()[:14]
+
+
+STOPS_FILE = os.path.join(DATA_DIR, 'metro_stops_raw.json')
+
+
+def load_stop_names():
+    """Route relations reference stop_position nodes, not the railway=station
+    node, so member ids never match the station list directly. These carry the
+    same names, which is the join."""
+    raw = load_json(STOPS_FILE, None)
+    if not raw:
+        return {}
+    els = raw.get('elements', raw) if isinstance(raw, dict) else raw
+    out = {}
+    for e in els:
+        nm = (e.get('tags') or {}).get('name')
+        if not nm:
+            continue
+        # Interchange stops are suffixed with the line: "Nadaprabhu Kempegowda
+        # Station, Majestic (Purple Line)". The station node carries the bare
+        # name, so without stripping this the join fails at exactly the
+        # interchanges, and half the network looks unreachable.
+        out[e['id']] = re.sub(r'\s*\([^)]*\bLine\)\s*$', '', nm).strip()
+    return out
+
+
+def build_metro_graph(station_elems, relations):
+    """Returns (stations, lines, adjacency). Nodes are (station, line) so a
+    change of line costs a real interchange rather than being free."""
+    byid, stations = {}, {}
+    byid.update(load_stop_names())          # stop_position ids -> station name
+    for el in station_elems:
+        nm = (el.get('tags') or {}).get('name')
+        lat = el.get('lat') or (el.get('center') or {}).get('lat')
+        lon = el.get('lon') or (el.get('center') or {}).get('lon')
+        if not (nm and lat and lon):
+            continue
+        byid[el['id']] = nm
+        stations.setdefault(nm, {'lat': lat, 'lon': lon, 'lines': set()})
+
+    lines = {}
+    for rel in relations:
+        tags = rel.get('tags') or {}
+        if tags.get('route') != 'subway':
+            continue
+        ln = line_name(tags)
+        seq = []
+        for m in rel.get('members', []):
+            if m.get('type') != 'node':
+                continue
+            nm = byid.get(m.get('ref'))
+            if nm and (not seq or seq[-1] != nm):
+                seq.append(nm)
+        if len(seq) < 2:
+            continue
+        # both directions of a line are separate relations; keep the longest
+        if ln not in lines or len(seq) > len(lines[ln]):
+            lines[ln] = seq
+
+    for ln, seq in lines.items():
+        for nm in seq:
+            if nm in stations:
+                stations[nm]['lines'].add(ln)
+    # drop any sequence entries we have no station record for, so the graph
+    # only ever contains places we can actually route from
+    for ln in list(lines):
+        lines[ln] = [n for n in lines[ln] if n in stations]
+
+    adj = {}
+    def link(a, b, w):
+        adj.setdefault(a, {})
+        if b not in adj[a] or adj[a][b] > w:
+            adj[a][b] = w
+    for ln, seq in lines.items():
+        for i in range(len(seq) - 1):
+            a, b = (seq[i], ln), (seq[i + 1], ln)
+            link(a, b, RIDE_MIN_PER_STOP)
+            link(b, a, RIDE_MIN_PER_STOP)
+    for nm, st in stations.items():
+        ls = sorted(st['lines'])
+        for i in range(len(ls)):
+            for j in range(len(ls)):
+                if i != j:
+                    link((nm, ls[i]), (nm, ls[j]), INTERCHANGE_MIN)
+    return stations, lines, adj
+
+
+def ride_times_from(adj, stations, dest_name):
+    """Dijkstra out from every platform of the destination station. Returns
+    {station: (minutes, interchanges)}."""
+    import heapq
+    starts = [(dest_name, ln) for ln in stations.get(dest_name, {}).get('lines', [])]
+    if not starts:
+        return {}
+    best, pq = {}, []
+    for s in starts:
+        best[s] = (0.0, 0)
+        heapq.heappush(pq, (0.0, 0, s))
+    while pq:
+        d, ic, node = heapq.heappop(pq)
+        if best.get(node, (1e9,))[0] < d:
+            continue
+        for nxt, w in (adj.get(node) or {}).items():
+            nic = ic + (1 if w == INTERCHANGE_MIN else 0)
+            nd = d + w
+            if nd < best.get(nxt, (1e9, 0))[0]:
+                best[nxt] = (nd, nic)
+                heapq.heappush(pq, (nd, nic, nxt))
+    out = {}
+    for (nm, ln), (d, ic) in best.items():
+        if nm not in out or d < out[nm][0]:
+            out[nm] = (d, ic)
+    return out
+
+
+def metro_journeys(points, nearest, stations, adj, hub_station):
+    """points: key -> (lat,lon); nearest: key -> {'name','km'}"""
+    rides = {h: ride_times_from(adj, stations, st) for h, st in hub_station.items() if st}
+    out = {}
+    for k, near in nearest.items():
+        if not near:
+            continue
+        walk = near['km'] * WALK_MIN_PER_KM
+        rec = {}
+        for h, st in hub_station.items():
+            if not st or walk > WALK_CAP_MIN:
+                continue
+            r = rides.get(h, {}).get(near['name'])
+            if r is None:
+                continue
+            rec[h] = [int(round(walk + r[0] + DEST_WALK_MIN)), int(r[1])]
+        if rec:
+            out[k] = rec
+    return out
+
+
 # ------------------------------------------------ 3c. Tier 2 localities
 
 # Every other named Bengaluru locality, so search can answer for places the
@@ -610,6 +792,12 @@ def patch_index(lines, areas, socs, enrich):
             if gp:
                 line = field(line, 'geoPrecision', "'%s'" % gp)
 
+            mj = rec.get('metroJourney')
+            if mj:
+                line = field(line, 'mt', '{%s}' % ','.join(
+                    '%s:[%d,%d]' % (h, v[0], v[1]) for h, v in sorted(mj.items())))
+                changed['mt'] = changed.get('mt', 0) + 1
+
             mx = rec.get('metro')
             if mx:
                 line = field(line, 'mx', "'%s'" % js_str(mx['name']))
@@ -621,6 +809,38 @@ def patch_index(lines, areas, socs, enrich):
     with open(INDEX, 'w', encoding='utf-8') as f:
         f.write('\n'.join(lines))
     return changed
+
+
+def patch_tables(hub_info, stations):
+    """HUBMETRO (which hubs a line actually reaches) and MLINES (station ->
+    line), both small and both needed to name a journey in the UI."""
+    with open(INDEX, encoding='utf-8') as f:
+        text = f.read()
+    hub = '{' + ','.join(
+        "%s:{served:%s,station:%s,km:%s,note:%s}" % (
+            k, 'true' if v['served'] else 'false',
+            ("'%s'" % js_str(v['station'])) if v['station'] else 'null',
+            v['km'] if v['km'] is not None else 'null',
+            ("'%s'" % js_str(v['note'])) if v['note'] else 'null')
+        for k, v in sorted(hub_info.items())) + '}'
+    ml = '{' + ','.join("'%s':'%s'" % (js_str(n), js_str(sorted(s['lines'])[0]))
+                        for n, s in sorted(stations.items()) if s['lines']) + '}'
+    block = ('/* ===== metro tables, written by tools/enrich.py ===== */\n'
+             '/* var, not let: this block is written above the scoring code that\n'
+             '   declares nothing, so it must hoist. */\n'
+             'var HUBMETRO=' + hub + ';\n'
+             'var MLINES=' + ml + ';')
+    marker = '/* ===== metro tables, written by tools/enrich.py ===== */'
+    if marker in text:
+        start = text.index(marker)
+        end = text.index(';', text.index('var MLINES=', start)) + 1
+        text = text[:start] + block + text[end:]
+    else:
+        anchor = '\n/* ========== Tier 2 localities =========='
+        assert anchor in text, 'anchor for metro tables not found'
+        text = text.replace(anchor, '\n' + block + '\n' + anchor, 1)
+    with open(INDEX, 'w', encoding='utf-8') as f:
+        f.write(text)
 
 
 def patch_localities(locs):
@@ -645,6 +865,9 @@ def patch_localities(locs):
             parts.append('dt:{%s}' % ','.join(
                 '%s:[%d,%d%s]' % (k, v[0], v[1], ',%s' % v[2] if len(v) > 2 and v[2] is not None else '')
                 for k, v in sorted(l['dt'].items())))
+        if l.get('mt'):
+            parts.append('mt:{%s}' % ','.join(
+                '%s:[%d,%d]' % (h, v[0], v[1]) for h, v in sorted(l['mt'].items())))
         if l.get('mx'):
             parts.append("mx:'%s',mkm:%s" % (js_str(l['mx']), l['mkm']))
         if l.get('pa'):
@@ -799,6 +1022,57 @@ def main():
         if ak in metro:
             metro['S\x00%s' % n] = metro[ak]
 
+    # ---- 3c. metro network and journeys
+    print('\n[3a] metro journeys')
+    ROUTES_FILE = os.path.join(DATA_DIR, 'metro_routes_raw.json')
+    _raw = load_json(ROUTES_FILE, None)
+    relations = (_raw.get('elements') if isinstance(_raw, dict) else _raw) if _raw else None
+    if relations is None or run('routes'):
+        try:
+            relations = fetch_metro_routes()
+            save_json(ROUTES_FILE, {'elements': relations})
+        except Exception as e:                              # noqa: BLE001
+            print('  ! route fetch failed: %s' % str(e)[:70])
+            relations = relations or []
+    else:
+        print('  reusing %d cached route relations' % len(relations))
+    raw_station_elems = (load_json(STATIONS_FILE, {}) or {}).get('elements') or []
+    mstations, mlines, madj = build_metro_graph(raw_station_elems, relations)
+    print('  %d stations, %d lines: %s'
+          % (len(mstations), len(mlines), ', '.join(sorted(mlines))))
+
+    # which hub each line actually reaches
+    hub_station, hub_info = {}, {}
+    for key, label, hlat, hlon in HUBS:
+        best, bestd = None, 1e9
+        for nm, st in mstations.items():
+            d = haversine_km(hlat, hlon, st['lat'], st['lon'])
+            if d < bestd:
+                best, bestd = nm, d
+        served = (best is not None and bestd <= HUB_STATION_MAX_KM)
+        if key in HUB_METRO_OVERRIDE:
+            served = HUB_METRO_OVERRIDE[key]
+        hub_station[key] = best if served else None
+        hub_info[key] = {'label': label, 'served': served,
+                         'station': best if served else None,
+                         'km': round(bestd, 2) if best else None,
+                         'note': None if served else (
+                             'the Blue Line is under construction' if key == 'orr'
+                             else 'no line reaches this hub yet')}
+        print('  %-6s %-18s %s' % (key, label,
+              (best + ' (' + str(round(bestd, 2)) + ' km)') if served
+              else 'NOT METRO-SERVED'))
+
+    def near_of(rec):
+        m = rec.get('metro') if isinstance(rec, dict) else None
+        return {'name': m['name'], 'km': m['km']} if m else None
+    # nearest station per point, from the metro pass already computed
+    near_all = {}
+    for k, m in metro.items():
+        near_all[k] = {'name': m['name'], 'km': m['km']}
+    mjourney = metro_journeys(flat, near_all, mstations, madj, hub_station)
+    print('  metro journeys for %d areas and societies' % len(mjourney))
+
     # ---- 3d. Tier 2 localities
     print('\n[3b] Tier 2 localities via Overpass')
     LOCOUT = os.path.join(DATA_DIR, 'localities.json')
@@ -871,6 +1145,9 @@ def main():
                         for h, t in p['dt'].items()}
             print('  reusing %d locality drive times' % len(ldrive))
         lmetro = nearest_metro(lflat, stations) if stations else {}
+        lnear = {k: {'name': m['name'], 'km': m['km']} for k, m in lmetro.items()}
+        ljourney = metro_journeys(lflat, lnear, mstations, madj, hub_station)
+        print('  metro journeys for %d localities' % len(ljourney))
 
         for l in locs:
             k = 'L\x00%s' % l['n']
@@ -879,6 +1156,7 @@ def main():
             m = lmetro.get(k)
             l['mx'] = m['name'] if m else was.get('mx')
             l['mkm'] = m['km'] if m else was.get('mkm')
+            l['mt'] = ljourney.get(k) or was.get('mt')
             pa, pkm = nearest_area(l['lat'], l['lon'], area_pts) if area_pts else (None, None)
             l['pa'], l['pkm'] = pa, pkm
             # pricing is INHERITED, never researched for this locality
@@ -924,7 +1202,8 @@ def main():
                 # never downgrade: a stage that returned nothing this run keeps
                 # whatever the last good run produced
                 'drive': drive.get(k) or was.get('drive'),
-                'metro': metro.get(k) or was.get('metro')}
+                'metro': metro.get(k) or was.get('metro'),
+                'metroJourney': mjourney.get(k) or was.get('metroJourney')}
             if coll == 'socs':
                 enrich[coll][n]['geoPrecision'] = precision.get(n)
                 if n in borrowed_from:
@@ -943,6 +1222,8 @@ def main():
     # ---- 5. patch
     print('\n[5/5] patching index.html')
     changed = patch_index(lines, areas, socs, enrich)
+    patch_tables(hub_info, mstations)
+    print('  metro journey fields: %d' % changed.get('mt', 0))
     print('  coordinates written: %d   kept existing: %d' % (changed['lat'], changed['kept_coords']))
     print('  drive-time fields:   %d' % changed['dt'])
     print('  metro fields:        %d' % changed['metro'])
