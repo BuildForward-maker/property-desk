@@ -1187,9 +1187,20 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--rule);padding:1px 4px;b
         <option value="resale">Resale — OC received, no GST</option>
         <option value="rtm">New from builder, OC received — no GST</option>
         <option value="uc">Registering before OC — 5% GST</option></select></div>
-      <div class="field"><label for="mSeller">Seller status <span class="hint">TDS is your liability as buyer</span></label><select id="mSeller">
-        <option value="1">Resident Indian or builder — 1% TDS</option>
-        <option value="22">Non-resident seller — over 20%, get a CA</option></select></div>
+      <div class="field"><label for="mArea">Where the property is <span class="hint">Sets the surcharge on stamp duty</span></label><select id="mArea">
+        <option value="urban" selected>Urban / BBMP — 2% surcharge</option>
+        <option value="rural">Rural — 3% surcharge</option></select></div>
+      <div class="field"><label for="mSeller">Seller status <span class="hint">TDS is your liability as buyer, not the seller's</span></label><select id="mSeller">
+        <option value="res" selected>Resident Indian or builder — Section 194-IA</option>
+        <option value="nri">Non-resident seller — Section 195</option></select></div>
+      <div class="field" id="mPanWrap"><label for="mPan">Seller's PAN</label><select id="mPan">
+        <option value="yes" selected>PAN provided</option>
+        <option value="no">Not provided — TDS becomes 20%</option></select></div>
+      <div class="field" id="mNriWrap" style="display:none"><label for="mNriRate">NRI seller's position <span class="hint">Section 195 rate depends on the seller's own income</span></label><select id="mNriRate">
+        <option value="14.95" selected>Long-term gain, no surcharge slab — 14.95%</option>
+        <option value="20.8">Long-term, seller's income over ₹50 lakh — 20.8%</option>
+        <option value="23.92">Long-term, seller's income over ₹1 crore — 23.92%</option>
+        <option value="slab">Short-term — seller's slab rate, cannot be computed here</option></select></div>
       <div class="field"><label for="mBroker">Brokerage</label><select id="mBroker">
         <option value="0">None — direct from owner or builder</option><option value="1">1%</option><option value="2" selected>2%</option></select></div>
       <div class="field"><label for="mExtras">Builder extras: corpus, club, deposits, parking</label><input type="number" id="mExtras" value="0" step="25000"></div>
@@ -1200,7 +1211,9 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--rule);padding:1px 4px;b
       <div class="field" style="margin-bottom:0"><label for="mYears">Tenure, years</label><input type="number" id="mYears" value="20" step="1"></div>
     </div>
     <div>
-      <div class="calc"><div style="font-size:13px;color:var(--graphite);font-weight:600;margin-bottom:8px">Cash you need on the table</div><div id="costRows"></div></div>
+      <div class="calc"><div style="font-size:13px;color:var(--graphite);font-weight:600;margin-bottom:8px">Statutory cost — what the state takes</div><div id="statRows"></div></div>
+      <div class="note warn" id="tdsBox" style="margin-top:16px"></div>
+      <div class="calc" style="margin-top:20px"><div style="font-size:13px;color:var(--graphite);font-weight:600;margin-bottom:8px">Cash you need on the table</div><div id="costRows"></div></div>
       <div class="calc" style="margin-top:20px"><div style="font-size:13px;color:var(--graphite);font-weight:600">Monthly EMI</div>
         <div class="bignum" id="emiOut">—</div><small id="emiNote"></small><div style="margin-top:14px" id="loanRows"></div></div>
       <div class="note warn" style="margin-top:20px" id="budgetVerdict"></div>
@@ -1210,11 +1223,13 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--rule);padding:1px 4px;b
     <h2>The line items people forget</h2>
     <div class="scroller"><table>
       <tr><th>Item</th><th class="num">Typical</th><th>Notes</th></tr>
-      <tr><td>Stamp duty</td><td class="num">5%</td><td>Above ₹45 lakh, on the higher of sale price or guidance value</td></tr>
-      <tr><td>Cess and surcharge</td><td class="num">~0.55%</td><td>Calculated on the stamp duty amount, not the property value</td></tr>
+      <tr><td>Stamp duty</td><td class="num">2 / 3 / 5%</td><td>2% up to ₹20 lakh, 3% from ₹20–45 lakh, 5% above ₹45 lakh — on the higher of sale consideration or guidance value</td></tr>
+      <tr><td>Cess</td><td class="num">10% of duty</td><td>Of the stamp duty amount, not the property value. All areas.</td></tr>
+      <tr><td>Surcharge</td><td class="num">2% or 3% of duty</td><td>2% in urban/BBMP areas, 3% rural. Again of the duty, not the value.</td></tr>
       <tr><td>Registration fee</td><td class="num">2%</td><td>Doubled from 1% with effect from 31 August 2025</td></tr>
       <tr><td>GST</td><td class="num">5% or nil</td><td>Only where no OC has been issued. No input credit. Resale never attracts it.</td></tr>
-      <tr class="hi"><td>TDS under Section 194-IA</td><td class="num">1%</td><td>Your liability on anything above ₹50 lakh. Deduct from the seller, deposit via Form 26QB within 30 days, issue Form 16B.</td></tr>
+      <tr class="hi"><td>TDS — resident seller, Section 194-IA</td><td class="num">1%</td><td>On the higher of sale consideration or stamp duty value, where that higher figure exceeds ₹50 lakh. 20% if the seller gives no PAN. Form 26QB within 30 days of the end of the month of deduction; Form 16B to the seller within 15 days of that due date.</td></tr>
+      <tr class="hi"><td>TDS — NRI seller, Section 195</td><td class="num">14.95–23.92%</td><td><strong>194-IA does not apply.</strong> You need a TAN, you file Form 27Q not 26QB, you deposit by the 7th of the following month, and it is charged on the full sale value. A Section 197 certificate can reduce it. Involve a CA before signing.</td></tr>
       <tr><td>Legal opinion</td><td class="num">₹15k–40k</td><td>Title chain, EC, litigation search, written opinion</td></tr>
       <tr><td>Structural survey</td><td class="num">₹8k–25k</td><td>Worth it over eight years old, especially with no bank technical report</td></tr>
       <tr><td>Khata and e-khata transfer</td><td class="num">₹5k–25k</td><td>Blocked by any unpaid property tax quarter</td></tr>
@@ -1222,6 +1237,16 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--rule);padding:1px 4px;b
       <tr><td>BESCOM, BWSSB, gas deposits</td><td class="num">₹40k–1.5L</td><td>New projects only</td></tr>
       <tr><td>Interiors</td><td class="num">₹6L–12L</td><td>Not optional if you intend to rent or short-let</td></tr>
     </table></div>
+    <div class="note" style="margin-top:18px"><strong>A deduction worth asking your CA about.</strong>
+      Stamp duty and registration are deductible up to ₹1,50,000 under Clause 123 of the Income Tax
+      Act 2025 — but only under the <em>old</em> regime, and from FY 2026-27 the new regime is the
+      default, so it has to be actively opted into. Whether that is worth doing depends on the rest
+      of your return, so it is not modelled here. Raise it before you file.</div>
+    <p class="srcfoot">Rates verified <strong>September 2026</strong>. The registration fee was revised
+      to 2% with effect from <strong>31 August 2025</strong>. These figures are a planning estimate —
+      the authoritative calculation is the one on
+      <a href="https://kaverionline.karnataka.gov.in" target="_blank" rel="noopener">Kaveri Online Services</a>,
+      which is also where the guidance value for a specific survey number comes from.</p>
   </div>
 </section>
 
@@ -3638,29 +3663,130 @@ function calcResale(){
 rIds.forEach(id=>document.getElementById(id).addEventListener('input',calcResale)); calcResale();
 
 /* ========== costs ========== */
-const mIds=['mTicket','mGuide','mStatus','mSeller','mBroker','mExtras','mInterior','mSurvey','mDown','mRate','mYears'];
+const mIds=['mTicket','mGuide','mStatus','mSeller','mBroker','mExtras','mInterior','mSurvey','mDown','mRate','mYears','mArea','mPan','mNriRate'];
+/* ---- Karnataka statutory costs, verified September 2026 ----
+ Stamp duty is banded on the whole consideration, not marginally: the band the
+ value falls into sets the rate applied to all of it. Cess and surcharge are
+ both percentages OF THE DUTY, not of the property value, which is the mistake
+ that makes people quote "about 5.5%" when the real figure is 7.6%. */
+const STAMP_BANDS=[[2000000,0.02],[4500000,0.03],[Infinity,0.05]];
+function stampRate(value){
+ for(const [ceiling,rate] of STAMP_BANDS) if(value<=ceiling) return rate;
+ return 0.05;
+}
+function statutory(value,area){
+ const rate=stampRate(value);
+ const duty=value*rate;
+ const cess=duty*0.10;                              /* 10% of duty, everywhere */
+ const surRate=(area==='rural')?0.03:0.02;          /* of duty, not of value */
+ const surcharge=duty*surRate;
+ const reg=value*0.02;                              /* revised from 1% on 31 Aug 2025 */
+ const total=duty+cess+surcharge+reg;
+ return {rate,duty,cess,surcharge,surRate,reg,total,pct:value?total/value*100:0};
+}
 function calcCost(){
  /* the calculators live in the property slide-over; they are detached
     until one is open, so every entry point has to tolerate that */
  if(!document.getElementById('mTicket'))return;
  const v=id=>+document.getElementById(id).value||0;
- const ticket=v('mTicket'),guide=v('mGuide'),status=document.getElementById('mStatus').value;
- const base=Math.max(ticket,guide), stamp=base*0.05, cess=stamp*0.11, reg=base*0.02;
+ const val=id=>{const e=document.getElementById(id);return e?e.value:'';};
+ const ticket=v('mTicket'),guide=v('mGuide'),status=val('mStatus');
+ const area=val('mArea')||'urban';
+ const seller=val('mSeller')||'res';
+
+ /* stamp duty value: the higher of what is paid and what the state says */
+ const base=Math.max(ticket,guide);
+ const S=statutory(base,area);
  const gst=status==='uc'?ticket*0.05:0;
- const tds=ticket>5000000?ticket*(+document.getElementById('mSeller').value/100):0;
- const broker=ticket*(+document.getElementById('mBroker').value/100), brokerGst=broker*0.18;
- const legal=v('mSurvey'), loanFee=Math.max(0,ticket-v('mDown'))*0.004*1.18, khata=15000;
  const extras=v('mExtras'), interior=v('mInterior');
- const total=ticket+gst+stamp+cess+reg+broker+brokerGst+legal+loanFee+khata+extras+interior;
- const rows=[['Ticket price',ticket],['GST',gst],['Stamp duty at 5%',stamp],['Cess and surcharge',cess],
-  ['Registration at 2%',reg],['Brokerage',broker],['GST on brokerage',brokerGst],['Legal opinion and survey',legal],
-  ['Loan processing',loanFee],['Khata transfer',khata],['Builder extras and deposits',extras],['Interiors',interior]]
+
+ /* ---- TDS ----
+    Base is the higher of consideration and stamp duty value, EXCLUDING GST but
+    INCLUDING parking, club membership and similar charges. The 50 lakh test
+    runs on that same higher figure. */
+ const tdsBase=Math.max(ticket,guide)+extras;
+ const nri=seller==='nri';
+ const noPan=val('mPan')==='no';
+ const nriSel=val('mNriRate');
+ let tdsRate=0, tdsAmt=0, tdsSlab=false;
+ if(nri){
+  if(nriSel==='slab'){ tdsSlab=true; tdsRate=0; }
+  else tdsRate=(+nriSel||14.95)/100;
+  tdsAmt=tdsSlab?0:tdsBase*tdsRate;           /* on the FULL sale value */
+ } else if(tdsBase>5000000){
+  tdsRate=noPan?0.20:0.01;
+  tdsAmt=tdsBase*tdsRate;
+ }
+
+ const broker=ticket*(+val('mBroker')/100||0), brokerGst=broker*0.18;
+ const legal=v('mSurvey'), loanFee=Math.max(0,ticket-v('mDown'))*0.004*1.18, khata=15000;
+ const total=ticket+gst+S.total+broker+brokerGst+legal+loanFee+khata+extras+interior;
+
+ /* ---- statutory breakdown, rupees and percent ---- */
+ const pc=x=>base?(x/base*100).toFixed(2)+'%':'—';
+ document.getElementById('statRows').innerHTML=
+  `<div class="rowout"><span>Stamp duty at ${(S.rate*100).toFixed(0)}%<br><small style="color:var(--graphite)">on ${fmt(base)}, the higher of price and guidance value</small></span><span>${fmt(S.duty)}<br><small style="color:var(--graphite)">${pc(S.duty)}</small></span></div>`
+ +`<div class="rowout"><span>Cess <small style="color:var(--graphite)">10% of the duty</small></span><span>${fmt(S.cess)}<br><small style="color:var(--graphite)">${pc(S.cess)}</small></span></div>`
+ +`<div class="rowout"><span>Surcharge <small style="color:var(--graphite)">${(S.surRate*100).toFixed(0)}% of the duty, ${area==='rural'?'rural':'urban / BBMP'}</small></span><span>${fmt(S.surcharge)}<br><small style="color:var(--graphite)">${pc(S.surcharge)}</small></span></div>`
+ +`<div class="rowout"><span>Registration at 2%</span><span>${fmt(S.reg)}<br><small style="color:var(--graphite)">${pc(S.reg)}</small></span></div>`
+ +`<div class="rowout total"><span>Statutory total</span><span>${fmt(S.total)} · ${S.pct.toFixed(2)}%</span></div>`
+ +(gst>0?`<div class="rowout" style="border:0;padding-top:8px"><span style="color:var(--graphite);font-size:13px">GST at 5% <small>no OC yet · not part of the TDS base</small></span><span style="color:var(--graphite);font-size:13px">${fmt(gst)}</span></div>`:'');
+
+ /* ---- TDS box ---- */
+ const tb=document.getElementById('tdsBox');
+ if(nri){
+  tb.className='note warn';
+  tb.innerHTML=`<strong>Non-resident seller — Section 195 applies, not 194-IA.</strong>
+   Brokers routinely say "1% under 194-IA" for an NRI seller. That is wrong, and the shortfall
+   plus interest and penalty falls on <em>you</em>, the buyer, personally.
+   <div style="margin-top:10px">`
+   +(tdsSlab
+     ? `A short-term gain is taxed at the seller's own slab rate, which depends on their total
+        income and cannot be computed here. Assume the top of the range until a CA says otherwise.`
+     : `<strong>${fmt(tdsAmt)}</strong> at ${(tdsRate*100).toFixed(2)}% on the full sale value of
+        ${fmt(tdsBase)} — not on the seller's gain.`)
+   +`</div>
+   <ul class="plain" style="margin-top:10px;font-size:13px">
+     <li>You must obtain a <strong>TAN</strong> before deducting.</li>
+     <li>File <strong>Form 27Q</strong>, not Form 26QB.</li>
+     <li>Deposit by the <strong>7th of the following month</strong>, not within 30 days.</li>
+     <li>A Section 197 <strong>Lower Deduction Certificate</strong> obtained by the seller can cut
+         this to the tax on the actual gain. It is the seller's job to get one; it is your risk if
+         they do not.</li>
+   </ul>
+   <div style="margin-top:8px"><strong>Involve a chartered accountant before you sign anything.</strong></div>`;
+ } else if(tdsAmt>0){
+  tb.className='note';
+  tb.innerHTML=`<strong>TDS under Section 194-IA — ${fmt(tdsAmt)}</strong> at ${(tdsRate*100).toFixed(0)}%
+   on ${fmt(tdsBase)}, the higher of sale consideration and stamp duty value.
+   ${noPan?'<br><strong style="color:var(--seal)">No PAN provided, so the rate is 20%, not 1%.</strong>':''}
+   <div style="margin-top:8px;font-size:13px">The base <strong>excludes GST</strong> but
+   <strong>includes</strong> parking, club membership, corpus and similar charges — which is why the
+   builder extras figure above feeds into it.</div>
+   <div style="margin-top:8px;font-size:13px">Deposit <strong>Form 26QB within 30 days of the end of
+   the month</strong> in which you deducted. Issue <strong>Form 16B to the seller within 15 days</strong>
+   of that due date.</div>
+   ${status==='uc'?`<div style="margin-top:8px;font-size:13px">Buying under construction on
+   instalments: 194-IA applies to <strong>each instalment</strong> once the total agreed
+   consideration crosses ₹50 lakh — not only once you have paid ₹50 lakh.</div>`:''}
+   <div style="margin-top:8px;font-size:13px;color:var(--graphite)">This is withheld from the seller,
+   not added to your cost — but it is your legal obligation to deposit it.</div>`;
+ } else {
+  tb.className='note';
+  tb.innerHTML=`<strong>No TDS.</strong> Section 194-IA bites only where the higher of sale
+   consideration and stamp duty value exceeds ₹50 lakh. Here that figure is ${fmt(tdsBase)}.`;
+ }
+
+ const rows=[['Ticket price',ticket],['GST',gst],['Stamp duty',S.duty],['Cess',S.cess],
+  ['Surcharge',S.surcharge],['Registration',S.reg],['Brokerage',broker],['GST on brokerage',brokerGst],
+  ['Legal opinion and survey',legal],['Loan processing',loanFee],['Khata transfer',khata],
+  ['Builder extras and deposits',extras],['Interiors',interior]]
   .filter(r=>r[1]>0);
  document.getElementById('costRows').innerHTML=
   rows.map(r=>`<div class="rowout"><span>${r[0]}</span><span>${fmt(r[1])}</span></div>`).join('')
   +`<div class="rowout total"><span>All-in cost</span><span>${fmt(total)}</span></div>`
-  +`<div class="rowout" style="border:0;padding-top:8px"><span style="color:var(--graphite);font-size:13px">Costs above ticket price</span><span style="color:var(--graphite);font-size:13px">${((total-ticket)/ticket*100).toFixed(1)}% · ${fmt(total-ticket)}</span></div>`
-  +(tds>0?`<div class="rowout" style="border:0"><span style="color:var(--graphite);font-size:13px">TDS you withhold from the seller</span><span style="color:var(--graphite);font-size:13px">${fmt(tds)} — not extra cost, but you must deposit it</span></div>`:'');
+  +`<div class="rowout" style="border:0;padding-top:8px"><span style="color:var(--graphite);font-size:13px">Costs above ticket price</span><span style="color:var(--graphite);font-size:13px">${((total-ticket)/ticket*100).toFixed(1)}% · ${fmt(total-ticket)}</span></div>`;
+
  const principal=Math.max(0,total-v('mDown')-interior), r=v('mRate')/1200, n=v('mYears')*12;
  const emi=r>0&&n>0?principal*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1):0;
  document.getElementById('emiOut').textContent=principal>0?fmt(emi):'No loan needed';
@@ -3670,11 +3796,15 @@ function calcCost(){
  document.getElementById('loanRows').innerHTML=principal>0
   ?`<div class="rowout"><span>Total interest over ${v('mYears')} years</span><span>${fmt(emi*n-principal)}</span></div>
     <div class="rowout"><span>Total repaid</span><span>${fmt(emi*n)}</span></div>`:'';
- const ceil=13000000, vd=document.getElementById('budgetVerdict');
+ const ceil=budCap()||13000000, vd=document.getElementById('budgetVerdict');
  if(total>ceil){vd.className='note warn';
-  vd.innerHTML=`<strong>Over ₹1.3 Cr by ${fmt(total-ceil)}.</strong> Ticket price would need to come to about ${fmt(ticket-(total-ceil))} — ${cr(ticket-(total-ceil))}.`;}
+  vd.innerHTML=`<strong>Over ${cr(ceil)} by ${fmt(total-ceil)}.</strong> Ticket price would need to come to about ${fmt(ticket-(total-ceil))} — ${cr(ticket-(total-ceil))}.`;}
  else{vd.className='note good';
-  vd.innerHTML=`<strong>Inside ₹1.3 Cr with ${fmt(ceil-total)} of headroom.</strong> Keep some back — first-year repairs, a month of vacancy and a deposit shortfall will find it.`;}
+  vd.innerHTML=`<strong>Inside ${cr(ceil)} with ${fmt(ceil-total)} of headroom.</strong> Keep some back — first-year repairs, a month of vacancy and a deposit shortfall will find it.`;}
+ /* the NRI and PAN controls are mutually exclusive */
+ const pw=document.getElementById('mPanWrap'), nw=document.getElementById('mNriWrap');
+ if(pw)pw.style.display=nri?'none':'';
+ if(nw)nw.style.display=nri?'':'none';
  const yc=document.getElementById('yCost'); if(yc&&!yc.dataset.touched){yc.value=Math.round(total);calcYield();}
 }
 mIds.forEach(id=>document.getElementById(id).addEventListener('input',calcCost));
