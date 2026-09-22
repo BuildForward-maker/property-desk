@@ -8,11 +8,27 @@ search. The entire app is `index.html` (~2,600 lines).
 These are not preferences. Breaking any of them breaks how the tool is used and
 shared.
 
-### 1. One self-contained file
+### 1. One self-contained file, plus data beside it
 
-`index.html` is the whole app. Never split it into separate `.js`, `.css`, or
-ES-module files. Markup, styles, and scripts all stay inline in that one file.
-New functionality goes into the existing `<style>` and `<script>` blocks.
+`index.html` is the whole app. Never split the *app* into separate `.js`,
+`.css`, or ES-module files. Markup, styles, and scripts all stay inline in that
+one file. New functionality goes into the existing `<style>` and `<script>`
+blocks.
+
+Large **data** may live in `data/` and be fetched on demand. `LOCALITIES` was
+~370KB of a 780KB file and none of it was needed to render the first screen, so
+it now loads from `data/localities.app.json` the first time somebody searches.
+
+**No further data may be inlined above ~100KB.** Anything larger goes in
+`data/` and loads lazily. Three conditions on any such split:
+
+- the app must still boot and be useful with the fetch failing
+- the failure must be stated in the UI, not swallowed
+- `AREAS`, `SOC` and the metro tables stay inline — they are needed immediately
+
+Note the consequence for rule 2: opened straight from the filesystem, a browser
+will not `fetch()` a sibling file, so a `file://` open gets the app minus the
+lazy data. That is why the fallback has to be real rather than theoretical.
 
 ### 2. No build tools
 
@@ -159,6 +175,8 @@ of bad options.
 Confirm all of the following before reporting the work done:
 
 1. `index.html` still opens standalone from the filesystem, with no server.
+   Lazily-fetched data will not load over `file://` — check the app degrades to
+   its stated fallback rather than breaking.
 2. The browser console is clean — no errors.
-3. Every tab still renders when clicked.
+3. Every section still renders when opened.
 4. Local mode still works with no `#cfg` in the URL.

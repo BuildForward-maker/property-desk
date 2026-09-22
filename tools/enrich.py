@@ -877,6 +877,25 @@ def patch_localities(locs):
         # showLocality() reads them from there via `pa`. Duplicating them cost
         # ~43KB and gave the same number two places to drift apart.
         rows.append(','.join(parts) + '}')
+    # The app reads this file lazily; the inline array is gone. Kept compact on
+    # purpose — it is fetched over the wire on first search.
+    import json as _json
+    app=[]
+    for l in locs:
+        rec={'n':l['n'],'lat':l['lat'],'lng':l['lon']}
+        if l.get('place'):rec['pl']=l['place']
+        if l.get('dt'):rec['dt']=l['dt']
+        if l.get('mx'):rec['mx']=l['mx'];rec['mkm']=l['mkm']
+        if l.get('pa'):rec['pa']=l['pa'];rec['pkm']=l['pkm']
+        app.append(rec)
+    with open(os.path.join(DATA_DIR,'localities.app.json'),'w',encoding='utf-8') as f:
+        _json.dump({'generated':time.strftime('%Y-%m-%d'),'count':len(app),
+                    'note':'Tier 2 localities for search. Geography is real; pricing is '
+                           'inherited at runtime from the nearest researched AREA via pa.',
+                    'localities':app},f,ensure_ascii=False,separators=(',',':'))
+    return len(app)
+
+def _unused_inline_block(locs, rows):
     block = ('/* ========== Tier 2 localities ==========\n'
              ' Every other named locality in the Bengaluru box, from OSM. Geography is\n'
              ' real (coordinates, commute, metro). Pricing under `inh` is INHERITED from\n'
