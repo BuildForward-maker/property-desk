@@ -92,8 +92,21 @@ KFZONE = {
 # --------------------------------------------------------------- price table
 # KF location -> (our AREAS name, 2024 range, 2025 range, 2026 range,
 #                 growth25, growth26, trend)
+#
+# LEVEL_MISMATCH names the mappings where Knight Frank's location is a smaller
+# or dearer piece of geography than our micro-market. A growth RATE survives
+# that mismatch — the street and the market around it move together. A price
+# LEVEL does not: Lavelle Road is the dearest street in the city and our
+# MG Road / CBD entry covers the whole CBD, so adopting their midpoint as the
+# area's cost basis would tell a buyer a flat there costs 2.55 Cr when our own
+# asking data says 1.35 Cr. These keep their growth, trend and chart; they do
+# not set the basis.
 # H1 2024 is Knight Frank's own back-calculation from the stated 12-month
 # change, reproduced from the data file rather than recomputed here.
+LEVEL_MISMATCH = {
+    'MG Road / CBD': 'Knight Frank price Lavelle Road, the dearest street in '
+                     'the CBD, not the wider micro-market this entry covers',
+}
 KFPRICE = [
     ('KR Puram',        'KR Puram',                 (5094, 9434),  (5400, 10000), (6400, 13400),  6, 20, 'accelerating'),
     ('Yelahanka',       'Yelahanka',                (4259, 8333),  (4600, 9000),  (6300, 12700),  8, 18, 'accelerating'),
@@ -152,14 +165,14 @@ PROJECTS = [
     dict(key='metro-now', kind='rail', status='operational', opens=None,
          label='Metro running today', serves='<measured>'),
 
-    dict(key='blue-2b', kind='rail', status='funded', opens='2027-06',
+    dict(key='blue-2b', kind='metro', status='building', opens='2027-06',
          label='the Blue Line Phase 2B airport corridor',
          serves={'Hebbal', 'Sahakar Nagar', 'Jakkur', 'Yelahanka', 'Bagalur',
                  'Shettigere', 'Devanahalli'}),
 
     # Funded and building; the source dates only 2B, so these carry no date
     # and fall to the undated band rather than being guessed at.
-    dict(key='blue-2a', kind='rail', status='funded', opens=None,
+    dict(key='blue-2a', kind='metro', status='building', opens=None,
          label='the Blue Line ORR section',
          serves={'Marathahalli', 'Bellandur', 'Panathur / Balagere',
                  'Mahadevapura', 'KR Puram', 'HSR Layout'}),
@@ -167,20 +180,23 @@ PROJECTS = [
     # Pink Line, Kalena Agrahara - Nagawara. Membership at the Nagawara end is
     # every entry within 2.5 km of it on our own coordinates. Kothanur and
     # Hennur Road only qualified once their geocodes were corrected.
-    dict(key='pink', kind='rail', status='funded', opens=None,
+    dict(key='pink', kind='metro', status='building', opens=None,
          label='the Pink Line',
          serves={'Nagawara / RT Nagar', 'Thanisandra', 'Thanisandra Main Road',
                  'Kothanur / Kothnur', 'Hennur Road',
                  'Frazer Town / Cooke Town', 'Sudhama Nagar',
-                 'Arekere / Hulimavu'}),
+                 # the southern half of this line IS Bannerghatta Road —
+                 # Kalena Agrahara, Hulimavu, IIM-B, JP Nagar 4th Phase and
+                 # Jayadeva are all on it, and both were missing
+                 'Arekere / Hulimavu', 'Bannerghatta Road', 'JP Nagar'}),
 
-    dict(key='sub-c2', kind='rail', status='funded', opens='2028-12',
+    dict(key='sub-c2', kind='rail', status='building', opens='2028-12',
          label='suburban rail Corridor 2',
          serves={'Jalahalli', 'Yeshwanthpur', 'Mathikere / Sanjay Nagar',
                  'Tumkur Road / Peenya', 'Banaswadi / Kammanahalli',
                  'Kasturi Nagar', 'CV Raman Nagar', 'Horamavu', 'Hebbal'}),
 
-    dict(key='sub-c4', kind='rail', status='funded', opens='2029-03',
+    dict(key='sub-c4', kind='rail', status='building', opens='2029-03',
          label='suburban rail Corridor 4',
          serves={'Hosa Road', 'Kudlu / Kudlu Gate', 'Bommasandra / Chandapura',
                  'Bommanahalli', 'Doddaballapur Road', 'Hebbal', 'Yelahanka'}),
@@ -197,7 +213,7 @@ PROJECTS = [
     # date has been published, which puts it in the undated band rather than a
     # guessed one. The ORR-west alignment runs JP Nagar 4th Phase to Kempapura,
     # which is why it reaches Hebbal at its northern end.
-    dict(key='orange', kind='rail', status='funded', opens=None,
+    dict(key='orange', kind='metro', status='funded', opens=None,
          label='the Orange Line (Phase 3, ORR west)',
          serves={'Hebbal', 'JP Nagar', 'Nagarbhavi',
                  'Tumkur Road / Peenya', 'Jalahalli'}),
@@ -205,54 +221,99 @@ PROJECTS = [
     # Phase 3A, Sarjapur to Hebbal: approved by the state, awaiting central
     # clearance and unfunded. It ends AT Hebbal, which is what makes Hebbal a
     # three-line interchange rather than a single committed station.
-    dict(key='red-phase3a', kind='rail', status='approved', opens=None,
+    dict(key='red-phase3a', kind='metro', status='approved', opens=None,
+         says='state approved, awaiting Union Cabinet',
          label='the Red Line (Phase 3A, Sarjapur to Hebbal)',
          serves={'Sarjapur Road', 'Sarjapur town', 'Harlur / Haralur',
                  'Carmelaram / Dommasandra', 'HSR Layout',
                  'Koramangala', 'Hebbal'}),
 
-    dict(key='aerospace-park', kind='employment', status='funded', opens=None,
+    # Bengaluru Business Corridor, the old Peripheral Ring Road. First notified
+    # in 2007 and still not built: land acquisition has never completed and no
+    # opening date has ever been published. It scores as planned, and the row
+    # carries the date it was first promised so the age of the promise travels
+    # with it wherever it is shown.
+    dict(key='business-corridor', kind='road', status='planned', opens=None,
+         label='the Bengaluru Business Corridor',
+         says='planned, and first proposed in 2007 without ever being built',
+         serves={'Nelamangala', 'Doddaballapur Road', 'Bagalur', 'Hoskote',
+                 'Attibele / Anekal'}),
+
+    dict(key='aerospace-park', kind='employment', status='building', opens=None,
          label='KIADB Aerospace Park',
          serves={'Devanahalli', 'Shettigere'}),
 ]
 
-# Horizon is whole years between the current year and the opening year, so
-# "within three years" means an opening year strictly less than three ahead.
-# From 2026 that is 2027 and 2028; 2029 is three ahead and falls to the next
-# band down. Measuring in whole years rather than fractions is what keeps the
-# boundary on a year rather than on the day the script happens to be run.
-# `ahead` is the opening year minus the as-of year, and a horizon claims a
-# project when ahead <= at_most. From 2026 that puts 2027 in imminent, 2028 in
-# near and 2029-2033 in mid, which is the three-calendar-year boundary falling
-# where it should: December 2028 is 2.2 years out and counts as within three,
-# March 2029 is 3.4 and does not.
-HORIZONS = [
-    dict(key='imminent', at_most=1, weight=10,
-         why='funded and opening %s'),
-    dict(key='near',     at_most=2, weight=6,
-         why='funded, opening %s'),
-    dict(key='mid',      at_most=7, weight=4,
-         why='funded, opening %s'),
-]
-UNDATED_FUNDED = dict(key='mid', weight=4, why='funded and building, no published opening date')
-OPERATIONAL    = dict(key='now', weight=8, why='running today')
-# A dated project whose year has passed has OPENED: it is infrastructure, not a
-# promise, and must stop being described in the future tense. Nothing in the
-# current table has, but a table that outlives its dates would otherwise go on
-# scoring 2027 as imminent forever. ahead == 0 is left as imminent, because
-# only the year is tracked and the month may not have come round yet.
-OPENED         = dict(key='now', weight=8, why='running, and has been since %s')
-APPROVED       = dict(key='approved', weight=2, why='approved but unfunded and uncleared')
+# ---------------------------------------------------------- pipeline score
+# A funded project and an announcement are not the same thing, so status is a
+# multiplier rather than a band. The ladder is deliberately steep at the bottom:
+# an announcement is worth a tenth of the same project under construction.
+STATUS_WEIGHT = {
+    'building':  1.0,
+    'funded':    0.85,
+    'approved':  0.5,
+    'planned':   0.25,
+    'announced': 0.1,
+}
+# What the project would be worth to an area if it were certain.
+TYPE_VALUE = {
+    'metro': 10, 'rail': 7, 'tunnel': 6, 'road': 6, 'employment': 7,
+}
+# How each status reads in prose. A row may override with its own `says` where
+# the bare word would flatter it — the Red Line is "approved" in the same sense
+# the Business Corridor was approved in 2007.
+STATUS_SAYS = {
+    'building':  'under construction',
+    'funded':    'funded',
+    'approved':  'approved',
+    'planned':   'planned',
+    'announced': 'announced',
+}
+PIPE_CAP = 10.0
+PIPE_EXTRA = 0.5          # half credit for each project beyond the best one
 
-# Served now AND something funded arriving within the 'near' horizon is worth
-# more than either alone: the area is usable today and improves on a timescale
-# a buyer can hold through.
-BOTH_BONUS = 2
-EMPLOYMENT_BONUS = 1
-CAP = 10
 
-# The one case where distance IS the alignment: an operational station inside
-# the area. Every other project lists the areas it serves.
+def project_value(pr):
+    """What one project is worth before any area context."""
+    return STATUS_WEIGHT.get(pr['status'], 0) * TYPE_VALUE.get(pr['kind'], 0)
+
+
+def project_says(pr):
+    return pr.get('says') or STATUS_SAYS.get(pr['status'], pr['status'])
+
+
+def pipeline(name, mkm):
+    """pipeScore and the rows behind it. Operational track is NOT pipeline —
+    it is what exists today, and it is scored as its own factor. Everything
+    here is forward-looking."""
+    # A project whose opening year has passed is not pipeline any more — it is
+    # infrastructure, and it is scored as current infra instead. Without this
+    # the table would go on calling 2027 "under construction" forever.
+    rows = [pr for pr in serving(name, mkm)
+            if pr['serves'] != '<measured>' and pr['status'] != 'operational'
+            and not (pr['opens'] and int(pr['opens'][:4]) < AS_OF_YEAR)]
+    if not rows:
+        return dict(score=0.0, top=None, list=[],
+                    note='Nothing committed here, on any published plan.')
+    rows.sort(key=lambda pr: (-project_value(pr),
+                              pr['opens'] or '9999', pr['key']))
+    best = rows[0]
+    score = project_value(best) + PIPE_EXTRA * sum(project_value(pr) for pr in rows[1:])
+    score = min(PIPE_CAP, round(score, 2))
+
+    # A date is only ever shown where one has actually been published.
+    when = (' opening %s' % _when(best['opens'])) if best['opens'] else ''
+    rest = len(rows) - 1
+    note = '%s is %s%s.' % (_cap(best['label']), project_says(best), when)
+    if rest:
+        note += ' %d other committed project%s serve%s this area.' % (
+            rest, '' if rest == 1 else 's', 's' if rest == 1 else '')
+    return dict(score=score, top=best, list=[pr['key'] for pr in rows], note=note)
+
+
+# The one measured membership: an operational station inside the area, because
+# there distance IS the alignment. Every other project lists the areas it
+# serves by name, so a mis-geocoded pin cannot move a line across the city.
 OPERATIONAL_KM = 2.0
 
 MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
@@ -270,25 +331,6 @@ def _when(opens):
     return '%s %s' % (MONTHS[int(m) - 1], y)
 
 
-def horizon_of(project, as_of_year):
-    """What a project is worth to an area it serves, and how to say it.
-    Reads status and opening date only — never the project's name."""
-    st = project['status']
-    if st == 'operational':
-        return OPERATIONAL
-    if st == 'approved':
-        return APPROVED
-    if not project['opens']:
-        return UNDATED_FUNDED
-    ahead = int(project['opens'].split('-')[0]) - as_of_year
-    if ahead < 0:
-        return dict(OPENED, why=OPENED['why'] % _when(project['opens']))
-    for h in HORIZONS:
-        if ahead <= h['at_most']:
-            return dict(h, why=h['why'] % _when(project['opens']))
-    return dict(APPROVED, why='funded, but not before %s' % project['opens'][:4])
-
-
 def serving(name, mkm):
     """Every project that serves this area, measured or listed."""
     out = []
@@ -300,54 +342,6 @@ def serving(name, mkm):
             out.append(pr)
     return out
 
-
-def infra(name, mkm, as_of_year):
-    """Returns (score, note). The band is the best project serving the area,
-    plus the bonuses. No branch here names a line, a corridor or an area."""
-    hits = [(pr, horizon_of(pr, as_of_year)) for pr in serving(name, mkm)]
-    band = [(pr, h) for pr, h in hits if pr['kind'] != 'employment']
-    jobs = [(pr, h) for pr, h in hits if pr['kind'] == 'employment']
-
-    if not band:
-        if mkm is None:
-            return 0, 'No committed rail link within reach.'
-        near = (' Nothing committed, and the nearest running metro is %.1f km away '
-                '\u2014 close, but not walkable.' % mkm) if mkm <= 4.0 else \
-               (' No committed rail link; the nearest running metro is %.1f km away.' % mkm)
-        return 0, near.strip()
-
-    band.sort(key=lambda x: -x[1]['weight'])
-    best_pr, best_h = band[0]
-    score = best_h['weight']
-
-    live = [x for x in band if x[1]['key'] == 'now']
-    soon = [x for x in band if x[1]['key'] in ('imminent', 'near')]
-    if live and soon:
-        score += BOTH_BONUS
-
-    # the note: the winner, then whatever else is worth a buyer's attention
-    if best_h['key'] == 'now':
-        here = ('Metro running today, %.1f km away' % mkm
-                if best_pr['serves'] == '<measured>'
-                else '%s is %s' % (_cap(best_pr['label']), best_h['why']))
-        if soon:
-            why = '%s, and %s is %s.' % (here, soon[0][0]['label'], soon[0][1]['why'])
-        else:
-            why = here + '. Nothing sooner committed.'
-    else:
-        why = '%s is %s.' % (_cap(best_pr['label']), best_h['why'])
-        # current rail service is worth stating whatever kind of project won,
-        # but only as its own clause, and only once it is known
-        if live:
-            why += ' Metro already runs %.1f km away.' % mkm
-        elif mkm is not None:
-            why += ' No metro runs here yet.'
-
-    for pr, _h in jobs:
-        score += EMPLOYMENT_BONUS
-        why += ' %s under construction within 5 km.' % _cap(pr['label'])
-
-    return min(CAP, score), why.strip()
 
 
 # ------------------------------------------------------------------ patching
@@ -398,10 +392,14 @@ def patch_pipeline(src):
     for pr in PROJECTS:
         if pr['serves'] == '<measured>':
             continue
-        rows.append("'%s':{l:'%s',k:'%s',s:'%s',o:%s}" % (
+        rows.append("'%s':{l:'%s',k:'%s',s:'%s',o:%s,says:'%s',v:%g}" % (
             pr['key'], pr['label'].replace("'", "\\'"), pr['kind'], pr['status'],
-            ("'%s'" % pr['opens']) if pr['opens'] else 'null'))
-    block = (PIPE_START + '\nconst KFPIPE={' + ',\n '.join(rows) + '};\n' + PIPE_END)
+            ("'%s'" % pr['opens']) if pr['opens'] else 'null',
+            project_says(pr).replace("'", "\\'"), project_value(pr)))
+    order = ','.join("'%s'" % k for k in
+                     sorted(STATUS_WEIGHT, key=lambda k: -STATUS_WEIGHT[k]))
+    block = (PIPE_START + '\nconst KFPIPE={' + ',\n '.join(rows) + '};\n'
+             + 'const KFSTATUS=[' + order + '];\n' + PIPE_END)
     a = src.index(PIPE_START)
     b = src.index(PIPE_END) + len(PIPE_END)
     return src[:a] + block + src[b:]
@@ -421,7 +419,7 @@ def main():
     report = []
     seen = set()
     remerged = [0]
-    infra_hist = {}
+    pipe_hist = {}
     for s, e in entries(blk):
         ent = blk[s:e]
         m = re.match(r"\{n:'((?:[^'\\]|\\.)*)'", ent)
@@ -450,8 +448,8 @@ def main():
 
         kfz = KF_EXPLICIT.get(name, z)
         zi = KFZONE[kfz]
-        isc, inote = infra(name, mkm, AS_OF_YEAR)
-        infra_hist[isc] = infra_hist.get(isc, 0) + 1
+        pl = pipeline(name, mkm)
+        pipe_hist[int(pl['score'])] = pipe_hist.get(int(pl['score']), 0) + 1
 
         add = [",kfZone:'%s'" % kfz,
                ',qts:%s' % num(zi['qts']),
@@ -471,25 +469,34 @@ def main():
                     # lo/hi are portal asking quotes and are a different thing;
                     # the panel must never show one under the other's name.
                     ',kfRange:[%d,%d]' % (y26[0], y26[1]),
+                    # whether their LEVEL may set this area's cost basis
+                    ',kfLevel:%s' % ('0' if name in LEVEL_MISMATCH else '1'),
+                    (",kfLevelWhy:'%s'" % LEVEL_MISMATCH[name].replace("'", "\\'"))
+                        if name in LEVEL_MISMATCH else '',
                     ',kfSeries:{y2024:%d,y2025:%d,y2026:%d}' % (mid(y24), mid(y25), mid(y26)),
                     ",dataTier:'verified'",
                     ",kfLoc:'%s'" % kfname[name],
                     ",scorePrecision:'verified+zone'"]
-            report.append((name, kfz, py, g26, g25, trend, isc))
+            report.append((name, kfz, py, g26, g25, trend, int(pl['score'])))
             # Part B: the verified reading replaces the portal one.
             ent = re.sub(r"(,py:)-?\d+", r"\g<1>%d" % g26, ent, count=1)
         else:
             add += [',growthPortal:%d' % py,
-                    ',growth26:null,growth25:null,kfRange:null',
+                    ',growth26:null,growth25:null,kfRange:null,kfLevel:0',
                     ",trend:null,kfSeries:null",
                     ",dataTier:'portal'",
                     ",scorePrecision:'portal+zone'"]
 
-        pipe = [pr['key'] for pr in serving(name, mkm)
-                if pr['serves'] != '<measured>']
-        add += [',pipe:[%s]' % ','.join("'%s'" % k for k in pipe),
-                ',infraScore:%d' % isc,
-                ",infraNote:'%s'" % inote.replace("'", "\\'"),
+        top = pl['top']
+        add += [',pipeScore:%s' % ('%g' % pl['score']),
+                ',pipeList:[%s]' % ','.join("'%s'" % k for k in pl['list']),
+                ",pipeTop:%s" % ("null" if not top else
+                    "{k:'%s',l:'%s',st:'%s',says:'%s',kind:'%s',o:%s}" % (
+                        top['key'], top['label'].replace("'", "\\'"),
+                        top['status'], project_says(top).replace("'", "\\'"),
+                        top['kind'],
+                        ("'%s'" % top['opens']) if top['opens'] else 'null')),
+                ",pipeNote:'%s'" % pl['note'].replace("'", "\\'"),
                 ",kfSrc:'knightfrank',kfAsOf:'2026-06'"]
 
         ent = ent[:-1] + ''.join(add) + '}'
@@ -509,12 +516,12 @@ def main():
         print('re-merged over a previous run: %d entries reset first' % remerged[0])
     print('verified: %d   portal: %d' % (len(report), len(seen) - len(report)))
     print()
-    print('%-26s %-8s %5s %5s %5s  %-13s %s' % ('area', 'kfZone', 'was', '26', '25', 'trend', 'infra'))
+    print('%-26s %-8s %5s %5s %5s  %-13s %s' % ('area', 'kfZone', 'was', '26', '25', 'trend', 'pipe'))
     for r in sorted(report, key=lambda x: -(x[3] - x[4])):
         print('%-26s %-8s %5d %5d %5d  %-13s %d' % r)
     print()
-    print('infra bands: ' + '  '.join(
-        '%d:%d' % (b, infra_hist.get(b, 0)) for b in sorted(infra_hist)))
+    print('pipeline score, rounded down: ' + '  '.join(
+        '%d:%d' % (b, pipe_hist.get(b, 0)) for b in sorted(pipe_hist)))
 
 
 if __name__ == '__main__':

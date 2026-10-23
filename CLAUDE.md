@@ -139,6 +139,14 @@ dependency to `index.html`.
 
 Two arrays hold the domain data. Keep their shapes consistent when editing.
 
+Two scores, two weight tables, in `W_PERSONAL` and `W_INVEST`. They answer
+different questions and must not be merged: a resident weights commute at 28%
+and pipeline at 10%, an investor weights pipeline at 18% because they hold for
+years, so what is committed matters more than what exists today. A factor that
+cannot be computed for this person — no workplace chosen, no budget set — is
+**dropped and the rest renormalised**, never silently scored zero, which would
+punish an area for a question the buyer declined to answer.
+
 - **`AREAS`** (line ~1621) — zone heat map data, one entry per micro-market:
   `n` name, `z` zone, `cor` corridor, `ask`/`lo`/`hi` ₹ per sqft, `reg`, `py`
   price-growth %, `rent`, `ry` rental-yield-ish %, `c` confidence, `drv` the
@@ -183,15 +191,50 @@ either, re-run the script:
   `py` is now the Knight Frank reading.
 - `dataTier` — `verified` | `portal`. `scorePrecision` says the same thing for
   the investment score, and always names the zone-level inputs.
-- `infraScore` 0–10 and `infraNote` — the committed pipeline. Both are
-  generated from the `PROJECTS` table in `tools/kf_merge.py`: one row per
-  project, carrying `kind`, `status`, an opening date and the areas it serves.
-  The scorer reads those rows and names no line, corridor or area in any
-  branch, so new kinds — roads, tunnels, employment nodes — are added as rows
-  rather than as code. Band weights come from status and date alone, via
-  `HORIZONS`; `--as-of=YYYY` reproduces an earlier run or looks ahead. The
-  rubric is a judgement call, documented at the top of that file; argue with
-  it there, not by editing the numbers.
+- `pipeScore` 0–10, with `pipeTop`, `pipeList` and `pipeNote` — the committed
+  pipeline. All four are generated from the `PROJECTS` table in
+  `tools/kf_merge.py`: one row per project, carrying `kind`, `status`, an
+  opening date and the areas it serves. The scorer reads those rows and names
+  no line, corridor or area in any branch, so new kinds are added as rows
+  rather than as code.
+
+  `pipeScore` = the best project's `STATUS_WEIGHT × TYPE_VALUE`, plus half
+  credit for every further project, capped at 10. Status is a multiplier, not
+  a band, because a funded project and an announcement are not the same thing:
+  building 1.0, funded 0.85, approved 0.5, planned 0.25, announced 0.1.
+  Operational track is **not** pipeline — it is scored separately as current
+  infrastructure — and a project whose opening year has passed drops out of
+  the pipeline for the same reason. `--as-of=YYYY` reproduces an earlier run
+  or looks ahead.
+
+  **Three honesty rules ride on the rows, not the renderer.** Approved and
+  funded never share a colour, because that gap is where buyers get hurt. A
+  row may override its status wording with `says`, which is how the Red Line
+  always reads "state approved, awaiting Union Cabinet" and the Business
+  Corridor always carries the 2007 date it was first promised. A project
+  without a published date never displays an implied one.
+
+- `kfLevel` — whether Knight Frank's *level* may set this area's cost basis.
+  A growth rate survives a geography mismatch; a price level does not. Their
+  "Lavelle Road" reading is the dearest street in the CBD, not our whole
+  MG Road / CBD micro-market, so that row keeps its growth, trend and chart
+  but is barred from the basis. `LEVEL_MISMATCH` in the merge script holds the
+  exceptions with the reason, and the panel states it.
+
+The cost basis is one rule on a quality ladder, not two footings — the same
+shape as `dataTier`. `basisOf()` is the only thing that decides it, and every
+price-derived figure reads it: the yield, the cost of a flat, budget fit, the
+sweet-spot price cut.
+
+  tier 1  Knight Frank transacted midpoint   (the 17 they track, minus
+          `kfLevel` exceptions)
+  tier 2  blended registered + asking        (everywhere else)
+
+Where tier 1 applies the panel shows whether our own registered deeds
+corroborate it — Hebbal's ₹11,535 against their ₹11,400 is within 1%, and
+that agreement is the evidence for the ladder. Where they diverge, or where no
+registered deeds exist to check against, the panel says so rather than letting
+the better source pass unexamined.
 
 Knight Frank track transactions rather than listings, so where they and a
 portal figure disagree, theirs wins. The three-year chart draws from `kfSeries`
