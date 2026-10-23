@@ -193,10 +193,23 @@ PROJECTS = [
          label='suburban rail Corridor 3',
          serves={'Kengeri', 'Rajarajeshwari Nagar', 'Nagarbhavi', 'Mysore Road'}),
 
-    dict(key='red-sarjapur', kind='rail', status='approved', opens=None,
-         label='the Sarjapur corridor metro',
+    # Phase 3 was cleared by the Union Cabinet, so it is funded; no opening
+    # date has been published, which puts it in the undated band rather than a
+    # guessed one. The ORR-west alignment runs JP Nagar 4th Phase to Kempapura,
+    # which is why it reaches Hebbal at its northern end.
+    dict(key='orange', kind='rail', status='funded', opens=None,
+         label='the Orange Line (Phase 3, ORR west)',
+         serves={'Hebbal', 'JP Nagar', 'Nagarbhavi',
+                 'Tumkur Road / Peenya', 'Jalahalli'}),
+
+    # Phase 3A, Sarjapur to Hebbal: approved by the state, awaiting central
+    # clearance and unfunded. It ends AT Hebbal, which is what makes Hebbal a
+    # three-line interchange rather than a single committed station.
+    dict(key='red-phase3a', kind='rail', status='approved', opens=None,
+         label='the Red Line (Phase 3A, Sarjapur to Hebbal)',
          serves={'Sarjapur Road', 'Sarjapur town', 'Harlur / Haralur',
-                 'Carmelaram / Dommasandra', 'HSR Layout'}),
+                 'Carmelaram / Dommasandra', 'HSR Layout',
+                 'Koramangala', 'Hebbal'}),
 
     dict(key='aerospace-park', kind='employment', status='funded', opens=None,
          label='KIADB Aerospace Park',
@@ -373,6 +386,27 @@ def num(s):
     return ('%g' % s)
 
 
+PIPE_START = '/* --- KFPIPE: written by tools/kf_merge.py, do not hand-edit --- */'
+PIPE_END   = '/* --- end KFPIPE --- */'
+
+
+def patch_pipeline(src):
+    """Emit the project rows the UI needs to name a committed line. One table,
+    the same rows the scorer reads, so a panel can never disagree with the
+    score it is showing."""
+    rows = []
+    for pr in PROJECTS:
+        if pr['serves'] == '<measured>':
+            continue
+        rows.append("'%s':{l:'%s',k:'%s',s:'%s',o:%s}" % (
+            pr['key'], pr['label'].replace("'", "\\'"), pr['kind'], pr['status'],
+            ("'%s'" % pr['opens']) if pr['opens'] else 'null'))
+    block = (PIPE_START + '\nconst KFPIPE={' + ',\n '.join(rows) + '};\n' + PIPE_END)
+    a = src.index(PIPE_START)
+    b = src.index(PIPE_END) + len(PIPE_END)
+    return src[:a] + block + src[b:]
+
+
 def main():
     src = open(HTML, encoding='utf-8').read()
     a0 = src.index('const AREAS=[')
@@ -433,6 +467,10 @@ def main():
                     ',growth26:%d' % g26,
                     ',growth25:%d' % g25,
                     ",trend:'%s'" % trend,
+                    # the transacted range Knight Frank actually publish. Our
+                    # lo/hi are portal asking quotes and are a different thing;
+                    # the panel must never show one under the other's name.
+                    ',kfRange:[%d,%d]' % (y26[0], y26[1]),
                     ',kfSeries:{y2024:%d,y2025:%d,y2026:%d}' % (mid(y24), mid(y25), mid(y26)),
                     ",dataTier:'verified'",
                     ",kfLoc:'%s'" % kfname[name],
@@ -442,12 +480,15 @@ def main():
             ent = re.sub(r"(,py:)-?\d+", r"\g<1>%d" % g26, ent, count=1)
         else:
             add += [',growthPortal:%d' % py,
-                    ',growth26:null,growth25:null',
+                    ',growth26:null,growth25:null,kfRange:null',
                     ",trend:null,kfSeries:null",
                     ",dataTier:'portal'",
                     ",scorePrecision:'portal+zone'"]
 
-        add += [',infraScore:%d' % isc,
+        pipe = [pr['key'] for pr in serving(name, mkm)
+                if pr['serves'] != '<measured>']
+        add += [',pipe:[%s]' % ','.join("'%s'" % k for k in pipe),
+                ',infraScore:%d' % isc,
                 ",infraNote:'%s'" % inote.replace("'", "\\'"),
                 ",kfSrc:'knightfrank',kfAsOf:'2026-06'"]
 
@@ -461,6 +502,7 @@ def main():
         sys.exit('These KF locations did not match an AREAS entry: %s' % missing)
 
     src = src[:a0] + ''.join(out) + src[a1:]
+    src = patch_pipeline(src)
     open(HTML, 'w', encoding='utf-8').write(src)
 
     if remerged[0]:
