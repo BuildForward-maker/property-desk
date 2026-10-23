@@ -75,6 +75,17 @@ for _a in sys.argv[1:]:
     if _a.startswith('--as-of='):
         AS_OF_YEAR = int(_a.split('=', 1)[1][:4])
 
+def load_enrichment():
+    import json
+    try:
+        with open(os.path.join(os.path.dirname(os.path.dirname(
+                os.path.abspath(__file__))), 'data', 'enrichment.json'),
+                encoding='utf-8') as f:
+            return json.load(f)
+    except Exception:                                       # noqa: BLE001
+        return {}
+
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 HTML = os.path.join(ROOT, 'index.html')
@@ -298,6 +309,74 @@ def project_says(pr):
     return pr.get('says') or STATUS_SAYS.get(pr['status'], pr['status'])
 
 
+# ------------------------------------------------- current infrastructure
+# The mirror of pipeline: what already serves this area, scored on the same
+# curve so the two are directly comparable. A resident gets credit for a line
+# that is running, not only for one that is promised.
+#
+# It is built from the rows and the graph already here — no new dataset:
+#   * every OPERATIONAL metro line with a station in reach, valued by how
+#     close its nearest station is
+#   * any project row whose opening date has passed, which is the same thing
+#     one year later
+#
+# Road has no independent signal in this data. The only road figures we hold
+# are drive times, and those already drive commute and tech-park access; using
+# them a third time here would be counting the same minutes three times. That
+# is a gap in the data, and it is left visible rather than faked.
+INFRA_REACH_KM = 3.5
+
+
+def haversine_km(a_lat, a_lon, b_lat, b_lon):
+    r = 6371.0088
+    p1, p2 = math.radians(a_lat), math.radians(b_lat)
+    dp = math.radians(b_lat - a_lat)
+    dl = math.radians(b_lon - a_lon)
+    h = math.sin(dp / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dl / 2) ** 2
+    return 2 * r * math.asin(math.sqrt(h))
+
+
+def station_lines(html):
+    """station name -> line, read from the MLINES table already in the app."""
+    m = re.search(r'var MLINES=\{(.*?)\};', html, re.S)
+    if not m:
+        return {}
+    return dict(re.findall(r"'((?:[^'\\]|\\.)*)':'(\w+)'", m.group(1)))
+
+
+def infra_now(name, lat, lng, stations, lines):
+    """What runs here today, 0-10, on the same curve as pipeline."""
+    items, by_line = [], {}
+    if lat is not None:
+        for st in stations:
+            d = haversine_km(lat, lng, st['lat'], st['lon'])
+            if d > INFRA_REACH_KM:
+                continue
+            line = lines.get(st['name'])
+            if not line:
+                continue
+            if line not in by_line or d < by_line[line][0]:
+                by_line[line] = (d, st['name'])
+    for line, (d, st) in by_line.items():
+        prox = max(0.0, min(1.0, (INFRA_REACH_KM - d) / 3.0))
+        items.append((TYPE_VALUE['metro'] * prox, '%s Line, %.1f km' % (line, d)))
+    # a project whose year has passed is infrastructure, not a promise
+    for pr in serving(name, None):
+        if pr['serves'] == '<measured>' or not pr['opens']:
+            continue
+        if int(pr['opens'][:4]) < AS_OF_YEAR:
+            items.append((project_value(pr), pr['label'].replace('the ', '')))
+    if not items:
+        return dict(score=0.0, note='Nothing runs here yet.')
+    items.sort(key=lambda x: -x[0])
+    raw = items[0][0]
+    for rank, it in enumerate(items[1:]):
+        raw += it[0] / math.log(rank + 2, 2)
+    score = round(10.0 * (1.0 - math.exp(-raw / PIPE_SOFT)), 2)
+    note = 'Served today by ' + ', '.join(i[1] for i in items[:3]) + '.'
+    return dict(score=score, note=note)
+
+
 def pipeline(name, mkm):
     """pipeScore and the rows behind it. Operational track is NOT pipeline —
     it is what exists today, and it is scored as its own factor. Everything
@@ -428,6 +507,10 @@ def patch_pipeline(src):
 
 def main():
     src = open(HTML, encoding='utf-8').read()
+    stations = (load_enrichment() or {}).get('stations') or []
+    lines = station_lines(src)
+    print('metro graph: %d stations, %d named lines'
+          % (len(stations), len(set(lines.values()))))
     a0 = src.index('const AREAS=[')
     a1 = src.index('\n];', a0)
     blk = src[a0:a1]
@@ -441,6 +524,7 @@ def main():
     seen = set()
     remerged = [0]
     pipe_hist = {}
+    now_hist = {}
     for s, e in entries(blk):
         ent = blk[s:e]
         m = re.match(r"\{n:'((?:[^'\\]|\\.)*)'", ent)
@@ -469,8 +553,13 @@ def main():
 
         kfz = KF_EXPLICIT.get(name, z)
         zi = KFZONE[kfz]
+        la = re.search(r'lat:(-?[0-9.]+)', ent)
+        ln = re.search(r'lng:(-?[0-9.]+)', ent)
+        nw = infra_now(name, float(la.group(1)) if la else None,
+                       float(ln.group(1)) if ln else None, stations, lines)
         pl = pipeline(name, mkm)
         pipe_hist[int(pl['score'])] = pipe_hist.get(int(pl['score']), 0) + 1
+        now_hist[int(nw['score'])] = now_hist.get(int(nw['score']), 0) + 1
 
         add = [",kfZone:'%s'" % kfz,
                ',qts:%s' % num(zi['qts']),
@@ -509,7 +598,9 @@ def main():
                     ",scorePrecision:'portal+zone'"]
 
         top = pl['top']
-        add += [',pipeScore:%s' % ('%g' % pl['score']),
+        add += [',infraNow:%s' % ('%g' % nw['score']),
+                ",infraNowNote:'%s'" % nw['note'].replace("'", "\\'"),
+                ',pipeScore:%s' % ('%g' % pl['score']),
                 ',pipeList:[%s]' % ','.join("'%s'" % k for k in pl['list']),
                 ",pipeTop:%s" % ("null" if not top else
                     "{k:'%s',l:'%s',st:'%s',says:'%s',kind:'%s',o:%s}" % (
@@ -543,6 +634,8 @@ def main():
     print()
     print('pipeline score, rounded down: ' + '  '.join(
         '%d:%d' % (b, pipe_hist.get(b, 0)) for b in sorted(pipe_hist)))
+    print('current infra,  rounded down: ' + '  '.join(
+        '%d:%d' % (b, now_hist.get(b, 0)) for b in sorted(now_hist)))
 
 
 if __name__ == '__main__':

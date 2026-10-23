@@ -140,12 +140,24 @@ dependency to `index.html`.
 Two arrays hold the domain data. Keep their shapes consistent when editing.
 
 Two scores, two weight tables, in `W_PERSONAL` and `W_INVEST`. They answer
-different questions and must not be merged: a resident weights commute at 28%
-and pipeline at 10%, an investor weights pipeline at 18% because they hold for
-years, so what is committed matters more than what exists today. A factor that
-cannot be computed for this person — no workplace chosen, no budget set — is
-**dropped and the rest renormalised**, never silently scored zero, which would
-punish an area for a question the buyer declined to answer.
+different questions and must not be merged: a resident weights commute at 26%
+and pipeline at 9%, an investor weights pipeline at 18% because they hold for
+years, so what is committed matters more than what exists today.
+
+Both tables carry **current infrastructure alongside future pipeline**, and
+they must stay paired. Pipeline can only ever reward places that *lack*
+infrastructure, so a table with pipeline and no counterweight structurally
+penalises mature areas: Indiranagar has metro at 0.6 km and scored zero on an
+11%-weighted factor while an underserved area maxed it. `infraNow` is the
+mirror term — what runs here today, scored on the same curve from the same
+project rows plus the operational metro graph.
+
+A factor that cannot be computed for this person — no workplace chosen, no
+budget set — is **dropped and the rest renormalised**, never silently scored
+zero, which would punish an area for a question the buyer declined to answer.
+The renormalisation is **stated in the breakdown**, naming what was dropped
+and why, because otherwise the percentages on screen quietly stop matching the
+weights the tool claims to use.
 
 - **`AREAS`** (line ~1621) — zone heat map data, one entry per micro-market:
   `n` name, `z` zone, `cor` corridor, `ask`/`lo`/`hi` ₹ per sqft, `reg`, `py`
@@ -225,6 +237,16 @@ either, re-run the script:
   always reads "state approved, awaiting Union Cabinet" and the Business
   Corridor always carries the 2007 date it was first promised. A project
   without a published date never displays an implied one.
+
+- `infraNow` 0–10 and `infraNowNote` — what already serves this area, the
+  mirror of `pipeScore` and on the same curve, so a line carrying passengers
+  can be compared against one that is only promised. Built from the
+  operational metro graph in `data/enrichment.json` (every line with a station
+  within 3.5 km, valued by how close its nearest station is) plus any project
+  row whose opening date has passed. **Road has no independent signal in this
+  data** — the only road figures we hold are drive times, and those already
+  drive commute and tech-park access, so using them again here would count the
+  same minutes three times. That gap is left visible rather than faked.
 
 - `kfLevel` — whether Knight Frank's *level* may set this area's cost basis.
   A growth rate survives a geography mismatch; a price level does not. Their
