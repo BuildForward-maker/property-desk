@@ -694,7 +694,14 @@ panels, and the header says so in a line, because a filter that silently fails
 to filter the big numbers is worse than no filter.
 
 Central is greyed in zone health and labelled with its unit count rather than
-its quarters-to-sell, because 187 units cannot carry that figure. Flood sits
+its quarters-to-sell, because 187 units cannot carry that figure. The same
+rule governs the hero: below `FROTH_FLOOR` (5) locations with registered
+deeds, **no median is shown at all**. The big slot carries words rather than a
+percentage — at 23px a number is read before its caption, so "+43%" over two
+locations would land as a finding whatever the sub-line said. The count is
+stated, and the per-location gaps still appear in the sheet, because each of
+those is a real observed figure; only the summary needs the sample. Absence
+and thinness read differently: zero locations says no deeds are published. Flood sits
 here as market exposure — a donut of the published tiers across the city. It
 is the same data as the per-area warning doing a different job, and it is
 still not scored.

@@ -843,6 +843,7 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
   letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.74)}
 .mhero .hv{display:block;font-family:var(--font);font-size:23px;font-weight:600;
   line-height:1.08;margin-top:1px}
+.mhero.thin .hv{font-size:18px;font-weight:500;color:rgba(255,255,255,.92)}
 .mhero .hs{display:block;font-size:10.5px;color:rgba(255,255,255,.78);margin-top:1px}
 .mgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
 .mgrid>.mhero{grid-column:1/-1;margin-bottom:0}
@@ -4553,9 +4554,13 @@ function frothList(){
  return mktAreas().filter(a=>a.reg&&frothPct(a)!==null)
   .map(a=>({a:a,v:frothPct(a)})).sort((x,y)=>y.v-x.v);
 }
+const FROTH_FLOOR=5;
 function frothMedian(){
  const v=frothList().map(x=>x.v).sort((a,b)=>a-b);
- return v.length?v[Math.floor(v.length/2)]:null;
+ /* the same rule Central gets in zone health: too small a sample is said,
+    not shown. A median of two is a number nobody can defend to a buyer. */
+ if(v.length<FROTH_FLOOR)return null;
+ return v[Math.floor(v.length/2)];
 }
 function floodCounts(){
  const c={high:0,medium:0,low:0,unknown:0};
@@ -4664,7 +4669,7 @@ function mktSupply(){
 
 function marketDash(){
  const p=KFCITY[MKTPERIOD], prevKey=MKTPREV[MKTPERIOD], q=prevKey?KFCITY[prevKey]:null;
- const fm=frothMedian();
+ const fm=frothMedian(), nFroth=frothList().length;
  const price=MKTPERIODS.map(x=>KFCITY[x[0]].price);
  const unsold=MKTPERIODS.map(x=>KFCITY[x[0]].unsold);
  const qts=MKTPERIODS.map(x=>KFCITY[x[0]].qts);
@@ -4683,11 +4688,18 @@ function marketDash(){
   +'does not touch them. It filters the location-level panels below.</span>'
   +'</div>'
   +'<div class="mgrid">'
-  +'<button type="button" class="mhero" data-mkt="froth">'
+  +'<button type="button" class="mhero'+(fm===null?' thin':'')+'" data-mkt="froth">'
    +'<span class="hl">Ask over registered deeds</span>'
-   +'<span class="hv">'+(fm===null?'no deeds published':'+'+fm+'%')+'</span>'
-   +'<span class="hs">median of '+frothList().length+' with registered deeds'
-   +(MKTZONE?' in '+esc(MKTZONE):'')+'</span></button>'
+   +'<span class="hv">'+(nFroth===0?'No deeds published'
+     :fm===null?'Too thin to read':'+'+fm+'%')+'</span>'
+   +'<span class="hs">'+(nFroth===0
+     ?'no location'+(MKTZONE?' in '+esc(MKTZONE):'')+' has a registered figure to '
+      +'compare an asking price against'
+     :fm===null
+     ?'only '+nFroth+' location'+(nFroth===1?'':'s')+(MKTZONE?' in '+esc(MKTZONE):'')
+      +' with registered deeds \u2014 too few for a median'
+     :'median of '+nFroth+' with registered deeds'+(MKTZONE?' in '+esc(MKTZONE):''))
+   +'</span></button>'
   +mktTile('price','Average price','\u20b9'+p.price.toLocaleString('en-IN'),
      mktDelta(p.price,q&&q.price),mktSpark(price))
   +mktTile('unsold','Unsold stock',p.unsold.toLocaleString('en-IN'),
@@ -4761,13 +4773,23 @@ function openMetricSheet(key){
  const money=v=>'₹'+Math.round(v).toLocaleString('en-IN');
  const plain=v=>Math.round(v).toLocaleString('en-IN');
  if(key==='froth'){
-  const list=frothList();
-  body=(list.length
-    ?'<div class="tile3">'
-      +metricTile('Median gap','+'+frothMedian()+'%','across '+list.length+' locations')
+  const list=frothList(), med=frothMedian();
+  /* each bar is a real observed gap for one location, so the list stands
+     whatever its length. Only the median needs the sample. */
+  const tiles=med===null
+   ? calloutCard('warn','Too thin for a median',
+      'Only <strong>'+list.length+' location'+(list.length===1?'':'s')+'</strong> '
+      +(MKTZONE?'in '+esc(MKTZONE)+' ':'here ')+(list.length===1?'has':'have')
+      +' a published sub-registrar figure to compare an asking price against. '
+      +'A median needs at least '+FROTH_FLOOR+', so the gap is shown per location '
+      +'below and not summarised.')
+   : '<div class="tile3">'
+      +metricTile('Median gap','+'+med+'%','across '+list.length+' locations')
       +metricTile('Widest','+'+list[0].v+'%',esc(list[0].a.n))
       +metricTile('Narrowest','+'+list[list.length-1].v+'%',esc(list[list.length-1].a.n))
-      +'</div>'+mktBars(list,v=>'+'+v+'%','risk')
+      +'</div>';
+  body=(list.length
+    ?tiles+mktBars(list,v=>'+'+v+'%','risk')
     :panelEmpty('No registered deeds here','No location in this zone has a published '
       +'sub-registrar figure to compare an asking price against.'))
    +mktRead('A small gap means the price is supported by what buyers actually paid. '
