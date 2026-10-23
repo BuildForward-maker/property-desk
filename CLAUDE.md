@@ -560,13 +560,77 @@ carry rank out of 86 and a flood tier where one exists, and both link to the
 weights through a card that **reads the live table** rather than restating it,
 so a weight change cannot leave stale copy behind.
 
-## Tabs
+## Navigation
 
-Seventeen tabs, wired by `data-t` on `nav.rail button` to `#p-<name>` panels:
-`brief`, `map`, `heat`, `areas`, `visits`, `photos`, `compare`, `resale`, `uc`,
-`money`, `yield`, `negotiate`, `prices`, `verify`, `plan`, `sources`, `setup`.
-Some re-render on activation in the tab click handler — add a case there if a new
-tab needs it.
+Five sections in `SECTIONS`, wired by `data-sec` on `.sb-item` to `<section
+class="sec" id="sec-<name>">`:
+
+**Home · Explore · Market · Listings · Shortlist**
+
+`goSection()` is the single entry point. It sets `SEC`, toggles the `.sec`
+containers, calls `paintPanels()`, then calls that section's renderer. Add a
+case there if a new section needs one.
+
+Sub-state is split across three variables, which is deliberate and is the thing
+most likely to trip you up:
+
+- `SUB` is keyed by section — `SUB.explore`, `SUB.shortlist`, and `SUB.guide`.
+  `SUB.guide` is the open article, not a section of its own.
+- `EXMODE` is Explore's mode: `five` | `position` | `discover`. `search`,
+  `momentum` and `terminal` are still accepted by `setExploreMode()` and
+  reachable, but are not on the three-button control.
+- `MSUB` is Market's sub-tab: `moving` | `compare` | `coming`. It is outside
+  `SUB` because `SUB` is keyed by section and the guide already owns a key
+  inside Shortlist.
+
+### Panels
+
+A `<section class="panel" data-sec data-sub>` is shown by `paintPanels()`
+toggling `.on`. Three rules, not one:
+
+- `data-sec="guide"` shows when Shortlist is on its `guide` sub-tab *and*
+  `data-sub` matches `SUB.guide`. Guide panels are mounted into `#artBody`.
+- `data-sec="market"` shows when Market is open *and* `data-sub` matches `MSUB`.
+- everything else matches `SEC` and `SUB[sec]`.
+
+Panels are relocated into their section at boot by the `put()` block. **Any new
+market panel is picked up automatically** by
+`put('section.panel[data-sec="market"]','sec-market')` — do not append one by
+id. A panel left where it was authored will sit outside every `.sec` and never
+appear, which is silent: `paintPanels()` will still give it `.on`.
+
+Anything that changes `MSUB` must call `paintPanels()` as well as
+`renderMarket()`. `renderMarket()` only fills `#marketPane`; it does not touch
+the static panels beside it.
+
+### Where things live
+
+Explore is the three modes and nothing else. It is not a page to scroll.
+
+- Market owns every full-city table and all market commentary.
+- The guide owns prose that teaches rather than ranks — including the returns
+  arithmetic and why the portals disagree.
+- Shortlist owns the costs, legal checks, negotiation and the guide articles.
+
+Two screens showing the same 86 rows is the failure mode this structure exists
+to prevent. Before adding a list or a chart, check whether Market > Compare or
+Explore > Position already carries it.
+
+## Screen length
+
+No section should need more than about two screens of scroll at 375×812.
+Measure it; do not estimate. Where a screen runs long, the cause is almost
+always a second copy of something rather than genuinely dense content — find
+the duplicate rather than shrinking type.
+
+Known and accepted exceptions: **Explore > Your 5** (five cards are ~1.9
+screens on their own), **Listings** (the full directory of 106), and the
+long-form **guide articles**. These are lists and reading, not dashboards.
+
+Fixed chrome is charged to every screen, so it is worth guarding: the masthead
+plus the folded footer is about 230px at 375. The footer disclaimer is folded
+behind a `<details class="foldnote">` whose summary still carries the warning —
+keep the warning on the summary line if you touch it.
 
 ## How to verify
 
@@ -579,6 +643,15 @@ A ranking is only meaningful if the top result is actually good. Where every
 candidate scores badly, say so explicitly rather than presenting a sorted list
 of bad options.
 
+Where a round touches layout but not logic, digest the scores before and after
+and prove them identical rather than asserting it. Hash every area's
+`sweetScore`, `investScore`, `areaOverall`, `areaFitFull`, `investFull`,
+`pipeFor`, `sweetSpotScore`, `liquidityScore`, `corridorScore`, `metroScore`,
+`growthOf`, `yieldOf`, `pipeScore`, `infraScore`, and every society's
+`priScore`, `locScore` and `priParts`. Run it against `git show HEAD:index.html`
+served beside the working copy, not against a remembered number — the digest
+only means something if both sides ran the same script.
+
 ## After any change
 
 Confirm all of the following before reporting the work done:
@@ -587,5 +660,8 @@ Confirm all of the following before reporting the work done:
    Lazily-fetched data will not load over `file://` — check the app degrades to
    its stated fallback rather than breaking.
 2. The browser console is clean — no errors.
-3. Every section still renders when opened.
+3. Every section still renders when opened — all five, both of Explore's other
+   modes, all three Market sub-tabs, and every guide article.
 4. Local mode still works with no `#cfg` in the URL.
+5. No section has grown past about two screens at 375×812, bar the three
+   accepted exceptions above.

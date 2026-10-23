@@ -109,7 +109,6 @@ header.masthead{padding:30px 0 18px;border-bottom:1.5px solid var(--ink)}
 .tile .ts{font-size:10.5px;opacity:.82;margin-top:3px}
 .hk{display:flex;flex-wrap:wrap;gap:16px;font-size:12.5px;color:var(--muted);margin:14px 0 4px}
 .hk i{display:inline-block;width:13px;height:13px;margin-right:6px;vertical-align:-2px}
-.scatter{background:var(--tile);border:1px solid var(--line);padding:14px;overflow:auto}
 .detailbox{border:1px solid var(--ink);background:var(--tile);padding:16px;margin-top:18px}
 .udsout{background:var(--tile);border:1px solid var(--line);padding:18px}
 /* ---- shared workspace ---- */
@@ -863,12 +862,6 @@ kbd,code{font-family:var(--label)}
   margin:0 calc(var(--s-screen)*-1) var(--s-cards);
   padding:14px var(--s-screen) 18px}
 .sechead p{font-size:13.5px;color:var(--muted);margin-bottom:14px}
-.brandrow{display:flex;align-items:center;gap:9px;padding:6px 0 10px;
-  font-family:var(--label);font-size:11px;font-weight:600;letter-spacing:.09em;
-  text-transform:uppercase;color:var(--muted)}
-.brandrow .bmark{width:26px;height:26px;border-radius:9px;background:var(--primary);
-  color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;
-  font-weight:800;letter-spacing:0}
 
 /* search row with a filled icon button */
 .searchrow{display:flex;gap:9px;align-items:stretch}
@@ -1409,6 +1402,122 @@ body{background:var(--grad-bg);background-attachment:fixed}
   #sheetScrim{background:rgba(20,18,43,.12)}
 }
 
+/* ---- Market ---- */
+.gradcard{background:var(--grad-primary);color:#fff;border-radius:var(--r-card);
+  padding:16px 18px;margin-bottom:var(--s-cards);box-shadow:var(--shadow-primary)}
+.gradcard h3{font-size:18px;font-weight:800;letter-spacing:-.01em;margin:0 0 6px;color:#fff}
+.gradcard p{font-size:13.5px;margin:0;color:rgba(255,255,255,.88)}
+.mrows{display:flex;flex-direction:column}
+.mrow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;
+  background:var(--card);border-radius:var(--r-tile);padding:12px 14px;margin-bottom:8px;
+  cursor:pointer;font-family:var(--font);color:inherit;min-height:var(--tap)}
+.mrow .mn{flex:1;min-width:0}
+.mrow .mn b{display:block;font-size:14.5px;font-weight:700}
+.mrow .mn span{display:block;font-size:12px;color:var(--muted);margin-top:1px}
+.mrow .mv{display:flex;align-items:baseline;gap:7px;font-variant-numeric:tabular-nums;
+  white-space:nowrap}
+.mrow .mv em{font-style:normal;font-size:13px;color:var(--muted)}
+.mrow .mv i{font-style:normal;font-size:12px;color:var(--muted)}
+.mrow .mv b{font-size:16px;font-weight:800}
+.mrow.up .mv b{color:var(--good-fg)}
+.mrow.dn .mv b{color:var(--warn-fg)}
+.mmore{display:inline-block;margin:2px 0 16px;font-size:13.5px;font-weight:700;
+  color:var(--primary);min-height:var(--tap)}
+.forayou{background:var(--tint);color:var(--primary);border-radius:var(--r-tile);
+  padding:12px 14px;font-size:13.5px;line-height:1.5;margin-top:12px}
+.crow{display:flex;align-items:flex-start;gap:11px;padding:9px 0;
+  border-bottom:1px solid var(--line-soft)}
+.crow:last-child{border-bottom:0}
+.cdot{width:12px;height:12px;border-radius:50%;flex:0 0 auto;margin-top:4px}
+.cdot.building{background:var(--primary);border:2px solid var(--primary)}
+.cdot.funded{background:transparent;border:2px solid var(--primary)}
+.cdot.approved{background:var(--warn-fg);border:2px solid var(--warn-fg)}
+.cdot.planned{background:var(--muted);border:2px solid var(--muted);opacity:.6}
+.cdot.announced{background:transparent;border:2px dotted var(--muted)}
+.crow .cn{min-width:0}
+.crow .cn b{display:block;font-size:13.5px;font-weight:700}
+.crow .cn span{display:block;font-size:12px;color:var(--muted);margin-top:1px}
+.sheet-extra{font-size:13px;line-height:1.55;color:var(--muted);margin-top:12px}
+.sheet-extra p{margin:0 0 7px}
+.sheet-extra strong{color:var(--ink)}
+#sec-market .termtable{max-height:70vh}
+.foldnote>summary{list-style:none;cursor:pointer;font-size:12px;color:var(--muted);padding:2px 0}
+.foldnote>summary::-webkit-details-marker{display:none}
+.foldnote>summary::after{content:"\25be";margin-left:6px}
+.foldnote[open]>summary::after{content:"\25b4"}
+.tilesfold{margin-top:4px}
+.tilesfold>summary{list-style:none;cursor:pointer;padding:12px 2px;font-size:13.5px;
+  font-weight:700;color:var(--primary);display:flex;align-items:center;gap:8px;
+  min-height:var(--tap)}
+.tilesfold>summary::-webkit-details-marker{display:none}
+.tilesfold>summary span{font-family:var(--label);font-size:11px;font-weight:600;
+  background:var(--tint);border-radius:var(--r-chip);padding:2px 8px}
+.tilesfold>summary::after{content:"\25be";margin-left:auto;color:var(--muted)}
+.tilesfold[open]>summary::after{content:"\25b4"}
+
+/* ---- Explore: Your 5 ---- */
+.fintro{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  margin-bottom:10px;font-size:12.5px;color:var(--muted)}
+.fintro .ilink{font-weight:700;color:var(--primary);font-size:13px;min-height:var(--tap)}
+.fcard{display:block;width:100%;text-align:left;background:var(--card);border:0;
+  border-radius:var(--r-card);padding:var(--s-in);margin-bottom:12px;cursor:pointer;
+  font-family:var(--font);color:inherit}
+.fhead{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
+.fhead .fn{flex:1;min-width:0}
+.fhead .fn b{display:block;font-size:17px;font-weight:800;letter-spacing:-.01em}
+.fhead .fn span{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+.frank{font-family:var(--label);font-size:11px;font-weight:700;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--primary);background:var(--tint);
+  border-radius:var(--r-chip);padding:5px 10px;white-space:nowrap;flex:0 0 auto}
+.fq{display:block;padding:9px 0;border-top:1px solid var(--line-soft)}
+.fq em{font-style:normal;display:block;font-size:12px;color:var(--muted);margin-bottom:2px}
+.fq b{font-size:16px;font-weight:800}
+.fq small{display:block;font-size:11.5px;color:var(--muted);margin-top:4px}
+.fbar{display:block;height:6px;border-radius:999px;background:var(--tile);margin-top:7px;
+  overflow:hidden}
+.fbar i{display:block;height:100%;background:var(--grad-primary);border-radius:999px}
+.ftag{display:inline-block;margin-left:8px;font-family:var(--label);font-size:10px;
+  font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;
+  border-radius:var(--r-chip);background:var(--good-bg);color:var(--good-fg)}
+.ftag.dn{background:var(--warn-bg);color:var(--warn-fg)}
+.ftag.up{background:var(--good-bg);color:var(--good-fg)}
+.widercard{display:block;width:100%;text-align:left;border:0;cursor:pointer;
+  background:var(--grad-primary);color:#fff;border-radius:var(--r-card);padding:16px 18px;
+  margin:4px 0 8px;font-family:var(--font);box-shadow:var(--shadow-primary)}
+.widercard b{display:block;font-size:16px;font-weight:800;margin-bottom:3px}
+.widercard span{display:block;font-size:13.5px;color:rgba(255,255,255,.88)}
+/* ---- Explore: Position ---- */
+.poswrap{display:grid;grid-template-columns:46px minmax(0,1fr);grid-template-rows:330px auto;
+  gap:6px;margin-top:4px}
+.posplot{position:relative;background:var(--card);border-radius:var(--r-tile);overflow:hidden}
+.posplot .quad{position:absolute;background:var(--good-bg);opacity:.7}
+.posplot .gx,.posplot .gy{position:absolute;background:var(--line);display:block}
+.posplot .gx{top:0;bottom:0;width:1px}
+.posplot .gy{left:0;right:0;height:1px}
+.posplot .qlab{position:absolute;font-family:var(--label);font-size:9.5px;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--muted);padding:6px 8px;pointer-events:none}
+.pdot{position:absolute;transform:translate(-50%,50%);border-radius:50%;border:2px solid #fff;
+  cursor:pointer;padding:0;box-shadow:0 1px 4px rgba(20,18,43,.2)}
+.pdot.best{background:var(--primary)}
+.pdot.look{background:var(--warn-fg)}
+.pdot.reason{background:#9B96BE}
+.pdot .plab{position:absolute;left:50%;top:100%;transform:translateX(-50%);
+  font-size:9px;font-weight:700;color:var(--ink);white-space:nowrap;margin-top:2px;
+  pointer-events:none;opacity:0;background:rgba(255,255,255,.9);border-radius:3px;
+  padding:0 3px}
+.pdot:hover{z-index:5}
+.pdot:hover .plab{opacity:1}
+@media(min-width:761px){.pdot .plab{opacity:.75;font-size:9.5px}}
+
+.costrow{width:100%;text-align:left;border:0;background:var(--card);cursor:pointer;
+  border-radius:var(--r-tile);padding:12px 14px;margin-bottom:8px;font-family:var(--font);
+  color:inherit;display:flex;align-items:center;gap:12px;min-height:var(--tap);
+  border-bottom:0}
+.costrow .cn{flex:1;min-width:0}
+.costv{text-align:right;white-space:nowrap}
+.costv b{display:block;font-size:16px;font-weight:800}
+.costv em{font-style:normal;font-size:11px;color:var(--muted)}
+
 </style>
 
 <div id="sheetScrim"></div>
@@ -1427,10 +1536,10 @@ body{background:var(--grad-bg);background-attachment:fixed}
   <div class="sb-brand"><b>Property Desk</b>2BHK Bengaluru</div>
   <button class="sb-item" data-sec="home" aria-current="true"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.2 8.4 10 3l6.8 5.4"/><path d="M5 7.9V16a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V7.9"/><path d="M8.2 17v-4.4h3.6V17"/></svg></span></span>Home</button>
   <button class="sb-item" data-sec="explore"  aria-current="false"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7"/><path d="m12.8 7.2-1.6 4-4 1.6 1.6-4z"/></svg></span></span>Explore</button>
-  <button class="sb-item" data-sec="listings" aria-current="false"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3.6" width="14" height="12.8" rx="1.6"/><path d="M3 8h14M7.6 8v8.4"/></svg></span></span>Listings</button>
+  <button class="sb-item" data-sec="market" aria-current="false"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14.6 7.6 10l3 3 5.4-6"/><path d="M12.6 7h3.4v3.4"/></svg></span></span>Market</button>
+<button class="sb-item" data-sec="listings" aria-current="false"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3.6" width="14" height="12.8" rx="1.6"/><path d="M3 8h14M7.6 8v8.4"/></svg></span></span>Listings</button>
   <button class="sb-item" data-sec="shortlist" aria-current="false"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m10 3.4 2.1 4.3 4.7.7-3.4 3.3.8 4.7-4.2-2.2-4.2 2.2.8-4.7L3.2 8.4l4.7-.7z"/></svg></span></span>Shortlist<span class="sb-count" id="sbCount" hidden>0</span></button>
-  <button class="sb-item" data-sec="guide"    aria-current="false"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4.2h4.4A2.6 2.6 0 0 1 11 6.8v9a2 2 0 0 0-2-2H4z"/><path d="M16 4.2h-4.4A2.6 2.6 0 0 0 9 6.8v9a2 2 0 0 1 2-2h5z"/></svg></span></span>Guide</button>
-  <div class="sb-spacer"></div>
+    <div class="sb-spacer"></div>
   <div class="sb-kbd"><kbd>⌘K</kbd> search anything</div>
   <div class="sb-foot">
     <button class="sb-item" id="openSettings" style="padding-left:0"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="2.6"/><path d="M10 2.8v2M10 15.2v2M17.2 10h-2M5 10H2.8M15.1 4.9l-1.4 1.4M6.3 13.7l-1.4 1.4M15.1 15.1l-1.4-1.4M6.3 6.3 4.9 4.9"/></svg></span></span>Settings</button>
@@ -1463,23 +1572,23 @@ body{background:var(--grad-bg);background-attachment:fixed}
 
 <section class="sec" id="sec-explore">
   <div class="sechead">
-    <div class="brandrow"><span class="bmark">PD</span>Property Desk</div>
     <h1>Explore Bengaluru</h1>
-    <p>Every micro-market on one map. Switch to Search to look up any locality in the city, including the ones outside the researched set.</p>
+    <p>Your five best matches, every area’s position on price against growth, or the map. Search above for any locality in the city.</p>
     <div class="searchrow" style="margin-bottom:14px">
       <span class="sfield"><input type="search" id="exQuick" placeholder="Search any locality"
         autocomplete="off" spellcheck="false" aria-label="Search any locality"></span>
       <button class="sgo" id="exQuickGo" aria-label="Search">&#9906;</button>
     </div>
     <div class="segmented" role="group" aria-label="Explore mode">
-      <button data-mode="discover" aria-pressed="true">Discover</button>
-      <button data-mode="momentum" aria-pressed="false">Momentum</button>
-      <button data-mode="terminal" aria-pressed="false">Terminal</button>
-      <button data-mode="search" aria-pressed="false">Search</button>
+      <button data-mode="five" aria-pressed="true">Your 5</button>
+      <button data-mode="position" aria-pressed="false">Position</button>
+      <button data-mode="discover" aria-pressed="false">Map</button>
     </div>
   </div>
   <div id="tunedBar"></div>
   <div id="rankedPane"></div>
+  <div id="fivePane"></div>
+  <div id="posPane" style="display:none"></div>
   <div id="momentumPane" style="display:none"></div>
   <div id="termPane" style="display:none"></div>
   <div id="searchPane" style="display:none">
@@ -1511,21 +1620,65 @@ body{background:var(--grad-bg);background-attachment:fixed}
       <button data-sub="compare" aria-pressed="false">Compare</button>
       <button data-sub="photos" aria-pressed="false">Photos</button>
       <button data-sub="route" aria-pressed="false">Route</button>
+      <button data-sub="costs" aria-pressed="false">Costs</button>
+      <button data-sub="legal" aria-pressed="false">Legal</button>
+      <button data-sub="negotiate" aria-pressed="false">Negotiate</button>
+      <button data-sub="guide" aria-pressed="false">How this works</button>
     </div>
   </div>
 </section>
 
-<section class="sec" id="sec-guide">
-  <div class="sechead">
-    <h1>Guide</h1>
-    <p>The background reading. Everything here is general to buying in Bengaluru.</p>
-  </div>
+<section class="panel" id="p-costs" data-sec="shortlist" data-sub="costs">
+  <div id="costsPane"></div>
+</section>
+
+<section class="panel" id="p-guidehome" data-sec="shortlist" data-sub="guide">
   <div class="guidegrid">
     <nav class="artlist" id="artList" aria-label="Guide articles"></nav>
     <div id="artBody"></div>
   </div>
 </section>
 
+<section class="sec" id="sec-market">
+  <div class="sechead">
+    <h1>Market</h1>
+    <p>What is moving across Bengaluru, and what that means for your offer.</p>
+    <div class="segmented" role="group" aria-label="Market view">
+      <button data-msub="moving" aria-pressed="true">Moving</button>
+      <button data-msub="compare" aria-pressed="false">Compare</button>
+      <button data-msub="coming" aria-pressed="false">Coming</button>
+    </div>
+  </div>
+  <div id="marketPane"></div>
+</section>
+
+
+<!-- ===== RETURNS ===== -->
+<section class="panel" id="p-returns" data-sec="guide" data-sub="returns">
+  <div class="block">
+    <h2>An honest note on the returns in your brief</h2>
+    <p>You mentioned units bought at ₹1.5–3 Cr now worth ₹10–15 Cr, and cousins turning ₹30–60 lakh into ₹1.5–3 Cr inside a year. Those things do happen. They are also not the base rate, and a strategy built on expecting them will disappoint. Some arithmetic worth having in front of you:</p>
+    <div class="scroller"><table>
+      <tr><th>Claim</th><th class="num">Implied annual return</th><th>How it compares</th></tr>
+      <tr><td>₹1.5 Cr to ₹10 Cr in 5 years</td><td class="num">46% a year</td><td>Roughly four times Bengaluru's strongest sustained corridor performance. Possible in a single exceptional project; not repeatable as a plan.</td></tr>
+      <tr><td>₹60 lakh to ₹2 Cr in 1 year</td><td class="num">233%</td><td>Almost always a pre-launch allotment flipped before registration, or land, not a completed flat. Different risk entirely, and often illiquid.</td></tr>
+      <tr class="hi"><td><strong>What Bengaluru apartments actually did</strong></td><td class="num"><strong>8–15% a year</strong></td><td>Best corridors ran 12–15%; Whitefield about 8–13%; Devanahalli 12–15%. Over three years, several areas did 100%+ — real, but that is 26% a year, not 46%.</td></tr>
+      <tr><td>Plots and land in growth corridors</td><td class="num">15–25% a year</td><td>Genuinely higher than apartments, and where most of the stories you have heard come from. Also where most of the title risk lives.</td></tr>
+    </table></div>
+    <div class="note warn" style="margin-top:16px"><strong>The pattern worth copying is not the multiple, it is the timing.</strong> Bengaluru's biggest gains came from buying an area two to three years <em>before</em> confirmed infrastructure landed — metro historically adds 15–25% in the two to three years after a station opens. That is repeatable. Buying after the line opens is paying for it. Anjanapura did 205% over three years and Kundalahalli 151%; both were infrastructure catch-up stories, not luck.</div>
+    <div class="note" style="margin-top:14px">The other half of the honest version: apartments are a weaker vehicle for this than land or plots. Your undivided share of land appreciates; the concrete on top of it depreciates. If the goal is genuinely a wealth-building portfolio rather than a home, plotted developments in a funded-infrastructure corridor have historically outperformed flats by a wide margin — with correspondingly harder title diligence.</div>
+  </div>
+  <div class="block">
+    <h2>How to actually use this as an investor</h2>
+    <ol class="plain">
+      <li><strong>Screen on the sweet-spot table</strong>, then throw away anything where the growth story is an announcement rather than a funded project. Metro Phase 3A is announced. The Blue Line is funded and being built. Those are not the same asset.</li>
+      <li><strong>Verify the growth number before believing it.</strong> Portal YoY figures are asking-price movements and are noisy — some of the 25–57% figures on this page are almost certainly mix effects, not real appreciation. Kaveri registered transactions for the same area over two years is the honest check.</li>
+      <li><strong>Buy where rent is rising faster than price.</strong> That is the signal real demand has arrived and price has not caught up. When price rises faster than rent, you are looking at speculation, and yields compress.</li>
+      <li><strong>Watch supply.</strong> Devanahalli has 15,000+ planned units. Great for choice, hard on price growth. An area with demand and constrained supply beats an area with demand and unlimited land.</li>
+      <li><strong>Set an exit before you enter.</strong> Which corridor, what holding period, what triggers a sale. Most people never do this and end up holding emotionally.</li>
+    </ol>
+  </div>
+</section>
 
 <!-- ===== BRIEF ===== -->
 <section class="panel" id="p-brief" data-sec="guide" data-sub="read">
@@ -2099,7 +2252,7 @@ body{background:var(--grad-bg);background-attachment:fixed}
 </section>
 
 <!-- ===== NEGOTIATION ===== -->
-<section class="panel" id="p-negotiate" data-sec="guide" data-sub="negotiate">
+<section class="panel" id="p-negotiate" data-sec="shortlist" data-sub="negotiate">
   <p class="lede">Pick a property, fill in what you know, and this writes the brief. Read it off your phone or paste it into an email.</p>
   <div class="grid2">
     <div class="calc">
@@ -2131,7 +2284,18 @@ body{background:var(--grad-bg);background-attachment:fixed}
 </section>
 
 <!-- ===== PRICES ===== -->
-<section class="panel" id="p-prices" data-sec="explore" data-sub="discover">
+<section class="panel" id="p-supply" data-sec="market" data-sub="compare">
+  <div class="block">
+    <h2>Where the new supply is going</h2>
+    <p>Supply matters in both directions. It signals developer conviction, and it caps how fast prices can run.</p>
+    <div class="scroller"><table id="supplyTable">
+      <thead><tr><th>Zone</th><th class="num">Avg ₹/sqft</th><th>Where the launches are</th><th>Infrastructure actually being built</th><th>What it means</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+  </div>
+</section>
+
+<section class="panel" id="p-prices" data-sec="guide" data-sub="prices">
   <p class="lede">The portals disagree with each other by up to 2.4x for the same locality, and none of them is the number you should negotiate against.</p>
   <div class="block">
     <h2>The same locality, seen by six sources</h2>
@@ -2175,7 +2339,7 @@ body{background:var(--grad-bg);background-attachment:fixed}
 </section>
 
 <!-- ===== VERIFY ===== -->
-<section class="panel" id="p-verify" data-sec="guide" data-sub="legal">
+<section class="panel" id="p-verify" data-sec="shortlist" data-sub="legal">
   <p class="lede">Order matters more than completeness. If the title is defective, nothing else counts. Paying cash means no bank is doing any of this for you.</p>
   <div class="block"><h2>The sequence</h2><div id="ddList"></div>
     <div style="margin-top:16px"><button class="act ghost small" id="ddReset">Reset checklist</button>
@@ -2506,66 +2670,16 @@ alter publication supabase_realtime add table desk_prefs;</pre>
     <span>Price growth is Knight Frank's tracked figure for the 17 locations they follow, and portal-derived for the other 69. Open an area to see which.</span>
   </div>
   <div class="hk" id="heatKey"></div>
+  <details class="tilesfold"><summary>Every area, coloured by this lens <span>86</span></summary>
   <div id="heatGrid"></div>
+  </details>
   <div id="heatDetail"></div>
-
-  <div class="block">
-    <h2>The sweet spot, plotted</h2>
-    <p>Entry price along the bottom, price growth up the side. The green quadrant is what you are hunting: still cheap, already moving. The red quadrant has already run — you would be buying someone else's gain.</p>
-    <div class="scatter" id="scatter"></div>
-    <div class="hk" style="margin-top:12px">
-      <span><i style="background:rgba(62,107,78,.35)"></i>Cheap and climbing — the hunting ground</span>
-      <span><i style="background:rgba(163,40,47,.22)"></i>Expensive and climbing — momentum you pay for</span>
-      <span><i style="background:var(--line-soft)"></i>Cheap and flat — a reason usually exists</span>
-    </div>
-  </div>
-
-  <div class="block">
-    <h2>Ranked by sweet-spot score</h2>
-    <p>Growth momentum, affordability against the city median, and rental yield, combined. High score means the market is moving but you have not missed it.</p>
-    <div class="scroller"><table id="sweetTable">
-      <thead><tr><th class="num">#</th><th>Area</th><th>Zone</th><th class="num">Asking ₹/sqft</th><th class="num">Registered</th><th class="num">Price YoY</th><th class="num">2BHK rent</th><th class="num">Rent YoY</th><th class="num">Yield</th><th class="num">Score</th><th class="num">Invest</th><th>Stage</th><th>What is driving it</th></tr></thead>
-      <tbody></tbody>
-    </table></div>
-  </div>
-
-  <div class="block">
-    <h2>Where the new supply is going</h2>
-    <p>Supply matters in both directions. It signals developer conviction, and it caps how fast prices can run.</p>
-    <div class="scroller"><table id="supplyTable">
-      <thead><tr><th>Zone</th><th class="num">Avg ₹/sqft</th><th>Where the launches are</th><th>Infrastructure actually being built</th><th>What it means</th></tr></thead>
-      <tbody></tbody>
-    </table></div>
-  </div>
-
-  <div class="block">
-    <h2>An honest note on the returns in your brief</h2>
-    <p>You mentioned units bought at ₹1.5–3 Cr now worth ₹10–15 Cr, and cousins turning ₹30–60 lakh into ₹1.5–3 Cr inside a year. Those things do happen. They are also not the base rate, and a strategy built on expecting them will disappoint. Some arithmetic worth having in front of you:</p>
-    <div class="scroller"><table>
-      <tr><th>Claim</th><th class="num">Implied annual return</th><th>How it compares</th></tr>
-      <tr><td>₹1.5 Cr to ₹10 Cr in 5 years</td><td class="num">46% a year</td><td>Roughly four times Bengaluru's strongest sustained corridor performance. Possible in a single exceptional project; not repeatable as a plan.</td></tr>
-      <tr><td>₹60 lakh to ₹2 Cr in 1 year</td><td class="num">233%</td><td>Almost always a pre-launch allotment flipped before registration, or land, not a completed flat. Different risk entirely, and often illiquid.</td></tr>
-      <tr class="hi"><td><strong>What Bengaluru apartments actually did</strong></td><td class="num"><strong>8–15% a year</strong></td><td>Best corridors ran 12–15%; Whitefield about 8–13%; Devanahalli 12–15%. Over three years, several areas did 100%+ — real, but that is 26% a year, not 46%.</td></tr>
-      <tr><td>Plots and land in growth corridors</td><td class="num">15–25% a year</td><td>Genuinely higher than apartments, and where most of the stories you have heard come from. Also where most of the title risk lives.</td></tr>
-    </table></div>
-    <div class="note warn" style="margin-top:16px"><strong>The pattern worth copying is not the multiple, it is the timing.</strong> Bengaluru's biggest gains came from buying an area two to three years <em>before</em> confirmed infrastructure landed — metro historically adds 15–25% in the two to three years after a station opens. That is repeatable. Buying after the line opens is paying for it. Anjanapura did 205% over three years and Kundalahalli 151%; both were infrastructure catch-up stories, not luck.</div>
-    <div class="note" style="margin-top:14px">The other half of the honest version: apartments are a weaker vehicle for this than land or plots. Your undivided share of land appreciates; the concrete on top of it depreciates. If the goal is genuinely a wealth-building portfolio rather than a home, plotted developments in a funded-infrastructure corridor have historically outperformed flats by a wide margin — with correspondingly harder title diligence.</div>
-  </div>
-
-  <div class="block">
-    <h2>How to actually use this as an investor</h2>
-    <ol class="plain">
-      <li><strong>Screen on the sweet-spot table</strong>, then throw away anything where the growth story is an announcement rather than a funded project. Metro Phase 3A is announced. The Blue Line is funded and being built. Those are not the same asset.</li>
-      <li><strong>Verify the growth number before believing it.</strong> Portal YoY figures are asking-price movements and are noisy — some of the 25–57% figures on this page are almost certainly mix effects, not real appreciation. Kaveri registered transactions for the same area over two years is the honest check.</li>
-      <li><strong>Buy where rent is rising faster than price.</strong> That is the signal real demand has arrived and price has not caught up. When price rises faster than rent, you are looking at speculation, and yields compress.</li>
-      <li><strong>Watch supply.</strong> Devanahalli has 15,000+ planned units. Great for choice, hard on price growth. An area with demand and constrained supply beats an area with demand and unlimited land.</li>
-      <li><strong>Set an exit before you enter.</strong> Which corridor, what holding period, what triggers a sale. Most people never do this and end up holding emotionally.</li>
-    </ol>
-  </div>
 </section>
 
 <footer>
+  <details class="foldnote"><summary>Verify every price, area, age, khata status and RERA number before acting — nothing here is advice</summary>
   <p>Prices, rents, ages and possession dates were gathered from public sources on 10 September 2026 and reflect mid-2026 market data. Several sources contradicted each other, particularly on possession dates — where they did, I have said so rather than picking one. Entries marked as estimates are derived from locality rates and typical unit sizes, not from a live listing, and exist to give you somewhere to start looking. Verify every price, area, age, khata status and RERA number before acting. Nothing here is legal, tax or financial advice; I'm not a lawyer, a chartered accountant or a financial adviser. Retain a property lawyer for title work and a chartered accountant for the TDS, and check the Karnataka RERA and Kaveri portals directly rather than trusting any listing site, including the ones linked here.</p>
+  </details>
 </footer>
 </div>
 </main>
@@ -2702,25 +2816,35 @@ const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').sl
  one carries data-sec (and data-sub where a section has more than one view), and
  is moved once at boot into the section that now owns it. Nothing is duplicated
  and nothing is rewritten, so every word of the original content survives. */
-const SECTIONS=['home','explore','listings','shortlist','guide'];
+const SECTIONS=['home','explore','market','listings','shortlist'];
+/* Legal and Negotiation left this list and became Shortlist sub-tabs of their
+   own: they are things you do once something is tracked, not background
+   reading. What remains is genuinely background. */
 const GUIDE_ARTICLES=[
  {k:'read',     t:'Before you start',     d:'Five things that shape any Bengaluru purchase'},
  {k:'basics',   t:'Bengaluru basics',    d:'How the city is laid out, and what the words mean'},
- {k:'legal',    t:'Legal checks',        d:'Title, khata, approvals — the sequence'},
- {k:'negotiate',t:'Negotiation',         d:'What to open at, and what to hold'},
- {k:'sources',  t:'Where to search',     d:'Which sources are fact, and which are inventory'}
+ {k:'sources',  t:'Where to search',     d:'Which sources are fact, and which are inventory'},
+ {k:'returns',  t:'What returns are realistic', d:'The arithmetic behind the stories you have heard'},
+ {k:'prices',   t:'Why the prices disagree', d:'Six sources, one locality, a 2.4\u00d7 spread'}
 ];
-let SEC='explore', SUB={explore:'discover',shortlist:'board',guide:'read'}, EXMODE='discover';
+let SEC='explore', SUB={explore:'discover',shortlist:'board',guide:'read'}, EXMODE='five';
+/* Market's own sub-tab, kept out of SUB because SUB is keyed by section and
+   the guide articles still need their own key inside shortlist. */
+let MSUB='moving';
 
 function movePanels(){
  const put=(sel,host)=>{const h=document.getElementById(host); if(!h)return;
   document.querySelectorAll(sel).forEach(p=>h.appendChild(p));};
  /* explicit order: the map is the hero of Explore, and document order would
     have put the portal-price tables above it */
- ['p-heat','p-prices'].forEach(id=>{const p=document.getElementById(id);
-  if(p)document.getElementById('sec-explore').appendChild(p);});
+ const ph=document.getElementById('p-heat');
+ if(ph)document.getElementById('sec-explore').appendChild(ph);
+ /* the zone supply table is a market view, not something to scroll past on
+    the way to a map */
+ put('section.panel[data-sec="market"]','sec-market');
  put('section.panel[data-sec="listings"]','sec-listings');
  put('section.panel[data-sec="shortlist"]','sec-shortlist');
+ /* the three remaining articles sit inside the How this works sub-tab */
  put('section.panel[data-sec="guide"]','artBody');
  /* the three calculators live in the property slide-over now, prefilled from
     whichever property you opened. They are detached until then. */
@@ -2734,7 +2858,12 @@ let CALCHOME=null, SETTINGSSRC=null;
 function paintPanels(){
  document.querySelectorAll('section.panel[data-sec]').forEach(p=>{
   const sec=p.dataset.sec, sub=p.dataset.sub;
-  const show = sec===SEC && (!sub || sub===SUB[sec]);
+  /* a guide article lives inside shortlist/guide and answers to its own key */
+  const show = sec==='guide'
+   ? (SEC==='shortlist' && SUB.shortlist==='guide' && sub===SUB.guide)
+   : sec==='market'
+   ? (SEC==='market' && sub===MSUB)
+   : (sec===SEC && (!sub || sub===SUB[sec]));
   p.classList.toggle('on',show);
  });
 }
@@ -2750,7 +2879,7 @@ function goSection(sec,sub,opts){
   b.setAttribute('aria-pressed',String(b.dataset.sub===SUB.shortlist)));
  paintPanels();
  if(sec==='home')renderHome();
- if(sec==='guide')renderArticles();
+ if(sec==='market')renderMarket();
  if(sec==='explore'){renderTuned(); setExploreMode(EXMODE);}
  if(sec==='listings'){renderSoc();}
  if(sec==='shortlist'){
@@ -2760,6 +2889,8 @@ function goSection(sec,sub,opts){
   if(s==='compare')renderCompare();
   if(s==='photos')renderPhotoPanel();
   if(s==='route'){renderRoute();renderPlan();}
+  if(s==='guide')renderArticles();
+  if(s==='costs')renderCosts();
  }
  if(!opts.silent)writeHash();
  if(!opts.keepScroll){try{window.scrollTo({top:0,behavior:'instant'});}catch(e){}}
@@ -3335,6 +3466,20 @@ const TERMS={
  'qts':{t:'Quarters to sell', f:'liq',
   one:'How many quarters this zone takes to clear the homes already built and unsold.',
   level:'zone', src:'Knight Frank Research', as:'H1 2026'},
+ /* This classification is OURS. Knight Frank publish two years of growth
+    figures and nothing else; where the line sits between "rising" and "flat"
+    is our judgement, and the sheet says so rather than borrowing their
+    authority for our threshold. */
+ 'rising':{t:'Rising and slowing',
+  one:'Whether a location\u2019s price growth sped up or slowed down against the year before \u2014 not whether prices are high or low.',
+  level:'area', src:'Knight Frank H1 2025 and H1 2026. The 4-point threshold is ours, not theirs', as:'',
+  not:'Whether the change continues. A year is a short window to read a direction from.',
+  extra:'<p><strong>Rising</strong> is growth up 4 points or more. <strong>Slowing</strong> '
+   +'is down 4 points or more. Everything between reads as unchanged.</p>'
+   +'<p>It compares H1 2026 against H1 2025 and covers the 17 of 86 locations '
+   +'Knight Frank track by transaction.</p>'
+   +'<p><strong>For example:</strong> KR Puram grew 6% then 20% \u2014 14 points faster, '
+   +'so it reads as rising even though 20% is not the highest in the city.</p>'},
  'sweet-spot':{t:'Sweet spot', f:'sweet',
   one:'Whether this place is in the top fifth on growth and the cheapest two-fifths on price.',
   level:'area', src:'Computed across all 86 researched areas', as:'2026'},
@@ -3413,6 +3558,7 @@ function termSheetHTML(key,a){
   +(T.level==='zone'?'<span class="zonepill">'+uiIcon('info',null,false)
     +'Zone level, not this street</span>':'')
   +'<div class="sheet-tiles">'+facts.map(f=>metricTile(f[0],f[1])).join('')+'</div>'
+  +(T.extra?'<div class="sheet-extra">'+T.extra+'</div>':'')
   +(not?calloutCard('warn','Does not cover',esc(not)):'')
   +'<div class="sheet-src">'+esc(T.src)+(T.as?' · '+esc(T.as):'')
   +(T.f||T.method?'<button class="ilink" data-method="'+esc(T.f||T.method)+'" '
@@ -4004,12 +4150,137 @@ function wireTerminal(){
   locAnalytics(b.dataset.openanl)));
 }
 
+/* ---- Explore: Your 5 ----
+ Eighty-six rows is a page, not an answer. Five cards each answer four
+ questions in words a buyer already uses, and the score itself stays off the
+ card surface — a rank is readable, a 76 against an invisible scale is not. */
+function sqftFor(a,cap){
+ const basis=basisVal(a); if(!basis||!cap)return null;
+ return Math.round(cap/basis);
+}
+function fiveCard(a,i,peers){
+ const cap=budCap();
+ const sq=sqftFor(a,cap);
+ /* how many of the five this one beats on floor area, said plainly */
+ const beat=sq!==null?peers.filter(p=>{const q=sqftFor(p,cap);return q!==null&&q<sq;}).length:0;
+ const hubs=selectedHubs(), c=commuteScore(a,hubs);
+ const best=hubs.length?Math.min.apply(null,peers.map(p=>{
+   const q=commuteScore(p,hubs); return q?q.mins:9999;})):null;
+ const g=growthOf(a), was=kfVerified(a)?a.growth25:null;
+ const maxSq=Math.max.apply(null,peers.map(p=>sqftFor(p,cap)||0))||1;
+ const fl=floodOf(a);
+ const risk = fl.tier==='high'
+  ? calloutCard('risk','Flood risk',esc(a.n)+' is on BBMP’s high-risk list'
+     +(fl.pocket?' — '+esc(fl.pocket):'')+'.')
+  : (a.qts>=7 && !a.qtsThin
+    ? calloutCard('warn','Slow to sell','Its zone takes '+a.qts+' quarters to clear unsold '
+       +'stock, the slowest band. That is the exit you would be selling into.')
+    : (was!==null && g<was-RISE_THRESHOLD
+      ? calloutCard('warn','Growth has slowed','Prices rose '+was+'% the year before and '
+         +g+'% last year.') : ''));
+ return '<button type="button" class="fcard" data-openanl="'+esc(a.n)+'">'
+  +'<span class="fhead"><span class="fn"><b>'+esc(a.n)+'</b>'
+  +'<span>'+esc(a.z+' Bengaluru · '+a.cor)+'</span></span>'
+  +'<span class="frank">'+ORD(rankOf(a,areaFit).rank)+' of '+AREAS.length+'</span></span>'
+  +(sq!==null?'<span class="fq"><em>'+cr(cap)+' buys</em><b>'+sq.toLocaleString('en-IN')
+    +' sq ft</b><span class="fbar"><i style="width:'+Math.round((sq/maxSq)*100)+'%"></i></span>'
+    +'<small>more than '+beat+' of your '+peers.length+' options</small></span>':'')
+  +(c?'<span class="fq"><em>Drive to '+esc(HUBLABEL[c.hub]||'work')+'</em><b>'+c.mins+' min</b>'
+    +(best!==null&&c.mins===best?'<span class="ftag">shortest</span>':'')+'</span>':'')
+  +'<span class="fq"><em>Prices last year</em><b>'+(g>=0?'+':'')+g+'%</b>'
+  +(was!==null?'<span class="ftag '+(g<was?'dn':'up')+'">was '+was+'%</span>':'')+'</span>'
+  +risk
+  +'</button>';
+}
+function renderYourFive(){
+ const host=document.getElementById('fivePane'); if(!host)return;
+ if(EXMODE!=='five'){host.innerHTML='';return;}
+ if(!personalised()){
+  host.innerHTML='<div class="emptystate"><b>Answer the questions first.</b>'
+   +'<p>These five come from what you tell us about budget, commute and timing. '
+   +'Until then, the map and the position chart show the whole city.</p>'
+   +'<p style="margin-top:10px"><button class="act" id="fiveAsk">Answer the questions</button></p></div>';
+  const b=document.getElementById('fiveAsk');
+  if(b)b.addEventListener('click',()=>openIntake(0));
+  return;
+ }
+ const five=topAreas(5);
+ host.innerHTML='<div class="fintro"><span>Five of '+AREAS.length
+  +', chosen from your answers</span>'
+  +'<button class="ilink" id="fiveWhy">Why these?</button></div>'
+  +five.map((a,i)=>fiveCard(a,i,five)).join('')
+  +'<button type="button" class="widercard" data-gomarket="1">'
+  +'<b>Looking wider?</b><span>See what is moving across Bengaluru</span></button>';
+ host.querySelectorAll('[data-openanl]').forEach(b=>
+  b.addEventListener('click',()=>locAnalytics(b.dataset.openanl)));
+ host.querySelectorAll('[data-gomarket]').forEach(b=>
+  b.addEventListener('click',()=>goSection('market')));
+ const w=document.getElementById('fiveWhy');
+ if(w)w.addEventListener('click',()=>{
+  const f=areaFitFull(five[0]);
+  openSlide('Why these five','How the shortlist was chosen',
+   '<p style="font-size:14.5px;line-height:1.6">Every researched area was scored against '
+   +'your answers, then the five that scored highest and sit inside your ceiling were kept. '
+   +'Nothing was filtered out — an area outside your preferred zones can still appear, '
+   +'marked.</p>'
+   +'<div class="block"><h2 style="font-size:15px">What counted, and how much</h2>'
+   +f.parts.map(p=>factorBar(esc(p.label)+infoDot(FACTORTERM[p.k]||'fit-score',p.label)
+      +'<span class="fbw">'+Math.round(p.weight*100)+'%</span>',p.v*10,10,
+      (p.v*10).toFixed(1))).join('')
+   +(f.dropped&&f.dropped.length?dropNote(f):'')+'</div>');
+ });
+}
+/* ---- Explore: Position ----
+ A ranked list cannot show the shape of a market. This can: where everything
+ sits on price against growth, and which corner is cheap and climbing. */
+function renderPosition(){
+ const host=document.getElementById('posPane'); if(!host)return;
+ if(EXMODE!=='position'){host.innerHTML='';return;}
+ const rows=AREAS.slice();
+ const cap=budCap();
+ const xs=rows.map(a=>basisVal(a)), ys=rows.map(a=>growthOf(a));
+ const xMin=Math.min.apply(null,xs), xMax=Math.max.apply(null,xs);
+ const yMin=Math.min.apply(null,ys), yMax=Math.max.apply(null,ys);
+ const xSpan=(xMax-xMin)||1, ySpan=(yMax-yMin)||1;
+ const xMed=cityMid(a=>basisVal(a)), yMed=cityMid(a=>growthOf(a));
+ const px=v=>((v-xMin)/xSpan)*100, py=v=>((v-yMin)/ySpan)*100;
+ const dots=rows.map(a=>{
+  const n=investScore(a), b=scoreBand(n);
+  /* size says whether it fits the budget, so the eye finds affordable first */
+  const fit=cap?Math.max(0,Math.min(1,(cap-basisVal(a)*1000)/cap)):0.5;
+  const d=20+Math.round(fit*18);
+  return '<button type="button" class="pdot '+b.k+'" data-openanl="'+esc(a.n)+'" '
+   +'style="left:'+px(basisVal(a)).toFixed(2)+'%;bottom:'+py(growthOf(a)).toFixed(2)+'%;'
+   +'width:'+d+'px;height:'+d+'px" title="'+esc(a.n)+' — ₹'
+   +Math.round(basisVal(a)).toLocaleString('en-IN')+'/sqft, '+growthOf(a)+'%">'
+   +'<span class="plab">'+esc(a.n)+'</span></button>';
+ }).join('');
+ host.innerHTML='<p class="anlsub" style="margin-top:0">Every researched area on what it '
+  +'costs against how fast it has risen. The shaded corner is cheap and climbing'
+  +(cap?'; bigger circles fit your budget more easily':'')+'.</p>'
+  +'<div class="poswrap"><div class="scatY"><span>'+yMax+'%</span><span>'+yMin+'%</span></div>'
+  +'<div class="posplot">'
+   +'<div class="quad" style="left:0;bottom:'+py(yMed).toFixed(2)+'%;width:'
+   +px(xMed).toFixed(2)+'%;height:'+(100-py(yMed)).toFixed(2)+'%"></div>'
+   +'<i class="gx" style="left:'+px(xMed).toFixed(2)+'%"></i>'
+   +'<i class="gy" style="bottom:'+py(yMed).toFixed(2)+'%"></i>'
+   +'<span class="qlab tl">Cheap, climbing</span><span class="qlab tr">Dear, climbing</span>'
+   +'<span class="qlab bl">Cheap, flat</span><span class="qlab br">Dear, flat</span>'
+   +dots+'</div>'
+  +'<div class="scatX"><span>₹'+Math.round(xMin).toLocaleString('en-IN')+'</span>'
+  +'<span>price per sq ft →</span><span>₹'
+  +Math.round(xMax).toLocaleString('en-IN')+'</span></div></div>'
+  +srcFooter('Knight Frank H1 2026 where tracked, portal-derived elsewhere','');
+ host.querySelectorAll('[data-openanl]').forEach(b=>
+  b.addEventListener('click',()=>locAnalytics(b.dataset.openanl)));
+}
+
 /* ---- Explore: Discover | Momentum | Search ----
  Only Discover owns the map and the portal tables. Momentum is the Knight Frank
  view and deliberately shows a smaller set, so it hides everything that would
  imply city-wide coverage. */
 function setExploreMode(m){
- if(['discover','momentum','search','terminal'].indexOf(m)<0)m='discover';
+ if(['five','position','discover','momentum','search','terminal'].indexOf(m)<0)m='five';
  EXMODE=m;
  document.querySelectorAll('#sec-explore .segmented button').forEach(b=>
   b.setAttribute('aria-pressed',String(b.dataset.mode===m)));
@@ -4017,30 +4288,197 @@ function setExploreMode(m){
  document.querySelectorAll('section.panel[data-sec="explore"]').forEach(p=>{
   p.style.display = m==='discover' ? '' : 'none';
  });
+ /* the ranked list of 86 was why Explore read as a page; it belongs to the
+    Map mode now, below the map, not as the thing you land on */
+ /* Your 5 replaced this; keeping both would be the duplication the
+    restructure exists to remove */
  const rp=document.getElementById('rankedPane');
- if(rp)rp.style.display = m==='discover'?'':'none';
+ if(rp)rp.style.display='none';
  const tb=document.getElementById('tunedBar');
- if(tb)tb.style.display = m==='discover'?'':'none';
+ if(tb)tb.style.display = (m==='discover'||m==='five')?'':'none';
  const mp=document.getElementById('momentumPane');
  if(mp)mp.style.display = m==='momentum'?'':'none';
  const tp=document.getElementById('termPane');
  if(tp)tp.style.display = m==='terminal'?'':'none';
+ const fp=document.getElementById('fivePane');
+ if(fp)fp.style.display = m==='five'?'':'none';
+ const pp=document.getElementById('posPane');
+ if(pp)pp.style.display = m==='position'?'':'none';
  if(m==='search'){const i=document.getElementById('locSearch'); if(i)setTimeout(()=>i.focus(),30);}
  else if(m==='momentum'){renderMomentum();}
  else if(m==='terminal'){renderTerminal();}
+ else if(m==='five'){renderYourFive();}
+ else if(m==='position'){renderPosition();}
  else {renderHeatMap(); renderRanked(false);}
 }
 document.querySelectorAll('#sec-explore .segmented button').forEach(b=>
  b.addEventListener('click',()=>{setExploreMode(b.dataset.mode);writeHash();}));
 
 /* ---- Guide ---- */
+/* ========== Market ==========
+ Three sub-tabs, each rendered only when shown. The temptation here is to
+ restate the pipeline on Moving as well as Coming; that duplication is what
+ made the old page run long, so Moving links to Coming and stops. */
+const RISE_THRESHOLD=4;   /* points of growth change. OURS, not Knight Frank's. */
+function marketMoves(){
+ const rows=kfAreas().map(a=>({a:a,d:a.growth26-a.growth25}));
+ return {rising:rows.filter(x=>x.d>=RISE_THRESHOLD).sort((x,y)=>y.d-x.d),
+         slowing:rows.filter(x=>x.d<=-RISE_THRESHOLD).sort((x,y)=>x.d-y.d),
+         flat:rows.filter(x=>Math.abs(x.d)<RISE_THRESHOLD),
+         total:rows.length};
+}
+function moveRow(x,dir){
+ const a=x.a;
+ return '<button type="button" class="mrow '+dir+'" data-openanl="'+esc(a.n)+'">'
+  +'<span class="mn"><b>'+esc(a.n)+'</b><span>'+esc(a.cor)+'</span></span>'
+  +'<span class="mv"><em>'+a.growth25+'%</em>'
+  +'<i>'+(dir==='up'?'→':'→')+'</i>'
+  +'<b>'+a.growth26+'%</b></span></button>';
+}
+function marketMoving(){
+ const m=marketMoves();
+ const show=5;
+ const head=(t,n,key,dir)=>'<div class="resh"><h3>'+t+infoDot(key)+'</h3>'
+   +'<small>'+n+' of '+m.total+' tracked</small></div>';
+ const more=(list,dir)=>list.length>show
+   ? '<button class="ilink mmore" data-moreside="'+dir+'">See all '+list.length+' →</button>' : '';
+ return '<div class="gradcard"><h3>Momentum has rotated north and east.</h3>'
+   +'<p>'+m.rising.length+' locations accelerated, '+m.slowing.length+' slowed.</p></div>'
+  +head('Rising',m.rising.length,'rising','up')
+  +'<div class="mrows" id="mRise">'+m.rising.slice(0,show).map(x=>moveRow(x,'up')).join('')+'</div>'
+  +more(m.rising,'rise')
+  +head('Slowing',m.slowing.length,'rising','dn')
+  +'<div class="mrows" id="mSlow">'+m.slowing.slice(0,show).map(x=>moveRow(x,'dn')).join('')+'</div>'
+  +more(m.slowing,'slow')
+  +'<div class="block"><h3 style="font-size:16px;margin:0 0 6px">The thing nobody mentions</h3>'
+  +'<p style="font-size:13.5px;color:var(--muted);line-height:1.55;margin:0 0 12px">'
+  +'Sales have sat at roughly 27,000 homes a half for three years while launches rose 36%. '
+  +'Builders kept building into demand that did not grow.</p>'
+  +'<div class="tile3">'
+  +metricTile('Unsold homes',KFCITY.y2026.unsold.toLocaleString('en-IN'),
+     'was '+KFCITY.y2024.unsold.toLocaleString('en-IN')+' two years ago')
+  +metricTile('Quarters to clear',String(KFCITY.y2026.qts)+infoDot('qts'),
+     'was '+KFCITY.y2024.qts)
+  +metricTile('Average price','₹'+KFCITY.y2026.price.toLocaleString('en-IN'),
+     'per sqft, city-wide')
+  +'</div>'
+  +'<div class="forayou"><b>For you:</b> more room to negotiate than a year ago, '
+  +'especially in the south, where stock is clearing slowest.</div>'
+  +srcFooter('Knight Frank Research, India Real Estate','H1 2026')+'</div>'
+  +'<button class="ilink mmore" data-msubgo="coming">What is committed across the city →</button>';
+}
+function marketComing(){
+ const byStatus={};
+ Object.keys(KFPIPE).forEach(k=>{const p=KFPIPE[k];(byStatus[p.s]=byStatus[p.s]||[]).push([k,p]);});
+ const order=['building','funded','approved','planned','announced'];
+ const total=Object.keys(KFPIPE).length;
+ const blocks=order.filter(st=>byStatus[st]).map(st=>{
+  const rows=byStatus[st].map(([k,p])=>{
+   const when=p.o?pipeWhen(p.o):null;
+   const serves=AREAS.filter(a=>(a.pipeList||[]).indexOf(k)>=0).length;
+   return '<div class="crow"><span class="cdot '+esc(st)+'"></span>'
+    +'<span class="cn"><b>'+esc(p.l.replace(/^the /,''))+'</b>'
+    +'<span>'+esc(p.says)+(when?' · '+when:'')+' · serves '+serves
+    +' area'+(serves===1?'':'s')+'</span></span></div>';
+  }).join('');
+  return '<div class="block"><div class="resh"><h3>'+st.charAt(0).toUpperCase()+st.slice(1)
+   +'</h3><small>'+byStatus[st].length+' of '+total+'</small></div>'+rows+'</div>';
+ }).join('');
+ return '<p class="anlsub" style="margin-top:0">Every committed project the desk holds, '
+  +'grouped by how certain it is. A filled dot is being built; an outline is funded but '
+  +'not started; amber is approved and unfunded; grey is planned only.</p>'
+  +blocks+srcFooter('Published project status and dates','2026');
+}
+function marketCompare(){
+ const rows=AREAS.slice().sort((a,b)=>investScore(b)-investScore(a));
+ return '<p class="anlsub" style="margin-top:0">All '+rows.length+' researched areas. '
+  +'Scroll sideways for the rest of the columns; tap a row for the full read.</p>'
+  +termTable(rows)
+  +srcFooter('Mixed sources — open any location for its own provenance','');
+}
+function renderMarket(){
+ const host=document.getElementById('marketPane'); if(!host)return;
+ document.querySelectorAll('#sec-market .segmented button').forEach(b=>
+  b.setAttribute('aria-pressed',String(b.dataset.msub===MSUB)));
+ host.innerHTML = MSUB==='coming'? marketComing()
+   : MSUB==='compare'? marketCompare() : marketMoving();
+ host.querySelectorAll('[data-openanl]').forEach(b=>
+  b.addEventListener('click',()=>locAnalytics(b.dataset.openanl)));
+ host.querySelectorAll('[data-msubgo]').forEach(b=>
+  b.addEventListener('click',()=>{setMarketSub(b.dataset.msubgo);writeHash();}));
+ host.querySelectorAll('[data-moreside]').forEach(b=>b.addEventListener('click',()=>{
+  const m=marketMoves(), which=b.dataset.moreside==='rise'?m.rising:m.slowing;
+  const el=document.getElementById(b.dataset.moreside==='rise'?'mRise':'mSlow');
+  el.innerHTML=which.map(x=>moveRow(x,b.dataset.moreside==='rise'?'up':'dn')).join('');
+  el.querySelectorAll('[data-openanl]').forEach(z=>
+   z.addEventListener('click',()=>locAnalytics(z.dataset.openanl)));
+  b.remove();}));
+ if(MSUB==='compare')host.querySelectorAll('[data-ts]').forEach(b=>
+  b.addEventListener('click',()=>{
+   const k=b.dataset.ts;
+   if(TERMSORT.k===k)TERMSORT.dir=-TERMSORT.dir;
+   else TERMSORT={k:k,dir:k==='n'||k==='z'?1:-1};
+   renderMarket();}));
+}
+
+/* ---- Market: three sub-tabs ----
+ Moving says what changed, Compare puts the numbers side by side, Coming lists
+ what is committed. Each renders only when shown, so the section never carries
+ three screens of content at once. */
+function setMarketSub(m){
+ if(['moving','compare','coming'].indexOf(m)<0)m='moving';
+ MSUB=m;
+ document.querySelectorAll('#sec-market .segmented button').forEach(b=>
+  b.setAttribute('aria-pressed',String(b.dataset.msub===m)));
+ paintPanels();
+ renderMarket();
+}
+document.querySelectorAll('#sec-market .segmented button').forEach(b=>
+ b.addEventListener('click',()=>{setMarketSub(b.dataset.msub);writeHash();}));
+
+/* ---- Shortlist: Costs ----
+ Not a second calculator. The per-property one is prefilled and lives in each
+ property's own panel; this is the question that only makes sense once things
+ are tracked — what will each of these actually cost me, all in. */
+function renderCosts(){
+ const host=document.getElementById('costsPane'); if(!host)return;
+ const ids=Object.keys(track);
+ if(!ids.length){
+  host.innerHTML='<div class="emptystate"><b>Nothing tracked yet.</b>'
+   +'<p>Track a property and this works out what it costs all in — the ticket '
+   +'price plus stamp duty, cess, surcharge and registration.</p></div>';
+  return;
+ }
+ const rows=ids.map(id=>socById(id)).filter(Boolean).map(s2=>{
+  const mid=Math.round((s2.lo+s2.hi)/2);
+  const st=statutory(mid,'urban');
+  return '<button type="button" class="crow costrow" data-opensoc="'+esc(slug(s2.n))+'">'
+   +'<span class="cn"><b>'+esc(s2.n)+'</b><span>'+esc(s2.a)+' · ticket '+cr(mid)+'</span></span>'
+   +'<span class="costv"><b>'+cr(mid+st.total)+'</b><em>all in</em></span></button>';
+ }).join('');
+ const totalMid=ids.map(id=>socById(id)).filter(Boolean)
+   .reduce((t,x)=>t+Math.round((x.lo+x.hi)/2),0);
+ const one=statutory(Math.round(totalMid/Math.max(1,ids.length)),'urban');
+ host.innerHTML='<p class="anlsub" style="margin-top:0">Ticket price plus the statutory '
+  +'costs that leave your account on the same day. Tap one for the full breakdown.</p>'
+  +rows
+  +'<div class="block"><div class="tile3">'
+  +metricTile('Stamp duty',(one.rate*100).toFixed(0)+'%','on the whole consideration')
+  +metricTile('Cess and surcharge','12%','of the duty, urban')
+  +metricTile('Registration','2%','of consideration')
+  +'</div>'+srcFooter('Karnataka stamp duty and registration rates','2026')+'</div>';
+ host.querySelectorAll('[data-opensoc]').forEach(b=>
+  b.addEventListener('click',()=>openProperty(b.dataset.opensoc)));
+}
 function renderArticles(){
  const list=document.getElementById('artList');
  list.innerHTML=GUIDE_ARTICLES.map(a=>
   '<button data-art="'+a.k+'" aria-current="'+(SUB.guide===a.k)+'">'+a.t
   +'<br><small style="font-weight:400;color:var(--muted)">'+a.d+'</small></button>').join('');
+ /* the articles live inside shortlist/guide now, so picking one sets the
+    article key and repaints rather than switching section */
  list.querySelectorAll('[data-art]').forEach(b=>
-  b.addEventListener('click',()=>goSection('guide',b.dataset.art)));
+  b.addEventListener('click',()=>{SUB.guide=b.dataset.art; renderArticles();}));
  paintPanels();
 }
 
@@ -4239,9 +4677,9 @@ let HASHLOCK=false;
 function writeHash(){
  if(HASHLOCK)return;
  let h='#/'+SEC;
- if(SEC==='guide')h+='/'+SUB.guide;
+ if(SEC==='market')h+='/'+MSUB;
  if(SEC==='shortlist')h+='/'+SUB.shortlist;
- if(SEC==='explore'&&EXMODE!=='discover')h+='/'+EXMODE;
+ if(SEC==='explore'&&EXMODE!=='five')h+='/'+EXMODE;
  const cfg=(location.hash.match(/cfg=[^&]+/)||[''])[0];
  HASHLOCK=true;
  try{history.replaceState(null,'',location.pathname+location.search+h+(cfg?'&'+cfg:''));}catch(e){}
@@ -4255,7 +4693,10 @@ function readHash(){
  if(a==='loc'){goSection('explore',null,{silent:true}); setExploreMode('search'); showLocality(b); return true;}
  if(a==='soc'){goSection('listings',null,{silent:true}); openProperty(b); return true;}
  if(SECTIONS.indexOf(a)>=0){
-  if(a==='explore'&&(b==='search'||b==='momentum'||b==='terminal')){goSection('explore',null,{silent:true});setExploreMode(b);}
+  if(a==='explore'&&['search','momentum','terminal','five','position','discover'].indexOf(b)>=0){
+   goSection('explore',null,{silent:true});setExploreMode(b);}
+  if(a==='market'&&['moving','compare','coming'].indexOf(b)>=0){
+   goSection('market',null,{silent:true}); setMarketSub(b);}
   else goSection(a,b||null,{silent:true});
   return true;
  }
@@ -4763,9 +5204,9 @@ function weighFactors(table,vals){
  Each returns null where it cannot be computed, which is how a factor drops out
  rather than scoring zero. */
 const TECHHUBS=['itpl','ecity','orr'];
-/* These run during the first render, via renderSweet -> investFull, which is
-   before the intake block further down has been evaluated. So they carry their
-   own clamp and probe for the intake rather than assuming it exists yet. */
+/* These are reached during the first render, before the intake block further
+   down has been evaluated. So they carry their own clamp and probe for the
+   intake rather than assuming it exists yet. */
 const _c01=x=>Math.max(0,Math.min(1,x));
 /* budCap is a hoisted function but reads a const declared further down, so
    during the first render it is reachable and throws. Both have to be caught. */
@@ -5690,47 +6131,6 @@ function showLocality(name){
  noteView('loc',l.n,l.n);
  HASHLOCK=true;try{history.replaceState(null,'','#/loc/'+encodeURIComponent(l.n));}catch(e){}HASHLOCK=false;
 }
-function renderSweet(){
- const rows=[...AREAS].sort((a,b)=>sweetScore(b)-sweetScore(a));
- document.querySelector('#sweetTable tbody').innerHTML=rows.map((a,i)=>{
-  const st=stageOf(a), iv=investFull(a);
-  return `<tr${i<8?' class="hi"':''}><td class="num">${i+1}</td><td><strong>${a.n}</strong>${a.c<2?' <span class="tag">'+(a.c===1?'ranged':'thin data')+'</span>':''}</td>
-   <td>${a.z}<br><small>${a.cor}</small></td><td class="num">₹${a.ask.toLocaleString('en-IN')}</td>
-   <td class="num">${a.reg?'₹'+a.reg.toLocaleString('en-IN')+'<br><small style="color:'+(frothPct(a)>=55?'var(--risk-fg)':'var(--muted)')+'">+'+frothPct(a)+'%</small>':'—'}</td>
-   <td class="num">${growthOf(a)}%${kfVerified(a)?'<br><small style="color:var(--primary)">Knight Frank</small>':''}</td><td class="num">₹${(a.rent/1000)}k</td><td class="num">${a.ry}%</td>
-   <td class="num">${yieldOf(a).toFixed(1)}%</td><td class="num"><strong>${sweetScore(a)}</strong></td>
-   <td class="num"><strong>${iv.score}</strong><br><small style="color:${iv.band[1]}">${iv.band[0]}</small></td>
-   <td><span style="color:${st[1]};font-weight:600">${st[0]}</span></td><td>${a.drv}</td></tr>`;}).join('');
-}
-function renderScatter(){
- const W=760,H=430,P={l:56,r:16,t:16,b:46};
- const xs=AREAS.map(trueMid), ys=AREAS.map(a=>a.py);
- const xMin=4000,xMax=26000,yMin=-6,yMax=27;
- const X=v=>P.l+((v-xMin)/(xMax-xMin))*(W-P.l-P.r);
- const Y=v=>H-P.b-((v-yMin)/(yMax-yMin))*(H-P.t-P.b);
- const xMed=10500, yMed=12;
- let g=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;min-width:640px;height:auto" xmlns="http://www.w3.org/2000/svg">`;
- g+=`<rect x="${X(xMin)}" y="${Y(yMax)}" width="${X(xMed)-X(xMin)}" height="${Y(yMed)-Y(yMax)}" fill="rgba(62,107,78,.16)"/>`;
- g+=`<rect x="${X(xMed)}" y="${Y(yMax)}" width="${X(xMax)-X(xMed)}" height="${Y(yMed)-Y(yMax)}" fill="rgba(163,40,47,.10)"/>`;
- g+=`<line x1="${X(xMed)}" y1="${P.t}" x2="${X(xMed)}" y2="${H-P.b}" stroke="#C6CFCA" stroke-dasharray="4 4"/>`;
- g+=`<line x1="${P.l}" y1="${Y(yMed)}" x2="${W-P.r}" y2="${Y(yMed)}" stroke="#C6CFCA" stroke-dasharray="4 4"/>`;
- g+=`<line x1="${P.l}" y1="${H-P.b}" x2="${W-P.r}" y2="${H-P.b}" stroke="#12211D"/>`;
- g+=`<line x1="${P.l}" y1="${P.t}" x2="${P.l}" y2="${H-P.b}" stroke="#12211D"/>`;
- [5000,10000,15000,20000,25000].forEach(v=>{g+=`<text x="${X(v)}" y="${H-P.b+18}" font-size="10.5" fill="#5A6863" text-anchor="middle">₹${v/1000}k</text>`;});
- [0,5,10,15,20,25].forEach(v=>{g+=`<text x="${P.l-9}" y="${Y(v)+3.5}" font-size="10.5" fill="#5A6863" text-anchor="end">${v}%</text>`;});
- g+=`<text x="${(W)/2}" y="${H-8}" font-size="11" fill="#5A6863" text-anchor="middle">Entry price per square foot</text>`;
- g+=`<text x="14" y="${H/2}" font-size="11" fill="#5A6863" text-anchor="middle" transform="rotate(-90 14 ${H/2})">Price growth a year</text>`;
- g+=`<text x="${X(xMin)+10}" y="${Y(yMax)+18}" font-size="11" font-weight="600" fill="#3E6B4E">Cheap and climbing</text>`;
- g+=`<text x="${X(xMax)-10}" y="${Y(yMax)+18}" font-size="11" font-weight="600" fill="#A3282F" text-anchor="end">Already run</text>`;
- AREAS.forEach(a=>{
-  const x=X(Math.min(trueMid(a),xMax)), y=Y(Math.max(Math.min(a.py,yMax),yMin));
-  const s=sweetScore(a), r=s>=65?6.5:4.5;
-  g+=`<circle cx="${x}" cy="${y}" r="${r}" fill="${heatColor(a)}" stroke="#12211D" stroke-width=".7" opacity=".92"><title>${a.n} — ₹${Math.round(trueMid(a)).toLocaleString('en-IN')}/sqft blended, ${a.py}% growth, score ${s}</title></circle>`;
-  if(s>=68) g+=`<text x="${x+9}" y="${y+3.5}" font-size="9.5" fill="#12211D">${a.n}</text>`;
- });
- g+='</svg>';
- document.getElementById('scatter').innerHTML=g;
-}
 function renderSupply(){
  document.querySelector('#supplyTable tbody').innerHTML=Object.entries(ZONEINFO).map(([z,i])=>
   `<tr><td><strong>${z}</strong></td><td class="num">₹${i.avg.toLocaleString('en-IN')}</td>
@@ -5770,7 +6170,7 @@ function renderSupply(){
 document.querySelectorAll('[data-lens]').forEach(b=>b.addEventListener('click',()=>{
  LENS=b.dataset.lens;
  document.querySelectorAll('[data-lens]').forEach(x=>x.setAttribute('aria-pressed',x===b));
- renderHeat(); renderScatter();}));
+ renderHeat();}));
 document.querySelectorAll('[data-zf]').forEach(b=>b.addEventListener('click',()=>{
  ZF=b.dataset.zf;
  document.querySelectorAll('[data-zf]').forEach(x=>x.setAttribute('aria-pressed',x===b));
@@ -5780,7 +6180,7 @@ document.querySelectorAll('[data-zf]').forEach(b=>b.addEventListener('click',()=
    temporal dead zone — once for each table the factor set grew to touch.
    Guarding them one const at a time was treating the symptom. They render
    from boot() instead, after the whole script has evaluated. */
-function renderMarketTables(){ renderHeat(); renderSweet(); renderScatter(); renderSupply(); }
+function renderMarketTables(){ renderHeat(); renderSupply(); }
 
 /* ========== priority ==========
  Location quality: how well the micro-market serves your brief — tenant depth,
