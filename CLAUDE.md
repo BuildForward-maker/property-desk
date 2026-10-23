@@ -400,9 +400,15 @@ Every colour, radius and spacing value resolves to a custom property on
 `:root`. The previous ledger palette is **gone** — all 462 references were
 rewritten and the alias block deleted. These are the only names:
 
-    --bg --card --tile --primary --tint --ink --muted
-    --line --line-soft --accent
-    --warn-bg --warn-fg --risk-bg --risk-fg --band-mid
+    --bg --card --tile --primary --primary-2 --pop --tint
+    --ink --muted --slate --line --line-soft --accent
+    --warn-bg --warn-fg --risk-bg --risk-fg --good-bg --good-fg --band-mid
+    --grad-bg --grad-primary --shadow-primary
+
+The ground is **never flat**: `--grad-bg` is a three-stop gradient and `--bg`
+is only its fallback. Primary buttons, score badges and bar fills all carry
+`--grad-primary`, the same 140deg ramp, so they read as one family; a flat
+`--primary` fill on any of those breaks that.
     --r-card 22 --r-tile 15 --r-seg 12 --r-chip 999
     --s-screen 18 --s-cards 14 --s-in 14 --tap 44
 
@@ -410,8 +416,8 @@ Two fonts: **Manrope** carries every readable word, **Space Grotesk**
 (`--label`) is for caps labels and badges only and never for body text.
 Nothing interactive goes under `--tap`.
 
-Every foreground/background pair in use clears 4.5:1. The tightest is
-`--band-mid` on `--tile` at 4.61. Re-check with the ratio helper before
+Every foreground/background pair in use clears 4.5:1. The tightest is the
+info dot's ink on the ground at 4.75. Re-check with the ratio helper before
 introducing a new pair, and darken the foreground rather than shipping
 something short.
 
@@ -431,6 +437,37 @@ three names:
   `tunedChips()` and a results renderer. Harmless because those two functions
   do not need the globals, but do not call `badge()` or `chip()` from inside
   them without renaming the local first.
+
+### Icons
+
+One function, `uiIcon(name, tone, box)`, inline SVG, no font and no library.
+Every glyph is 20x20, 1.7 stroke, round caps and joins, no fill. 24 of them.
+`box` false draws the glyph bare for use inside a button.
+
+**The tone carries meaning and must not be mixed for looks**: `nav` for
+navigation and actions, `data` for data and attributes, `warn` for caution,
+`risk` for risk, `good` for verified.
+
+### The info system
+
+Long explanation does not live on the page. A small `i` sits immediately after
+the term and opens a sheet — a bottom sheet on a phone, a popover that points
+at its button on desktop.
+
+`infoDot(key)` places one; `TERMS` holds the 19 entries; `openTermSheet` fills
+it. Every sheet has **five parts in the same order**, and the shape is the
+point — a reader learns it once:
+
+1. the term  2. **one sentence**  3. value here / weight / level tiles
+4. what it does not cover  5. source, date and a link to the long method
+
+**Part 2 is capped at one sentence.** Anything needing two belongs behind the
+method link. `FACTOR_DOC` still holds the long form and the sheet links to it.
+
+The dot is an 18px ring with a 44px reach from a pseudo-element — **do not
+grow the visible ring to meet the tap target**. The sheet joins the existing
+`registerOverlay` registry with `top:true`, because registration order is not
+stacking order and Escape must reach the topmost thing.
 
 ### Component library
 
