@@ -139,18 +139,25 @@ dependency to `index.html`.
 
 Two arrays hold the domain data. Keep their shapes consistent when editing.
 
-Two scores, two weight tables, in `W_PERSONAL` and `W_INVEST`. They answer
-different questions and must not be merged: a resident weights commute at 26%
-and pipeline at 9%, an investor weights pipeline at 18% because they hold for
-years, so what is committed matters more than what exists today.
+**One factor set, two weightings.** `W_PERSONAL` and `W_INVEST` draw on the
+same registry and differ only in how heavily each factor counts. A factor
+present in one score and missing from the other is the bug that produced the
+pipeline asymmetry, so do not reintroduce one without a reason that survives
+the question "does the other buyer really not care about this?".
+
+A self-use buyer sells one day, so price growth and liquidity are theirs too.
+An investor's exit **is** a self-use buyer, so infrastructure and liveability
+are their demand engine rather than a side issue. Only two factors are
+genuinely one-sided: the investor has no `commute` (they do not live there,
+and `tech` carries that weight instead, at 13% against 8%), and the resident
+has no `sweet` (budget fit asks their version of the question).
 
 Both tables carry **current infrastructure alongside future pipeline**, and
 they must stay paired. Pipeline can only ever reward places that *lack*
 infrastructure, so a table with pipeline and no counterweight structurally
-penalises mature areas: Indiranagar has metro at 0.6 km and scored zero on an
-11%-weighted factor while an underserved area maxed it. `infraNow` is the
-mirror term — what runs here today, scored on the same curve from the same
-project rows plus the operational metro graph.
+penalises mature areas. `infraNow` is the mirror term — what runs here today,
+scored on the same curve from the same project rows plus the operational metro
+graph.
 
 A factor that cannot be computed for this person — no workplace chosen, no
 budget set — is **dropped and the rest renormalised**, never silently scored
@@ -158,6 +165,18 @@ zero, which would punish an area for a question the buyer declined to answer.
 The renormalisation is **stated in the breakdown**, naming what was dropped
 and why, because otherwise the percentages on screen quietly stop matching the
 weights the tool claims to use.
+
+Every score and every factor row carries an **i** that opens `FACTOR_DOC` /
+`SCORE_DOC`: what the factor measures, where the number came from and when,
+its weight here against its weight on the other score and why they differ, and
+whether it is area-level or zone-level. Written for someone who has never
+bought a flat. **Two entries exist to admit a limit rather than describe a
+strength** — `live` says plainly that it is a hand-assigned judgement and not
+built from flooding, water, green or air data, and `infra` says it covers
+transport only and holds nothing on hospitals, schools, roads or power. If
+either dataset ever arrives, those entries must change with it; if the entries
+are ever tidied into confident prose without the data arriving, the tool is
+lying to a buyer.
 
 - **`AREAS`** (line ~1621) — zone heat map data, one entry per micro-market:
   `n` name, `z` zone, `cor` corridor, `ask`/`lo`/`hi` ₹ per sqft, `reg`, `py`

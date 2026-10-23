@@ -263,6 +263,10 @@ details.bd[open] summary:before{transform:rotate(90deg)}
 .pbar{display:block;height:5px;background:var(--rule-soft);border-radius:3px;overflow:hidden}
 .pbar i{display:block;height:100%;background:var(--ink)}
 .pbw{font-size:11px;color:var(--graphite);margin-bottom:4px}
+.wcmp{display:flex;gap:26px;flex-wrap:wrap;margin-top:10px}
+.wcmp span{display:block;font-size:12px;color:var(--graphite)}
+.wcmp b{display:block;font-family:var(--serif);font-size:26px;color:var(--ink);
+  font-weight:400;line-height:1.1}
 .basisrow{border:1px solid var(--rule);background:var(--raised);padding:11px 13px;
   margin-top:14px;display:flex;flex-wrap:wrap;gap:4px 16px;align-items:baseline}
 .basisrow .bv{font-family:var(--serif);font-size:21px;line-height:1}
@@ -2286,17 +2290,214 @@ function kfChartHTML(a){
   +'12-month change.</p></div>';
 }
 
+/* ========== what every factor means ==========
+ Written for someone who has never bought a flat. Each entry says what the
+ factor measures, where the number came from and when, why the two scores
+ weight it differently, and whether it describes this locality or the whole
+ zone. Where the data is thinner than the label suggests, it says so — that is
+ the part a buyer most needs and the part a weights table hides. */
+const FACTOR_DOC={
+ commute:{
+  what:'How long it takes to get from here to the workplace you named, at the '
+   +'worst time of day rather than an empty-road best case.',
+  from:'Road distances and free-flow driving times from OSRM, computed once and '
+   +'stored. The peak figure is a <strong>model</strong>, not measured traffic: '
+   +'free-flow time multiplied by a factor banded on distance. No live traffic '
+   +'data is used anywhere in this tool.',
+  why:'The heaviest single factor for somebody who will live here, because they '
+   +'make this trip twice a day for years. The investment score drops it '
+   +'entirely — an investor does not make the trip. Tech park access carries '
+   +'that weight there instead.',
+  level:'area'},
+ infra:{
+  what:'What already serves this area today, rather than what is promised. '
+   +'Every operational metro line with a station in reach counts, and a line '
+   +'whose station is closer counts for more.',
+  from:'The operational metro graph — 82 stations from OpenStreetMap, matched '
+   +'to the Purple, Green and Yellow lines — plus any committed project whose '
+   +'opening date has already passed. <strong>It does not include hospitals, '
+   +'schools, roads, water or power: this tool holds no data on any of those.</strong> '
+   +'Read it as "transport running today" and nothing wider.',
+  why:'Higher for a resident (16%) than an investor (11%), because the resident '
+   +'uses it from the day they move in. It exists in both scores on purpose: '
+   +'without it, "what is coming" could only ever reward places that lack '
+   +'infrastructure, and a well-served area scored zero for needing nothing.',
+  level:'area'},
+ budget:{
+  what:'Whether a typical 1,000 sqft flat here lands inside the ceiling you '
+   +'set. With no ceiling set, it becomes plain value for money against the '
+   +'rest of the city.',
+  from:'The cost basis shown at the top of each area panel — Knight Frank’s '
+   +'transacted midpoint where they track the location, otherwise a blend of '
+   +'registered deeds and asking quotes.',
+  why:'Only in the self-use score. An investor is buying an asset at whatever '
+   +'price clears, so the sweet-spot factor does this job for them instead.',
+  level:'area'},
+ live:{
+  what:'How pleasant the area is to live in, as a single hand-assigned score.',
+  from:'<strong>This one is a judgement, not a measurement.</strong> It is a '
+   +'hand-written ranking of Bengaluru localities kept in this tool. It is not '
+   +'built from flooding records, water supply, tree cover or air quality — '
+   +'none of that data is held here. Treat it as one person’s read and check '
+   +'the specific street yourself.',
+  why:'Twice the weight for a resident (12%) as an investor (6%), but it matters '
+   +'to both: an area that floods rents badly and sells worse.',
+  level:'area'},
+ pipe:{
+  what:'Infrastructure that is committed but not yet running, scored by how '
+   +'certain it is. A line under construction counts for far more than one a '
+   +'committee has approved.',
+  from:'A table of named projects — metro phases, suburban rail corridors, '
+   +'road schemes, employment parks — each with its status and its published '
+   +'opening date where one exists. A project with no published date never '
+   +'shows an implied one.',
+  why:'Higher for an investor (15%) than a resident (11%). An investor holds for '
+   +'years, so what is committed matters more than what exists; a resident has '
+   +'to live here in the meantime.',
+  level:'area'},
+ tech:{
+  what:'How many major employment clusters are within reach, and how far the '
+   +'nearest one is. Two clusters in reach beat one, because the tenant pool '
+   +'does not depend on a single employer.',
+  from:'The same modelled peak drive times as the commute factor, measured to '
+   +'Whitefield ITPL, Electronic City and the ORR belt.',
+  why:'The biggest difference between the two scores. For an investor it is 13% '
+   +'and stands in for commute: <strong>their exit buyer is a self-use buyer</strong>, '
+   +'so whoever will rent or buy this flat is the whole demand engine. For a '
+   +'resident it is 8% — useful if they change jobs, but they already named '
+   +'the workplace that matters.',
+  level:'area'},
+ growth:{
+  what:'How fast prices here have risen over the last twelve months.',
+  from:'Knight Frank Research for the 17 locations they track by transaction, '
+   +'as of H1 2026. Portal-derived everywhere else, and the panel labels which '
+   +'you are looking at.',
+  why:'20% for an investor, who is buying the rise. Still 8% for a resident, '
+   +'because <strong>they will sell one day too</strong> — leaving it out of the '
+   +'self-use score pretended that a home is never an asset.',
+  level:'area'},
+ liq:{
+  what:'How long it takes this market to clear its unsold stock — "quarters to '
+   +'sell". A low number means buyers are absorbing what is built. A high one '
+   +'means you may wait when you come to sell.',
+  from:'Knight Frank Research, H1 2026, with the year before for comparison.',
+  why:'9% for an investor, who needs an exit. 4% for a resident, who mostly '
+   +'needs to know they could leave if life changes.',
+  level:'zone'},
+ rent:{
+  what:'What the flat would earn if let, as a percentage of what it cost — and '
+   +'for an investor, how fast those rents are rising as well.',
+  from:'Typical 2BHK rents collected from portal listings, against the cost '
+   +'basis shown on the panel.',
+  why:'18% for an investor, who is paid by rent twice over, in the yield and in '
+   +'its growth. 3% for a resident, who may never let it out at all but might.',
+  level:'area'},
+ sweet:{
+  what:'Whether this area is in the top fifth of the city on price growth AND '
+   +'the cheapest two-fifths on price — rising, but not yet expensive.',
+  from:'Computed from the growth and cost-basis figures above, with the cut-offs '
+   +'read off all 86 researched areas, so they move when the market does.',
+  why:'Investor only, at 8%. For a resident, budget fit asks the version of this '
+   +'question that affects them.',
+  level:'area'}
+};
+const SCORE_DOC={
+ live:{t:'Personal fit score',
+  b:'<p>How well this area suits <strong>you specifically</strong>, out of 100, '
+   +'built from the answers you gave. It leans on the things you live with '
+   +'daily — the commute you named, what already runs here, whether it fits '
+   +'your budget, what the place is like.</p>'
+   +'<p>It still carries price growth and liquidity, at small weights, because '
+   +'a home is also the largest asset most people own and you will sell it one '
+   +'day. Leaving those out would have pretended otherwise.</p>'
+   +'<p>Both scores use the same nine or ten factors and differ only in how '
+   +'heavily each one counts. Open any factor below to see its weight here '
+   +'against its weight for an investor, and why.</p>'},
+ invest:{t:'Investment score',
+  b:'<p>How well this area works as somewhere to put money, out of 100. '
+   +'80 and up is strong, 60 to 79 steady, under 60 watch.</p>'
+   +'<p>It has no commute factor, because you would not live here. Tech park '
+   +'access carries that weight instead: <strong>your exit buyer is a self-use '
+   +'buyer</strong>, so whoever will rent or buy this flat after you is the '
+   +'demand engine, not a side issue. For the same reason it still carries '
+   +'liveability — an area that floods rents badly.</p>'
+   +'<p>Two inputs are zone level rather than locality level, and are marked '
+   +'where they appear. A zone number must never be read as a number about '
+   +'this street.</p>'}
+};
+function factorDocHTML(k,mode){
+ const d=FACTOR_DOC[k]; if(!d)return '';
+ const here=(mode==='invest'?W_INVEST:W_PERSONAL)[k];
+ const there=(mode==='invest'?W_PERSONAL:W_INVEST)[k];
+ const otherName=mode==='invest'?'personal fit':'investment';
+ return '<p style="font-size:14.5px;line-height:1.6">'+d.what+'</p>'
+  +'<div class="block" style="margin-top:18px"><h2 style="font-size:14px">Where the number comes from</h2>'
+   +'<p style="font-size:13.5px;line-height:1.6;margin-top:8px">'+d.from+'</p></div>'
+  +'<div class="block"><h2 style="font-size:14px">How much it counts</h2>'
+   +'<div class="wcmp"><span><b>'+Math.round((here||0)*100)+'%</b>on this score</span>'
+   +'<span><b>'+(there?Math.round(there*100)+'%':'not used')+'</b>on the '+otherName+' score</span></div>'
+   +'<p style="font-size:13.5px;line-height:1.6;margin-top:10px">'+d.why+'</p></div>'
+  +'<div class="block"><h2 style="font-size:14px">What it describes</h2>'
+   +'<p style="font-size:13.5px;line-height:1.6;margin-top:8px">'
+   +(d.level==='zone'
+     ?'<strong>The whole zone, not this locality.</strong> Knight Frank publish '
+      +'it per zone only, so it describes every area in that zone equally. It is '
+      +'marked zone level wherever it appears.'
+     :'This locality. Where a figure is estimated from a neighbouring area '
+      +'instead, the panel says so.')
+   +'</p></div>';
+}
+function openFactorDoc(k,mode){
+ const d=FACTOR_DOC[k]; if(!d)return;
+ openSlide(esc(FACTOR_LABEL[k]||k),
+   mode==='invest'?'In the investment score':'In your personal fit score',
+   factorDocHTML(k,mode));
+}
+function openScoreDoc(mode){
+ const d=SCORE_DOC[mode]||SCORE_DOC.live;
+ const tbl=(mode==='invest'?W_INVEST:W_PERSONAL);
+ const rows=Object.keys(tbl).sort((a,b)=>tbl[b]-tbl[a]).map(k=>
+  '<tr><td><button class="ilink" data-fdoc="'+k+'" data-fmode="'+mode+'">'
+   +esc(FACTOR_LABEL[k])+'</button>'
+   +(FACTOR_DOC[k]&&FACTOR_DOC[k].level==='zone'?'<span class="zonecav">zone level</span>':'')
+   +'</td><td class="num">'+Math.round(tbl[k]*100)+'%</td>'
+   +'<td style="font-size:12.5px;color:var(--graphite)">'+esc(FACTOR_DOC[k]?FACTOR_DOC[k].what.split('.')[0]+'.':'')+'</td></tr>').join('');
+ openSlide(esc(d.t),'How this score is put together',
+  d.b+'<div class="block"><h2 style="font-size:15px">Every factor, and what it counts for</h2>'
+  +'<table style="margin-top:10px"><thead><tr><th>Factor</th><th class="num">Weight</th>'
+  +'<th>What it measures</th></tr></thead><tbody>'+rows+'</tbody></table>'
+  +'<p class="bdnote">Tap any factor for where its number comes from and why the '
+  +'two scores weight it differently.</p></div>');
+ wireFactorDocs();
+}
+/* Delegated once, on the document. These buttons appear inside result cards,
+   inside <details> blocks, inside the slide-over and inside panels the
+   slide-over itself replaces, and chasing every render site is how one of
+   them ends up dead. */
+function wireFactorDocs(){ /* kept for call sites; delegation does the work */ }
+document.addEventListener('click',e=>{
+ const f=e.target.closest&&e.target.closest('[data-fdoc]');
+ if(f){e.preventDefault();e.stopPropagation();openFactorDoc(f.dataset.fdoc,f.dataset.fmode);return;}
+ const g=e.target.closest&&e.target.closest('[data-sdoc]');
+ if(g){e.preventDefault();e.stopPropagation();openScoreDoc(g.dataset.sdoc);}
+});
+const infoBtn=(k,mode)=>'<button class="helpq" data-fdoc="'+k+'" data-fmode="'+mode
+ +'" aria-label="About '+esc(FACTOR_LABEL[k]||k)+'">i</button>';
+const scoreInfoBtn=m=>'<button class="helpq" data-sdoc="'+m
+ +'" aria-label="How this score is put together">i</button>';
+
 /* ---- the investment score, with every factor open to inspection ---- */
 function investHTML(a){
  const f=investFull(a), b=f.band;
  const rows=f.parts.map(p=>{
   const zone=p.prec.indexOf('ZONE')===0;
-  return '<tr><td>'+esc(p.label)+(zone?'<span class="zonecav">zone level</span>':'')+'</td>'
+  return '<tr><td>'+esc(p.label)+infoBtn(p.k,'invest')
+   +(zone?'<span class="zonecav">zone level</span>':'')+'</td>'
    +'<td class="num">'+Math.round(p.weight*100)+'%</td>'
    +'<td class="num">'+p.v10.toFixed(1)+'/10</td>'
    +'<td style="color:var(--graphite);font-size:12.5px">'+esc(p.note)+'</td></tr>';
  }).join('');
- return '<div class="block"><h2 style="font-size:15px">Investment score</h2>'
+ return '<div class="block"><h2 style="font-size:15px">Investment score'+scoreInfoBtn('invest')+'</h2>'
   +'<div style="display:flex;align-items:baseline;gap:12px;margin-top:8px">'
    +'<div style="font-family:var(--serif);font-size:34px;line-height:1">'+f.score+'</div>'
    +'<div><span style="color:'+b[1]+';font-weight:600">'+b[0]+'</span>'
@@ -2989,25 +3190,74 @@ function sweetScore(a){
  commute; no budget set, so no budget fit — is DROPPED and the rest are
  renormalised. It is never silently scored zero, which would punish an area for
  a question the buyer declined to answer. */
-const W_PERSONAL=[
- ['commute','Commute to your workplace',0.26],
- ['metro',  'Metro access today',       0.16],
- ['budget', 'Budget fit',               0.16],
- ['infra',  'Infrastructure running today',0.10],
- ['tech',   'Tech park access',         0.09],
- ['pipe',   'What is coming here',      0.09],
- ['corr',   'Corridor match',           0.07],
- ['live',   'Liveability',              0.07]
-];
-const W_INVEST=[
- ['growth', 'Price growth',             0.22],
- ['rentg',  'Rental growth',            0.22],
- ['pipe',   'Future pipeline',          0.18],
- ['sweet',  'Sweet spot',               0.13],
- ['tech',   'Employment access',        0.09],
- ['liq',    'Demand and liquidity',     0.08],
- ['infra',  'Current infrastructure',   0.08]
-];
+/* ========== one factor set, two weightings ==========
+ Both buyers care about every factor. A self-use buyer sells one day, so growth
+ and liquidity are theirs too; an investor's exit IS a self-use buyer, so
+ commute, infrastructure and liveability are the demand engine rather than a
+ side issue. Having a factor in one score and missing from the other was the
+ structural flaw: it let pipeline reward only underserved areas, with nothing
+ on the other side of the ledger.
+
+ So there is one registry and two weight tables. The investor has no "commute
+ to your workplace" — they do not live there — and tech park access carries
+ that weight instead, because it is the proxy for whoever will rent or buy. */
+const W_PERSONAL={commute:.24, infra:.16, budget:.14, live:.12,
+                  pipe:.11, tech:.08, growth:.08, liq:.04, rent:.03};
+const W_INVEST  ={growth:.20, rent:.18, pipe:.15, tech:.13,
+                  infra:.11, liq:.09, sweet:.08, live:.06};
+const FACTOR_LABEL={
+ commute:'Commute to your workplace',
+ infra:  'Infrastructure running today',
+ budget: 'Budget fit and value',
+ live:   'Liveability',
+ pipe:   'What is coming here',
+ tech:   'Tech park access',
+ growth: 'Price growth',
+ liq:    'Demand and liquidity',
+ rent:   'Rental return',
+ sweet:  'Sweet spot'
+};
+/* every factor, scored once, for whichever table is asking. null means it
+   cannot be computed for this person and the weight is redistributed. */
+function factorValues(a,mode){
+ const invest=mode==='invest';
+ const cm=invest?null:commuteScore(a,selectedHubs());
+ const tp=techParkScore(a), nf=infraNowFactor(a), pf=pipeFactor(a);
+ const lq=liquidityScore(a), ss=sweetSpotScore(a);
+ const bf=invest?null:budgetFitScore(a);
+ const yv=_c01((yieldOf(a)-2.5)/2.0), rg=_c01((a.ry-6)/9);
+ return {
+  vals:{
+   commute: invest?undefined:(cm?cm.v:null),
+   infra:   nf?nf.v:null,
+   budget:  invest?undefined:bf.v,
+   live:    _c01((locScore(a.n)-6)/14),
+   pipe:    pf.v,
+   tech:    tp?tp.v:null,
+   growth:  _c01(growthOf(a)/20),
+   liq:     lq.v/10,
+   /* the investor is paid by rent twice over, in yield and in its growth;
+      the resident may never let it out at all */
+   rent:    invest?(yv*0.5+rg*0.5):yv,
+   sweet:   invest?ss.v/10:undefined
+  },
+  cm:cm, tp:tp, nf:nf, pf:pf, lq:lq, ss:ss, bf:bf
+ };
+}
+/* drop what cannot be scored, rescale the rest, and REMEMBER what went */
+function weighFactors(table,vals){
+ const live=[], dropped=[];
+ for(const k in table){
+  if(vals[k]===null||vals[k]===undefined){dropped.push([k,FACTOR_LABEL[k],table[k]]);continue;}
+  live.push(k);
+ }
+ const sum=live.reduce((t,k)=>t+table[k],0);
+ const parts=live.map(k=>({k:k,label:FACTOR_LABEL[k],stated:table[k],
+   weight:sum>0?table[k]/sum:0, v:vals[k]}));
+ parts.forEach(p=>p.contrib=p.weight*p.v);
+ parts.sort((x,y)=>y.contrib-x.contrib);
+ return {parts:parts, dropped:dropped};
+}
 
 /* ---- the metrics the two tables need ----
  Each returns null where it cannot be computed, which is how a factor drops out
@@ -3017,21 +3267,31 @@ const TECHHUBS=['itpl','ecity','orr'];
    before the intake block further down has been evaluated. So they carry their
    own clamp and probe for the intake rather than assuming it exists yet. */
 const _c01=x=>Math.max(0,Math.min(1,x));
-const _cap=()=>(typeof budCap==='function')?budCap():null;
-const _zones=()=>(typeof INTAKE==='object'&&INTAKE&&Array.isArray(INTAKE.zones))?INTAKE.zones:[];
+/* budCap is a hoisted function but reads a const declared further down, so
+   during the first render it is reachable and throws. Both have to be caught. */
+const _cap=()=>{try{return (typeof budCap==='function')?budCap():null;}catch(e){return null;}};
+const _zones=()=>{try{return (typeof INTAKE==='object'&&INTAKE&&Array.isArray(INTAKE.zones))?INTAKE.zones:[];}catch(e){return [];}};
 function techParkScore(x){
  if(!x||!x.dt)return null;
  const t=TECHHUBS.map(k=>x.dt[k]&&x.dt[k][1]).filter(v=>typeof v==='number');
  if(!t.length)return null;
- /* the nearest major employment cluster, not the one this buyer picked */
- const best=Math.min.apply(null,t);
- return {v:_c01((75-best)/55), mins:best};
+ /* density, not just proximity: a flat inside reach of two clusters has a
+    deeper tenant pool than one that depends on a single employer, and the
+    second cluster counts for less than the first. */
+ const vs=t.map(m=>_c01((75-m)/55)).sort((p,q)=>q-p);
+ let raw=vs[0];
+ for(let i=1;i<vs.length;i++)raw+=vs[i]/(Math.log(i+2)/Math.LN2);
+ return {v:_c01(raw/1.6), mins:Math.min.apply(null,t), inReach:vs.filter(v=>v>0).length};
 }
 function budgetFitScore(a){
- const cap=_cap(); if(!cap)return null;              /* not asked, so not scored */
- const all=priceBasis(a).v*1000;
+ const cap=_cap(), all=basisVal(a)*1000;
+ if(!cap){
+  /* no ceiling given, so the question becomes value for money rather than
+     fit: cheaper against the city is better. It never drops out. */
+  return {v:_c01((16000-basisVal(a))/12000), all:all, mode:'value'};
+ }
  const r=all/cap;
- return {v: r<=0.85?1 : r<=1?0.85 : r<=1.15?0.4 : 0, ratio:r, all:all};
+ return {v: r<=0.85?1 : r<=1?0.85 : r<=1.15?0.4 : 0, ratio:r, all:all, cap:cap, mode:'fit'};
 }
 function corridorScore(a){
  if(!_zones().length)return null;                   /* no preference expressed */
@@ -3050,13 +3310,6 @@ function infraNowFactor(a){
  return {v:_c01(a.infraNow/10), score:a.infraNow, note:a.infraNowNote};
 }
 const currentInfra=infraNowFactor;
-/* drop the factors that returned null, then rescale so the rest still sum to 1 */
-function renorm(table,vals){
- const live=table.filter(r=>vals[r[0]]!==null&&vals[r[0]]!==undefined);
- const sum=live.reduce((t,r)=>t+r[2],0);
- return live.map(r=>({k:r[0],label:r[1],weight:sum>0?r[2]/sum:0,
-   stated:r[2],v:vals[r[0]]}));
-}
 
 /* ========== Knight Frank layer ==========
  Zone demand, the three-year price series and the infrastructure pipeline come
@@ -3135,39 +3388,41 @@ const INVEST_W=[
  {k:'liq',   label:'Demand and liquidity',w:0.10}
 ];
 function investFull(a){
- const cl=x=>Math.max(0,Math.min(1,x));
- const g=growthOf(a), ss=sweetSpotScore(a), lq=liquidityScore(a);
- const tp=techParkScore(a), ci=currentInfra(a), pf=pipeFactor(a);
- const vals={
-  growth: cl(g/20), rentg: cl((a.ry-6)/9), pipe: pf.v,
-  sweet:  ss.v/10,  tech: tp?tp.v:null, liq: lq.v/10,
-  infra:  ci?ci.v:null
- };
- const note={
-  growth:(kfVerified(a)?g+'% a year, tracked by Knight Frank':g+'% a year, portal-derived'),
-  rentg:a.ry+'% a year, portal-derived',
-  pipe:a.pipeNote||'Nothing committed here.',
-  sweet:(ss.hitG&&ss.hitP)?'top fifth on growth and cheapest two-fifths on price'
-    :ss.hitG?'top fifth on growth, but not cheap'
-    :ss.hitP?'cheapest two-fifths, but growth is not in the top fifth'
-    :'neither in the top fifth on growth nor the cheapest two-fifths',
-  tech:tp?(tp.mins+' min at peak to the nearest major tech cluster'):'no drive times for this area',
-  liq:(lq.thin?('zone sample too small to read \u2014 '+a.zoneUnsold+' unsold units in all of KF '+a.kfZone)
-    :('KF '+a.kfZone+' clears its stock in '+a.qts+' quarters, '
-      +(a.qts>a.qtsPrev?'up from ':'down from ')+a.qtsPrev+' a year ago')),
-  infra:ci?(ci.note||('scores '+ci.score.toFixed(1)+'/10 on what runs here today')):'no infrastructure data for this area'
- };
- const prec={growth:kfVerified(a)?'area':'area, portal-derived',rentg:'area, portal-derived',
-   pipe:'area',sweet:'area',tech:'area',infra:'area',liq:'ZONE level, not area'};
- const parts=renorm(W_INVEST,vals);
- let total=0;
- parts.forEach(p=>{p.contrib=p.weight*p.v; p.note=note[p.k]; p.prec=prec[p.k];
-   p.v10=p.v*10; total+=p.contrib;});
+ const f=factorValues(a,'invest');
+ const w=weighFactors(W_INVEST,f.vals);
+ let total=0; w.parts.forEach(p=>total+=p.contrib);
  const score=Math.round(total*100);
- parts.sort((x,y)=>y.contrib-x.contrib);
- return {score:score,parts:parts,band:investBand(score),precision:a.scorePrecision,
-   thinLiq:lq.thin,sweet:ss,pipe:pf};
+ w.parts.forEach(p=>{p.v10=p.v*10; p.note=factorNote(a,p.k,f); p.prec=factorPrec(p.k);});
+ return {score:score, parts:w.parts, dropped:w.dropped, mode:'invest',
+   band:investBand(score), precision:a.scorePrecision, thinLiq:f.lq.thin,
+   sweet:f.ss, pipe:f.pf, infraNow:f.nf, tech:f.tp};
 }
+/* one sentence per factor saying what the number actually came from */
+function factorNote(a,k,f){
+ switch(k){
+  case 'growth': return (kfVerified(a)?growthOf(a)+'% a year, tracked by Knight Frank'
+    :growthOf(a)+'% a year, portal-derived');
+  case 'rent':  return a.ry+'% rent growth and '+yieldOf(a).toFixed(1)+'% gross yield, portal-derived';
+  case 'pipe':  return a.pipeNote||'Nothing committed here.';
+  case 'infra': return a.infraNowNote||'Nothing runs here yet.';
+  case 'tech':  return f.tp?(f.tp.mins+' min at peak to the nearest cluster, '
+    +f.tp.inReach+' of 3 within reach'):'no drive times for this area';
+  case 'liq':   return f.lq.thin?('zone sample too small to read \u2014 '+a.zoneUnsold
+      +' unsold units in all of KF '+a.kfZone)
+    :('KF '+a.kfZone+' clears its stock in '+a.qts+' quarters, '
+      +(a.qts>a.qtsPrev?'up from ':'down from ')+a.qtsPrev+' a year ago');
+  case 'sweet': return (f.ss.hitG&&f.ss.hitP)?'top fifth on growth and cheapest two-fifths on price'
+    :f.ss.hitG?'top fifth on growth, but not cheap'
+    :f.ss.hitP?'cheapest two-fifths, but growth is not in the top fifth'
+    :'neither in the top fifth on growth nor the cheapest two-fifths';
+  case 'live':  return 'hand-scored locality quality, not a measured index';
+  case 'budget':return !f.bf?'':(f.bf.mode==='fit'?('about '+cr(f.bf.all)+' against your ceiling')
+    :('about '+cr(f.bf.all)+' for a 1,000 sqft flat'));
+  case 'commute':return f.cm?(f.cm.mins+' min to your workplace'):'no workplace named';
+  default: return '';
+ }
+}
+function factorPrec(k){ return k==='liq'?'ZONE level, not area':'area'; }
 /* How the 86 sit, computed live so the sentence cannot go stale. Most of the
    city scoring 'watch' is the finding, not a quirk of the scale: Knight Frank
    have every zone absorbing more slowly than it did a year ago. */
@@ -3600,6 +3855,7 @@ function wireSlideLinks(){
   b.addEventListener('click',()=>showArea(b.dataset.openarea)));
  document.querySelectorAll('#soBody [data-help]').forEach(b=>
   b.addEventListener('click',()=>openHelp(b.dataset.help)));
+ wireFactorDocs();
 }
 
 /* ---- Tier 1: a researched area ---- */
@@ -3612,9 +3868,9 @@ function showArea(name){
     · ${a.c===2?'well corroborated':a.c===1?'sources give a range':'thin data — verify before acting'}</div></div>
    <div style="text-align:right;display:flex;gap:18px">
     <div><div style="font-family:var(--serif);font-size:30px;line-height:1">${iv.score}</div>
-     <small style="color:${iv.band[1]}">investment score</small></div>
-    <div><div style="font-family:var(--serif);font-size:30px;line-height:1">${sweetScore(a)}</div>
-     <small>sweet-spot <button class="helpq" data-help="sweet" aria-label="About the sweet-spot score">?</button></small></div>
+     <small style="color:${iv.band[1]}">investment score${scoreInfoBtn('invest')}</small></div>
+    <div><div style="font-family:var(--serif);font-size:30px;line-height:1">${personalised()?areaFit(a):sweetScore(a)}</div>
+     <small>${personalised()?'personal fit'+scoreInfoBtn('live'):'sweet-spot <button class="helpq" data-help="sweet" aria-label="About the sweet-spot score">?</button>'}</small></div>
    </div></div>
   <div class="basisrow">
    <div><div class="bl">Basis used on this panel</div>
@@ -3755,7 +4011,12 @@ document.querySelectorAll('[data-zf]').forEach(b=>b.addEventListener('click',()=
  ZF=b.dataset.zf;
  document.querySelectorAll('[data-zf]').forEach(x=>x.setAttribute('aria-pressed',x===b));
  renderHeat();}));
-renderHeat(); renderSweet(); renderScatter(); renderSupply();
+/* These four were rendered here, part way down the script, which meant the
+   scorers they call reached consts declared further below and threw on the
+   temporal dead zone — once for each table the factor set grew to touch.
+   Guarding them one const at a time was treating the symptom. They render
+   from boot() instead, after the whole script has evaluated. */
+function renderMarketTables(){ renderHeat(); renderSweet(); renderScatter(); renderSupply(); }
 
 /* ========== priority ==========
  Location quality: how well the micro-market serves your brief — tenant depth,
@@ -4856,28 +5117,13 @@ function metroScore(x){
 /* ---- the scorer. Returns the breakdown too, so the ranking can be
    interrogated instead of taken on faith. ---- */
 function areaFitFull(a){
- const hubs=selectedHubs();
- const cm=commuteScore(a,hubs), mt=metroScore(a), tp=techParkScore(a);
- const bf=budgetFitScore(a), co=corridorScore(a), pf=pipeFactor(a);
- const nf=infraNowFactor(a);
- const vals={
-  commute: cm?cm.v:null,
-  metro:   mt?mt.v:null,
-  budget:  bf?bf.v:null,
-  infra:   nf?nf.v:null,
-  tech:    tp?tp.v:null,
-  pipe:    pf.v,
-  corr:    co?co.v:null,
-  live:    _c01((locScore(a.n)-6)/14)
- };
- const parts=renorm(W_PERSONAL,vals);
- let total=0; parts.forEach(p=>{p.contrib=p.weight*p.v; total+=p.contrib;});
- const penalty=commutePenalty(cm?cm.mins:null);
- parts.sort((x,y)=>y.contrib-x.contrib);
- return {score:Math.round(total*(1-penalty)*100), parts, commute:cm, metro:mt,
-   tech:tp, budget:bf, pipe:pf, infraNow:nf, penalty:penalty,
-   dropped:W_PERSONAL.filter(r=>vals[r[0]]===null||vals[r[0]]===undefined),
-   weights:parts.reduce((o,p)=>{o[p.k]=p.weight;return o;},{})};
+ const f=factorValues(a,'live');
+ const w=weighFactors(W_PERSONAL,f.vals);
+ let total=0; w.parts.forEach(p=>total+=p.contrib);
+ const penalty=commutePenalty(f.cm?f.cm.mins:null);
+ return {score:Math.round(total*(1-penalty)*100), parts:w.parts, dropped:w.dropped,
+   mode:'live', commute:f.cm, metro:metroScore(a), tech:f.tp, budget:f.bf,
+   pipe:f.pf, infraNow:f.nf, penalty:penalty};
 }
 const PART_LABELS=[
  ['commute','Commute to your workplace'],['metro','Metro access'],
@@ -5173,8 +5419,10 @@ function dropNote(full){
   +'the standard weights.</p>';
 }
 function breakdownHTML(full,id){
+ const mode=full.mode||'live';
  const rows=full.parts.map(p=>
-  '<div class="bdrow"><span>'+esc(p.label)+'</span>'
+  '<div class="bdrow"><span>'+esc(p.label)+infoBtn(p.k,mode)
+  +(p.k==='liq'?'<span class="zonecav">zone level</span>':'')+'</span>'
   +'<span class="bdbar"><i style="width:'+Math.round(p.v*100)+'%"></i></span>'
   +'<span class="bdw">'+Math.round(p.weight*100)+'% weight</span>'
   +'<span class="bdc">'+Math.round(p.contrib*100)+'</span></div>').join('');
@@ -5185,8 +5433,12 @@ function breakdownHTML(full,id){
  return '<details class="bd"><summary>How this scored '+full.score+' for you</summary>'
   +'<div class="bdhead"><span>Component</span><span>Score</span><span>Your weight</span><span>Points</span></div>'
   +rows+pen+dropNote(full)
-  +'<p class="bdnote">Weights come from your answers. Change them in the tuned bar on Explore '
-  +'or with Change my answers.</p></details>';
+  +'<p class="bdnote">'+(mode==='invest'
+    ?'Weights are fixed for the investment score. '
+    :'Weights come from your answers. Change them in the tuned bar on Explore '
+     +'or with Change my answers. ')
+  +'<button class="ilink" data-sdoc="'+mode+'">How this score is put together \u203a</button>'
+  +'</p></details>';
 }
 
 /* ---- one line on why each one fits THIS person ---- */
@@ -5984,6 +6236,8 @@ document.getElementById('exportBtn').addEventListener('click',()=>{
 document.getElementById('printBtn').addEventListener('click',()=>window.print());
 
 async function boot(){
+ /* every data table is initialised by now, so the market tables can score */
+ renderMarketTables();
  const connected=await initSupabase();
  await loadIntake();
  if(connected){
