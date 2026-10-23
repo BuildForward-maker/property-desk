@@ -267,6 +267,9 @@ details.bd[open] summary:before{transform:rotate(90deg)}
 .wcmp span{display:block;font-size:12px;color:var(--graphite)}
 .wcmp b{display:block;font-family:var(--serif);font-size:26px;color:var(--ink);
   font-weight:400;line-height:1.1}
+.edtag{display:inline-block;font-size:10px;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--ochre);border:1px solid var(--ochre);border-radius:2px;padding:0 5px;
+  margin-left:6px;white-space:nowrap}
 .basisrow{border:1px solid var(--rule);background:var(--raised);padding:11px 13px;
   margin-top:14px;display:flex;flex-wrap:wrap;gap:4px 16px;align-items:baseline}
 .basisrow .bv{font-family:var(--serif);font-size:21px;line-height:1}
@@ -2310,18 +2313,24 @@ const FACTOR_DOC={
    +'that weight there instead.',
   level:'area'},
  infra:{
-  what:'What already serves this area today, rather than what is promised. '
-   +'Every operational metro line with a station in reach counts, and a line '
-   +'whose station is closer counts for more.',
+  what:'Transport that already runs here, rather than transport that is '
+   +'promised. Every operational metro line with a station in reach counts, '
+   +'and a line whose station is closer counts for more, so an area on two '
+   +'lines beats one on a single line at the same distance.',
   from:'The operational metro graph — 82 stations from OpenStreetMap, matched '
    +'to the Purple, Green and Yellow lines — plus any committed project whose '
-   +'opening date has already passed. <strong>It does not include hospitals, '
-   +'schools, roads, water or power: this tool holds no data on any of those.</strong> '
-   +'Read it as "transport running today" and nothing wider.',
-  why:'Higher for a resident (16%) than an investor (11%), because the resident '
+   +'opening date has already passed.'
+   +'<br><br><strong>What it does not cover.</strong> It is metro only. '
+   +'<strong>Buses are not in it at all</strong>, and buses are how most of '
+   +'Bengaluru actually moves — this tool models metro and car and nothing '
+   +'else. It holds no data on road quality, hospitals, schools, water or '
+   +'power either. This was two factors until recently, metro access and a '
+   +'broader infrastructure score, which was one thing counted twice under two '
+   +'names; they are merged into this single transport factor.',
+  why:'18% for a resident against 11% for an investor, because the resident '
    +'uses it from the day they move in. It exists in both scores on purpose: '
    +'without it, "what is coming" could only ever reward places that lack '
-   +'infrastructure, and a well-served area scored zero for needing nothing.',
+   +'transport, and a well-served area scored zero for needing nothing.',
   level:'area'},
  budget:{
   what:'Whether a typical 1,000 sqft flat here lands inside the ceiling you '
@@ -2338,10 +2347,19 @@ const FACTOR_DOC={
   from:'<strong>This one is a judgement, not a measurement.</strong> It is a '
    +'hand-written ranking of Bengaluru localities kept in this tool. It is not '
    +'built from flooding records, water supply, tree cover or air quality — '
-   +'none of that data is held here. Treat it as one person’s read and check '
-   +'the specific street yourself.',
-  why:'Twice the weight for a resident (12%) as an investor (6%), but it matters '
-   +'to both: an area that floods rents badly and sells worse.',
+   +'none of that data is held here.'
+   +'<br><br><strong>And it is thin.</strong> It recognises 41 of the 86 '
+   +'researched areas. The other 45 all take the same default value, so for '
+   +'more than half the city this factor says nothing and cannot tell two '
+   +'areas apart. Treat it as one person’s read and check the specific '
+   +'street yourself.',
+  why:'4% on both scores, down from 12% and 6%. A factor flat across half the '
+   +'city is noise with a weight attached, and the honest answer was to shrink '
+   +'it and say why, rather than dress it in a proxy that looked computable: '
+   +'the obvious candidates were our own research coverage and distance to the '
+   +'CBD, which would have double-counted commute. The 8% went to the other '
+   +'factors in proportion. If flooding and air-quality data ever arrive this '
+   +'should grow again — an area that floods rents badly and sells worse.',
   level:'area'},
  pipe:{
   what:'Infrastructure that is committed but not yet running, scored by how '
@@ -2460,6 +2478,7 @@ function openScoreDoc(mode){
   '<tr><td><button class="ilink" data-fdoc="'+k+'" data-fmode="'+mode+'">'
    +esc(FACTOR_LABEL[k])+'</button>'
    +(FACTOR_DOC[k]&&FACTOR_DOC[k].level==='zone'?'<span class="zonecav">zone level</span>':'')
+   +factorTag(k)
    +'</td><td class="num">'+Math.round(tbl[k]*100)+'%</td>'
    +'<td style="font-size:12.5px;color:var(--graphite)">'+esc(FACTOR_DOC[k]?FACTOR_DOC[k].what.split('.')[0]+'.':'')+'</td></tr>').join('');
  openSlide(esc(d.t),'How this score is put together',
@@ -2481,6 +2500,10 @@ document.addEventListener('click',e=>{
  const g=e.target.closest&&e.target.closest('[data-sdoc]');
  if(g){e.preventDefault();e.stopPropagation();openScoreDoc(g.dataset.sdoc);}
 });
+/* A factor whose evidence is thinner than its name says carries the admission
+   next to it, not only inside the panel nobody opens. */
+const FACTOR_TAG={live:'editorial, thin coverage'};
+const factorTag=k=>FACTOR_TAG[k]?'<span class="edtag">'+esc(FACTOR_TAG[k])+'</span>':'';
 const infoBtn=(k,mode)=>'<button class="helpq" data-fdoc="'+k+'" data-fmode="'+mode
  +'" aria-label="About '+esc(FACTOR_LABEL[k]||k)+'">i</button>';
 const scoreInfoBtn=m=>'<button class="helpq" data-sdoc="'+m
@@ -2492,7 +2515,7 @@ function investHTML(a){
  const rows=f.parts.map(p=>{
   const zone=p.prec.indexOf('ZONE')===0;
   return '<tr><td>'+esc(p.label)+infoBtn(p.k,'invest')
-   +(zone?'<span class="zonecav">zone level</span>':'')+'</td>'
+   +(zone?'<span class="zonecav">zone level</span>':'')+factorTag(p.k)+'</td>'
    +'<td class="num">'+Math.round(p.weight*100)+'%</td>'
    +'<td class="num">'+p.v10.toFixed(1)+'/10</td>'
    +'<td style="color:var(--graphite);font-size:12.5px">'+esc(p.note)+'</td></tr>';
@@ -3201,13 +3224,20 @@ function sweetScore(a){
  So there is one registry and two weight tables. The investor has no "commute
  to your workplace" — they do not live there — and tech park access carries
  that weight instead, because it is the proxy for whoever will rent or buy. */
-const W_PERSONAL={commute:.24, infra:.16, budget:.14, live:.12,
-                  pipe:.11, tech:.08, growth:.08, liq:.04, rent:.03};
-const W_INVEST  ={growth:.20, rent:.18, pipe:.15, tech:.13,
-                  infra:.11, liq:.09, sweet:.08, live:.06};
+/* Liveability carries 4%, not 12%. It is a hand-written table matching 41 of
+   86 areas, so 45 of them hold the same value and it cannot separate half the
+   city. A factor that flat is noise with a weight attached; it keeps a small
+   weight because it is still a real read where it does match, and it is
+   labelled editorial wherever it appears. The 8% was redistributed in
+   proportion, then rounded by largest remainder so the published table sums
+   to exactly 100 and a buyer can add it up. */
+const W_PERSONAL={commute:.26, infra:.18, budget:.15, pipe:.12,
+                  tech:.09, growth:.09, liq:.04, live:.04, rent:.03};
+const W_INVEST  ={growth:.21, rent:.19, pipe:.15, tech:.13,
+                  infra:.11, liq:.09, sweet:.08, live:.04};
 const FACTOR_LABEL={
  commute:'Commute to your workplace',
- infra:  'Infrastructure running today',
+ infra:  'Transport running today',
  budget: 'Budget fit and value',
  live:   'Liveability',
  pipe:   'What is coming here',
@@ -3430,8 +3460,16 @@ function investSpread(){
  const v=AREAS.map(investScore);
  const strong=v.filter(x=>x>=80).length, steady=v.filter(x=>x>=60&&x<80).length;
  const watch=v.length-strong-steady;
- return watch+' of the '+v.length+' researched areas score watch this half, '+steady
-  +' steady and '+strong+' strong. That spread is the market rather than the scale — '
+ const top=Math.max.apply(null,v);
+ return (strong
+   ? watch+' of the '+v.length+' researched areas score watch this half, '+steady
+     +' steady and '+strong+' strong.'
+   /* nothing reaching the top band is itself the finding, and has to be said
+      rather than left as a zero in a tally */
+   : '<strong>No researched area reaches strong this half.</strong> The best is '
+     +top+', and '+watch+' of the '+v.length+' score watch. Read the order as '
+     +'least-bad rather than good.')
+  +' That spread is the market rather than the scale — '
   +'Bengaluru now takes '+KFCITY.y2026.qts+' quarters to clear its unsold stock, against '
   +KFCITY.y2024.qts+' two years ago.';
 }
@@ -5422,7 +5460,7 @@ function breakdownHTML(full,id){
  const mode=full.mode||'live';
  const rows=full.parts.map(p=>
   '<div class="bdrow"><span>'+esc(p.label)+infoBtn(p.k,mode)
-  +(p.k==='liq'?'<span class="zonecav">zone level</span>':'')+'</span>'
+  +(p.k==='liq'?'<span class="zonecav">zone level</span>':'')+factorTag(p.k)+'</span>'
   +'<span class="bdbar"><i style="width:'+Math.round(p.v*100)+'%"></i></span>'
   +'<span class="bdw">'+Math.round(p.weight*100)+'% weight</span>'
   +'<span class="bdc">'+Math.round(p.contrib*100)+'</span></div>').join('');

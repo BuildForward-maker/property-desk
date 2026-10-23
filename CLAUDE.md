@@ -140,7 +140,10 @@ dependency to `index.html`.
 Two arrays hold the domain data. Keep their shapes consistent when editing.
 
 **One factor set, two weightings.** `W_PERSONAL` and `W_INVEST` draw on the
-same registry and differ only in how heavily each factor counts. A factor
+same registry and differ only in how heavily each factor counts. Both tables
+are integers summing to exactly 100, so a buyer can add them up: where a
+weight changes, redistribute in proportion and round by largest remainder
+rather than leaving a table that displays as 99. A factor
 present in one score and missing from the other is the bug that produced the
 pipeline asymmetry, so do not reintroduce one without a reason that survives
 the question "does the other buyer really not care about this?".
@@ -309,14 +312,38 @@ scoring quietly inherited the assertion. **Nothing in this list exists in this
 repo.** If a factor description, a weight table or a commit message implies any
 of it, that text is wrong and should be corrected rather than the data assumed.
 
-Two factors currently carry weight on thinner evidence than their names
-suggest, and their `FACTOR_DOC` entries say so in the UI:
+### The two highest-leverage acquisitions
+
+Everything in the table below would help. These two would change answers, and
+should be got first.
+
+**1. Flooding history by locality.** The largest uninsured downside in this
+city, and the one that is invisible in price until the day it happens. It is
+also the clearest real difference between two areas our data currently calls
+equivalent: Mahadevapura sits in the Bellandur–Varthur catchment and
+Indiranagar does not, and nothing we hold registers that. Of everything
+missing, this is the single input most likely to flip a recommendation rather
+than nudge a score.
+
+**2. Bus route density and frequency.** This tool models metro and car and
+nothing else, and buses are how most of Bengaluru actually moves. That gap
+silently penalises every area that is well served by bus and has no station,
+and it is most of the city — `infra` recognises one operational line for 42
+areas, two for 17, and none at all for 27.
+
+### Everything else
+
+Two factors carry weight on thinner evidence than their names suggest, and
+their `FACTOR_DOC` entries say so in the UI, with a visible **editorial, thin
+coverage** tag on `live` wherever it appears:
 
 - **`live` (liveability)** is a hand-written regex table, `LOCQ`. It matches
   41 of 86 areas; the other 45 take the default and are therefore identical to
-  each other. It is editorial judgement, not measurement.
-- **`infra` (current infrastructure)** covers operational metro only. It is
-  close to a restatement of metro distance under a broader name.
+  each other. It is editorial judgement, not measurement, and carries 4% on
+  both scores for that reason.
+- **`infra` (transport running today)** covers operational metro only. It was
+  two factors, metro access and a broader infrastructure score, which was one
+  thing counted twice under two names; they are merged.
 
 What would make them real, none of which we hold:
 
