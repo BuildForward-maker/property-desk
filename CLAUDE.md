@@ -518,12 +518,13 @@ positioned divs — **no chart library, and nothing drawn that the data cannot
 support**. Where a figure would have to be guessed, there is an empty state
 saying so instead.
 
-- `locAnalytics(name)` — the full read, reached from "See the full read" on
-  the summary panel. Every factor carries the **actual value** under its bar,
-  not only a 0–10 number, because "8.1/10" tells a buyer nothing on its own.
-  The three-year column chart draws **only** where `kfSeries` exists: 17 of 86,
-  and the other 69 get an empty state. Never fall back to portal data there —
-  a chart implies a measured series.
+- The detail panel's **Score** and **Prices** tabs. Every factor carries the
+  **actual value** under its bar, not only a 0–10 number, because "8.1/10"
+  tells a buyer nothing on its own. The three-year column chart draws **only**
+  where `kfSeries` exists: 17 of 86, and the other 69 get an empty state. Never
+  fall back to portal data there — a chart implies a measured series.
+  `locAnalytics(name)` survives as `showArea(name,'score')` for the call sites
+  that want the breakdown directly.
 - `renderTerminal()` — a fourth Explore mode, desktop only. Its filters live in
   `TERMF` and touch no global state, so nothing in Explore or Listings moves
   when they change. On a phone it says it is built for a wide screen rather
@@ -565,7 +566,10 @@ so a weight change cannot leave stale copy behind.
 Five sections in `SECTIONS`, wired by `data-sec` on `.sb-item` to `<section
 class="sec" id="sec-<name>">`:
 
-**Home · Explore · Market · Listings · Shortlist**
+**Home · Explore · Market · Listings · Your activity**
+
+The fifth section is still `shortlist` in every id, hash and `SUB` key — only
+its label changed. Do not rename the key; persistence and deep links ride on it.
 
 `goSection()` is the single entry point. It sets `SEC`, toggles the `.sec`
 containers, calls `paintPanels()`, then calls that section's renderer. Add a
@@ -603,6 +607,35 @@ Anything that changes `MSUB` must call `paintPanels()` as well as
 `renderMarket()`. `renderMarket()` only fills `#marketPane`; it does not touch
 the static panels beside it.
 
+### Nothing is persistent except the nav
+
+There is no masthead. A bar carrying the local-mode status, "Change my answers",
+Settings and five counts used to sit above every section, which cost about a
+third of a screen on all sixteen of them. Its pieces live where each one is
+about:
+
+- the profile and its Edit link — Home, as one pill
+- the five counts and the progress bar — Your activity
+- sharing status — the foot of Home, plus a green dot in the Home heading
+  when a workspace is live. Amber and red stay at the foot, where the text
+  that explains them is.
+- Settings — the nav, Your activity, and the command palette
+
+Resist putting anything back up there. If something seems to need to be on
+every screen, it probably belongs on Home.
+
+### Home answers "what next", not "what exists"
+
+Six parts, in order: the profile pill, one gradient hero, four counter tiles,
+your three areas, what moved, the sharing foot. `nextAction()` picks the hero
+from state and returns `{state, line, cta, go}` — four states, and each one
+names an action rather than describing the situation:
+
+    empty      nothing tracked          → Explore
+    tracked    tracked, none visited    → the route plan
+    visited    visited, none shortlisted→ Your activity
+    short      something shortlisted    → that property, with checks outstanding
+
 ### Where things live
 
 Explore is the three modes and nothing else. It is not a page to scroll.
@@ -616,6 +649,49 @@ Two screens showing the same 86 rows is the failure mode this structure exists
 to prevent. Before adding a list or a chart, check whether Market > Compare or
 Explore > Position already carries it.
 
+## The detail panel
+
+An area, a project and a locality all open in the same shell: a head that does
+not scroll, a strip of five tabs, a scrolling middle, and an action bar pinned
+to the bottom. Only `.so-body` scrolls — the head, the strip and `.so-actions`
+sit outside it in the flex column, which is what keeps them put.
+
+**Overview · Score · Prices · Coming · Risk**, always those five and always in
+that order, so the shape is learned once.
+
+`openPanel({kind, key, name, meta, tabs, actions, wire, wireActions, hash, tab})`
+is the only way in. `tabs` is an object of five keys; a value may be an HTML
+string or a function taking the body element, which is how the project's Prices
+tab borrows the three calculator panels. A missing key renders an empty state
+rather than a blank tab. `setPanelTab()` hands the calculators back before it
+wipes the body — they are borrowed DOM, not copies.
+
+Three builders fill it: `areaPanelTabs`, `socPanelTabs`, `locPanelTabs`.
+
+- **Overview** — what the thing is. Three tiles, the commute block, and one
+  dark "the one thing" card holding a single derived sentence (`oneThing`,
+  `socOneThing`), picked in priority order: flood, then froth, then pipeline,
+  then rent-against-price, then stage.
+- **Score** — the factor bars with their real values. This is what the old
+  "full read" panel was; `locAnalytics(name)` is now just `showArea(name,'score')`.
+- **Prices** — the basis, the Knight Frank series or its empty state, and the
+  comparison against the city median.
+- **Coming** — the pipeline, and nothing else anywhere.
+- **Risk** — flood, the address checklist, and zone supply and liquidity.
+
+**Nothing may appear in two tabs.** This is the rule the panel exists to
+enforce, and it has already caught three breaches: `commuteHTML` printed the
+whole pipeline list inside Overview (it takes a `noPipe` flag now, and Coming
+owns it), the asking-above-deeds gap was stated three times on one panel, and
+`showArea` and `locAnalytics` were two panels restating each other.
+
+Deep links carry the tab: `#/area/Hebbal/prices`, `#/soc/<id>/risk`,
+`#/loc/<name>/overview`. `readHash` reads a third segment and `setPanelTab`
+writes it.
+
+A tap on a card opens **Overview**. `data-openanl` used to go to the full read;
+it goes to the panel now, and a reader starts at the beginning.
+
 ## Screen length
 
 No section should need more than about two screens of scroll at 375×812.
@@ -623,9 +699,24 @@ Measure it; do not estimate. Where a screen runs long, the cause is almost
 always a second copy of something rather than genuinely dense content — find
 the duplicate rather than shrinking type.
 
+A detail-panel tab has its own budget: **about 1.2 screens**, measured as
+`#soBody.scrollHeight / 812`. Over that and something belongs in another tab or
+behind a fold.
+
 Known and accepted exceptions: **Explore > Your 5** (five cards are ~1.9
-screens on their own), **Listings** (the full directory of 106), and the
-long-form **guide articles**. These are lists and reading, not dashboards.
+screens on their own), **Listings** (the full directory of 106), the long-form
+**guide articles**, and **Home** at ~1.55 (the six parts above are its floor).
+A calculator opened from a project's Prices tab is its own screen and is far
+over — which is why none of the three opens until it is asked for.
+
+### Folding is the tool of last resort, and only for method
+
+Where a panel runs long the first question is what is duplicated. Only once
+that is answered does anything fold, and then only method and checklists, never
+a finding: the peak-time estimate note, the basis explanation, the five flood
+checks, the footer disclaimer. Each `<details class="foldnote">` keeps the load-
+bearing words on the summary line — "Peak times are modelled, not measured" is
+the warning, so it stays visible and the arithmetic folds.
 
 Fixed chrome is charged to every screen, so it is worth guarding: the masthead
 plus the folded footer is about 230px at 375. The footer disclaimer is folded
@@ -661,7 +752,11 @@ Confirm all of the following before reporting the work done:
    its stated fallback rather than breaking.
 2. The browser console is clean — no errors.
 3. Every section still renders when opened — all five, both of Explore's other
-   modes, all three Market sub-tabs, and every guide article.
+   modes, all three Market sub-tabs, and every guide article. All five panel
+   tabs on an area, on a project and on a locality, reached by clicking, with
+   the head and the action bar staying put while the middle scrolls.
 4. Local mode still works with no `#cfg` in the URL.
-5. No section has grown past about two screens at 375×812, bar the three
-   accepted exceptions above.
+5. No section has grown past about two screens at 375×812, and no panel tab
+   past about 1.2, bar the accepted exceptions above.
+6. All four of Home's hero states, by creating each state rather than by
+   reading `nextAction()`.

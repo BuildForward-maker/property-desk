@@ -74,8 +74,6 @@ small{font-size:12.5px;color:var(--muted);line-height:1.5}
    that on a 2560px monitor the listings table was still squeezed into ~950px
    and clipped on the right. Reading width is capped per-section instead. */
 .shell{max-width:none;margin:0;padding:0}
-header.masthead{padding:30px 0 18px;border-bottom:1.5px solid var(--ink)}
-.masthead .kicker{font-size:13px;color:var(--muted);margin-bottom:10px}
 .progress{margin-top:24px}
 /* ---- heat map ---- */
 .lens{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:18px 0}
@@ -416,6 +414,57 @@ details.bd[open] summary:before{transform:rotate(90deg)}
 .guidegrid>*,.grid2>*,.grid3>*,.grid4>*{overflow-wrap:anywhere}
 /* ---- home: three blocks, one dominant ---- */
 .homewrap{max-width:74ch;padding-top:6px}
+/* ---- Home: a profile line, one hero, four counters, two lists ---- */
+.hprofile{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hprofile .pp{display:inline-flex;align-items:center;gap:8px;background:var(--tile);
+  border:1px solid var(--line);border-radius:var(--r-chip);padding:7px 14px;
+  font-size:12.5px;color:var(--ink)}
+.hprofile .pp i{font-style:normal;color:var(--muted)}
+.hprofile .ilink{font-size:12.5px}
+.hlive{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--primary);
+  margin-left:9px;vertical-align:middle}
+.hhero{background:var(--grad-primary);color:#fff;border-radius:var(--r-card);
+  padding:18px 18px 16px;box-shadow:var(--shadow-primary)}
+.hhero .hl{font-family:var(--label);font-size:11px;font-weight:600;letter-spacing:.09em;
+  text-transform:uppercase;color:rgba(255,255,255,.72);margin:0 0 7px}
+.hhero p.hx{font-family:var(--font);font-size:clamp(20px,4.8vw,26px);line-height:1.22;
+  font-weight:500;margin:0 0 14px;color:#fff}
+.hhero p.hx em{font-style:normal;border-bottom:2px solid rgba(255,255,255,.55)}
+.hhero p.hx .big{font-size:1.2em}
+.hhero .act{background:#fff;color:var(--primary);border-color:#fff;font-weight:600}
+.hhero .act:hover{background:rgba(255,255,255,.9)}
+.htiles{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:12px}
+@media(max-width:460px){.htiles{grid-template-columns:repeat(2,1fr)}}
+.htiles button{appearance:none;font:inherit;cursor:pointer;text-align:left;
+  background:var(--tile);border:1px solid var(--line);border-radius:var(--r-tile);
+  padding:10px 11px 9px;min-height:var(--tap);display:block}
+.htiles button:hover{border-color:var(--primary)}
+.htiles b{font-family:var(--font);font-size:21px;font-weight:600;display:block;line-height:1.1}
+.htiles span{font-size:11px;color:var(--muted);display:block;margin-top:3px}
+.hrows{margin-top:8px}
+.hrow{display:flex;align-items:center;gap:11px;width:100%;appearance:none;font:inherit;
+  cursor:pointer;text-align:left;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r-tile);padding:9px 12px;margin-top:7px;min-height:var(--tap)}
+.hrow:hover{border-color:var(--primary)}
+.hrow .hn{flex:1;min-width:0}
+.hrow .hn b{display:block;font-size:14px;font-weight:600}
+.hrow .hn span{display:block;font-size:11.5px;color:var(--muted);margin-top:2px}
+.hrow .hd{font-family:var(--label);font-size:12px;font-weight:600;white-space:nowrap}
+.hrow .hd.up{color:var(--primary)}
+.hrow .hd.dn{color:var(--risk-fg)}
+.hsec{margin-top:20px}
+.hsec>h2{font-family:var(--label);font-size:11px;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);margin:0 0 4px}
+.hsec>p.hs{font-size:12.5px;color:var(--muted);margin:0}
+.fcheckfold{margin-top:12px}
+.cavfold{margin-top:10px}
+.basisrow .bh>summary{font-size:12.5px;color:var(--ink);font-weight:600}
+.basisrow .bh p{margin:8px 0 0}
+.cavfold .cav{margin-top:8px}
+.hfold{margin-top:22px}
+.hfold .hfind{font-size:13px;line-height:1.55;margin:10px 0 0}
+.hshare{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:34px;
+  padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
 .hblock{padding:0 0 34px}
 .hblock+.hblock{border-top:1px solid var(--line);padding-top:28px}
 .hlabel{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
@@ -514,6 +563,7 @@ details.bd[open] summary:before{transform:rotate(90deg)}
 .pseg.on{background:var(--primary)}
 .pstats{display:flex;flex-wrap:wrap;gap:20px;font-size:13px;color:var(--muted);align-items:center}
 .pstats b{color:var(--ink)}
+.pacts{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px}
 nav.rail{position:sticky;top:0;z-index:40;background:var(--bg);border-bottom:1px solid var(--line);
 display:flex;gap:2px;overflow-x:auto;margin-top:22px}
 nav.rail button{appearance:none;background:none;border:0;border-bottom:2.5px solid transparent;font:inherit;
@@ -781,6 +831,34 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 }
 .so-body{overflow-y:auto;padding:18px 20px 40px;flex:1}
 .so-body .block:first-child{margin-top:0}
+/* ---- the detail panel's tab strip. Between the fixed head and the scrolling
+   body, so it stays put while the middle moves. ---- */
+.so-strip{display:flex;gap:6px;overflow-x:auto;padding:10px 20px 11px;flex:0 0 auto;
+  border-bottom:1px solid var(--line);background:var(--card);
+  scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.so-strip::-webkit-scrollbar{display:none}
+.so-strip[hidden]{display:none}
+.so-strip button{appearance:none;font:inherit;font-family:var(--label);font-size:12px;
+  font-weight:600;letter-spacing:.03em;cursor:pointer;white-space:nowrap;
+  border:1px solid var(--line);background:var(--tile);color:var(--muted);
+  border-radius:var(--r-chip);padding:0 15px;min-height:var(--tap);flex:0 0 auto}
+.so-strip button:hover{border-color:var(--primary);color:var(--ink)}
+.so-strip button[aria-selected="true"]{background:var(--grad-primary);border-color:transparent;
+  color:#fff}
+.so-strip button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* the head carries the verdict, so it is legible without scrolling */
+.so-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:7px;
+  font-size:12px;color:var(--muted)}
+.so-meta .sb{flex:0 0 auto}
+.sospecs{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:12px;font-size:12.5px}
+.sospecs span{display:inline-flex;flex-direction:column;gap:1px}
+.sospecs i{font-style:normal;font-family:var(--label);font-size:10px;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.so-one{background:var(--ink);color:var(--bg);border-radius:var(--r-card);
+  padding:16px 17px;margin-top:14px}
+.so-one .hl{font-family:var(--label);font-size:10.5px;font-weight:600;letter-spacing:.09em;
+  text-transform:uppercase;color:rgba(255,255,255,.62);margin:0 0 6px}
+.so-one p{margin:0;font-size:14px;line-height:1.5;color:#fff}
 .so-tabs{display:flex;gap:2px;background:var(--line);margin:0 0 16px;flex-wrap:wrap}
 .so-tabs button{appearance:none;font:inherit;font-size:12.5px;border:0;background:var(--tile);
   padding:7px 12px;cursor:pointer;color:var(--muted);flex:1}
@@ -970,7 +1048,7 @@ td,th{border-color:var(--line)}
 .scorestack .sline>span{font-size:12px;color:var(--muted);line-height:1.3;display:flex;
   flex-direction:column}
 .scorestack .sline b{font-size:13px;color:var(--ink);font-weight:700}
-.tile3{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;
+.tile3{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:10px;
   margin-top:14px}
 .bdhead2{display:grid;grid-template-columns:minmax(0,1fr) 88px 42px;gap:10px;
   font-family:var(--label);font-size:10.5px;font-weight:600;letter-spacing:.05em;
@@ -1007,8 +1085,6 @@ td,th{border-color:var(--line)}
 .tuned .act{flex:0 0 auto}
 .tuned .segbar,.tuned .toggle{flex:0 0 auto}
 
-/* ---- masthead: quiet, on the ground, above the white header block ---- */
-header.masthead{padding:14px 0 10px;border-bottom:0}
 .connbar{font-size:12.5px;color:var(--muted);margin-top:0;gap:10px}
 .connbar .act.ghost{min-height:38px;padding:7px 12px;font-size:12.5px}
 .progress{margin-top:12px}
@@ -1538,7 +1614,7 @@ body{background:var(--grad-bg);background-attachment:fixed}
   <button class="sb-item" data-sec="explore"  aria-current="false"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7"/><path d="m12.8 7.2-1.6 4-4 1.6 1.6-4z"/></svg></span></span>Explore</button>
   <button class="sb-item" data-sec="market" aria-current="false"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14.6 7.6 10l3 3 5.4-6"/><path d="M12.6 7h3.4v3.4"/></svg></span></span>Market</button>
 <button class="sb-item" data-sec="listings" aria-current="false"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3.6" width="14" height="12.8" rx="1.6"/><path d="M3 8h14M7.6 8v8.4"/></svg></span></span>Listings</button>
-  <button class="sb-item" data-sec="shortlist" aria-current="false"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m10 3.4 2.1 4.3 4.7.7-3.4 3.3.8 4.7-4.2-2.2-4.2 2.2.8-4.7L3.2 8.4l4.7-.7z"/></svg></span></span>Shortlist<span class="sb-count" id="sbCount" hidden>0</span></button>
+  <button class="sb-item" data-sec="shortlist" aria-current="false"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m10 3.4 2.1 4.3 4.7.7-3.4 3.3.8 4.7-4.2-2.2-4.2 2.2.8-4.7L3.2 8.4l4.7-.7z"/></svg></span></span>Your activity<span class="sb-count" id="sbCount" hidden>0</span></button>
     <div class="sb-spacer"></div>
   <div class="sb-kbd"><kbd>⌘K</kbd> search anything</div>
   <div class="sb-foot">
@@ -1546,28 +1622,18 @@ body{background:var(--grad-bg);background-attachment:fixed}
   </div>
 </aside>
 <main class="main">
-<header class="masthead">
-
-
-  <div class="connbar">
-    <span id="connState"><span class="dot"></span>Checking…</span>
-    <span id="connWho"></span>
-    <button class="act ghost small" id="reIntake">Change my answers</button>
-    <button class="act ghost small" id="goSetup">Settings</button>
-  </div>
-
-  <div class="progress">
-    <div class="pbar" id="pbar"></div>
-    <div class="pstats" id="pstats"></div>
-  </div>
-</header>
-
 <section class="sec on" id="sec-home">
   <div class="sechead">
-    <h1 id="homeGreeting">Your search</h1>
-    <p id="homeSub">Where you are, and what your answers mean.</p>
+    <div class="hprofile" id="hProfile"></div>
+    <h1 id="homeGreeting">Your search<span class="hlive" id="hLive" hidden></span></h1>
+    <p id="homeSub" hidden></p>
   </div>
   <div class="homewrap" id="homeBlocks"></div>
+  <div class="hshare">
+    <span id="connState"><span class="dot"></span>Checking…</span>
+    <span id="connWho"></span>
+    <button class="ilink" id="goSetup">Share this</button>
+  </div>
 </section>
 
 <section class="sec" id="sec-explore">
@@ -1613,8 +1679,16 @@ body{background:var(--grad-bg);background-attachment:fixed}
 
 <section class="sec" id="sec-shortlist">
   <div class="sechead">
-    <h1>Shortlist</h1>
+    <h1>Your activity</h1>
     <p>Everything you tracked, with somewhere to write what you actually thought.</p>
+    <div class="progress">
+      <div class="pbar" id="pbar"></div>
+      <div class="pstats" id="pstats"></div>
+      <div class="pacts">
+        <button class="ilink" id="slIntake">Change my answers</button>
+        <button class="ilink" id="slSetup">Settings and sharing</button>
+      </div>
+    </div>
     <div class="segmented" role="group" aria-label="Shortlist view">
       <button data-sub="board" aria-pressed="true">Board</button>
       <button data-sub="compare" aria-pressed="false">Compare</button>
@@ -2691,11 +2765,12 @@ alter publication supabase_realtime add table desk_prefs;</pre>
   <div class="sheet-grip" aria-hidden="true"></div>
   <div class="so-head">
     <div style="flex:1;min-width:0">
-      <h2 id="soTitle">\u2014</h2>
+      <h2 id="soTitle">—</h2>
       <div class="sub" id="soSub"></div>
     </div>
     <button class="pclose" id="soClose" aria-label="Close panel" title="Close">✕</button>
   </div>
+  <nav class="so-strip" id="soTabs" role="tablist" aria-label="Panel sections" hidden></nav>
   <div class="so-body" id="soBody"></div>
   <div class="so-actions" id="soActions"></div>
 </aside>
@@ -3396,26 +3471,7 @@ function floodCheckHTML(s){
         :'This is the reading for the micro-market'+(af.pocket?' ('+esc(af.pocket)+')':'')
          +'. <strong>This specific project has not been checked.</strong>')
       +'</p>'+floodSrc+'</div>':'');
- return flag
-  +'<div class="block"><h2 style="font-size:15px">Check this specific flat</h2>'
-  +'<p style="font-size:13px;color:var(--muted);margin:8px 0 0">Flood risk is decided '
-  +'on the street, not the postcode. Nothing here can tell you about one building — '
-  +'we hold no elevation, no drain positions and no lake-bed boundaries, so the tool '
-  +'will not pretend to score it. These five checks will.</p>'
-  +'<ol class="fcheck">'
-  +'<li>Pull BBMP’s vulnerable storm water drain list for this ward and confirm the '
-  +'building is <strong>not within 200 m</strong> of one of the '+FLOOD.city.severe
-  +' severely vulnerable drains. There are '+FLOOD.city.drains+' vulnerable drains citywide.</li>'
-  +'<li>Ask the seller or the RWA directly whether the basement or ground floor flooded '
-  +'in <strong>2022, 2024 or May 2026</strong>. Those were the three events — name them, '
-  +'rather than asking whether it floods.</li>'
-  +'<li>Visit during or just after heavy rain if the timing allows. One visit tells you '
-  +'more than any list.</li>'
-  +'<li>Check the plot is not on a former lake bed or inside a <strong>rajakaluve '
-  +'buffer</strong>. The BBMP ward office can confirm.</li>'
-  +'<li>Ground floor and basement parking carry the risk. Upper floors flood far less '
-  +'but still lose access and power.</li>'
-  +'</ol></div>';
+ return flag+floodChecklistHTML();
 }
 
 /* ========== the info system ==========
@@ -4147,7 +4203,7 @@ function wireTerminal(){
   else TERMSORT={k:k,dir:k==='n'||k==='z'?1:-1};
   renderTerminal();}));
  host.querySelectorAll('[data-openanl]').forEach(b=>b.addEventListener('click',()=>
-  locAnalytics(b.dataset.openanl)));
+  showArea(b.dataset.openanl)));
 }
 
 /* ---- Explore: Your 5 ----
@@ -4212,7 +4268,7 @@ function renderYourFive(){
   +'<button type="button" class="widercard" data-gomarket="1">'
   +'<b>Looking wider?</b><span>See what is moving across Bengaluru</span></button>';
  host.querySelectorAll('[data-openanl]').forEach(b=>
-  b.addEventListener('click',()=>locAnalytics(b.dataset.openanl)));
+  b.addEventListener('click',()=>showArea(b.dataset.openanl)));
  host.querySelectorAll('[data-gomarket]').forEach(b=>
   b.addEventListener('click',()=>goSection('market')));
  const w=document.getElementById('fiveWhy');
@@ -4272,7 +4328,7 @@ function renderPosition(){
   +Math.round(xMax).toLocaleString('en-IN')+'</span></div></div>'
   +srcFooter('Knight Frank H1 2026 where tracked, portal-derived elsewhere','');
  host.querySelectorAll('[data-openanl]').forEach(b=>
-  b.addEventListener('click',()=>locAnalytics(b.dataset.openanl)));
+  b.addEventListener('click',()=>showArea(b.dataset.openanl)));
 }
 
 /* ---- Explore: Discover | Momentum | Search ----
@@ -4403,7 +4459,7 @@ function renderMarket(){
  host.innerHTML = MSUB==='coming'? marketComing()
    : MSUB==='compare'? marketCompare() : marketMoving();
  host.querySelectorAll('[data-openanl]').forEach(b=>
-  b.addEventListener('click',()=>locAnalytics(b.dataset.openanl)));
+  b.addEventListener('click',()=>showArea(b.dataset.openanl)));
  host.querySelectorAll('[data-msubgo]').forEach(b=>
   b.addEventListener('click',()=>{setMarketSub(b.dataset.msubgo);writeHash();}));
  host.querySelectorAll('[data-moreside]').forEach(b=>b.addEventListener('click',()=>{
@@ -4411,7 +4467,7 @@ function renderMarket(){
   const el=document.getElementById(b.dataset.moreside==='rise'?'mRise':'mSlow');
   el.innerHTML=which.map(x=>moveRow(x,b.dataset.moreside==='rise'?'up':'dn')).join('');
   el.querySelectorAll('[data-openanl]').forEach(z=>
-   z.addEventListener('click',()=>locAnalytics(z.dataset.openanl)));
+   z.addEventListener('click',()=>showArea(z.dataset.openanl)));
   b.remove();}));
  if(MSUB==='compare')host.querySelectorAll('[data-ts]').forEach(b=>
   b.addEventListener('click',()=>{
@@ -4435,6 +4491,23 @@ function setMarketSub(m){
 }
 document.querySelectorAll('#sec-market .segmented button').forEach(b=>
  b.addEventListener('click',()=>{setMarketSub(b.dataset.msub);writeHash();}));
+
+/* The quick-search field in Explore's header had no handler at all, so typing
+   into it did nothing. It hands the query to the search mode, which owns the
+   locality lookup. */
+(function(){
+ const q=document.getElementById('exQuick'), go=document.getElementById('exQuickGo');
+ if(!q||!go)return;
+ const run=()=>{
+  const v=q.value.trim(); if(!v)return;
+  setExploreMode('search');
+  const target=document.getElementById('locSearch');
+  if(target){target.value=v; target.dispatchEvent(new Event('input',{bubbles:true}));
+   target.focus();}
+ };
+ go.addEventListener('click',run);
+ q.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();run();}});
+})();
 
 /* ---- Shortlist: Costs ----
  Not a second calculator. The per-property one is prefilled and lives in each
@@ -4512,86 +4585,106 @@ function noteView(kind,id,name){
 function nextAction(){
  const ids=Object.keys(track);
  const st=id=>(track[id]||{}).status||'';
- const visited=ids.filter(i=>st(i)&&st(i)!=='');
+ const visited=ids.filter(i=>st(i));
  const shortlisted=ids.filter(i=>st(i)==='short');
  const unvisited=ids.filter(i=>!st(i));
- const checks=Object.keys(checks_||{}).length;
- if(!ids.length){
-  return {line:'Start with the six areas that fit your answers.',
-    cta:'Open Explore', go:()=>goSection('explore')};
- }
  if(shortlisted.length){
   /* the strongest shortlisted property, by this person's own weighting */
   const best=shortlisted.map(id=>({id,s:socById(id)})).filter(x=>x.s)
     .map(x=>({id:x.id,s:x.s,f:socFit(x.s)})).sort((a,b)=>b.f-a.f)[0];
-  const done=Object.keys(checks_).filter(k=>checks_[k]).length;
-  if(best)return {
-    line:'<em>'+esc(best.s.n)+'</em> is your strongest at <span class="big">'+best.f+'</span>. '
-      +done+' of 18 legal checks cleared.',
+  const left=DD.length-Object.keys(checks_).filter(k=>checks_[k]).length;
+  if(best)return {state:'short',
+    line:'<em>'+esc(best.s.n)+'</em> is your strongest at <span class="big">'+best.f+'</span>, with '
+      +'<span class="big">'+left+'</span> legal check'+(left===1?'':'s')+' outstanding.',
     cta:'Open '+best.s.n, go:()=>{goSection('listings');openProperty(best.id);}};
  }
- if(unvisited.length===0&&visited.length){
-  return {line:'You’ve seen <span class="big">'+visited.length+'</span>. None shortlisted yet.',
+ if(visited.length)
+  return {state:'visited',
+    line:'You\u2019ve seen <span class="big">'+visited.length+'</span>. None shortlisted yet.',
     cta:'Review what you saw', go:()=>goSection('shortlist','board')};
- }
- if(unvisited.length){
-  return {line:'<span class="big">'+unvisited.length+'</span> propert'
+ if(unvisited.length)
+  return {state:'tracked',
+    line:'<span class="big">'+unvisited.length+'</span> propert'
     +(unvisited.length===1?'y is':'ies are')+' waiting on a visit.',
     cta:'Plan the route', go:()=>goSection('shortlist','route')};
- }
- return {line:'Start with the six areas that fit your answers.',
+ return {state:'empty',
+   line:'Start with the five areas that fit your answers.',
    cta:'Open Explore', go:()=>goSection('explore')};
 }
 let checks_={};   /* alias kept in sync below, so nextAction never throws */
 
+/* ---- the profile, as one line rather than a bar on every screen ---- */
+function homeProfile(){
+ if(!personalised())
+  return '<span class="pp"><i>Not set up yet</i></span>'
+   +'<button class="ilink" data-hedit="0">Answer the questions \u203a</button>';
+ const bits=[];
+ bits.push(INTAKE.purpose==='invest'?'Invest':'Live in');
+ const bud=IQ_BUDGET.find(x=>x.k===INTAKE.budget);
+ if(bud)bits.push(bud.cap?cr(bud.cap):'no ceiling');
+ const hubs=selectedHubs();
+ if(hubs.length)bits.push(HUBLABEL[hubs[0]].replace(/ \/.*$/,''));
+ const tr=travelOpt(); if(tr)bits.push(tr.lab.toLowerCase());
+ return '<span class="pp">'+bits.map(esc).join(' <i>\u00b7</i> ')+'</span>'
+  +'<button class="ilink" data-hedit="0">Edit</button>';
+}
+
+/* ---- the hero: one sentence naming the next action, chosen by state ---- */
 function blockNext(){
  checks_=(typeof checks==='object'&&checks)||{};
  const a=nextAction();
- const ids=Object.keys(track), st=id=>(track[id]||{}).status||'';
- const prog=[['tracked',ids.length],
-   ['visited',ids.filter(i=>st(i)).length],
-   ['shortlisted',ids.filter(i=>st(i)==='short').length],
-   ['checks cleared',Object.keys(checks_).filter(k=>checks_[k]).length+'/18']];
- return '<div class="hblock"><p class="hlabel">Where you are</p>'
-  +'<p class="hnext">'+a.line+'</p>'
-  +'<button class="act" id="hNext">'+esc(a.cta)+'</button>'
-  +'<div class="hprog">'+prog.map(p=>'<div><b>'+p[1]+'</b>'+p[0]+'</div>').join('')+'</div>'
-  +'</div>';
+ return '<div class="hhero"><p class="hl">Next</p>'
+  +'<p class="hx">'+a.line+'</p>'
+  +'<button class="act" id="hNext">'+esc(a.cta)+'</button></div>';
 }
 
-/* ---- block 2: where you left off. Hidden entirely when there is nothing. ---- */
-function blockLastView(){
- if(!LASTVIEW||!LASTVIEW.name)return '';
- let x=null,kind=LASTVIEW.kind;
- if(kind==='area')x=AREAS.find(a=>a.n===LASTVIEW.name);
- else if(kind==='soc')x=socById(LASTVIEW.id);
- else if(kind==='loc')x=LOCALITIES.find(l=>l.n===LASTVIEW.name)||null;
- if(!x&&kind==='loc'){
-  /* the locality file may not be loaded yet; show what we stored */
-  return '<div class="hblock"><p class="hlabel">Where you left off</p>'
-   +'<div class="hcard"><h3>'+esc(LASTVIEW.name)+'</h3>'
-   +'<div class="sub">Wider-coverage locality</div>'
-   +'<button class="act small" id="hBack">Back to it</button></div></div>';
- }
- if(!x)return '';
- const isArea=kind==='area';
- const ask=isArea?x.ask:x.psf, reg=isArea?x.reg:0;
- const full=personalised()?(isArea?areaFitFull(x):socFitFull(x)):null;
- const cm=full&&full.commute;
- const nums=[];
- if(ask)nums.push('<div><b>₹'+ask.toLocaleString('en-IN')+'</b>asking /sqft</div>');
- nums.push('<div><b>'+(reg?'₹'+reg.toLocaleString('en-IN'):'—')+'</b>registered /sqft</div>');
- if(isArea)nums.push('<div><b>'+x.py+'%</b>price growth</div>');
- const cmline=cm
-  ? cm.mins+' min '+(cm.via==='metro'?'by metro':'by car')+' to '+HUBLABEL[cm.hub]
-    +(cm.fallback?' — no metro on that route':'')
-  : (personalised()?'No workplace set, so no commute to show.':'');
- return '<div class="hblock"><p class="hlabel">Where you left off</p>'
-  +'<div class="hcard"><h3>'+esc(x.n)+'</h3>'
-  +'<div class="sub">'+esc(isArea?(x.z+' Bengaluru · '+x.cor):(x.a||''))+'</div>'
-  +'<div class="nums">'+nums.join('')+'</div>'
-  +(cmline?'<p class="cm">'+esc(cmline)+'</p>':'')
-  +'<button class="act small" id="hBack">Back to it</button></div></div>';
+/* ---- four counters, each a way in to what it counts ---- */
+function blockCounts(){
+ const ids=Object.keys(track), st=id=>(track[id]||{}).status||'';
+ const done=Object.keys(checks_).filter(k=>checks_[k]).length;
+ const tiles=[
+  [ids.length,'tracked','board'],
+  [ids.filter(i=>st(i)).length,'visited','board'],
+  [ids.filter(i=>st(i)==='short').length,'shortlisted','compare'],
+  [done+'/18','checks cleared','legal']];
+ return '<div class="htiles">'+tiles.map(t=>
+  '<button type="button" data-hgo="'+t[2]+'"><b>'+t[0]+'</b><span>'+t[1]+'</span></button>')
+  .join('')+'</div>';
+}
+
+/* ---- the three areas the answers point at, with what the money buys ---- */
+function blockAreas(){
+ const top=topAreas(3); if(!top.length)return '';
+ const cap=budCap(), hubs=selectedHubs();
+ const rows=top.map(a=>{
+  const sq=sqftFor(a,cap);
+  const cm=hubs.length?commuteScore(a,hubs):null;
+  const bits=[];
+  bits.push(sq?sq.toLocaleString('en-IN')+' sqft on your budget':'\u20b9'+Math.round(basisVal(a)).toLocaleString('en-IN')+'/sqft');
+  if(cm)bits.push(cm.mins+' min '+(cm.via==='metro'?'by metro':'by car')+' to '+HUBLABEL[cm.hub].replace(/ \/.*$/,''));
+  return '<button type="button" class="hrow" data-harea="'+esc(a.n)+'">'
+   +scoreBadge(personalised()?areaFit(a):investScore(a),'sm')
+   +'<span class="hn"><b>'+esc(a.n)+'</b><span>'+esc(bits.join(' \u00b7 '))+'</span></span></button>';
+ }).join('');
+ return '<div class="hsec"><h2>Your three areas</h2>'
+  +(personalised()?'':'<p class="hs">Ranked overall until you answer the questions.</p>')
+  +'<div class="hrows">'+rows+'</div></div>';
+}
+
+/* ---- two rows only: the fastest riser and the fastest faller ---- */
+function blockMoved(){
+ const m=marketMoves();
+ const pick=[];
+ if(m.rising.length)pick.push([m.rising[0],'up']);
+ if(m.slowing.length)pick.push([m.slowing[0],'dn']);
+ if(!pick.length)return '';
+ const rows=pick.map(([x,dir])=>
+  '<button type="button" class="hrow" data-harea="'+esc(x.a.n)+'">'
+  +'<span class="hn"><b>'+esc(x.a.n)+'</b><span>'+x.a.growth25+'% \u2192 '+x.a.growth26+'% a year</span></span>'
+  +'<span class="hd '+dir+'">'+(x.d>0?'+':'')+x.d+' pts</span></button>').join('');
+ return '<div class="hsec"><h2>What moved</h2>'
+  +'<p class="hs">Biggest change against last year.</p>'
+  +'<div class="hrows">'+rows+'</div></div>';
 }
 
 /* ---- block 3: what the answers mean, derived not canned ---- */
@@ -4634,31 +4727,33 @@ function findings(){
  return out.slice(0,3);
 }
 function blockFindings(){
- if(!personalised()){
-  return '<div class="hblock"><p class="hlabel">What your answers mean</p>'
-   +'<p class="hfind">A few questions — budget, timing, where you work and how you travel — '
-   +'and this becomes about your search rather than the market in general.</p>'
-   +'<button class="act" id="hIntake">Answer the questions</button></div>';
- }
- const f=findings();
- if(!f.length)return '';
- return '<div class="hblock"><p class="hlabel">What your answers mean</p>'
-  +f.map(t=>'<p class="hfind">'+t+'</p>').join('')+'</div>';
+ if(!personalised())return '';
+ const f=findings(); if(!f.length)return '';
+ return '<details class="foldnote hfold"><summary>What your answers rule in and out</summary>'
+  +f.map(t=>'<p class="hfind">'+t+'</p>').join('')+'</details>';
 }
 
 function renderHome(){
  const host=document.getElementById('homeBlocks'); if(!host)return;
+ checks_=(typeof checks==='object'&&checks)||{};
+ const prof=document.getElementById('hProfile');
+ if(prof)prof.innerHTML=homeProfile();
+ /* live sharing reads as a green dot up here; amber and red stay at the foot,
+    where the detail that explains them is */
+ const live=document.getElementById('hLive');
+ if(live)live.hidden=(MODE!=='shared');
+ const sub=document.getElementById('homeSub');
+ if(sub){sub.hidden=personalised();
+  if(!personalised())sub.textContent='Answer seven questions and this becomes your search.';}
  const a=nextAction();
- host.innerHTML=blockNext()+blockLastView()+blockFindings();
+ host.innerHTML=blockNext()+blockCounts()+blockAreas()+blockMoved()+blockFindings();
  const n=document.getElementById('hNext'); if(n)n.addEventListener('click',a.go);
- const b=document.getElementById('hBack');
- if(b)b.addEventListener('click',()=>{
-  if(LASTVIEW.kind==='soc'){goSection('listings');openProperty(LASTVIEW.id);}
-  else if(LASTVIEW.kind==='loc'){goSection('explore');setExploreMode('search');showLocality(LASTVIEW.name);}
-  else {goSection('explore');showArea(LASTVIEW.name);}
- });
- const i=document.getElementById('hIntake');
- if(i)i.addEventListener('click',()=>openIntake(0));
+ document.querySelectorAll('#sec-home [data-hedit]').forEach(x=>
+  x.addEventListener('click',()=>openIntake(+x.dataset.hedit||0)));
+ host.querySelectorAll('[data-hgo]').forEach(x=>
+  x.addEventListener('click',()=>goSection('shortlist',x.dataset.hgo)));
+ host.querySelectorAll('[data-harea]').forEach(x=>
+  x.addEventListener('click',()=>{goSection('explore');showArea(x.dataset.harea);}));
 }
 
 /* ---- shortlist count ---- */
@@ -4686,12 +4781,14 @@ function writeHash(){
  HASHLOCK=false;
 }
 function readHash(){
- const m=(location.hash||'').match(/#\/([a-z]+)(?:\/([A-Za-z0-9 _\-%.']+))?/);
+ const m=(location.hash||'').match(/#\/([a-z]+)(?:\/([A-Za-z0-9 _\-%.']+))?(?:\/([a-z]+))?/);
  if(!m)return false;
  const a=m[1], b=m[2]?decodeURIComponent(m[2]):'';
- if(a==='area'){goSection('explore',null,{silent:true}); showArea(b); return true;}
- if(a==='loc'){goSection('explore',null,{silent:true}); setExploreMode('search'); showLocality(b); return true;}
- if(a==='soc'){goSection('listings',null,{silent:true}); openProperty(b); return true;}
+ /* a third segment on a thing is which of its five tabs to open */
+ const t=m[3]&&PTABS.some(x=>x[0]===m[3])?m[3]:null;
+ if(a==='area'){goSection('explore',null,{silent:true}); showArea(b,t); return true;}
+ if(a==='loc'){goSection('explore',null,{silent:true}); setExploreMode('search'); showLocality(b,t); return true;}
+ if(a==='soc'){goSection('listings',null,{silent:true}); openProperty(b,t); return true;}
  if(SECTIONS.indexOf(a)>=0){
   if(a==='explore'&&['search','momentum','terminal','five','position','discover'].indexOf(b)>=0){
    goSection('explore',null,{silent:true});setExploreMode(b);}
@@ -5728,7 +5825,7 @@ function pipeHTML(x){
   +'<div class="plrow">'+rows+'</div></div>';
 }
 
-function commuteHTML(x){
+function commuteHTML(x,noPipe){
  if(!x||(!x.dt&&!x.mx))return '';
  let out='<div class="commute"><h5>Getting to work, and to the metro</h5>';
  if(x.dt){
@@ -5745,11 +5842,14 @@ function commuteHTML(x){
    +(typeof x.mkm==='number'?' \u00b7 '+x.mkm.toFixed(1)+' km in a straight line':'')
    +(x.geoPrecision==='area'?'<span class="approx">approx, area level</span>':'')+'</div>';
  }
- out+=pipeHTML(x);
- if(x.dt) out+='<p class="cav">Free-flow driving times from OSRM. The peak figures are '
-  +'<strong>modelled estimates</strong>, not measured traffic: free-flow time multiplied by a factor '
-  +'banded on road distance \u2014 \u00d72.6 under 5&nbsp;km, \u00d72.2 to 15&nbsp;km, \u00d71.8 to 30&nbsp;km, '
-  +'\u00d71.5 beyond. No traffic data was used.</p>';
+ if(!noPipe)out+=pipeHTML(x);
+ /* the method note rides on every area panel, so it folds; the words that
+    matter \u2014 that the peak figure is modelled \u2014 stay on the summary line */
+ if(x.dt) out+='<details class="foldnote cavfold"><summary>Peak times are modelled, '
+  +'not measured</summary><p class="cav">Free-flow driving times from OSRM. The peak figures '
+  +'are free-flow time multiplied by a factor banded on road distance \u2014 \u00d72.6 under '
+  +'5&nbsp;km, \u00d72.2 to 15&nbsp;km, \u00d71.8 to 30&nbsp;km, \u00d71.5 beyond. '
+  +'No traffic data was used.</p></details>';
  return out+'</div>';
 }
 /* ========== slide-over ==========
@@ -5771,6 +5871,9 @@ function openSlide(title,sub,html){
  returnCalcs();
  body.innerHTML=''; 
  if(typeof html==='string')body.innerHTML=html; else if(html)body.appendChild(html);
+ const strip=document.getElementById('soTabs');
+ if(strip){strip.hidden=true;strip.innerHTML='';}
+ PANELNOW=null;
  document.getElementById('slideover').classList.add('on');
  document.getElementById('scrim').classList.add('on');
  body.scrollTop=0;
@@ -5778,10 +5881,137 @@ function openSlide(title,sub,html){
 }
 function closeSlide(){
  returnCalcs();
+ PANELNOW=null;
+ const strip=document.getElementById('soTabs');
+ if(strip){strip.hidden=true;strip.innerHTML='';}
  document.getElementById('slideover').classList.remove('on');
  document.getElementById('scrim').classList.remove('on');
  document.getElementById('soBody').innerHTML='';
 }
+/* ========== the detail panel: one shell, five tabs ==========
+ Every area, project and locality opened as one long scroll, which is the thing
+ that read as a web page rather than software. The head and the action bar sit
+ outside .so-body so neither scrolls; only the middle moves.
+
+ Nothing may appear in two tabs. Where a fact could sit in more than one, it
+ goes where somebody would look for it first, and the other tab does without. */
+const PTABS=[['overview','Overview'],['score','Score'],['prices','Prices'],
+             ['coming','Coming'],['risk','Risk']];
+let PANELNOW=null;
+
+function panelEmpty(title,body){
+ return '<div class="emptystate"><b>'+title+'</b><p>'+body+'</p></div>';
+}
+/* name, zone, score, rank and band, in the head, so the verdict never scrolls
+   away from the evidence */
+function panelHead(bits){
+ return '<div class="so-meta">'+bits.filter(Boolean).join('<span>·</span>')+'</div>';
+}
+function openPanel(o){
+ /* o = {kind, key, name, meta, tabs, actions, wire, wireActions, hash, tab} */
+ openSlide(esc(o.name),'','');
+ PANELNOW=o;
+ const sub=document.getElementById('soSub');
+ if(sub)sub.innerHTML=o.meta||'';
+ const strip=document.getElementById('soTabs');
+ strip.hidden=false;
+ strip.innerHTML=PTABS.map(t=>'<button type="button" role="tab" data-ptab="'+t[0]+'"'
+   +' aria-selected="false">'+t[1]+'</button>').join('');
+ strip.querySelectorAll('[data-ptab]').forEach(b=>
+  b.addEventListener('click',()=>setPanelTab(b.dataset.ptab)));
+ const bar=document.getElementById('soActions');
+ bar.innerHTML=o.actions||'';
+ if(o.wireActions)o.wireActions(bar);
+ setPanelTab(o.tab||'overview');
+}
+function setPanelTab(k){
+ const o=PANELNOW; if(!o)return;
+ if(!PTABS.some(t=>t[0]===k))k='overview';
+ o.tab=k;
+ document.querySelectorAll('#soTabs [data-ptab]').forEach(b=>
+  b.setAttribute('aria-selected',String(b.dataset.ptab===k)));
+ const body=document.getElementById('soBody');
+ /* the three calculators are borrowed DOM, so hand them back before the wipe */
+ returnCalcs();
+ body.innerHTML='';
+ const h=o.tabs[k];
+ if(typeof h==='function')h(body);
+ else body.innerHTML=h||panelEmpty('Nothing to show here',
+   'This section holds no data for '+esc(o.name)+'.');
+ body.scrollTop=0;
+ wireSlideLinks();
+ body.querySelectorAll('[data-openanl]').forEach(x=>
+  x.addEventListener('click',()=>showArea(x.dataset.openanl)));
+ if(o.wire)o.wire(body,k);
+ if(o.hash){HASHLOCK=true;
+  try{history.replaceState(null,'',o.hash+'/'+k);}catch(e){}
+  HASHLOCK=false;}
+}
+
+/* ---- the single most important fact, in priority order. One sentence. ---- */
+function oneThing(a){
+ const f=floodOf(a), gap=frothPct(a);
+ if(f.tier==='high')
+  return 'Named repeatedly on BBMP’s flood-vulnerability lists'
+   +(f.pocket?', around '+esc(f.pocket):'')+'. Check the street before anything else here.';
+ if(gap!==null&&gap>=55)
+  return 'Sellers advertise <strong>'+gap+'% above</strong> what the sub-registrar recorded '
+   +'— among the widest gaps in the city. The asking rate is an opening position, not a value.';
+ if(a.pipeScore>=7&&a.pipeTop)
+  return '<strong>'+esc(a.pipeTop.l.replace(/^the /,''))+'</strong> is '+esc(a.pipeTop.says)
+   +' and is the reason this area moves. Most of what else is said about it follows from that.';
+ if(a.ry>a.py)
+  return 'Rent is rising faster than price here — <strong>'+a.ry+'%</strong> against '
+   +a.py+'%. That is demand arriving before the price has caught up, which is the one '
+   +'pattern worth buying into.';
+ if(stageOf(a)[0]==='Prime / boomed')
+  return 'This market has already run. Buying now is paying for somebody else’s gain '
+   +'rather than catching the next one.';
+ return esc((a.drv||'').split('. ')[0])+'.';
+}
+/* ---- zone supply and liquidity, for the Risk tab ---- */
+function zoneSupplyHTML(a){
+ if(typeof a.qts!=='number')return '';
+ const dir=typeof a.qtsPrev==='number'?(a.qts-a.qtsPrev):null;
+ return '<div class="block"><h2 style="font-size:15px">Supply and liquidity'
+  +infoDot('qts')+'</h2>'
+  +'<p class="anlsub">Zone level, for Knight Frank’s '+esc(a.kfZone||a.z)
+  +' zone — not for '+esc(a.n)+' itself.</p>'
+  +'<div class="tile3">'
+  +metricTile('Quarters to sell',a.qts.toFixed(1),
+     dir===null?'current stock':(dir>0?'slower than '+a.qtsPrev.toFixed(1)+' a year ago'
+      :dir<0?'faster than '+a.qtsPrev.toFixed(1)+' a year ago':'unchanged on a year ago'))
+  +metricTile('Unsold stock',(a.zoneUnsold||0).toLocaleString('en-IN'),'units in the zone')
+  +'</div>'
+  +(a.qtsThin?calloutCard('warn','Too small a sample to read',
+     'This zone’s transaction sample is too small for the quarters-to-sell figure to '
+     +'carry signal. It is shown so it is not missing, not so it can be acted on.'):'')
+  +srcFooter('Knight Frank Research, zone level','H1 2026')+'</div>';
+}
+/* ---- ADDRESS level: a checklist, never a number. Shared by both panels. ---- */
+function floodChecklistHTML(){
+ return '<div class="block"><h2 style="font-size:15px">Check this specific address</h2>'
+  +'<p style="font-size:13px;color:var(--muted);margin:8px 0 0">Flood risk is decided '
+  +'on the street, not the postcode. Nothing here can tell you about one building — '
+  +'we hold no elevation, no drain positions and no lake-bed boundaries, so the tool '
+  +'will not pretend to score it. These five checks will.</p>'
+  +'<details class="foldnote fcheckfold"><summary>The five checks</summary>'
+  +'<ol class="fcheck">'
+  +'<li>Pull BBMP’s vulnerable storm water drain list for this ward and confirm the '
+  +'building is <strong>not within 200 m</strong> of one of the '+FLOOD.city.severe
+  +' severely vulnerable drains. There are '+FLOOD.city.drains+' vulnerable drains citywide.</li>'
+  +'<li>Ask the seller or the RWA directly whether the basement or ground floor flooded '
+  +'in <strong>2022, 2024 or May 2026</strong>. Those were the three events — name them, '
+  +'rather than asking whether it floods.</li>'
+  +'<li>Visit during or just after heavy rain if the timing allows. One visit tells you '
+  +'more than any list.</li>'
+  +'<li>Check the plot is not on a former lake bed or inside a <strong>rajakaluve '
+  +'buffer</strong>. The BBMP ward office can confirm.</li>'
+  +'<li>Ground floor and basement parking carry the risk. Upper floors flood far less '
+  +'but still lose access and power.</li>'
+  +'</ol></details></div>';
+}
+
 /* ========== dismissal, in one place ==========
  Every overlay registers here and gets the same four ways out: the X, Escape,
  a click on the backdrop, and a downward swipe on touch. Wiring them per-panel
@@ -5878,74 +6108,153 @@ function haversineKm(a,b,c,d){
  return 2*R*Math.asin(Math.sqrt(h));
 }
 function wireSlideLinks(){
+ document.querySelectorAll('#soActions [data-openarea]').forEach(b=>
+  b.addEventListener('click',()=>showArea(b.dataset.openarea)));
  document.querySelectorAll('#soBody [data-openprop]').forEach(b=>
   b.addEventListener('click',()=>openProperty(b.dataset.openprop)));
  document.querySelectorAll('#soBody [data-openarea]').forEach(b=>
   b.addEventListener('click',()=>showArea(b.dataset.openarea)));
  document.querySelectorAll('#soBody [data-help]').forEach(b=>
   b.addEventListener('click',()=>openHelp(b.dataset.help)));
- document.querySelectorAll('#soBody [data-fullread]').forEach(b=>
-  b.addEventListener('click',()=>locAnalytics(b.dataset.fullread)));
  wireFactorDocs();
 }
 
 /* ---- Tier 1: a researched area ---- */
-function showArea(name){
+/* ---- an area, as five tabs ----
+ This was two panels: a summary and a "full read" that restated most of it.
+ One panel now, and the full read is the Score tab. */
+function areaPanelTabs(a){
+ const iv=investFull(a), n=iv.score, bas=priceBasis(a), st=stageOf(a), y=yieldOf(a);
+ const gap=frothPct(a);
+ const mids={psf:cityMid(x=>basisVal(x)),rent:cityMid(x=>x.rent),yld:cityMid(x=>yieldOf(x))};
+ const rows=iv.parts.map(p=>{
+  const zone=p.prec&&p.prec.indexOf('ZONE')===0;
+  return '<div class="fbrow">'
+   +factorBar(esc(p.label)+infoDot(FACTORTERM[p.k]||'invest-score',p.label)
+     +(zone?badge('zone level','warn'):''), p.v10,10,p.v10.toFixed(1))
+   +'<p class="fbn">'+esc(factorActual(a,p.k))+'</p></div>';
+ }).join('');
+ const near=AREAS.filter(x=>x.n!==a.n)
+   .map(x=>({x,d:Math.abs(investScore(x)-n)})).sort((p,q)=>p.d-q.d).slice(0,3);
+ return {
+  overview:
+   '<div class="badgerow">'+badge('Researched','ok')
+    +(kfVerified(a)?badge('Knight Frank tracked','ok'):'')
+    +badge(st[0],st[0]==='Prime / boomed'?'warn':'neutral')
+    +badge(a.c===2?'well corroborated':a.c===1?'sources give a range':'thin data','neutral')
+   +'</div>'
+   +'<div class="tile3" style="margin-top:12px">'
+   +metricTile('Asking ₹/sqft','₹'+a.ask.toLocaleString('en-IN'),
+      'portal range ₹'+a.lo.toLocaleString('en-IN')+'–'+a.hi.toLocaleString('en-IN'))
+   +metricTile('Registered deeds'+infoDot('registered-deeds'),
+      a.reg?'₹'+a.reg.toLocaleString('en-IN'):'not published',
+      gap!==null?('asking is '+gap+'% above'):'none published here')
+   +metricTile('Price growth', growthOf(a)+'% a year',
+      kfVerified(a)?'Knight Frank H1 2026 · was '+a.growth25+'%':'portal-derived')
+   +'</div>'
+   +commuteHTML(a,true)
+   +'<div class="so-one"><p class="hl">The one thing</p><p>'+oneThing(a)+'</p></div>',
+
+  score:
+   bandMarker(n)
+   +'<p class="anlband"><strong>'+esc(scoreBand(n).lab)+' band.</strong> '
+    +rankLabel(a,investScore)+' on the investment score.'+infoDot('invest-score')+'</p>'
+   +(personalised()?'<p class="anlband" style="margin-top:6px">'
+      +scoreBadge(areaFit(a),'sm')+' <strong>Personal fit '+areaFit(a)+'.</strong> '
+      +rankLabel(a,areaFit)+' on your answers.'+infoDot('fit-score')+'</p>':'')
+   +'<div class="block"><h2 style="font-size:15px">The score, broken open'
+    +explainButton('invest','score','invest')+'</h2>'
+    +'<div class="bdhead2" style="margin-top:12px"><span>Factor</span><span>Score</span>'
+    +'<span>of 10</span></div>'+rows+'</div>'
+   +'<div class="block"><h2 style="font-size:15px">Similar locations</h2>'
+    +'<p class="anlsub">Nearest on investment score.</p>'
+    +'<div class="simrow">'+near.map(z=>
+      '<button type="button" class="simtile" data-openanl="'+esc(z.x.n)+'">'
+      +scoreBadge(investScore(z.x),'sm')+'<span><b>'+esc(z.x.n)+'</b>'
+      +esc(z.x.z)+' Bengaluru</span></button>').join('')+'</div></div>',
+
+  prices:
+   '<div class="basisrow">'
+   +'<div><div class="bl">Basis used on this panel</div>'
+    +'<div class="bv">₹'+Math.round(bas.v).toLocaleString('en-IN')
+    +'<span style="font-size:12px;font-weight:400">/sqft</span></div>'
+    +'<div style="margin-top:3px"><span class="srct '+(bas.tier===1?'kf':'dv')+'">'
+    +esc(bas.tierLab)+'</span>'+infoDot('basis-tier')+'</div></div>'
+   +'<details class="bh foldnote"><summary>'+esc(bas.lab)+'</summary><p>'+bas.how+'.'
+    +(bas.levelWhy?'<br><strong>Not used here:</strong> '+esc(bas.levelWhy)+'.':'')
+    +(bas.conflict?'<br><span style="color:'+(bas.conflict.good?'var(--primary)':'var(--risk-fg)')
+      +'">'+esc(bas.conflict.t)+'</span>':'')+'</p></details></div>'
+   +(a.kfSeries
+     ? '<div class="block"><h2 style="font-size:15px">Price history'
+       +explainButton('growth','invest','Price growth')+'</h2>'+kfColumns(a)
+       +srcFooter('Knight Frank Research, India Real Estate','H1 2026')+'</div>'
+     : '<div class="block"><h2 style="font-size:15px">Price history</h2>'
+       +panelEmpty('No verified price history for '+esc(a.n)+'.',
+         'Knight Frank publish a tracked series for 17 Bengaluru locations and this is not '
+         +'one of them. The growth figure is portal-derived: it describes a level, not a '
+         +'measured trend, and drawing it as a chart would imply a series that does not exist.')
+       +'</div>')
+   +'<div class="tile3" style="margin-top:12px">'
+   +(a.kfRange?metricTile('Transacted range','₹'+a.kfRange[0].toLocaleString('en-IN')
+      +'–'+a.kfRange[1].toLocaleString('en-IN'),'Knight Frank, H1 2026'):'')
+   +metricTile('2BHK rent · growth','₹'+a.rent.toLocaleString('en-IN'),a.ry+'% a year')
+   +metricTile('Yield on ~1,000 sqft',y.toFixed(1)+'%','on the basis above')
+   +'</div>'
+   +'<div class="block"><h2 style="font-size:15px">Against the city</h2>'
+    +'<p class="anlsub">The line marks the median across all '+AREAS.length+' researched areas.</p>'
+    +vsCity('Price per sqft',basisVal(a),mids.psf,v=>'₹'+Math.round(v).toLocaleString('en-IN'),true)
+    +vsCity('2BHK rent',a.rent,mids.rent,v=>'₹'+Math.round(v).toLocaleString('en-IN'),false)
+    +vsCity('Gross yield',yieldOf(a),mids.yld,v=>v.toFixed(1)+'%',false)
+    +'<p style="margin-top:14px;margin-bottom:0;font-size:13px;color:var(--muted)">'
+    +'A ~1,000 sqft 2BHK here would cost roughly '+cr(bas.v*1000)+' before stamp duty and '
+    +'costs, on the '+esc(bas.lab.toLowerCase())+' above.</p></div>',
+
+  coming:
+   (pipeHTML(a)||panelEmpty('Nothing committed here',
+     'No project on any published plan serves '+esc(a.n)+'. That is not the same as nothing '
+     +'being talked about — it means nothing has a funded status and a date.')),
+
+  risk:
+   floodRowHTML(a)
+   +(st[0]==='Prime / boomed'
+     ?calloutCard('warn','This market has already run',
+       'Prices here are at the top of the city’s range and growth has been paid for. '
+       +'The risk is buying somebody else’s gain.'):'')
+   +(a.c<2?calloutCard('warn',a.c===1?'Sources give a range':'Thin data',
+       a.c===1?'Published rates for '+esc(a.n)+' disagree enough that this panel shows a '
+        +'range rather than a number. Check Kaveri for the specific society.'
+       :'Very little corroborated data exists for '+esc(a.n)+'. Treat every figure here as '
+        +'a starting point for your own checking.'):'')
+   +zoneSupplyHTML(a)
+   +floodChecklistHTML()
+ };
+}
+function showArea(name,tab){
  const a=AREAS.find(x=>x.n===name); if(!a)return;
  setSheetArea(a);
- const st=stageOf(a), y=yieldOf(a), bas=priceBasis(a), iv=investFull(a);
- const html=`<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;align-items:flex-start">
-   <div style="min-width:0"><div style="font-size:12.5px;color:var(--muted)">${a.z} Bengaluru · ${esc(a.cor)}</div>
-    <div class="badgerow">${badge('Researched','ok')}${kfVerified(a)?badge('Knight Frank tracked','ok'):''}
-     ${badge(st[0],st[0]==='Prime / boomed'?'warn':'neutral')}
-     ${badge(a.c===2?'well corroborated':a.c===1?'sources give a range':'thin data','neutral')}</div></div>
-   <div class="scorestack">
-    <div class="sline">${scoreBadge(iv.score)}<span><b>Investment</b>${iv.band[0]} · ${rankLabel(a,investScore)}${infoDot('invest-score')}</span></div>
-    ${personalised()?`<div class="sline">${scoreBadge(areaFit(a))}<span><b>Personal fit</b>${scoreBand(areaFit(a)).lab} · ${rankLabel(a,areaFit)}${infoDot('fit-score')}</span></div>`:''}
-   </div></div>
-  <div class="basisrow">
-   <div><div class="bl">Basis used on this panel</div>
-    <div class="bv">₹${Math.round(bas.v).toLocaleString('en-IN')}<span style="font-size:12px;font-weight:400">/sqft</span></div>
-    <div style="margin-top:3px"><span class="srct ${bas.tier===1?'kf':'dv'}">${bas.tierLab}</span>${infoDot('basis-tier')}</div></div>
-   <div class="bh"><strong>${bas.lab}</strong> — ${bas.how}.
-    ${bas.levelWhy?'<br><strong>Not used here:</strong> '+esc(bas.levelWhy)+'.':''}
-    ${bas.conflict?'<br><span style="color:'+(bas.conflict.good?'var(--primary)':'var(--risk-fg)')+'">'+esc(bas.conflict.t)+'</span>':''}</div>
-  </div>
-  <div class="tile3">
-   ${metricTile('Asking ₹/sqft','₹'+a.ask.toLocaleString('en-IN'),
-     'portal range ₹'+a.lo.toLocaleString('en-IN')+'–'+a.hi.toLocaleString('en-IN'))}
-   ${metricTile('Registered deeds'+infoDot('registered-deeds'), a.reg?'₹'+a.reg.toLocaleString('en-IN'):'not published',
-     frothPct(a)!==null?('asking is '+frothPct(a)+'% above'):'none published here')}
-   ${metricTile('Price growth', growthOf(a)+'% a year',
-     kfVerified(a)?'Knight Frank H1 2026 · was '+a.growth25+'%':'portal-derived')}
-  </div>
-  ${frothPct(a)!==null&&frothPct(a)>=30?calloutCard('warn','Asking runs ahead of deeds',
-    'Sellers here advertise <strong>'+frothPct(a)+'% above</strong> what the sub-registrar actually '
-    +'recorded. Treat the asking rate as an opening position, not a value.'):''}
-  <div class="tile3" style="margin-top:10px">
-   ${a.kfRange?metricTile('Transacted range','₹'+a.kfRange[0].toLocaleString('en-IN')+'–'+a.kfRange[1].toLocaleString('en-IN'),'Knight Frank, H1 2026'):''}
-   ${metricTile('2BHK rent · growth','₹'+a.rent.toLocaleString('en-IN'),a.ry+'% a year')}
-   ${metricTile('Yield on ~1,000 sqft',y.toFixed(1)+'%','on the basis above')}
-  </div>
-  ${floodRowHTML(a)}
-  ${commuteHTML(a)}
-  <p style="margin-top:14px;margin-bottom:0;font-size:14px">${a.drv}</p>
-  <p style="margin-top:10px;margin-bottom:0;font-size:13px;color:var(--muted)">
-   A ~1,000 sqft 2BHK here would cost roughly ${cr(bas.v*1000)} before stamp duty and costs,
-   on the ${bas.lab.toLowerCase()} of ₹${Math.round(bas.v).toLocaleString('en-IN')}/sqft above.
-   ${a.ry>a.py?'<strong>Rent is rising faster than price here</strong> — the demand signal is real and the price has not caught up yet.'
-    :'Price is rising faster than rent, which compresses yields and usually means expectation is running ahead of demand.'}</p>
-  ${kfChartHTML(a)}
-  ${investHTML(a)}
-  <div class="block"><button class="act" data-fullread="${esc(a.n)}" style="width:100%">See the full read ›</button></div>
-  <div class="block"><h2 style="font-size:15px">Communities here</h2>${nearbySoc(a.lat,a.lng,a.n,8)}</div>`;
- openSlide(esc(a.n),'',html);
- wireSlideLinks();
+ const n=investScore(a), r=rankOf(a,investScore);
+ openPanel({
+  kind:'area', key:a.n, name:a.n, tab:tab||'overview',
+  meta:panelHead([esc(a.z)+' Bengaluru',scoreBadge(n,'sm'),
+    ORD(r.rank)+' of '+r.of, esc(scoreBand(n).lab)]),
+  tabs:areaPanelTabs(a),
+  actions:'<button class="act ghost small" data-cmp="'+esc(a.n)+'">Compare</button>'
+    +'<button class="act ghost small" data-nearsoc="'+esc(a.n)+'">See '
+    +nearbyCount(a)+' project'+(nearbyCount(a)===1?'':'s')+'</button>',
+  wireActions:bar=>{
+   bar.querySelectorAll('[data-cmp]').forEach(x=>
+    x.addEventListener('click',()=>{closeSlide(); goSection('shortlist','compare');}));
+   bar.querySelectorAll('[data-nearsoc]').forEach(x=>
+    x.addEventListener('click',()=>{closeSlide(); goSection('listings');
+     const q=document.getElementById('fSearch');
+     if(q){q.value=x.dataset.nearsoc; q.dispatchEvent(new Event('input'));}}));
+  },
+  hash:'#/area/'+encodeURIComponent(a.n)
+ });
  if(typeof HMAP!=='undefined'&&HMAP&&typeof a.lat==='number'){
   try{HMAP.setView([a.lat,a.lng],13,{animate:true});}catch(e){}
  }
  noteView('area',a.n,a.n);
- HASHLOCK=true;try{history.replaceState(null,'','#/area/'+encodeURIComponent(a.n));}catch(e){}HASHLOCK=false;
 }
 
 /* ========== location analytics ==========
@@ -6016,120 +6325,88 @@ function vsCity(label,val,median,fmt,invert){
   +(d===0?'at median':(Math.abs(d)+'% '+(d>0?'above':'below')))+'</span></div>';
 }
 /* ---- the deep screen ---- */
-function locAnalytics(name){
- const a=AREAS.find(x=>x.n===name); if(!a)return;
- setSheetArea(a);
- const iv=investFull(a), n=iv.score, b=scoreBand(n), r=rankOf(a,investScore);
- const mids={psf:cityMid(x=>basisVal(x)),rent:cityMid(x=>x.rent),yld:cityMid(x=>yieldOf(x))};
- const rows=iv.parts.map(p=>{
-  const zone=p.prec&&p.prec.indexOf('ZONE')===0;
-  return '<div class="fbrow">'
-   +factorBar(esc(p.label)+infoDot(FACTORTERM[p.k]||'invest-score',p.label)
-     +(zone?badge('zone level','warn'):''),
-     p.v10,10,p.v10.toFixed(1))
-   +'<p class="fbn">'+esc(factorActual(a,p.k))+'</p></div>';
- }).join('');
- const gap=frothPct(a);
- const hist=a.kfSeries
-  ? '<div class="block"><h2 style="font-size:15px">Price history'
-    +explainButton('growth','invest','Price growth')+'</h2>'
-    +kfColumns(a)
-    +'<div class="tile3" style="margin-top:12px">'
-    +metricTile('Asking now','₹'+a.ask.toLocaleString('en-IN'),'portal listings')
-    +metricTile('Deeds record', a.reg?'₹'+a.reg.toLocaleString('en-IN'):'not published',
-       a.reg?'sub-registrar':'none published here')
-    +'</div>'
-    +(gap!==null&&gap>=30?calloutCard('warn','Asking runs ahead of deeds',
-       'Sellers advertise <strong>'+gap+'% above</strong> what the sub-registrar recorded. '
-       +'Treat the asking rate as an opening position.'):'')
-    +srcFooter('Knight Frank Research, India Real Estate','H1 2026')+'</div>'
-  : '<div class="block"><h2 style="font-size:15px">Price history</h2>'
-    +'<div class="emptystate"><b>No verified price history for '+esc(a.n)+'.</b>'
-    +'<p>Knight Frank publish a tracked series for 17 Bengaluru locations and this is not '
-    +'one of them. The growth figure above is portal-derived: it describes a level, not a '
-    +'measured trend, and drawing it as a chart would imply a series that does not exist.</p>'
-    +'</div></div>';
- const near=AREAS.filter(x=>x.n!==a.n)
-   .map(x=>({x,d:Math.abs(investScore(x)-n)})).sort((p,q)=>p.d-q.d).slice(0,3);
- const html=
-  '<div class="anlhead">'
-  +'<div class="ah-l"><div class="ah-z">'+esc(a.z)+' Bengaluru · '+esc(a.cor)+'</div>'
-  +'<h2>'+esc(a.n)+'</h2></div>'+scoreBadge(n)+'</div>'
-  +bandMarker(n)
-  +'<p class="anlband"><strong>'+esc(b.lab)+' band.</strong> '+ORD(r.rank)+' of '+r.of+' locations.'
-  +infoDot('invest-score')+'</p>'
-  +'<div class="block"><h2 style="font-size:15px">The score, broken open'
-  +explainButton('invest','score','invest')+'</h2>'
-  +'<div class="bdhead2" style="margin-top:12px"><span>Factor</span><span>Score</span><span>of 10</span></div>'
-  +rows+'</div>'
-  +hist
-  +'<div class="block"><h2 style="font-size:15px">Against the city</h2>'
-  +'<p class="anlsub">The line marks the median across all '+AREAS.length+' researched areas.</p>'
-  +vsCity('Price per sqft',basisVal(a),mids.psf,v=>'₹'+Math.round(v).toLocaleString('en-IN'),true)
-  +vsCity('2BHK rent',a.rent,mids.rent,v=>'₹'+Math.round(v).toLocaleString('en-IN'),false)
-  +vsCity('Gross yield',yieldOf(a),mids.yld,v=>v.toFixed(1)+'%',false)
-  +'</div>'
-  +'<div class="block"><h2 style="font-size:15px">What is coming'
-  +explainButton('pipe','invest','What is coming here')+'</h2>'
-  +(pipeHTML(a)||'<p class="anlsub">Nothing committed here, on any published plan.</p>')
-  +floodRowHTML(a)+'</div>'
-  +'<div class="block"><h2 style="font-size:15px">Similar locations</h2>'
-  +'<p class="anlsub">Nearest on investment score.</p>'
-  +'<div class="simrow">'+near.map(z=>
-    '<button type="button" class="simtile" data-openanl="'+esc(z.x.n)+'">'
-    +scoreBadge(investScore(z.x),'sm')+'<span><b>'+esc(z.x.n)+'</b>'
-    +esc(z.x.z)+' Bengaluru</span></button>').join('')+'</div></div>'
-  +'<div class="pfoot"><button class="ilink" data-cmp="'+esc(a.n)+'">Compare</button>'
-  +'<button class="ilink" data-nearsoc="'+esc(a.n)+'">See '
-  +nearbyCount(a)+' projects</button></div>';
- openSlide(esc(a.n),'The full read',html);
- wireSlideLinks(); wireFactorDocs();
- document.querySelectorAll('#soBody [data-openanl]').forEach(x=>
-  x.addEventListener('click',()=>locAnalytics(x.dataset.openanl)));
- document.querySelectorAll('#soBody [data-nearsoc]').forEach(x=>
-  x.addEventListener('click',()=>showArea(x.dataset.nearsoc)));
- document.querySelectorAll('#soBody [data-cmp]').forEach(x=>
-  x.addEventListener('click',()=>{closeSlide(); goSection('shortlist','compare');}));
-}
+/* The "full read" was a second panel restating the summary. It is the Score
+   tab now; the name stays because a dozen call sites use it. */
+function locAnalytics(name){ showArea(name,'score'); }
 function nearbyCount(a){
  return SOC.filter(s=>{const ar=areaForSoc(s); return ar&&ar.n===a.n;}).length;
 }
 
 /* ---- Tier 2: wider coverage. Real geography, inherited pricing. ---- */
-function showLocality(name){
+function locPanelTabs(l,parent){
+ const inh=parent?{ask:parent.ask,reg:parent.reg,py:parent.py,rent:parent.rent,ry:parent.ry}:{};
+ return {
+  overview:
+   '<div class="badgerow"><span class="badge t2">Wider coverage</span>'
+   +'<button class="helpq" data-help="coverage" aria-label="About coverage tiers">?</button></div>'
+   +'<p class="anlsub">'+(l.pl?esc(l.pl)+' · ':'')+l.lat.toFixed(4)+', '+l.lng.toFixed(4)+'</p>'
+   +commuteHTML(l,true)
+   +'<div class="so-one"><p class="hl">The one thing</p><p>'
+   +(parent
+     ?'The geography here is real — position, commute and the nearest station are computed '
+      +'for this locality. <strong>The pricing is not.</strong> It is inherited from '
+      +esc(l.pa)+', '+l.pkm+' km away.'
+     :'No researched area sits close enough to estimate pricing from, so this locality has '
+      +'position and commute only.')
+   +'</p></div>',
+
+  score: panelEmpty('Localities are not scored',
+    'The investment and personal-fit scores need researched price, rent and growth figures '
+    +'for the place itself. '+esc(l.n)+' has none — its pricing is inherited from a '
+    +'neighbour, and scoring an inherited number would invent a result.'
+    +(parent?' Open '+esc(l.pa)+' for a scored micro-market.':'')),
+
+  prices: parent
+   ? '<div class="inherited"><div class="ih">Estimated, not researched</div>'
+     +'<div class="grid4">'
+     +'<div><small>Asking ₹/sqft '+srcTag('portal')+'</small><div class="iv" style="font-weight:600">~₹'+(inh.ask||0).toLocaleString('en-IN')+'</div></div>'
+     +'<div><small>Price growth '+srcTag(kfVerified(parent)?'kf':'portal')+'</small><div class="iv" style="font-weight:600">~'+inh.py+'% a year</div></div>'
+     +'<div><small>2BHK rent '+srcTag('portal')+'</small><div class="iv" style="font-weight:600">~₹'+(inh.rent||0).toLocaleString('en-IN')+'</div></div>'
+     +'<div><small>Registered deeds '+srcTag('registry')+'</small><div class="iv" style="font-weight:600">no data</div></div>'
+     +'</div>'
+     +'<p>Estimated from <strong>'+esc(l.pa)+'</strong>, '+l.pkm+' km away. No registered '
+     +'transaction data exists for '+esc(l.n)+' itself, and I have not researched it directly.</p>'
+     +'</div>'
+   : panelEmpty('No pricing to show',
+       'No researched area sits close enough to '+esc(l.n)+' to estimate from, and inventing '
+       +'a figure would be worse than leaving it blank.'),
+
+  coming: parent
+   ? '<p class="anlsub" style="margin-top:0">What is committed for <strong>'+esc(l.pa)
+     +'</strong>, the nearest researched micro-market. Nothing here was checked for '+esc(l.n)+'.</p>'
+     +(pipeHTML(parent)||panelEmpty('Nothing committed here',
+       'No project on any published plan serves '+esc(l.pa)+'.'))
+   : panelEmpty('No micro-market matched',
+       'Nothing researched sits close enough to '+esc(l.n)+' to borrow a pipeline from.'),
+
+  risk: (parent
+    ? floodRowHTML(parent)
+      +calloutCard('warn','This reading is '+esc(l.pa)+'’s, not '+esc(l.n)+'’s',
+        'Flood tiers are published at micro-market level and '+esc(l.n)+' is not one of the '
+        +'86 researched areas. This is the nearest reading, '+l.pkm+' km away.')
+    : panelEmpty('No flood reading','No researched area sits close enough to borrow one from.'))
+   +floodChecklistHTML()
+ };
+}
+/* ---- Tier 2: wider coverage. Real geography, inherited pricing. ---- */
+function showLocality(name,tab){
  if(!localitiesReady()){
-  loadLocalities().then(()=>{ if(localitiesReady())showLocality(name); });
+  loadLocalities().then(()=>{ if(localitiesReady())showLocality(name,tab); });
   if(LOCSTATE==='loading')return;
  }
  const l=LOCALITIES.find(x=>x.n.toLowerCase()===String(name).toLowerCase()); if(!l)return;
  const parent=l.pa?AREAS.find(a=>a.n===l.pa):null;
- /* Inherited pricing is read live from the parent area rather than stored on
-    every locality: one source of truth, and ~43KB smaller. */
- const inh=parent?{ask:parent.ask,reg:parent.reg,py:parent.py,rent:parent.rent,ry:parent.ry}:{};
- const pricing = parent ? `<div class="inherited">
-    <div class="ih">Estimated, not researched</div>
-    <div class="grid4">
-     <div><small>Asking ₹/sqft ${srcTag('portal')}</small><div class="iv" style="font-weight:600">~₹${(inh.ask||0).toLocaleString('en-IN')}</div></div>
-     <div><small>Price growth ${srcTag(parent&&kfVerified(parent)?'kf':'portal')}</small><div class="iv" style="font-weight:600">~${inh.py}% a year</div></div>
-     <div><small>2BHK rent ${srcTag('portal')}</small><div class="iv" style="font-weight:600">~₹${(inh.rent||0).toLocaleString('en-IN')}</div></div>
-     <div><small>Registered deeds ${srcTag('registry')}</small><div class="iv" style="font-weight:600">no data</div></div>
-    </div>
-    <p>Estimated from <strong>${esc(l.pa)}</strong>, ${l.pkm} km away. No registered transaction data exists for ${esc(l.n)} itself, and I have not researched it directly.</p>
-    <p><button class="act ghost tiny" data-openarea="${esc(l.pa)}">Open ${esc(l.pa)} for verified numbers ›</button></p>
-   </div>`
-  : '<p class="note warn" style="margin-top:14px">No researched area close enough to estimate pricing from.</p>';
- const html=`<div><span class="badge t2">Wider coverage</span>
-   <button class="helpq" data-help="coverage" aria-label="About coverage tiers">?</button>
-   <div style="margin-top:7px;font-size:12.5px;color:var(--muted)">${l.pl?esc(l.pl)+' · ':''}${l.lat.toFixed(4)}, ${l.lng.toFixed(4)}</div></div>
-  <p style="font-size:13.5px;margin:12px 0 0">Commute, metro and position below are real, computed for this locality. Pricing is inherited — shown quietly on purpose.</p>
-  ${commuteHTML(l)}
-  ${pricing}
-  <div class="block" style="margin-top:22px"><h2 style="font-size:15px">Communities near here</h2>${nearbySoc(l.lat,l.lng,null,8)}</div>`;
- openSlide(esc(l.n),'',html);
- wireSlideLinks();
+ openPanel({
+  kind:'loc', key:l.n, name:l.n, tab:tab||'overview',
+  meta:panelHead([l.pl?esc(l.pl):'Locality',
+    parent?'near '+esc(l.pa):'no researched neighbour','not scored']),
+  tabs:locPanelTabs(l,parent),
+  actions:parent?'<button class="act ghost small" data-openarea="'+esc(l.pa)+'">Open '
+    +esc(l.pa)+'</button>':'',
+  hash:'#/loc/'+encodeURIComponent(l.n)
+ });
  if(typeof HMAP!=='undefined'&&HMAP){try{HMAP.setView([l.lat,l.lng],14,{animate:true});}catch(e){}}
  noteView('loc',l.n,l.n);
- HASHLOCK=true;try{history.replaceState(null,'','#/loc/'+encodeURIComponent(l.n));}catch(e){}HASHLOCK=false;
 }
 function renderSupply(){
  document.querySelector('#supplyTable tbody').innerHTML=Object.entries(ZONEINFO).map(([z,i])=>
@@ -8257,108 +8534,192 @@ function socSqft(s){
  }
  return {v:1000,known:false,why:txt};
 }
-function openProperty(id){
+/* ---- the single most important fact about one project ---- */
+function socOneThing(s){
+ const f=floodOfSoc(s);
+ if(f)return esc(s.n)+' sits in the <strong>'+esc(f.pocket)+'</strong> pocket, which BBMP '
+   +'name on their flood-vulnerability list. That is the first thing to check on site.';
+ if(s.lowconf)return 'The whole entry is disputed — sources contradict each other on this '
+   +'project badly enough that nothing here should be used without your own checking.';
+ if(s.rera==='pending')return 'RERA registration is <strong>pending</strong>. Selling before '
+   +'registration is not permitted under the Act, so ask what is being sold and under what number.';
+ if(s.t===3)return 'A tier-3 promoter, so the RERA record, the entity name and the delivery '
+   +'history carry more weight here than the price does.';
+ if(s.st!=='Ready')return 'Not ready yet — '+esc(s.st.toLowerCase())+'. The registered '
+   +'possession date, not the marketed one, is the number that matters.';
+ if(s.age>=12)return 'A '+s.age+'-year-old building. The structural survey and the sinking '
+   +'fund are where the real negotiation is, not the per-square-foot rate.';
+ return esc((s.r||'').split('. ')[0])+'.';
+}
+/* ---- a project, as the same five tabs ---- */
+function socPanelTabs(s){
+ const mid=Math.round((s.lo+s.hi)/2);
+ const sq=socSqft(s), sqft=sq.v;
+ const y=(s.rent&&mid)?(s.rent*12)/mid*100:null;
+ const ar=areaForSoc(s);
+ const fit=personalised()?socFitFull(s):null;
+ const all=SOC.map(x=>personalised()?socFit(x):priScore(x,budWorking()));
+ const mine=personalised()?socFit(s):priScore(s,budWorking());
+ const rank=all.filter(x=>x>mine).length+1;
+ const rows=fit?fit.parts.map(p=>factorBar(esc(p.label),Math.round(p.v*10),10,
+    (p.v*10).toFixed(1))).join(''):'';
+ return {
+  overview:
+   '<div class="tile3">'
+   +metricTile('Indicative price'+srcTag(s.src==='rera'?'registry':'portal'),
+      cr(s.lo)+'–'+cr(s.hi), s.sz?esc(String(s.sz))+(sq.known?' sqft':''):'')
+   +metricTile('Rate', s.psf?'₹'+s.psf.toLocaleString('en-IN'):'not quoted','per sqft')
+   +metricTile('Rent · gross yield'+srcTag('derived'),
+      s.rent?'₹'+s.rent.toLocaleString('en-IN'):'not quoted',
+      y!==null?y.toFixed(1)+'% on the midpoint':'no rent quoted')
+   +'</div>'
+   +'<div class="sospecs">'
+   +[['Builder',esc(s.b)+' · tier '+s.t],['Vintage',s.age===0?'New build':s.age+' years'],
+     ['Status',esc(s.st)],['Segment',esc(SEGLAB(s.seg))]]
+     .map(r=>'<span><i>'+r[0]+'</i>'+r[1]+'</span>').join('')
+   +'</div>'
+   +(sq.known?'':'<p class="anlsub">No floor area was quoted for this project, so the '
+      +'calculators on Prices assume 1,000 sqft.</p>')
+   +provBadges(s)+possessionHTML(s)+conflictHTML(s)
+   +commuteHTML(s,true)
+   +'<p style="margin-top:14px;font-size:14px">'+s.r+'</p>'
+   +sourceFooter(s)
+   +'<div class="so-one"><p class="hl">The one thing</p><p>'+socOneThing(s)+'</p></div>',
+
+  score: fit
+   ? '<p class="anlband">'+scoreBadge(mine,'sm')+' <strong>Personal fit '+mine+'.</strong> '
+     +ORD(rank)+' of '+SOC.length+' projects on your answers.'+infoDot('fit-score')+'</p>'
+     +'<div class="block"><h2 style="font-size:15px">The score, broken open'
+     +explainButton('fit','score','fit')+'</h2>'+rows
+     +(fit.penalty?calloutCard('warn','A commute penalty applies',
+        'The commute from here is long enough that it is taken off the total rather than '
+        +'simply scoring low.'):'')+'</div>'
+     +(ar?'<div class="block"><h2 style="font-size:15px">Its micro-market</h2>'
+       +'<button type="button" class="simtile" data-openanl="'+esc(ar.n)+'">'
+       +scoreBadge(investScore(ar),'sm')+'<span><b>'+esc(ar.n)+'</b>'
+       +esc(ar.z)+' Bengaluru · '+ORD(rankOf(ar,investScore).rank)+' of '
+       +rankOf(ar,investScore).of+'</span></button></div>':'')
+   : panelEmpty('Not scored for you yet',
+       'A project is scored against your budget, your workplace and how you travel. '
+       +'Answer the seven questions and this tab fills in. Until then the listing rank '
+       +'is '+ORD(rank)+' of '+SOC.length+' on the desk default.'),
+
+  prices: body=>{
+   const cityPsf=cityMid(x=>basisVal(x));
+   const head=document.createElement('div');
+   head.innerHTML='<div class="tile3">'
+    +metricTile('This project',s.psf?'₹'+s.psf.toLocaleString('en-IN'):'not quoted','per sqft')
+    +(ar?metricTile(esc(ar.n),'₹'+Math.round(basisVal(ar)).toLocaleString('en-IN'),
+        'per sqft, '+esc(priceBasis(ar).lab.toLowerCase())):'')
+    +metricTile('City median','₹'+Math.round(cityPsf).toLocaleString('en-IN'),
+        'across all '+AREAS.length+' areas')
+    +'</div>'
+    +(s.psf?'<div class="block"><h2 style="font-size:15px">Against the city</h2>'
+      +vsCity('Price per sqft',s.psf,cityPsf,v=>'₹'+Math.round(v).toLocaleString('en-IN'),true)
+      +(s.rent?vsCity('2BHK rent',s.rent,cityMid(x=>x.rent),
+         v=>'₹'+Math.round(v).toLocaleString('en-IN'),false):'')
+      +(y!==null?vsCity('Gross yield',y,cityMid(x=>yieldOf(x)),v=>v.toFixed(1)+'%',false):'')
+      +'</div>':'')
+    +'<div class="block"><h2 style="font-size:15px">Work the numbers</h2>'
+    +'<p class="anlsub">Prefilled for this flat. Each one is a full screen, so they open '
+    +'when you ask for one.</p>'
+    +'<div class="so-tabs" id="propTabs">'
+    +'<button data-pt="money" aria-pressed="false">Costs</button>'
+    +'<button data-pt="yield" aria-pressed="false">Rent</button>'
+    +'<button data-pt="resale" aria-pressed="false">Resale</button></div></div>';
+   body.appendChild(head);
+   ['money','yield','resale'].forEach(k=>{
+    const pane=(CALCHOME&&CALCHOME.querySelector('#p-'+k))||document.getElementById('p-'+k);
+    if(pane){body.appendChild(pane); pane.style.display='none'; pane.classList.add('on');}
+   });
+   const set=(id,v)=>{const el=document.getElementById(id); if(el&&v!=null&&v!=='')el.value=v;};
+   set('mTicket',mid); set('mGuide',Math.round(mid*0.72));
+   set('mStatus',s.st==='Ready'?'ready':'uc');
+   set('mInterior',Math.round(sqft*1200));
+   set('yRent',s.rent); set('yCost',mid);
+   set('rPsf',s.psf); set('rArea',sqft); set('rAge',s.age);
+   set('uPrice',mid); set('uFlat',sqft);
+   try{calcCost();}catch(e){} try{calcYield();}catch(e){} try{calcResale();}catch(e){}
+   head.querySelectorAll('[data-pt]').forEach(b=>b.addEventListener('click',()=>{
+    const k=b.dataset.pt, open=b.getAttribute('aria-pressed')==='true';
+    ['money','yield','resale'].forEach(x=>{const q=document.getElementById('p-'+x);
+     if(q)q.style.display='none';});
+    head.querySelectorAll('[data-pt]').forEach(z=>z.setAttribute('aria-pressed','false'));
+    if(!open){const q=document.getElementById('p-'+k);
+     if(q)q.style.display=''; b.setAttribute('aria-pressed','true');
+     if(q)q.scrollIntoView({block:'start'});}
+   }));
+  },
+
+  coming: ar
+   ? '<p class="anlsub" style="margin-top:0">What is committed for <strong>'+esc(ar.n)
+     +'</strong>, the micro-market this project sits in. Nothing here is specific to the building.</p>'
+     +(pipeHTML(ar)||panelEmpty('Nothing committed here',
+       'No project on any published plan serves '+esc(ar.n)+'.'))
+   : panelEmpty('No micro-market matched',
+       'This project is not mapped to one of the 86 researched areas, so there is no '
+       +'pipeline to show for it.'),
+
+  risk:
+   floodCheckHTML(s)
+   +(s.lowconf?calloutCard('risk','Low confidence on the whole entry',
+      'Sources contradict each other badly enough on this project that none of the figures '
+      +'above should be used without your own checking.'):'')
+   +(s.rera==='pending'||s.rera==='unknown'?calloutCard('warn',
+      s.rera==='pending'?'RERA registration pending':'RERA number unknown',
+      s.rera==='pending'
+       ?'Selling before registration is not permitted under the Act. Ask what is being sold '
+        +'and under which registration number.'
+       :'No registration number was found for this project. It may exist; we have not seen it. '
+        +'Ask for it and check it on the Karnataka RERA portal yourself.'):'')
+   +(s.geoPrecision==='area'?calloutCard('warn','Position is approximate',
+      'Nominatim could not resolve this complex itself, so the pin and every drive time '
+      +'derived from it are the micro-market’s, not the building’s.'):'')
+   +'<div class="block"><h2 style="font-size:15px">The legal checks</h2>'
+    +'<p class="anlsub">Eighteen of them, the same for every property, tracked in one place.</p>'
+    +'<button class="act ghost small" data-golegal="1">Open the legal checks ›</button></div>'
+ };
+}
+function openProperty(id,tab){
  const s=typeof id==='string'?socById(id):id; if(!s)return;
  CURPROP=s;
- const mid=Math.round((s.lo+s.hi)/2);
- const sq=socSqft(s);
- const sqft=sq.v;
- const y=(s.rent&&mid)?(s.rent*12)/mid*100:null;
- const wrap=document.createElement('div');
- wrap.innerHTML=`<div class="so-tabs" id="propTabs">
-   <button data-pt="overview" aria-pressed="true">Overview</button>
-   <button data-pt="money" aria-pressed="false">Costs</button>
-   <button data-pt="yield" aria-pressed="false">Rent</button>
-   <button data-pt="resale" aria-pressed="false">Resale</button>
-  </div>
-  <div id="propOverview">
-   <div class="grid4">
-    <div><small>Indicative price ${srcTag(s.src==='rera'?'registry':'portal')}</small><div style="font-weight:600">${cr(s.lo)}–${cr(s.hi)}</div></div>
-    <div><small>Rate ${srcTag(s.src==='rera'?'registry':'portal')}</small><div style="font-weight:600">${s.psf?'₹'+s.psf.toLocaleString('en-IN')+'/sqft':'not quoted'}</div></div>
-    <div><small>2BHK size</small><div style="font-weight:600">${sq.known?esc(String(s.sz))+' sqft':esc(String(s.sz))}${sq.known?'':'<br><span style="font-weight:400;font-size:12px;color:var(--muted)">no floor area quoted — calculators below assume 1,000 sqft</span>'}</div></div>
-    <div><small>Status</small><div style="font-weight:600">${esc(s.st)}</div></div>
-    <div><small>Builder</small><div style="font-weight:600">${esc(s.b)} · tier ${s.t}</div></div>
-    <div><small>Vintage</small><div style="font-weight:600">${s.age===0?'New build':s.age+' years'}</div></div>
-    <div><small>Rent · gross yield ${srcTag('derived')}</small><div style="font-weight:600">${s.rent?'₹'+s.rent.toLocaleString('en-IN'):'not quoted'}${y!==null?' · '+y.toFixed(1)+'%':''}<br><span style="font-weight:400;font-size:12px;color:var(--muted)">${y!==null?'on the midpoint of the band, '+cr(mid):'no rent quoted'}</span></div></div>
-    <div><small>Segment</small><div style="font-weight:600">${esc(SEGLAB(s.seg))}</div></div>
-   </div>
-   ${provBadges(s)}
-   ${possessionHTML(s)}
-   ${conflictHTML(s)}
-   ${commuteHTML(s)}
-   ${floodCheckHTML(s)}
-   <p style="margin-top:14px;font-size:14px">${s.r}</p>
-   ${sourceFooter(s)}
-   <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
-     <button class="act small" id="soTrack">${track[slug(s.n)]?'Tracked ✓':'Track this'}</button>
-     <button class="act ghost small" data-openarea="${esc(s.a)}">Open ${esc(s.a)}</button>
-   </div>
-  </div>`;
- openSlide(esc(s.n), esc(s.a)+' · '+esc(s.z)+' Bengaluru', wrap);
- /* primary actions pinned to the bottom of the panel so they cannot scroll
-    away behind three calculators */
+ const mine=personalised()?socFit(s):priScore(s,budWorking());
+ const all=SOC.map(x=>personalised()?socFit(x):priScore(x,budWorking()));
+ const rank=all.filter(x=>x>mine).length+1;
  const isTracked=()=>!!track[slug(s.n)];
- const bar=document.getElementById('soActions');
- const paintBar=()=>{
-  bar.innerHTML='<button class="act small" id="barTrack">'+(isTracked()?'Tracked ✓':'Track this')+'</button>'
+ openPanel({
+  kind:'soc', key:slug(s.n), name:s.n, tab:tab||'overview',
+  meta:panelHead([esc(s.a)+' · '+esc(s.z)+' Bengaluru',scoreBadge(mine,'sm'),
+    ORD(rank)+' of '+SOC.length, esc(scoreBand(mine).lab)]),
+  tabs:socPanelTabs(s),
+  wire:(body)=>{
+   body.querySelectorAll('[data-golegal]').forEach(x=>
+    x.addEventListener('click',()=>{closeSlide(); goSection('shortlist','legal');}));
+  },
+  actions:'<button class="act small" id="barTrack">'+(isTracked()?'Tracked ✓':'Track this')+'</button>'
    +'<button class="act ghost small" id="barShort">Shortlist</button>'
-   +'<button class="act ghost small" id="barList">Open in Listings</button>';
-  document.getElementById('barTrack').addEventListener('click',()=>{
-   const pid=slug(s.n);
-   if(isTracked()){delete track[pid];}
-   else {track[pid]={status:'',date:'',notes:'',scores:{}};}
-   saveTrack(false,pid); updateCount(); paintBar();
-   const t2=document.getElementById('soTrack'); if(t2)t2.textContent=isTracked()?'Tracked ✓':'Track this';
-  });
-  document.getElementById('barShort').addEventListener('click',()=>{
-   const pid=slug(s.n);
-   track[pid]=track[pid]||{status:'',date:'',notes:'',scores:{}};
-   track[pid].status='short';
-   if(typeof noteShortlisted==='function')noteShortlisted(pid,'short');
-   saveTrack(false,pid); updateCount(); paintBar();
-  });
-  document.getElementById('barList').addEventListener('click',()=>{
-   closeSlide(); goSection('listings');
-   const q=document.getElementById('fSearch'); if(q){q.value=s.n; q.dispatchEvent(new Event('input'));}
-  });
- };
- paintBar();
-
- /* borrow the three calculator panels and prefill them for this flat */
- /* they are detached, so look them up in their holding element, not the document */
- ['money','yield','resale'].forEach(k=>{
-  const p=(CALCHOME&&CALCHOME.querySelector('#p-'+k))||document.getElementById('p-'+k);
-  if(p){wrap.appendChild(p); p.style.display='none'; p.classList.add('on');}
+   +'<button class="act ghost small" id="barArea">Open '+esc(s.a)+'</button>',
+  wireActions:bar=>{
+   const repaint=()=>{document.getElementById('barTrack').textContent=
+     isTracked()?'Tracked ✓':'Track this';};
+   bar.querySelector('#barTrack').addEventListener('click',()=>{
+    const pid=slug(s.n);
+    if(isTracked())delete track[pid];
+    else track[pid]={status:'',date:'',notes:'',scores:{}};
+    saveTrack(false,pid); updateCount(); repaint();
+   });
+   bar.querySelector('#barShort').addEventListener('click',()=>{
+    const pid=slug(s.n);
+    track[pid]=track[pid]||{status:'',date:'',notes:'',scores:{}};
+    track[pid].status='short';
+    if(typeof noteShortlisted==='function')noteShortlisted(pid,'short');
+    saveTrack(false,pid); updateCount(); repaint();
+   });
+   bar.querySelector('#barArea').addEventListener('click',()=>showArea(s.a));
+  },
+  hash:'#/soc/'+slug(s.n)
  });
- const set=(id,v)=>{const el=document.getElementById(id); if(el&&v!=null&&v!==''){el.value=v;}};
- set('mTicket',mid); set('mGuide',Math.round(mid*0.72));
- set('mStatus',s.st==='Ready'?'ready':'uc');
- set('mInterior',Math.round(sqft*1200));
- set('yRent',s.rent); set('yCost',mid);
- set('rPsf',s.psf); set('rArea',sqft); set('rAge',s.age);
- set('uPrice',mid); set('uFlat',sqft);
- try{calcCost();}catch(e){}
- try{calcYield();}catch(e){}
- try{calcResale();}catch(e){}
-
- const show=k=>{
-  document.getElementById('propOverview').style.display = k==='overview'?'':'none';
-  ['money','yield','resale'].forEach(x=>{const p=document.getElementById('p-'+x);
-   if(p)p.style.display = x===k?'':'none';});
-  wrap.querySelectorAll('[data-pt]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.pt===k)));
-  document.getElementById('soBody').scrollTop=0;
- };
- wrap.querySelectorAll('[data-pt]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.pt)));
- const tb=document.getElementById('soTrack');
- if(tb)tb.addEventListener('click',()=>{
-  const pid=slug(s.n);
-  if(track[pid]){delete track[pid];tb.textContent='Track this';}
-  else {track[pid]={status:'',date:'',notes:'',scores:{}};tb.textContent='Tracked ✓';}
-  saveTrack(false,pid); updateCount();
- });
- wireSlideLinks();
  noteView('soc',slug(s.n),s.n);
- HASHLOCK=true;try{history.replaceState(null,'','#/soc/'+slug(s.n));}catch(e){}HASHLOCK=false;
 }
 
 /* ========== search: precomputed data only, never a live geocoder ========== */
@@ -8465,11 +8826,14 @@ document.addEventListener('click',e=>{
 
 /* ========== command palette ========== */
 const ACTIONS=[
+ {k:'home',     t:'Go to Home',           run:()=>goSection('home')},
  {k:'explore',  t:'Go to Explore',        run:()=>goSection('explore')},
  {k:'search',   t:'Search localities',    run:()=>{goSection('explore');setExploreMode('search');}},
+ {k:'market',   t:'Go to Market',         run:()=>goSection('market')},
  {k:'listings', t:'Go to Listings',       run:()=>goSection('listings')},
- {k:'shortlist',t:'Go to Shortlist',      run:()=>goSection('shortlist')},
- {k:'guide',    t:'Go to Guide',          run:()=>goSection('guide')},
+ {k:'shortlist',t:'Go to Your activity',  run:()=>goSection('shortlist')},
+ /* the guide stopped being a section of its own when it folded into Shortlist */
+ {k:'guide',    t:'Go to the guide',      run:()=>goSection('shortlist','guide')},
  {k:'settings', t:'Open settings',        run:openSettings},
  {k:'intake',   t:'Change my answers',    run:()=>{closeModals();openIntake(0);}}
 ];
@@ -8701,10 +9065,12 @@ if(ca)ca.addEventListener('click',()=>{const l=buildLink(); if(l)location.href=l
 const cs=document.getElementById('copySql');
 if(cs)cs.addEventListener('click',()=>{navigator.clipboard?.writeText(document.getElementById('sqlBlock').textContent);
  cs.textContent='Copied';setTimeout(()=>cs.textContent='Copy the SQL',1600);});
-const ri=document.getElementById('reIntake');
-if(ri)ri.addEventListener('click',()=>openIntake(0));
 const gs=document.getElementById('goSetup');
 if(gs)gs.addEventListener('click',openSettings);
+const slS=document.getElementById('slSetup');
+if(slS)slS.addEventListener('click',openSettings);
+const slI=document.getElementById('slIntake');
+if(slI)slI.addEventListener('click',()=>openIntake(0));
 
 boot();
 </script>
