@@ -312,20 +312,42 @@ scoring quietly inherited the assertion. **Nothing in this list exists in this
 repo.** If a factor description, a weight table or a commit message implies any
 of it, that text is wrong and should be corrected rather than the data assumed.
 
-### The two highest-leverage acquisitions
+### Flood risk — now partially held, and deliberately not scored
 
-Everything in the table below would help. These two would change answers, and
-should be got first.
+Area-level flood risk **is** held, from BBMP's flood-vulnerability lists and
+KSNDMC mapping as reported May 2026. It lives in `FLOOD` and `SOCFLOOD` and is
+a **warning layer, not a scoring factor**. Do not move it into a weight table.
 
-**1. Flooding history by locality.** The largest uninsured downside in this
-city, and the one that is invisible in price until the day it happens. It is
-also the clearest real difference between two areas our data currently calls
-equivalent: Mahadevapura sits in the Bellandur–Varthur catchment and
-Indiranagar does not, and nothing we hold registers that. Of everything
-missing, this is the single input most likely to flip a recommendation rather
-than nudge a score.
+The reason is resolution. Our geography is area level and real flood risk is
+street level, so scoring it would mark down every flat in Mahadevapura equally
+including the ones on high ground, and a few points buried inside a score of
+79 hides the fact a buyer most needs to see. Tolerance is personal too — an
+eighth-floor flat is not a ground-floor one with basement parking.
 
-**2. Bus route density and frequency.** This tool models metro and car and
+Three levels, and they must stay distinguishable:
+
+- **Area** — automatic, from the published lists. 11 high, 6 medium, 7 low,
+  62 not listed.
+- **Project** — hand-researched, and only where a society sits in a pocket the
+  lists actually name. Everything else is left **unmarked rather than
+  inheriting its area**, because a tower on high ground inside a flood-prone
+  micro-market is not flood-prone.
+- **Address** — a checklist and **never a number**. We hold no elevation, no
+  drain coordinates and no lake-bed boundaries, and a computed address-level
+  score would look authoritative while being a guess.
+
+`unknown` must always read as *absence of evidence, not evidence of safety*.
+Most of the city has never been surveyed, and a quiet "low" there would be the
+most damaging thing this tool could say.
+
+**What is still missing for address level:** elevation data, the vulnerable
+storm water drain list as coordinates, and lake-bed and rajakaluve boundaries.
+Those three would make per-building assessment possible. Until then the
+checklist is the honest answer.
+
+### The remaining highest-leverage acquisition
+
+**Bus route density and frequency.** This tool models metro and car and
 nothing else, and buses are how most of Bengaluru actually moves. That gap
 silently penalises every area that is well served by bus and has no station,
 and it is most of the city — `infra` recognises one operational line for 42
@@ -350,7 +372,7 @@ What would make them real, none of which we hold:
 | Missing | Would feed | Why it matters |
 |---|---|---|
 | Hospital and school density, with travel time | `live`, `infra` | The two amenities families actually choose on |
-| Flooding history by locality | `live` | The single largest downside risk in Bengaluru, and invisible in price until it happens |
+| Elevation, drain coordinates, lake-bed boundaries | flood layer | The three inputs that would make address-level flood assessment possible; area level is held already |
 | Water supply — Cauvery connection vs tanker dependence | `live` | A recurring monthly cost and a hard constraint in the outer east and north |
 | Air quality by locality | `live` | Separates arterial-adjacent stock from interior stock |
 | Green cover and tree canopy | `live` | Much of the difference between an old and a new micro-market |

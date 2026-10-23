@@ -250,7 +250,27 @@ details.bd[open] summary:before{transform:rotate(90deg)}
   border-style:dashed}
 .pchip.none{background:transparent;color:var(--graphite);border-color:transparent;
   font-style:italic}
-#pipeFirm.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+#pipeFirm.on,#floodHide.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+/* ---- flood: a warning, never a number ----
+ High renders as a callout rather than a quiet row, because a figure a buyer
+ has to hunt for is the opposite of a warning. */
+.floodrow{border:1px solid var(--rule);border-left:3px solid var(--rule);
+  background:var(--raised);padding:11px 14px;margin-top:14px}
+.floodrow .fh{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--graphite);margin-bottom:5px;font-weight:600}
+.floodrow p{font-size:13px;line-height:1.55;margin:0 0 6px}
+.floodrow .fwhy{font-size:12px;color:var(--graphite)}
+.floodrow.high{border-left-color:var(--seal);background:#FBF3F3}
+.floodrow.high .fh{color:var(--seal)}
+.floodrow.medium{border-left-color:var(--ochre)}
+.floodrow.medium .fh{color:var(--ochre)}
+.floodrow.low{border-left-color:var(--moss)}
+.floodrow.low .fh{color:var(--moss)}
+.fsrc{display:block;font-size:11px;color:var(--graphite);margin-top:4px}
+.fcheck{margin:12px 0 0;padding-left:20px;font-size:13.5px;line-height:1.6}
+.fcheck li{margin-bottom:7px}
+.ftile{display:inline-block;margin-top:4px;font-size:10px;letter-spacing:.03em;
+  text-transform:uppercase;padding:0 5px;border-radius:2px;border:1px solid currentColor}
 .coming{border-top:1px solid var(--rule-soft);margin-top:10px;padding-top:9px}
 .coming .ch{font-size:10px;letter-spacing:.05em;text-transform:uppercase;
   color:var(--graphite);margin-bottom:4px}
@@ -970,6 +990,9 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--rule);padding:1px 4px;b
     <div class="field"><label for="fPri">Priority</label><select id="fPri"><option value="">All</option>
       <option value="h">High only</option><option value="hm">High and medium</option></select></div>
     <div class="field"><label for="fSearch">Search</label><input type="text" id="fSearch" placeholder="Sobha, Hoodi…"></div>
+    <div class="field"><label for="fFlood">Flood risk</label><select id="fFlood">
+      <option value="">Show everything</option>
+      <option value="hide">Hide high flood risk</option></select></div>
   </div>
 
   <div class="scroller"><table id="socTable">
@@ -1753,6 +1776,7 @@ alter publication supabase_realtime add table desk_prefs;</pre>
       <button data-lens="stage" aria-pressed="false">Market stage</button>
       <button data-lens="sweet" aria-pressed="false">Sweet spot</button>
       <button data-lens="pipe" aria-pressed="false">Pipeline</button>
+      <button data-lens="flood" aria-pressed="false">Flood risk</button>
       <button data-lens="froth" aria-pressed="false">Asking vs registered</button>
     </span>
     <span class="toggle" style="margin-left:8px">
@@ -1765,6 +1789,8 @@ alter publication supabase_realtime add table desk_prefs;</pre>
     </span>
     <button class="act ghost small" id="pipeFirm" aria-pressed="false"
       style="margin-left:8px">Funded or building only</button>
+    <button class="act ghost small" id="floodHide" aria-pressed="false"
+      style="margin-left:8px">Hide high flood risk</button>
   </div>
   <div id="heatMap"></div>
   <div class="mapnote" id="heatMapNote">
@@ -2293,6 +2319,157 @@ function kfChartHTML(a){
   +'12-month change.</p></div>';
 }
 
+/* ========== flood risk: a warning layer, never a score ==========
+ This deliberately sits OUTSIDE the scoring and must stay there.
+
+ Our geography is area-level; flooding is street-level. Scoring it would
+ penalise every flat in Mahadevapura equally, including the ones on high
+ ground, and burying a few points inside a score of 79 hides exactly the fact
+ a buyer needs to see. Tolerance is personal too — an eighth-floor flat is a
+ different proposition from a ground-floor one with basement parking. So the
+ tool states the fact, loudly, and lets the buyer decide.
+
+ Three levels, and they must stay distinguishable:
+   AREA     automatic, from the published lists below
+   PROJECT  hand-researched, only where a society sits in a NAMED pocket
+   ADDRESS  a checklist and never a number — we hold no elevation, no drain
+            coordinates and no lake-bed boundaries, and a computed
+            address-level score would look authoritative while being a guess. */
+const FLOOD={
+ src:'BBMP flood vulnerability lists and KSNDMC mapping',
+ asOf:'May 2026',
+ city:{drains:211, severe:58},
+ /* BBMP's own zones, which are NOT our five. Shown as context only, never
+    joined to an area, because the boundaries do not line up. */
+ zones:[['Mahadevapura',58],['Bommanahalli',28],['RR Nagar',23],['East',20],
+        ['Yelahanka',11],['Dasarahalli',9],['West',6]],
+ tier:{
+  /* HIGH — named repeatedly across BBMP lists and the 2022, 2024 and
+     22 May 2026 events */
+  'Bellandur':'high','Varthur':'high','Panathur / Balagere':'high',
+  'Mahadevapura':'high','Hoodi':'high','Koramangala':'high','HSR Layout':'high',
+  'KR Puram':'high','Marathahalli':'high','Whitefield':'high','Hoskote':'high',
+  /* MEDIUM — localised or pocket-specific */
+  'Sarjapur Road':'medium','Harlur / Haralur':'medium','Bannerghatta Road':'medium',
+  'Rajajinagar':'medium','Yelahanka':'medium','Indiranagar':'medium',
+  /* LOW — elevated, little recorded flooding */
+  'Basavanagudi':'low','Jayanagar':'low','Malleswaram':'low','JP Nagar':'low',
+  'Devanahalli':'low','Electronic City Ph 1':'low','Electronic City Ph 2':'low'
+ },
+ /* the qualifier the published list attached to the name, so a buyer sees
+    WHICH part of the area is on it */
+ pocket:{
+  'Koramangala':'ST Bed','HSR Layout':'extension wards','KR Puram':'interior',
+  'Marathahalli':'low-lying pockets','Whitefield':'low-lying stretches toward Hoskote',
+  'Hoskote':'low-lying stretches toward Whitefield',
+  'Sarjapur Road':'Kasavanahalli and Harlur pockets',
+  'Harlur / Haralur':'named as a Sarjapur Road pocket',
+  'Rajajinagar':'Industrial Area','Yelahanka':'LBS Nagar',
+  'Indiranagar':'80 Feet Road, on the KSNDMC vulnerable list',
+  'Basavanagudi':'elevated rocky terrain'
+ },
+ /* named on the published lists but not one of our 86 researched areas, so
+    they cannot be scored at area level. Listed so they are not lost. */
+ unmapped:['Munnekolala','Sai Layout','Rainbow Layout','Agrahara Dasarahalli',
+   'Wilson Garden','HRBR Layout','Veerannapalya','Nayandahalli',
+   'Silk Board junction','Kasavanahalli']
+};
+/* PROJECT level. Hand-checked, one at a time, only where the society sits in a
+   pocket the published lists name. Everything else is left UNMARKED rather
+   than inheriting its area's tier — a tower on high ground inside a flood-prone
+   micro-market is not flood-prone, and guessing would make the flag worthless. */
+const SOCFLOOD={
+ 'Brigade Cornerstone Utopia':'Varthur',
+ 'SSVR Niyaara':'Varthur',
+ 'Prestige Lakeside Habitat':'Varthur',
+ 'Prestige Evergreen':'Varthur',
+ 'Prestige Green Gables':'Panathur',
+ 'Sobha Dream Acres':'Panathur / Balagere',
+ 'Sobha Sentosa':'Balagere',
+ 'Park Square Avenue':'HSR Layout extension wards',
+ 'Purva Meraki':'HSR Layout extension wards'
+};
+const FLOODTIER={
+ high:  {lab:'High',    c:'#A3282F', ord:3},
+ medium:{lab:'Medium',  c:'#9A6A12', ord:2},
+ low:   {lab:'Low',     c:'#3E6B4E', ord:1},
+ unknown:{lab:'Not listed', c:'#9AA6A1', ord:0}
+};
+function floodOf(a){
+ const n=a&&a.n, t=(n&&FLOOD.tier[n])||'unknown';
+ return {tier:t, meta:FLOODTIER[t], pocket:(n&&FLOOD.pocket[n])||null};
+}
+function floodOfSoc(s){
+ const pocket=s&&SOCFLOOD[s.n];
+ if(pocket)return {tier:'high', meta:FLOODTIER.high, pocket:pocket, researched:true};
+ return null;
+}
+const floodInfoBtn=()=>'<button class="helpq" data-flooddoc="1" '
+ +'aria-label="About flood risk and why it is not scored">i</button>';
+const floodSrc='<span class="fsrc">'+FLOOD.src+', '+FLOOD.asOf+'</span>';
+/* "unknown" is the one that gets misread, so it never reads as a clean bill */
+const FLOOD_UNKNOWN='Not on any published list — absence of evidence, not '
+ +'evidence of safety. Most of the city has never been surveyed.';
+
+function floodRowHTML(a){
+ const f=floodOf(a);
+ if(f.tier==='high'){
+  return '<div class="floodrow high"><div class="fh">Flood risk · High'+floodInfoBtn()+'</div>'
+   +'<p><strong>'+esc(a.n)+' is named repeatedly on BBMP’s flood-vulnerability '
+   +'lists</strong>'+(f.pocket?', specifically the <strong>'+esc(f.pocket)+'</strong>':'')
+   +', and in the 2022, 2024 and 22 May 2026 flooding events.</p>'
+   +'<p class="fwhy">This is <strong>area level</strong>. The real risk is street '
+   +'level, and a flat on high ground here may carry none of it. It is deliberately '
+   +'<strong>not in either score</strong> — at this resolution it cannot be judged '
+   +'fairly, and a few points buried in a total would hide it. Check the specific '
+   +'building using the list on any property below.</p>'+floodSrc+'</div>';
+ }
+ const body = f.tier==='medium'
+  ? '<strong>Localised flooding reported</strong>'+(f.pocket?' — '+esc(f.pocket):'')+'.'
+  : f.tier==='low'
+  ? 'Little recorded flooding'+(f.pocket?' — '+esc(f.pocket):'')+'. Still worth checking the street.'
+  : FLOOD_UNKNOWN;
+ return '<div class="floodrow '+f.tier+'"><div class="fh">Flood risk · '
+  +f.meta.lab+floodInfoBtn()+'</div><p>'+body+'</p>'
+  +'<p class="fwhy">Area level, not street level, and not part of any score.</p>'
+  +floodSrc+'</div>';
+}
+/* ADDRESS level: a checklist, never a number. */
+function floodCheckHTML(s){
+ const f=floodOfSoc(s);
+ const area=s&&s.a?AREAS.find(x=>x.n===s.a)||(typeof areaForSoc==='function'?areaForSoc(s):null):null;
+ const af=area?floodOf(area):{tier:'unknown',meta:FLOODTIER.unknown,pocket:null};
+ const flag=f
+  ? '<div class="floodrow high"><div class="fh">Flood risk · researched for this project</div>'
+    +'<p><strong>'+esc(s.n)+' sits in the '+esc(f.pocket)+' pocket</strong>, which BBMP '
+    +'name on their flood-vulnerability list.</p>'+floodSrc+'</div>'
+  : (area?'<div class="floodrow '+af.tier+'"><div class="fh">Flood risk · '+af.meta.lab
+      +' for '+esc(area.n)+'</div><p>'+(af.tier==='unknown'?FLOOD_UNKNOWN
+        :'This is the reading for the micro-market'+(af.pocket?' ('+esc(af.pocket)+')':'')
+         +'. <strong>This specific project has not been checked.</strong>')
+      +'</p>'+floodSrc+'</div>':'');
+ return flag
+  +'<div class="block"><h2 style="font-size:15px">Check this specific flat</h2>'
+  +'<p style="font-size:13px;color:var(--graphite);margin:8px 0 0">Flood risk is decided '
+  +'on the street, not the postcode. Nothing here can tell you about one building — '
+  +'we hold no elevation, no drain positions and no lake-bed boundaries, so the tool '
+  +'will not pretend to score it. These five checks will.</p>'
+  +'<ol class="fcheck">'
+  +'<li>Pull BBMP’s vulnerable storm water drain list for this ward and confirm the '
+  +'building is <strong>not within 200 m</strong> of one of the '+FLOOD.city.severe
+  +' severely vulnerable drains. There are '+FLOOD.city.drains+' vulnerable drains citywide.</li>'
+  +'<li>Ask the seller or the RWA directly whether the basement or ground floor flooded '
+  +'in <strong>2022, 2024 or May 2026</strong>. Those were the three events — name them, '
+  +'rather than asking whether it floods.</li>'
+  +'<li>Visit during or just after heavy rain if the timing allows. One visit tells you '
+  +'more than any list.</li>'
+  +'<li>Check the plot is not on a former lake bed or inside a <strong>rajakaluve '
+  +'buffer</strong>. The BBMP ward office can confirm.</li>'
+  +'<li>Ground floor and basement parking carry the risk. Upper floors flood far less '
+  +'but still lose access and power.</li>'
+  +'</ol></div>';
+}
+
 /* ========== what every factor means ==========
  Written for someone who has never bought a flat. Each entry says what the
  factor measures, where the number came from and when, why the two scores
@@ -2419,6 +2596,44 @@ const FACTOR_DOC={
    +'question that affects them.',
   level:'area'}
 };
+const FLOOD_DOC={t:'Flood risk',
+ b:'<p>Bengaluru floods, and it is the largest downside a buyer here carries '
+  +'that never shows up in an asking price. This tool surfaces what has been '
+  +'published and stops there.</p>'
+  +'<div class="block"><h2 style="font-size:14px">Why it is not in either score</h2>'
+  +'<p style="font-size:13.5px;line-height:1.6;margin-top:8px">'
+  +'<strong>Our geography is area level. Real flood risk is street level.</strong> '
+  +'Scoring it would mark down every flat in Mahadevapura equally, including the '
+  +'ones on high ground, and a few points buried inside a score of 79 hides the '
+  +'very fact you need to see. How much it matters is also personal — an '
+  +'eighth-floor flat is a different proposition from a ground-floor one with '
+  +'basement parking. So you get the fact and the decision, not a number.</p></div>'
+  +'<div class="block"><h2 style="font-size:14px">The three levels</h2>'
+  +'<p style="font-size:13.5px;line-height:1.6;margin-top:8px">'
+  +'<strong>Area</strong> comes straight from the published lists. '
+  +'<strong>Project</strong> is hand-checked, and only where a development sits '
+  +'in a pocket those lists actually name — everything else is left unmarked '
+  +'rather than inheriting its area, because a tower on high ground inside a '
+  +'flood-prone micro-market is not flood-prone. <strong>Address</strong> is a '
+  +'checklist and never a number: we hold no elevation, no drain coordinates and '
+  +'no lake-bed boundaries, and a computed address score would look authoritative '
+  +'while being a guess.</p></div>'
+  +'<div class="block"><h2 style="font-size:14px">“Not listed” does not mean safe</h2>'
+  +'<p style="font-size:13.5px;line-height:1.6;margin-top:8px">Most of the city has '
+  +'never been surveyed. An area absent from these lists is <strong>absence of '
+  +'evidence, not evidence of safety</strong>.</p></div>'
+  +'<div class="block"><h2 style="font-size:14px">Where the data comes from</h2>'
+  +'<p style="font-size:13.5px;line-height:1.6;margin-top:8px">'+FLOOD.src+', '
+  +FLOOD.asOf+'. '+FLOOD.city.drains+' vulnerable storm water drains citywide, '
+  +FLOOD.city.severe+' of them severely vulnerable. Flood-prone areas by BBMP '
+  +'zone — these are BBMP’s zones, not the five this tool uses, and they are '
+  +'shown as context rather than joined to any area:</p>'
+  +'<table style="margin-top:10px"><tbody>'
+  +FLOOD.zones.map(z=>'<tr><td>'+z[0]+'</td><td class="num">'+z[1]+'</td></tr>').join('')
+  +'</tbody></table>'
+  +'<p style="font-size:12.5px;color:var(--graphite);margin-top:10px">Named on the '
+  +'published lists but not among the 86 researched areas, so they carry no area '
+  +'reading here: '+FLOOD.unmapped.join(', ')+'.</p></div>'};
 const SCORE_DOC={
  live:{t:'Personal fit score',
   b:'<p>How well this area suits <strong>you specifically</strong>, out of 100, '
@@ -2498,7 +2713,10 @@ document.addEventListener('click',e=>{
  const f=e.target.closest&&e.target.closest('[data-fdoc]');
  if(f){e.preventDefault();e.stopPropagation();openFactorDoc(f.dataset.fdoc,f.dataset.fmode);return;}
  const g=e.target.closest&&e.target.closest('[data-sdoc]');
- if(g){e.preventDefault();e.stopPropagation();openScoreDoc(g.dataset.sdoc);}
+ if(g){e.preventDefault();e.stopPropagation();openScoreDoc(g.dataset.sdoc);return;}
+ const h=e.target.closest&&e.target.closest('[data-flooddoc]');
+ if(h){e.preventDefault();e.stopPropagation();
+  openSlide(esc(FLOOD_DOC.t),'A warning layer, not a scoring factor',FLOOD_DOC.b);}
 });
 /* A factor whose evidence is thinner than its name says carries the admission
    next to it, not only inside the panel nobody opens. */
@@ -3145,6 +3363,10 @@ const ZONEINFO={
 };
 
 let LENS='price', ZF='', PIPEFIRM=false;
+/* Off by default, and it is the buyer's switch rather than our penalty: the
+   tool states the risk and they decide whether it disqualifies a place. */
+let FLOODHIDE=false;
+const floodHidden=a=>FLOODHIDE&&floodOf(a).tier==='high';
 /* "Funded or building only" strips everything speculative in one tap. It
    re-scores rather than merely hiding chips: an area whose whole case is an
    approved-but-unfunded line should fall to nothing when you ask to see only
@@ -3499,6 +3721,7 @@ function heatColor(a){
  if(LENS==='stage') return stageOf(a)[1];
  if(LENS==='pipe'){const p=pipeShown(a);
   return p>=9?'#2F5D42':p>=7?'#4E7D5C':p>=5?'#8FA894':p>=1?'#C2CCC5':'#DCE2DD';}
+ if(LENS==='flood')return floodOf(a).meta.c;
  if(LENS==='sweet'){const s=sweetScore(a);
   return s>=70?'#2F5D42':s>=60?'#4E7D5C':s>=50?'#8FA894':s>=40?'#C2CCC5':'#DCE2DD';}
  const v=LENS==='price'?a.py:a.ry;
@@ -3514,6 +3737,7 @@ function heatVal(a){
  if(LENS==='rent')return a.ry+'%';
  if(LENS==='sweet')return sweetScore(a);
  if(LENS==='pipe'){const p=pipeShown(a);return p?p.toFixed(1):'none';}
+ if(LENS==='flood')return floodOf(a).meta.lab;
  return stageOf(a)[0];
 }
 function textOn(hex){
@@ -3539,7 +3763,7 @@ const BLR=[12.9716,77.5946];
 function dotRadius(s){                       /* sweet score 20-85 -> 5-20px */
  return Math.max(5,Math.min(20, 5+15*(s-20)/65));
 }
-function heatMapAreas(){ return AREAS.filter(a=>(!ZF||a.z===ZF)&&typeof a.lat==='number'); }
+function heatMapAreas(){ return AREAS.filter(a=>(!ZF||a.z===ZF)&&typeof a.lat==='number'&&!floodHidden(a)); }
 
 function ensureHeatMap(){
  if(HMAPFAIL)return false;
@@ -3628,7 +3852,8 @@ function pipeChip(a){
 function renderHeat(){
  const zones=ZF?[ZF]:['East','South','North','West','Central'];
  document.getElementById('heatGrid').innerHTML=zones.map(z=>{
-  const list=AREAS.filter(a=>a.z===z).sort((a,b)=>
+  const list=AREAS.filter(a=>a.z===z&&!floodHidden(a)).sort((a,b)=>
+   LENS==='flood'?floodOf(b).meta.ord-floodOf(a).meta.ord:
    LENS==='pipe'?pipeShown(b)-pipeShown(a):
    LENS==='sweet'?sweetScore(b)-sweetScore(a):LENS==='rent'?b.ry-a.ry:b.py-a.py);
   if(!list.length)return '';
@@ -3652,6 +3877,9 @@ function renderHeat(){
   ? [['Prime / boomed','#A3282F'],['Booming now','#D2691E'],['Emerging','#C9A227'],['Sweet spot','#3E6B4E'],['Steady','#8A9691']]
   : LENS==='sweet'
   ? [['70+ strong','#2F5D42'],['60–69','#4E7D5C'],['50–59','#8FA894'],['40–49','#C2CCC5'],['under 40','#DCE2DD']]
+  : LENS==='flood'
+  ? [['High — repeatedly listed','#A3282F'],['Medium — localised','#9A6A12'],
+     ['Low — little recorded','#3E6B4E'],['Not on any published list','#9AA6A1']]
   : LENS==='pipe'
   ? [['9–10 metro building','#2F5D42'],['7–9','#4E7D5C'],['5–7','#8FA894'],['under 5','#C2CCC5'],['nothing committed','#DCE2DD']]
   : LENS==='price'
@@ -3928,6 +4156,7 @@ function showArea(name){
    <div><small>2BHK rent · growth ${srcTag('portal')}</small><div style="font-weight:600">₹${a.rent.toLocaleString('en-IN')} · ${a.ry}%</div></div>
    <div><small>Yield on ~1,000 sqft ${srcTag('derived')}</small><div style="font-weight:600">${y.toFixed(1)}%<br><span style="font-weight:400;font-size:12px;color:var(--graphite)">on the basis above</span></div></div>
   </div>
+  ${floodRowHTML(a)}
   ${commuteHTML(a)}
   <p style="margin-top:14px;margin-bottom:0;font-size:14px">${a.drv}</p>
   <p style="margin-top:10px;margin-bottom:0;font-size:13px;color:var(--graphite)">
@@ -4029,6 +4258,15 @@ function renderSupply(){
   `<tr><td><strong>${z}</strong></td><td class="num">₹${i.avg.toLocaleString('en-IN')}</td>
    <td>${i.launch}</td><td>${i.infra}</td><td>${i.mean}</td></tr>`).join('');
 }
+(function(){
+ const b=document.getElementById('floodHide'); if(!b)return;
+ b.addEventListener('click',()=>{
+  FLOODHIDE=!FLOODHIDE;
+  b.setAttribute('aria-pressed',String(FLOODHIDE));
+  b.classList.toggle('on',FLOODHIDE);
+  renderHeat(); renderHeatMap();
+ });
+})();
 (function(){
  const b=document.getElementById('pipeFirm'); if(!b)return;
  b.addEventListener('click',()=>{
@@ -4189,6 +4427,16 @@ function renderSeg(){
  }
 }
 function ageBand(a){return a<5?'new':a<=12?'mid':'old';}
+/* A society is hidden when it has been researched into a flood pocket, or
+   when the micro-market it sits in is tier high. The second is a blunt test
+   and the panel says so; the filter is the buyer's choice, not a verdict. */
+function floodHideSoc(s){
+ const sel=document.getElementById('fFlood');
+ if(!sel||sel.value!=='hide')return false;
+ if(SOCFLOOD[s.n])return true;
+ const a=(typeof areaForSoc==='function')?areaForSoc(s):null;
+ return !!(a&&floodOf(a).tier==='high');
+}
 function filteredSoc(){
  const bud=+document.getElementById('fBudget').value||11800000;
  const stretch=+document.getElementById('fStretch').value;
@@ -4197,6 +4445,7 @@ function filteredSoc(){
  const q=(document.getElementById('fSearch').value||'').toLowerCase();
  return SOC.map(s=>({...s,pscore:priScore(s,bud)}))
   .filter(s=>{
+   if(floodHideSoc(s))return false;
    if(SEGF&&s.seg!==SEGF)return false;
    if(z&&s.z!==z)return false;
    if(st&&s.st!==st)return false;
@@ -4261,7 +4510,7 @@ function renderSoc(){
 }
 document.querySelectorAll('#socTable th.sortable').forEach(th=>th.addEventListener('click',()=>{
  const k=th.dataset.s; sortDir=sortKey===k?-sortDir:(k==='pscore'?-1:1); sortKey=k; renderSoc();}));
-['fBudget','fStretch','fZone','fStatus','fAge','fPri','fSearch'].forEach(id=>
+['fBudget','fStretch','fZone','fStatus','fAge','fPri','fSearch','fFlood'].forEach(id=>
  document.getElementById(id).addEventListener('input',()=>{renderSoc();renderMicro();}));
 const zsel=document.getElementById('fZone');
 [...new Set(SOC.map(s=>s.z))].sort().forEach(z=>{const o=document.createElement('option');o.textContent=z;zsel.appendChild(o);});
@@ -5917,6 +6166,7 @@ function openProperty(id){
    ${possessionHTML(s)}
    ${conflictHTML(s)}
    ${commuteHTML(s)}
+   ${floodCheckHTML(s)}
    <p style="margin-top:14px;font-size:14px">${s.r}</p>
    ${sourceFooter(s)}
    <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
