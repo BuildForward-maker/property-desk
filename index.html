@@ -6,7 +6,7 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500;6..72,600&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
@@ -24,9 +24,37 @@
 --z-slideover:1000; /* the detail panel */
 --z-modal:1100;     /* settings, command palette */
 --z-toast:1200;     /* transient confirmations, above everything */
---paper:#E9EDEA;--raised:#F6F8F6;--ink:#12211D;--graphite:#5A6863;--rule:#C6CFCA;--rule-soft:#DAE1DC;
---seal:#A3282F;--survey:#2E5D8C;--ochre:#9A6A12;--moss:#3E6B4E;
---serif:"Newsreader",Georgia,serif;--sans:"Archivo","Helvetica Neue",Arial,sans-serif}
+/* ---- design tokens ----
+ Every colour in the app resolves to one of these. The old ledger names below
+ are kept as ALIASES rather than deleted: 581 rules across this stylesheet
+ reference them, and rewriting all of those in one pass would risk breaking
+ sections that are only visually touched. They now point at the new palette,
+ so a rule written against --graphite picks up --muted automatically. New work
+ should use the names in this first group. */
+--bg:#F1F3FB;          /* page ground */
+--card:#FFFFFF;        /* card surface */
+--tile:#F3F5FC;        /* metric tiles, inputs, inactive chips */
+--primary:#0D5C53;     /* buttons, active chips, 80+ scores */
+--tint:#D7EFE7;        /* primary backgrounds, badges */
+--ink:#0F172A;         /* body text */
+--muted:#475569;       /* labels, secondary text */
+--line:#E3E7F2;        /* dividers */
+--warn-bg:#FEF6E7;--warn-fg:#92400E;
+--risk-bg:#FDF0F0;--risk-fg:#9F1239;
+--band-mid:#B45309;    /* 60-79 scores */
+/* radii and spacing, so a card and a tile cannot drift apart */
+--r-card:22px;--r-tile:15px;--r-seg:12px;--r-chip:999px;
+--s-screen:18px;--s-cards:14px;--s-in:14px;
+--tap:44px;            /* nothing interactive goes under this */
+/* fonts: Manrope carries every readable word, Space Grotesk is for caps
+   labels and badges only and never for body text */
+--font:"Manrope","Helvetica Neue",Arial,sans-serif;
+--label:"Space Grotesk","Helvetica Neue",Arial,sans-serif;
+/* ---- aliases from the previous palette ---- */
+--paper:var(--bg);--raised:var(--tile);--graphite:var(--muted);
+--rule:var(--line);--rule-soft:#EDF0F8;
+--seal:var(--risk-fg);--survey:#1D4ED8;--ochre:var(--warn-fg);--moss:var(--primary);
+--serif:var(--font);--sans:var(--font)}
 *{box-sizing:border-box}html,body{margin:0;padding:0}
 body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;
 font-variant-numeric:tabular-nums lining-nums;-webkit-font-smoothing:antialiased}
@@ -207,6 +235,75 @@ details.bd[open] summary:before{transform:rotate(90deg)}
   color:var(--graphite);margin-bottom:5px}
 .citystrip b{font-family:var(--serif);font-size:15px;font-weight:400;display:block}
 .citystrip .cy{font-size:11.5px;color:var(--graphite);margin-top:3px}
+/* ========== component library ==========
+ The CSS half of the nine builders. Nothing here is referenced by hand-written
+ markup; it exists only to render what those functions emit. */
+.mtile{background:var(--tile);border-radius:var(--r-tile);padding:12px 13px;
+  display:flex;flex-direction:column;gap:3px;min-width:0}
+.mtile .ml{font-family:var(--label);font-size:11px;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--muted)}
+.mtile .mv{font-size:20px;font-weight:800;color:var(--ink);line-height:1.15;
+  overflow-wrap:anywhere}
+.mtile .ms{font-size:12px;color:var(--muted);line-height:1.35}
+.ui-badge{display:inline-flex;align-items:center;font-family:var(--label);font-size:11px;
+  font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;
+  border-radius:var(--r-chip);white-space:nowrap}
+.ui-badge.ok{background:var(--tint);color:var(--primary)}
+.ui-badge.neutral{background:var(--tile);color:var(--muted)}
+.ui-badge.warn{background:var(--warn-bg);color:var(--warn-fg)}
+.ui-badge.risk{background:var(--risk-bg);color:var(--risk-fg)}
+.ui-seg{display:flex;gap:4px;background:var(--tile);border-radius:var(--r-seg);padding:4px}
+.ui-seg button{flex:1;min-height:36px;border:0;background:transparent;border-radius:9px;
+  font-family:var(--font);font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;
+  padding:6px 10px}
+.ui-seg button[aria-pressed="true"]{background:var(--card);color:var(--ink);
+  box-shadow:0 1px 2px rgba(15,23,42,.08)}
+.ui-chip{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);
+  padding:9px 15px;border-radius:var(--r-chip);border:1px solid var(--line);
+  background:var(--tile);color:var(--muted);font-family:var(--font);font-size:13.5px;
+  font-weight:600;cursor:pointer;white-space:nowrap}
+.ui-chip.on{background:var(--primary);border-color:var(--primary);color:#fff}
+.ui-chip .ci{font-size:12px;opacity:.9}
+.ui-score{display:inline-flex;align-items:center;justify-content:center;min-width:46px;
+  height:46px;border-radius:14px;font-size:19px;font-weight:800;padding:0 8px}
+.ui-score.sm{min-width:34px;height:34px;border-radius:10px;font-size:14px}
+.ui-score.best{background:var(--tint);color:var(--primary)}
+.ui-score.look{background:var(--warn-bg);color:var(--band-mid)}
+.ui-score.reason{background:var(--tile);color:var(--muted)}
+.ui-fb{display:grid;grid-template-columns:minmax(0,1fr) 88px 42px;gap:10px;align-items:center;
+  padding:7px 0}
+.ui-fb .fbl{font-size:13.5px;color:var(--ink);min-width:0;display:flex;align-items:center;gap:2px}
+.ui-fb .fbt{height:7px;border-radius:999px;background:var(--tile);overflow:hidden}
+.ui-fb .fbt i{display:block;height:100%;background:var(--primary);border-radius:999px}
+.ui-fb .fbv{font-size:13px;font-weight:700;color:var(--ink);text-align:right;
+  font-variant-numeric:tabular-nums}
+.ui-call{border-radius:var(--r-tile);padding:13px 14px;margin-top:12px}
+.ui-call .ch{display:flex;align-items:center;gap:8px;font-family:var(--label);font-size:12px;
+  font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px}
+.ui-call .ch .ci{display:inline-flex;align-items:center;justify-content:center;width:18px;
+  height:18px;border-radius:50%;font-size:11px;font-weight:800;background:currentColor}
+.ui-call .ch .ci::after{content:attr(data-x)}
+.ui-call .cb{font-size:13.5px;line-height:1.55}
+.ui-call.warn{background:var(--warn-bg);color:var(--warn-fg)}
+.ui-call.warn .cb{color:#6B3109}
+.ui-call.risk{background:var(--risk-bg);color:var(--risk-fg)}
+.ui-call.risk .cb{color:#7C0F2E}
+.ui-call.ok{background:var(--tint);color:var(--primary)}
+.ui-call.ok .cb{color:#0A463F}
+.ui-call .ci{color:#fff}
+.ui-call.warn .ci{background:var(--warn-fg)}
+.ui-call.risk .ci{background:var(--risk-fg)}
+.ui-call.ok .ci{background:var(--primary)}
+.ui-src{font-size:11px;color:var(--muted);margin:10px 0 0}
+/* the i: a 44px reach around a 22px circle */
+.ui-i{display:inline-flex;align-items:center;justify-content:center;width:var(--tap);
+  height:var(--tap);margin:-11px -11px -11px -2px;border:0;background:none;cursor:pointer;
+  flex:0 0 auto}
+.ui-i>span{display:flex;align-items:center;justify-content:center;width:22px;height:22px;
+  border-radius:50%;background:var(--tile);color:var(--muted);font-family:var(--label);
+  font-size:12px;font-weight:700;line-height:1}
+.ui-i:hover>span{background:var(--tint);color:var(--primary)}
+
 /* ---- source tags ----
  Every figure carries the tag of the source it came from, so a badge can never
  be read as covering a number from somewhere else. */
@@ -250,7 +347,14 @@ details.bd[open] summary:before{transform:rotate(90deg)}
   border-style:dashed}
 .pchip.none{background:transparent;color:var(--graphite);border-color:transparent;
   font-style:italic}
-#pipeFirm.on,#floodHide.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+#pipeFirm.on,#floodHide.on,#pipeFirm[aria-pressed="true"],#floodHide[aria-pressed="true"]{
+  background:var(--primary);color:#fff;border-color:var(--primary)}
+.filtercard .toggle{display:flex;gap:8px;border:0;padding:1px}
+.filtercard .toggle button{min-height:var(--tap);padding:9px 15px;border-radius:var(--r-chip);
+  border:1px solid var(--line);background:var(--tile);color:var(--muted);font-family:var(--font);
+  font-size:13.5px;font-weight:600;white-space:nowrap}
+.filtercard .toggle button[aria-pressed="true"]{background:var(--primary);
+  border-color:var(--primary);color:#fff}
 /* ---- flood: a warning, never a number ----
  High renders as a callout rather than a quiet row, because a figure a buyer
  has to hunt for is the opposite of a warning. */
@@ -729,6 +833,256 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--rule);padding:1px 4px;b
 .artlist button[aria-current="true"]{color:var(--ink);font-weight:600;border-left-color:var(--seal);
   background:var(--paper)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* ================= visual rebuild =================
+ Appended last on purpose. 581 rules above reference the old ledger token
+ names, which now alias to the new palette, so they already carry the new
+ colours; what follows changes shape, weight and surface. Overriding by
+ source order rather than rewriting those rules keeps every section working
+ while it is restyled. */
+body{font-family:var(--font);background:var(--bg);color:var(--ink);
+  -webkit-font-smoothing:antialiased;font-size:15px}
+h1,h2,h3,h4{font-family:var(--font);font-weight:700;letter-spacing:-.01em}
+.sechead h1{font-family:var(--font);font-weight:800;font-size:25px;letter-spacing:-.02em}
+kbd,code{font-family:var(--label)}
+
+/* ---- app shell ---- */
+.app{background:var(--bg)}
+.main{padding:0 var(--s-screen) 96px}
+.sec{max-width:760px;margin:0 auto}
+
+/* the Explore header: a white block that owns the top of the screen */
+#sec-explore>.sechead,#sec-listings>.sechead,#sec-shortlist>.sechead,
+#sec-guide>.sechead,#sec-home>.sechead{
+  background:var(--card);border-radius:0 0 24px 24px;
+  margin:0 calc(var(--s-screen)*-1) var(--s-cards);
+  padding:14px var(--s-screen) 18px}
+.sechead p{font-size:13.5px;color:var(--muted);margin-bottom:14px}
+.brandrow{display:flex;align-items:center;gap:9px;padding:6px 0 10px;
+  font-family:var(--label);font-size:11px;font-weight:600;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--muted)}
+.brandrow .bmark{width:26px;height:26px;border-radius:9px;background:var(--primary);
+  color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;
+  font-weight:800;letter-spacing:0}
+
+/* search row with a filled icon button */
+.searchrow{display:flex;gap:9px;align-items:stretch}
+.searchrow .sfield{flex:1;min-width:0;position:relative}
+.searchrow input{width:100%;box-sizing:border-box;font:inherit;font-family:var(--font);
+  font-size:16px;min-height:var(--tap);padding:11px 14px;border:1px solid var(--line);
+  background:var(--tile);color:var(--ink);border-radius:var(--r-tile)}
+.searchrow input:focus{outline:none;border-color:var(--primary);background:var(--card)}
+.searchrow .sgo{width:var(--tap);height:var(--tap);flex:0 0 auto;border:0;cursor:pointer;
+  border-radius:var(--r-tile);background:var(--primary);color:#fff;font-size:16px;
+  display:flex;align-items:center;justify-content:center}
+
+/* ---- cards ---- */
+section.panel{background:var(--card);border-radius:var(--r-card);padding:16px var(--s-in);
+  margin-bottom:var(--s-cards)}
+section.panel.on{display:block}
+.block{border-top:1px solid var(--line);padding-top:16px;margin-top:20px}
+.banner{background:var(--warn-bg);border:0;border-radius:var(--r-tile);
+  color:var(--warn-fg);padding:13px 14px;margin-bottom:var(--s-cards);font-size:13px}
+.note{border-left:3px solid var(--line);color:var(--muted)}
+table{font-size:13.5px}
+th{font-family:var(--label);font-size:11px;font-weight:600;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--muted)}
+td,th{border-color:var(--line)}
+
+/* ---- chips row that scrolls on a phone ---- */
+.chiprow{display:flex;gap:8px;overflow-x:auto;padding:2px 0 4px;
+  scrollbar-width:none;-ms-overflow-style:none}
+.chiprow::-webkit-scrollbar{display:none}
+
+/* ---- the lens toggles become chips ---- */
+.lens{margin:0 0 var(--s-cards);gap:8px}
+.lens>span:first-child{width:100%;font-family:var(--label);font-size:11px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.lens .toggle{display:flex;gap:8px;border:0;overflow-x:auto;max-width:100%;
+  scrollbar-width:none;padding:1px}
+.lens .toggle::-webkit-scrollbar{display:none}
+.lens .toggle button{min-height:var(--tap);padding:9px 15px;border-radius:var(--r-chip);
+  border:1px solid var(--line);background:var(--tile);color:var(--muted);
+  font-family:var(--font);font-size:13.5px;font-weight:600;white-space:nowrap}
+.lens .toggle button[aria-pressed="true"]{background:var(--primary);border-color:var(--primary);
+  color:#fff}
+
+/* ---- map card ---- */
+.mapcard{background:var(--card);border-radius:20px;padding:10px;margin-bottom:var(--s-cards)}
+#heatMap{border-radius:14px;overflow:hidden;border:0}
+.mapnote{font-size:12px;color:var(--muted);padding:9px 4px 2px;gap:4px}
+.hk{display:flex;flex-wrap:wrap;gap:12px;padding:4px 4px 2px;font-size:12px;color:var(--muted)}
+.hk span{display:inline-flex;align-items:center;gap:6px}
+.hk i{width:10px;height:10px;border-radius:50%}
+/* band legend under the map */
+.bandkey{display:flex;gap:16px;flex-wrap:wrap;padding:10px 4px 2px;font-size:12px;
+  color:var(--muted)}
+.bandkey span{display:inline-flex;align-items:center;gap:7px}
+.bandkey i{width:11px;height:11px;border-radius:50%}
+
+/* ---- filter card ---- */
+.filtercard{background:var(--card);border-radius:var(--r-card);padding:4px var(--s-in) 14px;
+  margin-bottom:var(--s-cards)}
+.filtercard .fhead{display:flex;align-items:center;justify-content:space-between;
+  padding:12px 0 2px}
+.filtercard .fhead h3{font-size:15px;font-weight:700;margin:0}
+.filtercard .fsec{border-top:1px solid var(--line);padding:12px 0 2px}
+.filtercard .fsec:first-of-type{border-top:0}
+.filtercard .fsec>.fl{display:block;font-family:var(--label);font-size:11px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+.clearall{border:0;background:none;color:var(--primary);font-family:var(--font);
+  font-size:13px;font-weight:700;cursor:pointer;min-height:var(--tap);padding:0 2px}
+
+/* ---- location cards ---- */
+.loccard{background:var(--card);border-radius:var(--r-card);padding:var(--s-in);
+  margin-bottom:12px;cursor:pointer;display:block;width:100%;text-align:left;
+  border:0;font:inherit;color:inherit}
+.loccard:hover{box-shadow:0 2px 10px rgba(15,23,42,.06)}
+.loccard .lh{display:flex;align-items:flex-start;gap:12px}
+.loccard .ln{flex:1;min-width:0}
+.loccard .ln b{display:block;font-size:16.5px;font-weight:700;letter-spacing:-.01em}
+.loccard .ln span{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+.loccard .lbars{margin-top:10px}
+.loccard .lrank{font-family:var(--label);font-size:11px;font-weight:600;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--muted);margin-top:3px}
+
+/* score circles on the map: the number itself, coloured by band */
+.scoredot{background:none;border:0}
+.scoredot span{display:flex;align-items:center;justify-content:center;width:34px;height:34px;
+  border-radius:50%;font-family:var(--font);font-size:13px;font-weight:800;
+  box-shadow:0 1px 4px rgba(15,23,42,.25);border:2px solid #fff}
+.scoredot.best span{background:var(--primary);color:#fff}
+.scoredot.look span{background:var(--band-mid);color:#fff}
+.scoredot.reason span{background:#94A3B8;color:#fff}
+
+.loccard .lwhy{display:block;font-size:12.5px;color:var(--muted);margin-top:9px;line-height:1.5}
+.loccard .lflood{display:flex;align-items:center;gap:7px;margin-top:10px;padding:8px 11px;
+  border-radius:var(--r-tile);font-size:12.5px;font-weight:600}
+.loccard .lflood i{width:8px;height:8px;border-radius:50%;background:currentColor;flex:0 0 auto}
+.loccard .lflood.high{background:var(--risk-bg);color:var(--risk-fg)}
+.loccard .lflood.medium{background:var(--warn-bg);color:var(--warn-fg)}
+.loccard .lflood.low{background:var(--tint);color:var(--primary)}
+.loccard .rankdelta{font-size:11px;font-weight:700}
+.ranklist{display:block}
+
+/* ---- location panel ---- */
+.badgerow{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.scorestack{display:flex;flex-direction:column;gap:8px;flex:0 0 auto}
+.scorestack .sline{display:flex;align-items:center;gap:10px}
+.scorestack .sline>span{font-size:12px;color:var(--muted);line-height:1.3;display:flex;
+  flex-direction:column}
+.scorestack .sline b{font-size:13px;color:var(--ink);font-weight:700}
+.tile3{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;
+  margin-top:14px}
+.bdhead2{display:grid;grid-template-columns:minmax(0,1fr) 88px 42px;gap:10px;
+  font-family:var(--label);font-size:10.5px;font-weight:600;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--muted);padding-bottom:6px;
+  border-bottom:1px solid var(--line)}
+.bdhead2 span:nth-child(2){text-align:left}.bdhead2 span:nth-child(3){text-align:right}
+.ui-fb .fbw{font-family:var(--label);font-size:10.5px;font-weight:600;color:var(--muted);
+  margin-left:6px}
+@media(max-width:420px){
+  .ui-fb{grid-template-columns:minmax(0,1fr) 56px 36px;gap:7px}
+  .bdhead2{grid-template-columns:minmax(0,1fr) 56px 36px;gap:7px}
+  .scorestack .sline>span{display:none}
+}
+
+.fbrow{border-bottom:1px solid var(--line);padding-bottom:4px}
+.fbrow:last-child{border-bottom:0}
+.fbrow .fbn{font-size:12px;color:var(--muted);margin:0 0 9px;line-height:1.45;
+  padding-right:130px}
+@media(max-width:420px){.fbrow .fbn{padding-right:0}}
+
+/* ---- tuned bar ----
+ It was a flex row with an un-floored flex:1 on a long sentence, which
+ collapsed to one word per line at 375px. It is a card now, and the sentence
+ takes the full width below the label rather than competing with a button. */
+.tuned{border:0;background:var(--card);border-radius:var(--r-card);padding:14px;
+  margin-bottom:var(--s-cards);gap:10px}
+.tuned .tl{font-family:var(--label);font-size:11px;letter-spacing:.06em;color:var(--muted);
+  flex:0 0 100%;margin:0 0 2px}
+.tuned>span:not(.tl){flex:1 1 100%;min-width:0;font-size:13px;line-height:1.5}
+.tuned .chip{border-radius:var(--r-chip);border:1px solid var(--line);background:var(--tile);
+  min-height:var(--tap);padding:9px 14px;font-size:13px;font-weight:600;color:var(--ink)}
+.tuned .chip.ghost{color:var(--muted);border-style:dashed}
+.tuned .chip b{font-weight:700}
+.tuned .act{flex:0 0 auto}
+.tuned .segbar,.tuned .toggle{flex:0 0 auto}
+
+/* ---- masthead: quiet, on the ground, above the white header block ---- */
+header.masthead{padding:14px 0 10px;border-bottom:0}
+.connbar{font-size:12.5px;color:var(--muted);margin-top:0;gap:10px}
+.connbar .act.ghost{min-height:38px;padding:7px 12px;font-size:12.5px}
+.progress{margin-top:12px}
+.sb-count{background:var(--primary);color:#fff;border-radius:999px}
+
+.resh{border-bottom:0;padding-bottom:0;margin:22px 0 10px;align-items:center}
+.resh h3{font-size:17px;font-weight:800;letter-spacing:-.01em}
+.resh small{font-size:12.5px;color:var(--muted)}
+.rescards{gap:12px}
+.rescard{background:var(--card);border:0;border-radius:var(--r-card);padding:var(--s-in)}
+.whyrow{background:var(--tile);border-radius:var(--r-tile);padding:9px 11px;font-size:12.5px}
+.bd{background:var(--tile);border-radius:var(--r-tile);padding:2px 12px}
+.bd summary{padding:11px 0;font-weight:700;font-size:13px}
+
+/* ---- bottom nav ---- */
+@media(max-width:900px){
+  .sidebar{background:var(--card);border-top:0;border-radius:24px 24px 0 0;
+    box-shadow:0 -4px 20px rgba(15,23,42,.08);padding:4px 2px 2px}
+  .sb-item{border-top:0;color:var(--muted);min-height:58px;gap:4px;font-weight:600;
+    font-size:10.5px}
+  .sb-item[aria-current="true"]{border-top-color:transparent;color:var(--primary)}
+  .sb-item[aria-current="true"] .sb-ico{background:var(--tint);border-radius:var(--r-chip)}
+  .sb-ico{display:flex;align-items:center;justify-content:center;width:40px;height:24px;
+    font-size:16px}
+  .main{padding:0 var(--s-screen) 92px}
+}
+/* ---- sidebar on desktop ---- */
+@media(min-width:901px){
+  .sidebar{background:var(--card);border-right:1px solid var(--line);padding:20px 0 16px}
+  .sb-item{border-left:0;border-radius:0 var(--r-chip) var(--r-chip) 0;margin-right:12px;
+    min-height:var(--tap);font-weight:600;color:var(--muted)}
+  .sb-item[aria-current="true"]{background:var(--tint);color:var(--primary);
+    border-left-color:transparent}
+  .sb-brand b{font-family:var(--font);font-weight:800}
+  .main{padding:0 26px 90px}
+  .sec{max-width:820px}
+}
+
+/* ---- buttons ---- */
+.act{font-family:var(--font);font-weight:700;border-radius:var(--r-tile);
+  min-height:var(--tap);padding:10px 16px;border:1px solid var(--primary);
+  background:var(--primary);color:#fff}
+.act.ghost{background:var(--tile);border-color:var(--line);color:var(--ink)}
+.act.small,.act.tiny{min-height:38px;padding:8px 13px;font-size:13px}
+.segmented{display:flex;gap:4px;background:var(--tile);border-radius:var(--r-seg);padding:4px;
+  border:0;width:fit-content;max-width:100%;overflow-x:auto}
+.segmented button{border:0;background:transparent;border-radius:9px;min-height:38px;
+  padding:7px 14px;font-family:var(--font);font-size:13.5px;font-weight:600;color:var(--muted);
+  white-space:nowrap}
+.segmented button[aria-pressed="true"]{background:var(--card);color:var(--ink);
+  box-shadow:0 1px 2px rgba(15,23,42,.08)}
+
+/* ---- slide-over: a bottom sheet on a phone, a panel on desktop ---- */
+.slideover{background:var(--card)}
+@media(max-width:760px){
+  .slideover{left:0;right:0;top:auto;bottom:0;width:auto;max-width:none;height:88vh;
+    border-radius:24px 24px 0 0;transform:translateY(100%)}
+  .slideover.on{transform:translateY(0)}
+  .slideover::before{content:"";position:absolute;top:9px;left:50%;transform:translateX(-50%);
+    width:38px;height:4px;border-radius:999px;background:var(--line)}
+  #soHead{padding-top:18px}
+}
+#soBody{background:var(--bg)}
+#soBody>*{background:transparent}
+/* the panel content sits as cards on the ground rather than one flat sheet */
+#soBody .block,#soBody .grid4,#soBody .commute,#soBody .basisrow{background:var(--card);
+  border-radius:var(--r-card);padding:var(--s-in);margin-top:12px;border-top:0}
+#soBody .grid4{gap:10px}
+#soBody .block h2{margin-top:0}
+.grid4>div{background:var(--tile);border-radius:var(--r-tile);padding:11px 12px}
+.grid4>div small{font-family:var(--label);font-size:11px;font-weight:600;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--muted)}
+
 </style>
 
 <div id="intake" role="dialog" aria-modal="true" aria-label="Set up your search"><button class="pclose" id="intakeClose" aria-label="Close and skip setup" title="Skip setup">✕</button><div class="iwrap" id="iwrap"></div></div>
@@ -777,8 +1131,14 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--rule);padding:1px 4px;b
 
 <section class="sec" id="sec-explore">
   <div class="sechead">
+    <div class="brandrow"><span class="bmark">PD</span>Property Desk</div>
     <h1>Explore Bengaluru</h1>
     <p>Every micro-market on one map. Switch to Search to look up any locality in the city, including the ones outside the researched set.</p>
+    <div class="searchrow" style="margin-bottom:14px">
+      <span class="sfield"><input type="search" id="exQuick" placeholder="Search any locality"
+        autocomplete="off" spellcheck="false" aria-label="Search any locality"></span>
+      <button class="sgo" id="exQuickGo" aria-label="Search">&#9906;</button>
+    </div>
     <div class="segmented" role="group" aria-label="Explore mode">
       <button data-mode="discover" aria-pressed="true">Discover</button>
       <button data-mode="momentum" aria-pressed="false">Momentum</button>
@@ -1769,32 +2129,45 @@ alter publication supabase_realtime add table desk_prefs;</pre>
   <div class="banner"><strong>Read the confidence marks.</strong> Sources disagree hard on Bengaluru area rates — I found Hennur Road quoted at ₹5,800 and ₹8,500 in the same month, and HSR Layout quoted anywhere from ₹7,454 to ₹17,638 depending on whether you look at registered deeds or asking prices. So this shows <em>ranges</em>, not single numbers, and marks how confident each one is. Anything you act on should be re-checked against Kaveri registered transactions for the specific society.</div>
 
   <div class="lens">
-    <span style="font-size:13px;color:var(--graphite)">Colour by</span>
+    <span>Score by</span>
     <span class="toggle">
-      <button data-lens="price" aria-pressed="true">Price growth</button>
-      <button data-lens="rent" aria-pressed="false">Rent growth</button>
-      <button data-lens="stage" aria-pressed="false">Market stage</button>
-      <button data-lens="sweet" aria-pressed="false">Sweet spot</button>
+      <button data-lens="sweet" aria-pressed="true">Overall</button>
+      <button data-lens="price" aria-pressed="false">Price growth</button>
+      <button data-lens="rent" aria-pressed="false">Rental</button>
       <button data-lens="pipe" aria-pressed="false">Pipeline</button>
-      <button data-lens="flood" aria-pressed="false">Flood risk</button>
+      <button data-lens="flood" aria-pressed="false">Flood</button>
+      <button data-lens="stage" aria-pressed="false">Market stage</button>
       <button data-lens="froth" aria-pressed="false">Asking vs registered</button>
     </span>
-    <span class="toggle" style="margin-left:8px">
-      <button data-zf="" aria-pressed="true">All zones</button>
-      <button data-zf="North" aria-pressed="false">North</button>
-      <button data-zf="South" aria-pressed="false">South</button>
-      <button data-zf="East" aria-pressed="false">East</button>
-      <button data-zf="West" aria-pressed="false">West</button>
-      <button data-zf="Central" aria-pressed="false">Central</button>
-    </span>
-    <button class="act ghost small" id="pipeFirm" aria-pressed="false"
-      style="margin-left:8px">Funded or building only</button>
-    <button class="act ghost small" id="floodHide" aria-pressed="false"
-      style="margin-left:8px">Hide high flood risk</button>
   </div>
-  <div id="heatMap"></div>
+  <div class="filtercard">
+    <div class="fhead"><h3>Filter</h3>
+      <button class="clearall" id="exClear" type="button">Clear all</button></div>
+    <div class="fsec"><span class="fl">Zone</span>
+      <span class="toggle chiprow">
+        <button data-zf="" aria-pressed="true">All zones</button>
+        <button data-zf="North" aria-pressed="false">North</button>
+        <button data-zf="South" aria-pressed="false">South</button>
+        <button data-zf="East" aria-pressed="false">East</button>
+        <button data-zf="West" aria-pressed="false">West</button>
+        <button data-zf="Central" aria-pressed="false">Central</button>
+      </span>
+    </div>
+    <div class="fsec"><span class="fl">Pipeline</span>
+      <span class="chiprow">
+        <button class="ui-chip" id="pipeFirm" type="button" aria-pressed="false">Funded or building only</button>
+      </span>
+    </div>
+    <div class="fsec"><span class="fl">Flood risk</span>
+      <span class="chiprow">
+        <button class="ui-chip" id="floodHide" type="button" aria-pressed="false">Hide high flood risk</button>
+      </span>
+    </div>
+  </div>
+  <div class="mapcard"><div id="heatMap"></div></div>
+  <div class="bandkey" id="bandKey"></div>
   <div class="mapnote" id="heatMapNote">
-    <span>Circle colour matches the tiles below · size is the sweet-spot score · click any circle for the full read.</span>
+    <span id="mapHow"></span>
     <span class="warn">Pins are approximate locality centres, for orientation only — not plot boundaries.</span>
     <span>Price growth is Knight Frank's tracked figure for the 17 locations they follow, and portal-derived for the other 69. Open an area to see which.</span>
   </div>
@@ -2167,21 +2540,32 @@ function renderRanked(animate){
  const personal = RANKMODE==='you' && personalised();
  const list=rankedAreas().slice(0,8).map(x=>({a:x.a,s:personalised()&&RANKMODE==='you'?areaFit(x.a):x.s}));
  const prev={}; LASTRANK.forEach((n,i)=>prev[n]=i);
+ /* Location cards, built from the component library: name, zone, score
+    badge, two factor bars and the flood row where a tier exists. */
+ const scorer=personal?areaFit:investScore;
  const rows=list.map((x,i)=>{
   const was=prev[x.a.n];
   const delta=(was===undefined)?null:was-i;
-  /* an area that was not in the list at all is the biggest move there is, so
-     it highlights too even though it has no delta to show */
   const moved=animate&&LASTRANK.length>0&&(delta===null||delta!==0);
   const full=personal?areaFitFull(x.a):null;
   const bits=full?reasonBits(x.a,full):[];
-  return '<div class="rankrow'+(moved?' moved':'')+'" data-openarea="'+esc(x.a.n)+'" style="cursor:pointer">'
-   +'<span class="rk">'+(i+1)+'</span>'
-   +'<span><strong>'+esc(x.a.n)+'</strong>'
-   +((personal&&!inZone(x.a.z))?'<span class="outzone">outside your zones</span>':'')
+  /* the two factors that moved this ranking most, so the bars say something */
+  const top2=(full?full.parts:investFull(x.a).parts).slice(0,2);
+  const fl=floodOf(x.a);
+  return '<button type="button" class="loccard'+(moved?' moved':'')+'" data-openarea="'+esc(x.a.n)+'">'
+   +'<span class="lh"><span class="ln"><b>'+esc(x.a.n)+'</b>'
+   +'<span>'+esc(x.a.z+' Bengaluru · '+x.a.cor)+'</span>'
+   +((personal&&!inZone(x.a.z))?badge('outside your zones','warn'):'')
    +(delta?'<span class="rankdelta'+(delta<0?' dn':'')+'">'+(delta>0?'▲':'▼')+Math.abs(delta)+'</span>':'')
-   +'<div class="rd">'+esc(bits.length?bits.join(' · '):x.a.z+' Bengaluru · '+x.a.cor)+'</div></span>'
-   +'<span class="rf">'+x.s+'</span></div>';
+   +'<span class="lrank">'+rankLabel(x.a,scorer)+'</span>'
+   +'</span>'+scoreBadge(x.s)+'</span>'
+   +'<span class="lbars">'
+   +top2.map(p=>factorBar(esc(p.label),p.v*10,10,(p.v*10).toFixed(1))).join('')
+   +'</span>'
+   +(bits.length?'<span class="lwhy">'+esc(bits.slice(0,2).join(' · '))+'</span>':'')
+   +(fl.tier!=='unknown'?'<span class="lflood '+fl.tier+'">'
+     +'<i></i>Flood risk · '+fl.meta.lab+(fl.pocket?' — '+esc(fl.pocket):'')+'</span>':'')
+   +'</button>';
  }).join('');
  host.innerHTML=(personal?zoneWarnHTML():'')
   +'<div class="resh" style="margin-top:6px"><h3>'
@@ -2319,6 +2703,64 @@ function kfChartHTML(a){
   +'12-month change.</p></div>';
 }
 
+/* ========== component library ==========
+ Nine builders. Everything new renders through these rather than hand-rolling
+ markup, so a radius or a weight changes in one place. They take plain values
+ and return HTML strings — no state, no side effects, safe to call from any
+ render path. Documented in CLAUDE.md under "Component library". */
+
+/* a metric: caps label, big value, optional sub-line */
+function metricTile(label,value,sub){
+ return '<div class="mtile"><span class="ml">'+esc(label)+'</span>'
+  +'<span class="mv">'+value+'</span>'
+  +(sub?'<span class="ms">'+sub+'</span>':'')+'</div>';
+}
+/* tone: ok | neutral | warn | risk */
+function badge(text,tone){
+ return '<span class="ui-badge '+(tone||'neutral')+'">'+esc(text)+'</span>';
+}
+/* options: [{k,lab}] — active = white pill on a tile track */
+function segmented(options,active,attr){
+ return '<div class="ui-seg" role="group">'+options.map(o=>
+  '<button type="button" '+(attr?attr+'="'+esc(o.k)+'"':'')
+  +' aria-pressed="'+(o.k===active)+'">'+esc(o.lab)+'</button>').join('')+'</div>';
+}
+function chip(text,active,icon,attr){
+ return '<button type="button" class="ui-chip'+(active?' on':'')+'"'
+  +(attr?' '+attr:'')+' aria-pressed="'+(!!active)+'">'
+  +(icon?'<span class="ci">'+icon+'</span>':'')+esc(text)+'</button>';
+}
+/* a score, coloured by band, as a rounded square */
+function scoreBadge(n,size){
+ const b=scoreBand(n);
+ return '<span class="ui-score '+b.k+(size==='sm'?' sm':'')+'">'+n+'</span>';
+}
+/* label left, track, value right. max defaults to 10. */
+function factorBar(label,value,max,right){
+ const m=max||10, pct=Math.max(0,Math.min(100,(value/m)*100));
+ return '<div class="ui-fb"><span class="fbl">'+label+'</span>'
+  +'<span class="fbt"><i style="width:'+pct.toFixed(1)+'%"></i></span>'
+  +'<span class="fbv">'+(right!==undefined?right:value.toFixed(1))+'</span></div>';
+}
+/* tone: warn | risk | ok */
+function calloutCard(tone,title,body){
+ const ico={warn:'!',risk:'!',ok:'✓'}[tone]||'!';
+ return '<div class="ui-call '+tone+'"><div class="ch"><span class="ci">'+ico+'</span>'
+  +esc(title)+'</div><div class="cb">'+body+'</div></div>';
+}
+/* NOT called sourceFooter: a provenance footer for a society already owns that
+   name further down, and the later declaration silently wins. */
+function srcFooter(src,asOf){
+ return '<p class="ui-src">'+esc(src)+(asOf?' · '+esc(asOf):'')+'</p>';
+}
+/* the "i". A 44px tap target around a small circle, so it is reachable on a
+   phone without a 44px dot dominating the row. */
+function explainButton(topic,mode,label){
+ return '<button type="button" class="ui-i" data-'+(topic==='flood'?'flooddoc="1"'
+   :(mode==='score'?'sdoc="'+esc(label||'live')+'"':'fdoc="'+esc(topic)+'" data-fmode="'+esc(mode||'live')+'"'))
+  +' aria-label="'+esc(label&&mode!=='score'?label:'What this means')+'"><span>i</span></button>';
+}
+
 /* ========== flood risk: a warning layer, never a score ==========
  This deliberately sits OUTSIDE the scoring and must stay there.
 
@@ -2414,15 +2856,14 @@ const FLOOD_UNKNOWN='Not on any published list — absence of evidence, not '
 function floodRowHTML(a){
  const f=floodOf(a);
  if(f.tier==='high'){
-  return '<div class="floodrow high"><div class="fh">Flood risk · High'+floodInfoBtn()+'</div>'
-   +'<p><strong>'+esc(a.n)+' is named repeatedly on BBMP’s flood-vulnerability '
-   +'lists</strong>'+(f.pocket?', specifically the <strong>'+esc(f.pocket)+'</strong>':'')
+  return calloutCard('risk','Flood risk · High'+floodInfoBtn(),
+   '<p style="margin:0 0 7px">'+esc(a.n)+' is named repeatedly on BBMP’s '
+   +'flood-vulnerability lists'+(f.pocket?', specifically the <strong>'+esc(f.pocket)+'</strong>':'')
    +', and in the 2022, 2024 and 22 May 2026 flooding events.</p>'
-   +'<p class="fwhy">This is <strong>area level</strong>. The real risk is street '
+   +'<p style="margin:0">This is <strong>area level</strong>. The real risk is street '
    +'level, and a flat on high ground here may carry none of it. It is deliberately '
    +'<strong>not in either score</strong> — at this resolution it cannot be judged '
-   +'fairly, and a few points buried in a total would hide it. Check the specific '
-   +'building using the list on any property below.</p>'+floodSrc+'</div>';
+   +'fairly, and a few points buried in a total would hide it.</p>'+floodSrc);
  }
  const body = f.tier==='medium'
   ? '<strong>Localised flooding reported</strong>'+(f.pocket?' — '+esc(f.pocket):'')+'.'
@@ -2730,23 +3171,30 @@ const scoreInfoBtn=m=>'<button class="helpq" data-sdoc="'+m
 /* ---- the investment score, with every factor open to inspection ---- */
 function investHTML(a){
  const f=investFull(a), b=f.band;
+ /* factorBar per row, each with its own explain button, and the sentence
+    saying where the number came from underneath it */
  const rows=f.parts.map(p=>{
   const zone=p.prec.indexOf('ZONE')===0;
-  return '<tr><td>'+esc(p.label)+infoBtn(p.k,'invest')
-   +(zone?'<span class="zonecav">zone level</span>':'')+factorTag(p.k)+'</td>'
-   +'<td class="num">'+Math.round(p.weight*100)+'%</td>'
-   +'<td class="num">'+p.v10.toFixed(1)+'/10</td>'
-   +'<td style="color:var(--graphite);font-size:12.5px">'+esc(p.note)+'</td></tr>';
+  return '<div class="fbrow">'
+   +factorBar(esc(p.label)+explainButton(p.k,'invest',p.label)
+     +(zone?'<span class="zonecav">zone level</span>':'')+factorTag(p.k)
+     +'<span class="fbw">'+Math.round(p.weight*100)+'%</span>',
+     p.v10,10,p.v10.toFixed(1))
+   +'<p class="fbn">'+esc(p.note)+'</p></div>';
  }).join('');
  return '<div class="block"><h2 style="font-size:15px">Investment score'+scoreInfoBtn('invest')+'</h2>'
   +'<div style="display:flex;align-items:baseline;gap:12px;margin-top:8px">'
    +'<div style="font-family:var(--serif);font-size:34px;line-height:1">'+f.score+'</div>'
    +'<div><span style="color:'+b[1]+';font-weight:600">'+b[0]+'</span>'
-    +'<div style="font-size:12px;color:var(--graphite)">80 and up strong · 60–79 steady '
-    +'· under 60 watch</div></div></div>'
+    +'<div style="font-size:12px;color:var(--muted)">80+ best available · 60–79 worth '
+    +'a look · under 60 needs a reason</div></div>'
+    +'<div style="margin-left:auto;text-align:right"><div style="font-family:var(--label);'
+    +'font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;'
+    +'color:var(--muted)">Rank</div><div style="font-size:17px;font-weight:800">'
+    +rankLabel(a,investScore)+'</div></div></div>'
   +'<p style="font-size:12.5px;color:var(--graphite);margin:10px 0 0">'+investSpread()+'</p>'
-  +'<table style="margin-top:12px"><thead><tr><th>Factor</th><th class="num">Weight</th>'
-   +'<th class="num">Score</th><th>Why</th></tr></thead><tbody>'+rows+'</tbody></table>'
+  +'<div class="bdhead2" style="margin-top:14px"><span>Factor and weight</span>'
+   +'<span>Score</span><span>of 10</span></div>'+rows
   +'<p class="note warn" style="margin-top:12px"><strong>Two inputs are zone level.</strong> '
   +'Quarters-to-sell and unsold inventory are published per zone, not per locality, so the demand '
   +'factor describes all of Knight Frank’s '+a.kfZone+' zone — '
@@ -3362,7 +3810,7 @@ const ZONEINFO={
   mean:'The only zone showing a negative move in 2026, at -3.83%. Scarcity asset, not a growth asset.'}
 };
 
-let LENS='price', ZF='', PIPEFIRM=false;
+let LENS='sweet', ZF='', PIPEFIRM=false;
 /* Off by default, and it is the buyer's switch rather than our penalty: the
    tool states the risk and they decide whether it disqualifies a place. */
 let FLOODHIDE=false;
@@ -3695,7 +4143,37 @@ function investSpread(){
   +'Bengaluru now takes '+KFCITY.y2026.qts+' quarters to clear its unsold stock, against '
   +KFCITY.y2024.qts+' two years ago.';
 }
-function investBand(s){return s>=80?['Strong','#2F5D42']:s>=60?['Steady','#4E7D5C']:['Watch','#8A9691'];}
+/* ---- score bands ----
+ The thresholds are unchanged. Only the language is: "strong / steady / watch"
+ read as verdicts on the place, and with nothing reaching 80 this half a city
+ full of "watch" sounded like a broken scale rather than a slow market. These
+ say what the buyer can do with the number instead.
+
+ A rank is carried alongside, because a score against an invisible scale tells
+ nobody anything — "81, 1st of 86" does. */
+const SCORE_BANDS=[
+ {k:'best',  min:80, lab:'Best available', c:'var(--primary)'},
+ {k:'look',  min:60, lab:'Worth a look',   c:'var(--band-mid)'},
+ {k:'reason',min:0,  lab:'Needs a reason', c:'var(--muted)'}
+];
+function scoreBand(n){
+ for(const b of SCORE_BANDS)if(n>=b.min)return b;
+ return SCORE_BANDS[SCORE_BANDS.length-1];
+}
+/* investBand keeps its old shape — [label, colour] — because several call
+   sites destructure it. */
+function investBand(s){const b=scoreBand(s);return [b.lab,b.c,b.k];}
+const ORD=n=>n+(['th','st','nd','rd'][(n%100-n%10!=10)*(n%10<4)*n%10]||'th');
+/* rank of this area on a given scorer, 1 = best. Recomputed rather than
+   cached: the personal score changes with the answers. */
+function rankOf(a,fn){
+ const v=fn(a), all=AREAS.map(fn);
+ return {rank:all.filter(x=>x>v).length+1, of:all.length};
+}
+function rankLabel(a,fn){
+ const r=rankOf(a,fn);
+ return ORD(r.rank)+' of '+r.of;
+}
 function investScore(a){return investFull(a).score;}
 
 /* momentum: the change in the growth RATE between the two Knight Frank
@@ -3813,13 +4291,41 @@ function ensureHeatMap(){
  return true;
 }
 
+function renderMapHow(){
+ const el=document.getElementById('mapHow'); if(!el)return;
+ el.textContent = LENS==='sweet'
+  ? 'Each circle is that area\u2019s investment score, coloured by band. Tap one for the full read.'
+  : 'Circle colour matches the tiles below \u00b7 size is the sweet-spot score \u00b7 tap any circle for the full read.';
+}
+function renderBandKey(){
+ renderMapHow();
+ const el=document.getElementById('bandKey'); if(!el)return;
+ el.style.display = LENS==='sweet' ? '' : 'none';
+ if(LENS!=='sweet'){el.innerHTML='';return;}
+ el.innerHTML=SCORE_BANDS.map(b=>'<span><i style="background:'+b.c+'"></i>'
+  +esc(b.lab)+' \u00b7 '+(b.min>=80?'80+':b.min>=60?'60\u201379':'under 60')+'</span>').join('');
+}
 function renderHeatMap(){
+ renderBandKey();
  if(!ensureHeatMap()){showMapSkeleton();return;}
  hideMapSkeleton();
  HDOTS.clearLayers();
  const list=heatMapAreas();
  list.forEach(a=>{
   const s=sweetScore(a), fill=heatColor(a);
+  /* On the Overall lens the circle carries the score itself, coloured by
+     band, because a coloured dot alone makes the reader look it up. Every
+     other lens keeps the plain dot it had. */
+  if(LENS==='sweet'){
+   const n=investScore(a), b=scoreBand(n);
+   const ic=L.divIcon({className:'scoredot '+b.k, html:'<span>'+n+'</span>',
+     iconSize:[34,34], iconAnchor:[17,17]});
+   const mk=L.marker([a.lat,a.lng],{icon:ic,keyboard:false});
+   mk.bindTooltip(a.n+' \u2014 '+n+' \u00b7 '+b.lab,{direction:'top',offset:[0,-14]});
+   mk.on('click',()=>showArea(a.n));
+   mk.addTo(HDOTS);
+   return;
+  }
   const dot=L.circleMarker([a.lat,a.lng],{
    radius:dotRadius(s), className:'mapdot',
    fillColor:fill, fillOpacity:.88,
@@ -4129,14 +4635,13 @@ function showArea(name){
  const a=AREAS.find(x=>x.n===name); if(!a)return;
  const st=stageOf(a), y=yieldOf(a), bas=priceBasis(a), iv=investFull(a);
  const html=`<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;align-items:flex-start">
-   <div><span class="badge t1">Researched</span>${kfVerified(a)?' <span class="badge t1">Knight Frank track this location</span>':''}
-    <div style="margin-top:7px;font-size:12.5px;color:var(--graphite)">${a.z} Bengaluru · <span style="color:${st[1]};font-weight:600">${st[0]}</span>
-    · ${a.c===2?'well corroborated':a.c===1?'sources give a range':'thin data — verify before acting'}</div></div>
-   <div style="text-align:right;display:flex;gap:18px">
-    <div><div style="font-family:var(--serif);font-size:30px;line-height:1">${iv.score}</div>
-     <small style="color:${iv.band[1]}">investment score${scoreInfoBtn('invest')}</small></div>
-    <div><div style="font-family:var(--serif);font-size:30px;line-height:1">${personalised()?areaFit(a):sweetScore(a)}</div>
-     <small>${personalised()?'personal fit'+scoreInfoBtn('live'):'sweet-spot <button class="helpq" data-help="sweet" aria-label="About the sweet-spot score">?</button>'}</small></div>
+   <div style="min-width:0"><div style="font-size:12.5px;color:var(--muted)">${a.z} Bengaluru · ${esc(a.cor)}</div>
+    <div class="badgerow">${badge('Researched','ok')}${kfVerified(a)?badge('Knight Frank tracked','ok'):''}
+     ${badge(st[0],st[0]==='Prime / boomed'?'warn':'neutral')}
+     ${badge(a.c===2?'well corroborated':a.c===1?'sources give a range':'thin data','neutral')}</div></div>
+   <div class="scorestack">
+    <div class="sline">${scoreBadge(iv.score)}<span><b>Investment</b>${iv.band[0]} · ${rankLabel(a,investScore)}${scoreInfoBtn('invest')}</span></div>
+    ${personalised()?`<div class="sline">${scoreBadge(areaFit(a))}<span><b>Personal fit</b>${scoreBand(areaFit(a)).lab} · ${rankLabel(a,areaFit)}${scoreInfoBtn('live')}</span></div>`:''}
    </div></div>
   <div class="basisrow">
    <div><div class="bl">Basis used on this panel</div>
@@ -4148,13 +4653,21 @@ function showArea(name){
     ${bas.levelWhy?'<br><strong>Not used here:</strong> '+esc(bas.levelWhy)+', so their growth and chart are shown but their level is not used as the basis.':''}
     ${bas.conflict?'<br><span style="color:'+(bas.conflict.good?'var(--moss)':'var(--seal)')+'">'+esc(bas.conflict.t)+'</span>':''}</div>
   </div>
-  <div class="grid4" style="margin-top:14px">
-   <div><small>Asking ₹/sqft ${srcTag('portal')}</small><div style="font-weight:600">₹${a.ask.toLocaleString('en-IN')}<br><span style="font-weight:400;font-size:12px;color:var(--graphite)">portal range ₹${a.lo.toLocaleString('en-IN')}–${a.hi.toLocaleString('en-IN')}</span></div></div>
-   <div><small>Registered deeds ${srcTag('registry')}<button class="helpq" data-help="froth" aria-label="Asking versus registered">?</button></small><div style="font-weight:600">${a.reg?'₹'+a.reg.toLocaleString('en-IN'):'not published'}${frothPct(a)!==null?'<br><span style="font-weight:400;font-size:12px;color:'+(frothPct(a)>=55?'var(--seal)':'var(--graphite)')+'">asking is '+frothPct(a)+'% above</span>':''}</div></div>
-   ${a.kfRange?`<div><small>Transacted range ${srcTag('kf')}</small><div style="font-weight:600">₹${a.kfRange[0].toLocaleString('en-IN')}–${a.kfRange[1].toLocaleString('en-IN')}<br><span style="font-weight:400;font-size:12px;color:var(--graphite)">Knight Frank, H1 2026</span></div></div>`:''}
-   <div><small>Price growth ${srcTag(kfVerified(a)?'kf':'portal')}</small><div style="font-weight:600">${growthOf(a)}% a year<br><span style="font-weight:400;font-size:12px;color:var(--graphite)">${kfVerified(a)?'H1 2026 · was '+a.growth25+'% a year earlier':'portal-derived'}</span></div></div>
-   <div><small>2BHK rent · growth ${srcTag('portal')}</small><div style="font-weight:600">₹${a.rent.toLocaleString('en-IN')} · ${a.ry}%</div></div>
-   <div><small>Yield on ~1,000 sqft ${srcTag('derived')}</small><div style="font-weight:600">${y.toFixed(1)}%<br><span style="font-weight:400;font-size:12px;color:var(--graphite)">on the basis above</span></div></div>
+  <div class="tile3">
+   ${metricTile('Asking ₹/sqft','₹'+a.ask.toLocaleString('en-IN'),
+     'portal range ₹'+a.lo.toLocaleString('en-IN')+'–'+a.hi.toLocaleString('en-IN'))}
+   ${metricTile('Registered deeds', a.reg?'₹'+a.reg.toLocaleString('en-IN'):'not published',
+     frothPct(a)!==null?('asking is '+frothPct(a)+'% above'):'none published here')}
+   ${metricTile('Price growth', growthOf(a)+'% a year',
+     kfVerified(a)?'Knight Frank H1 2026 · was '+a.growth25+'%':'portal-derived')}
+  </div>
+  ${frothPct(a)!==null&&frothPct(a)>=30?calloutCard('warn','Asking runs ahead of deeds',
+    'Sellers here advertise <strong>'+frothPct(a)+'% above</strong> what the sub-registrar actually '
+    +'recorded. Treat the asking rate as an opening position, not a value.'):''}
+  <div class="tile3" style="margin-top:10px">
+   ${a.kfRange?metricTile('Transacted range','₹'+a.kfRange[0].toLocaleString('en-IN')+'–'+a.kfRange[1].toLocaleString('en-IN'),'Knight Frank, H1 2026'):''}
+   ${metricTile('2BHK rent · growth','₹'+a.rent.toLocaleString('en-IN'),a.ry+'% a year')}
+   ${metricTile('Yield on ~1,000 sqft',y.toFixed(1)+'%','on the basis above')}
   </div>
   ${floodRowHTML(a)}
   ${commuteHTML(a)}
@@ -4258,6 +4771,16 @@ function renderSupply(){
   `<tr><td><strong>${z}</strong></td><td class="num">₹${i.avg.toLocaleString('en-IN')}</td>
    <td>${i.launch}</td><td>${i.infra}</td><td>${i.mean}</td></tr>`).join('');
 }
+(function(){
+ const c=document.getElementById('exClear'); if(!c)return;
+ c.addEventListener('click',()=>{
+  /* driven through the existing controls rather than by setting state here,
+     so the filter logic stays in one place */
+  const z=document.querySelector('[data-zf=""]'); if(z&&ZF!=='')z.click();
+  const pf=document.getElementById('pipeFirm'); if(pf&&PIPEFIRM)pf.click();
+  const fh=document.getElementById('floodHide'); if(fh&&FLOODHIDE)fh.click();
+ });
+})();
 (function(){
  const b=document.getElementById('floodHide'); if(!b)return;
  b.addEventListener('click',()=>{
@@ -5707,18 +6230,17 @@ function dropNote(full){
 }
 function breakdownHTML(full,id){
  const mode=full.mode||'live';
- const rows=full.parts.map(p=>
-  '<div class="bdrow"><span>'+esc(p.label)+infoBtn(p.k,mode)
-  +(p.k==='liq'?'<span class="zonecav">zone level</span>':'')+factorTag(p.k)+'</span>'
-  +'<span class="bdbar"><i style="width:'+Math.round(p.v*100)+'%"></i></span>'
-  +'<span class="bdw">'+Math.round(p.weight*100)+'% weight</span>'
-  +'<span class="bdc">'+Math.round(p.contrib*100)+'</span></div>').join('');
+ const rows=full.parts.map(p=>factorBar(
+   esc(p.label)+infoBtn(p.k,mode)
+    +(p.k==='liq'?'<span class="zonecav">zone level</span>':'')+factorTag(p.k)
+    +'<span class="fbw">'+Math.round(p.weight*100)+'%</span>',
+   p.v*10,10,Math.round(p.contrib*100))).join('');
  const pen=full.penalty?'<p class="bdnote"><strong>Commute penalty \u2212'
    +Math.round(full.penalty*100)+'%.</strong> Peak drive to your workplace is '
    +full.commute.mins+' minutes, which is '+commuteBand(full.commute.mins)
    +'. You named a workplace, so this is treated as the binding constraint.</p>':'';
  return '<details class="bd"><summary>How this scored '+full.score+' for you</summary>'
-  +'<div class="bdhead"><span>Component</span><span>Score</span><span>Your weight</span><span>Points</span></div>'
+  +'<div class="bdhead2"><span>Factor and weight</span><span>Score</span><span>Points</span></div>'
   +rows+pen+dropNote(full)
   +'<p class="bdnote">'+(mode==='invest'
     ?'Weights are fixed for the investment score. '

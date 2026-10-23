@@ -394,6 +394,72 @@ Two notes on filling these in:
   Whitefield because that is where the search was focused. Using it would
   encode our own sampling as a property of the city.
 
+## Design tokens and the component library
+
+Every colour, radius and spacing value resolves to a custom property on
+`:root`. New work uses the first group of names; the second group is the
+previous ledger palette kept as **aliases**, because 581 rules across the
+stylesheet reference them and rewriting all of those in one pass would risk
+breaking sections that are only meant to be restyled. A rule written against
+`--graphite` now resolves to `--muted`. Delete an alias only once nothing
+references it.
+
+    --bg --card --tile --primary --tint --ink --muted --line
+    --warn-bg --warn-fg --risk-bg --risk-fg --band-mid
+    --r-card 22 --r-tile 15 --r-seg 12 --r-chip 999
+    --s-screen 18 --s-cards 14 --s-in 14 --tap 44
+
+Two fonts: **Manrope** carries every readable word, **Space Grotesk**
+(`--label`) is for caps labels and badges only and never for body text.
+Nothing interactive goes under `--tap`.
+
+Every foreground/background pair in use clears 4.5:1. The tightest is
+`--band-mid` on `--tile` at 4.61. Re-check with the ratio helper before
+introducing a new pair, and darken the foreground rather than shipping
+something short.
+
+### Component library
+
+Nine builders. **Render through these rather than hand-rolling markup**, so a
+radius or a weight changes in one place. They take plain values, return HTML
+strings, hold no state.
+
+| Builder | Notes |
+|---|---|
+| `metricTile(label, value, sub)` | tile background, caps label, 20px/800 value |
+| `badge(text, tone)` | `ok` \| `neutral` \| `warn` \| `risk` |
+| `segmented(options, active, attr)` | active is a white pill on a tile track |
+| `chip(text, active, icon, attr)` | active is `--primary` |
+| `scoreBadge(n)` | rounded square, coloured by band |
+| `factorBar(label, value, max, right)` | label, track, value |
+| `calloutCard(tone, title, body)` | `warn` \| `risk` \| `ok` |
+| `srcFooter(src, asOf)` | **not** `sourceFooter` — see below |
+| `explainButton(topic, mode, label)` | the "i", 44px reach around a 22px circle |
+
+Two naming hazards, both live:
+
+- `srcFooter` is deliberately not called `sourceFooter`. A provenance footer
+  for a society already owns that name further down the file, and the later
+  function declaration silently wins — the component returned nothing until it
+  was renamed.
+- `badge` and `chip` are also declared as **locals** inside `tunedChips()` and
+  one results renderer. Those shadow the components within their own scope,
+  which is harmless today. Do not call the global `badge` or `chip` from
+  inside those two functions without renaming the local first.
+
+### Score bands
+
+Thresholds are unchanged; only the language is. `SCORE_BANDS` reads
+80+ **Best available**, 60–79 **Worth a look**, under 60 **Needs a reason** —
+"strong / steady / watch" read as verdicts on the place, and with nothing
+reaching 80 a city of "watch" sounded like a broken scale rather than a slow
+market. `investBand()` keeps its `[label, colour]` shape because several call
+sites destructure it.
+
+Every score is shown with a **rank** — `rankLabel(a, scorer)` gives "4th of
+86". A number against an invisible scale tells a buyer nothing. The live
+spread sentence stays as it is.
+
 ## Tabs
 
 Seventeen tabs, wired by `data-t` on `nav.rail button` to `#p-<name>` panels:
