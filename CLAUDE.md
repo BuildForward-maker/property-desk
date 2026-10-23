@@ -198,10 +198,22 @@ either, re-run the script:
   no line, corridor or area in any branch, so new kinds are added as rows
   rather than as code.
 
-  `pipeScore` = the best project's `STATUS_WEIGHT × TYPE_VALUE`, plus half
-  credit for every further project, capped at 10. Status is a multiplier, not
-  a band, because a funded project and an announcement are not the same thing:
-  building 1.0, funded 0.85, approved 0.5, planned 0.25, announced 0.1.
+  `pipeScore` takes the best project at full weight, decays every further one
+  on a log curve, and maps the total through a saturating curve rather than
+  clipping it:
+
+      raw   = value(best) + Σ value(rest) / log2(rank + 2)
+      score = 10 × (1 − exp(−raw / PIPE_SOFT))
+
+  Status is a multiplier, not a band, because a funded project and an
+  announcement are not the same thing: building 1.0, funded 0.85, approved
+  0.5, planned 0.25, announced 0.1. The curve approaches 10 without reaching
+  it, so nothing piles up at a ceiling — a flat half-credit with a hard clip
+  put Hebbal's five projects level with a single Blue Line station.
+  `PIPE_SOFT` is set so the strongest a single project can be lands at 8.0,
+  leaving the top fifth of the scale for areas with more than one. It is
+  emitted into the app as `KFPIPESOFT` so the "funded or building only"
+  re-score cannot drift from the stored value.
   Operational track is **not** pipeline — it is scored separately as current
   infrastructure — and a project whose opening year has passed drops out of
   the pipeline for the same reason. `--as-of=YYYY` reproduces an earlier run

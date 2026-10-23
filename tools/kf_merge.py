@@ -66,7 +66,7 @@ The one measured membership is an operational station inside the area
 lists the areas it serves, by name, so a mis-geocoded pin cannot move a
 project to the wrong part of the city.
 """
-import re, sys, os, datetime
+import re, sys, os, datetime, math
 
 # The year the horizons are measured from. Override with --as-of=YYYY to
 # reproduce an earlier run, or to see what the bands look like further out.
@@ -269,8 +269,24 @@ STATUS_SAYS = {
     'planned':   'planned',
     'announced': 'announced',
 }
-PIPE_CAP = 10.0
-PIPE_EXTRA = 0.5          # half credit for each project beyond the best one
+# A flat half-credit per extra project, hard-clipped at 10, threw away the
+# thing worth knowing: Hebbal has five committed projects including a
+# three-line interchange and landed level with a single Blue Line station,
+# because one metro under construction already maxes the scale.
+#
+# So extras decay on a log curve — the second project is worth far more than
+# the fifth — and the raw total is mapped through a saturating curve rather
+# than clipped:
+#
+#     raw   = value(best) + SUM over the rest of  value / log2(rank + 2)
+#     score = 10 * (1 - exp(-raw / PIPE_SOFT))
+#
+# The curve approaches 10 and never reaches it, so there is no clip and no
+# ceiling for areas to pile up against. PIPE_SOFT is set so the strongest a
+# single project can be — a metro under construction, raw 10 — lands at 8.0,
+# which leaves the top fifth of the scale for areas that have more than one.
+PIPE_SINGLE_BEST_AT = 8.0
+PIPE_SOFT = 10.0 / math.log(1.0 / (1.0 - PIPE_SINGLE_BEST_AT / 10.0))
 
 
 def project_value(pr):
@@ -298,8 +314,10 @@ def pipeline(name, mkm):
     rows.sort(key=lambda pr: (-project_value(pr),
                               pr['opens'] or '9999', pr['key']))
     best = rows[0]
-    score = project_value(best) + PIPE_EXTRA * sum(project_value(pr) for pr in rows[1:])
-    score = min(PIPE_CAP, round(score, 2))
+    raw = project_value(best)
+    for rank, pr in enumerate(rows[1:]):
+        raw += project_value(pr) / math.log(rank + 2, 2)
+    score = round(10.0 * (1.0 - math.exp(-raw / PIPE_SOFT)), 2)
 
     # A date is only ever shown where one has actually been published.
     when = (' opening %s' % _when(best['opens'])) if best['opens'] else ''
@@ -399,7 +417,10 @@ def patch_pipeline(src):
     order = ','.join("'%s'" % k for k in
                      sorted(STATUS_WEIGHT, key=lambda k: -STATUS_WEIGHT[k]))
     block = (PIPE_START + '\nconst KFPIPE={' + ',\n '.join(rows) + '};\n'
-             + 'const KFSTATUS=[' + order + '];\n' + PIPE_END)
+             + 'const KFSTATUS=[' + order + '];\n'
+             # the curve constant, emitted so the app's "funded or building
+             # only" re-score cannot drift from the stored pipeScore
+             + 'const KFPIPESOFT=%.6f;\n' % PIPE_SOFT + PIPE_END)
     a = src.index(PIPE_START)
     b = src.index(PIPE_END) + len(PIPE_END)
     return src[:a] + block + src[b:]
