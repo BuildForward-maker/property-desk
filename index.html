@@ -1102,6 +1102,138 @@ header.masthead{padding:14px 0 10px;border-bottom:0}
 .pfoot{display:flex;gap:18px;justify-content:center;padding:18px 0 30px}
 .pfoot .ilink{font-size:14px;font-weight:700;color:var(--primary)}
 
+/* ---- location analytics ---- */
+.anlhead{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+.anlhead .ah-l{flex:1;min-width:0}
+.anlhead .ah-z{font-size:12.5px;color:var(--muted)}
+.anlhead h2{font-size:24px;font-weight:800;letter-spacing:-.02em;margin:2px 0 0}
+.bandbar{margin:4px 0 8px}
+.bb-track{position:relative;display:block;height:8px;border-radius:999px;overflow:visible;
+  background:var(--tile)}
+.bb-track i{position:absolute;top:0;height:8px;display:block}
+.bb-track .bb-r{left:0;width:60%;background:#CBD5E1;border-radius:999px 0 0 999px}
+.bb-track .bb-a{left:60%;width:20%;background:#F0C98A}
+.bb-track .bb-g{left:80%;width:20%;background:var(--primary);border-radius:0 999px 999px 0}
+.bb-track b{position:absolute;top:-4px;width:3px;height:16px;border-radius:2px;
+  background:var(--ink);transform:translateX(-1.5px);box-shadow:0 0 0 2px #fff}
+.bb-ends{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);
+  margin-top:5px;font-family:var(--label)}
+.anlband{font-size:13.5px;color:var(--muted);margin:0 0 4px}
+.anlsub{font-size:12.5px;color:var(--muted);margin:6px 0 10px}
+/* three-year columns, divs only */
+.colchart{display:flex;align-items:flex-end;gap:12px;height:150px;margin-top:12px;
+  padding:0 2px}
+.colchart .col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;
+  align-items:center;height:100%;min-width:0}
+.colchart .col b{display:block;width:100%;max-width:70px;background:var(--primary);
+  border-radius:10px 10px 0 0;min-height:4px}
+.colchart .col:last-child b{background:var(--ink)}
+.colchart .col em{font-style:normal;font-size:12px;font-weight:700;margin-top:7px;
+  white-space:nowrap}
+.colchart .col i{font-style:normal;font-family:var(--label);font-size:10.5px;
+  color:var(--muted);margin-top:2px}
+.emptystate{background:var(--tile);border-radius:var(--r-tile);padding:14px;margin-top:10px}
+.emptystate b{display:block;font-size:14px;margin-bottom:6px}
+.emptystate p{font-size:13px;color:var(--muted);line-height:1.55;margin:0}
+/* against the city */
+.vsrow{display:grid;grid-template-columns:minmax(0,1fr) 110px 86px;gap:10px;align-items:center;
+  padding:9px 0;border-bottom:1px solid var(--line-soft)}
+.vsrow:last-child{border-bottom:0}
+.vsrow .vl{font-size:13.5px;min-width:0}
+.vsrow .vl em{display:block;font-style:normal;font-size:12px;color:var(--muted);margin-top:2px}
+.vsrow .vt{position:relative;height:8px;border-radius:999px;background:var(--tile);display:block}
+.vsrow .vt i{position:absolute;left:0;top:0;height:8px;background:var(--primary);
+  border-radius:999px;display:block}
+.vsrow .vt u{position:absolute;left:50%;top:-4px;width:2px;height:16px;background:var(--ink);
+  opacity:.55;text-decoration:none;display:block}
+.vsrow .vd{font-size:12px;font-weight:700;text-align:right;color:var(--muted)}
+.vsrow .vd.up{color:var(--primary)}.vsrow .vd.dn{color:var(--band-mid)}
+/* similar */
+.simrow{display:flex;gap:9px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.simrow::-webkit-scrollbar{display:none}
+.simtile{display:flex;align-items:center;gap:9px;background:var(--tile);border:0;
+  border-radius:var(--r-tile);padding:10px 12px;cursor:pointer;font-family:var(--font);
+  text-align:left;min-height:var(--tap);flex:0 0 auto}
+.simtile span{min-width:0}
+.simtile b{display:block;font-size:13.5px;font-weight:700}
+.simtile span{font-size:11.5px;color:var(--muted)}
+@media(max-width:420px){
+  .vsrow{grid-template-columns:minmax(0,1fr) 72px 62px;gap:8px}
+  .vsrow .vd{font-size:11px}
+}
+
+/* ---- investor terminal ---- */
+.termnote{display:none}
+.termgrid{display:grid;grid-template-columns:232px minmax(0,1fr);gap:var(--s-cards);
+  align-items:start}
+.termrail{background:var(--card);border-radius:var(--r-card);padding:4px 14px 14px;
+  position:sticky;top:12px}
+.termrail .fsec{border-top:1px solid var(--line);padding:11px 0 2px}
+.termrail .fsec:first-of-type{border-top:0}
+.termrail .fl{display:block;font-family:var(--label);font-size:10.5px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.tchips{display:flex;flex-wrap:wrap;gap:5px}
+.tchips .ui-chip{min-height:32px;padding:5px 10px;font-size:12px;border-radius:var(--r-chip)}
+.termmain{min-width:0;display:flex;flex-direction:column;gap:var(--s-cards)}
+.termstats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.tpanel{background:var(--card);border-radius:var(--r-card);padding:var(--s-in)}
+.tpanel h3{font-size:15px;font-weight:700;margin:0}
+/* scatter, positioned divs */
+.scatwrap{display:grid;grid-template-columns:52px minmax(0,1fr);grid-template-rows:300px auto;
+  gap:6px;margin-top:8px}
+.scatY{display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;
+  font-family:var(--label);font-size:10.5px;color:var(--muted);padding:2px 0}
+.scatplot{position:relative;background:var(--tile);border-radius:var(--r-tile);overflow:hidden}
+.scatplot .quad{position:absolute;background:var(--tint);opacity:.65}
+.scatplot .gx,.scatplot .gy{position:absolute;background:var(--line);display:block}
+.scatplot .gx{top:0;bottom:0;width:1px}
+.scatplot .gy{left:0;right:0;height:1px}
+.scatplot .qlab{position:absolute;font-family:var(--label);font-size:9.5px;
+  letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding:6px 8px;
+  pointer-events:none}
+.qlab.tl{top:0;left:0}.qlab.tr{top:0;right:0}.qlab.bl{bottom:0;left:0}.qlab.br{bottom:0;right:0}
+.sdot{position:absolute;transform:translate(-50%,50%);width:30px;height:30px;border-radius:50%;
+  border:2px solid #fff;font-family:var(--font);font-size:11.5px;font-weight:800;color:#fff;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 1px 4px rgba(15,23,42,.22);padding:0}
+.sdot.best{background:var(--primary)}
+.sdot.look{background:var(--band-mid)}
+.sdot.reason{background:#94A3B8}
+.sdot:hover{z-index:3;transform:translate(-50%,50%) scale(1.18)}
+.scatX{grid-column:2;display:flex;justify-content:space-between;font-family:var(--label);
+  font-size:10.5px;color:var(--muted)}
+/* table */
+.termtable{max-height:460px;overflow:auto;margin-top:8px}
+.termtable table{font-size:12.5px}
+.termtable th{position:sticky;top:0;background:var(--card);z-index:1;padding:0}
+.thsort{border:0;background:none;font-family:var(--label);font-size:10.5px;font-weight:600;
+  letter-spacing:.05em;text-transform:uppercase;color:var(--muted);cursor:pointer;
+  padding:9px 6px;width:100%;text-align:inherit}
+.thsort.on{color:var(--primary)}
+.thsort i{font-style:normal;margin-left:3px}
+.termtable tbody tr{cursor:pointer}
+.termtable tbody tr:hover{background:var(--tile)}
+/* zone panels */
+.termpanels{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-cards)}
+.zbar{display:grid;grid-template-columns:96px minmax(0,1fr) 78px;gap:9px;align-items:center;
+  padding:6px 0}
+.zbar .zl{font-size:12.5px;display:flex;align-items:center;gap:5px}
+.zbar .zt{height:9px;border-radius:999px;background:var(--tile);display:block}
+.zbar .zt i{display:block;height:100%;border-radius:999px;background:var(--primary)}
+.zbar .zt i.warn{background:var(--band-mid)}
+.zbar .zv{font-size:12px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+.zbar .zv em{font-style:normal;font-weight:500;color:var(--muted);font-size:11px}
+@media(max-width:900px){
+  .termgrid{display:block}
+  .termrail,.termmain{display:none}
+  .termnote{display:block;background:var(--card);border-radius:var(--r-card);
+    padding:18px;font-size:14px;color:var(--muted);line-height:1.6}
+}
+@media(max-width:1180px){
+  .termstats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .termpanels{grid-template-columns:1fr}
+}
+
 /* ---- bottom nav ---- */
 @media(max-width:900px){
   .sidebar{background:var(--card);border-top:0;border-radius:24px 24px 0 0;
@@ -1220,12 +1352,14 @@ header.masthead{padding:14px 0 10px;border-bottom:0}
     <div class="segmented" role="group" aria-label="Explore mode">
       <button data-mode="discover" aria-pressed="true">Discover</button>
       <button data-mode="momentum" aria-pressed="false">Momentum</button>
+      <button data-mode="terminal" aria-pressed="false">Terminal</button>
       <button data-mode="search" aria-pressed="false">Search</button>
     </div>
   </div>
   <div id="tunedBar"></div>
   <div id="rankedPane"></div>
   <div id="momentumPane" style="display:none"></div>
+  <div id="termPane" style="display:none"></div>
   <div id="searchPane" style="display:none">
     <div class="searchwrap">
       <input type="search" id="locSearch" placeholder="Search any locality" autocomplete="off" spellcheck="false">
@@ -3007,6 +3141,7 @@ const FACTOR_DOC={
    +'make this trip twice a day for years. The investment score drops it '
    +'entirely — an investor does not make the trip. Tech park access carries '
    +'that weight there instead.',
+  not:'A modelled peak, not measured traffic, and only to the hub you named — not to a school, a parent’s house or anywhere else you go every week.',
   level:'area'},
  infra:{
   what:'Transport that already runs here, rather than transport that is '
@@ -3027,6 +3162,7 @@ const FACTOR_DOC={
    +'uses it from the day they move in. It exists in both scores on purpose: '
    +'without it, "what is coming" could only ever reward places that lack '
    +'transport, and a well-served area scored zero for needing nothing.',
+  not:'Metro only. <strong>Buses are not in it</strong>, and nor are roads, hospitals, schools, water or power. Read it as transport on rails and nothing wider.',
   level:'area'},
  budget:{
   what:'Whether a typical 1,000 sqft flat here lands inside the ceiling you '
@@ -3037,6 +3173,7 @@ const FACTOR_DOC={
    +'registered deeds and asking quotes.',
   why:'Only in the self-use score. An investor is buying an asset at whatever '
    +'price clears, so the sweet-spot factor does this job for them instead.',
+  not:'The cost of a typical 1,000 sqft flat in the area, not of any particular flat. It knows nothing about the unit you are actually looking at, its floor, or its view.',
   level:'area'},
  live:{
   what:'How pleasant the area is to live in, as a single hand-assigned score.',
@@ -3056,6 +3193,7 @@ const FACTOR_DOC={
    +'CBD, which would have double-counted commute. The 8% went to the other '
    +'factors in proportion. If flooding and air-quality data ever arrive this '
    +'should grow again — an area that floods rents badly and sells worse.',
+  not:'Almost everything. It is one hand-assigned number per locality, it recognises 41 of 86 areas, and it is built from no flooding, water, air or tree-cover data at all.',
   level:'area'},
  pipe:{
   what:'Infrastructure that is committed but not yet running, scored by how '
@@ -3068,6 +3206,7 @@ const FACTOR_DOC={
   why:'Higher for an investor (15%) than a resident (11%). An investor holds for '
    +'years, so what is committed matters more than what exists; a resident has '
    +'to live here in the meantime.',
+  not:'Whether a project will actually open on the date published. Dates slip, and this scores the promise and its status, not the delivery record of whoever made it.',
   level:'area'},
  tech:{
   what:'How many major employment clusters are within reach, and how far the '
@@ -3080,6 +3219,7 @@ const FACTOR_DOC={
    +'so whoever will rent or buy this flat is the whole demand engine. For a '
    +'resident it is 8% — useful if they change jobs, but they already named '
    +'the workplace that matters.',
+  not:'Where the jobs actually are. It measures drive time to three fixed clusters, so an employer outside those three is invisible to it.',
   level:'area'},
  growth:{
   what:'How fast prices here have risen over the last twelve months.',
@@ -3089,6 +3229,7 @@ const FACTOR_DOC={
   why:'20% for an investor, who is buying the rise. Still 8% for a resident, '
    +'because <strong>they will sell one day too</strong> — leaving it out of the '
    +'self-use score pretended that a home is never an asset.',
+  not:'What happens next. It is twelve months behind, and for the 69 areas Knight Frank do not track it is a portal reading rather than a transaction one.',
   level:'area'},
  liq:{
   what:'How long it takes this market to clear its unsold stock — "quarters to '
@@ -3097,6 +3238,7 @@ const FACTOR_DOC={
   from:'Knight Frank Research, H1 2026, with the year before for comparison.',
   why:'9% for an investor, who needs an exit. 4% for a resident, who mostly '
    +'needs to know they could leave if life changes.',
+  not:'This street, this building or this flat. It describes an entire Knight Frank zone, which may hold thirty micro-markets that behave nothing like each other.',
   level:'zone'},
  rent:{
   what:'What the flat would earn if let, as a percentage of what it cost — and '
@@ -3105,6 +3247,7 @@ const FACTOR_DOC={
    +'basis shown on the panel.',
   why:'18% for an investor, who is paid by rent twice over, in the yield and in '
    +'its growth. 3% for a resident, who may never let it out at all but might.',
+  not:'Vacancy. A high yield on paper means nothing if the flat sits empty for four months, and nothing here measures how long letting takes.',
   level:'area'},
  sweet:{
   what:'Whether this area is in the top fifth of the city on price growth AND '
@@ -3113,6 +3256,7 @@ const FACTOR_DOC={
    +'read off all 86 researched areas, so they move when the market does.',
   why:'Investor only, at 8%. For a resident, budget fit asks the version of this '
    +'question that affects them.',
+  not:'Why something is cheap. An area can be in the cheapest two-fifths because nobody wants to live there, and this factor cannot tell that apart from a bargain.',
   level:'area'}
 };
 const FLOOD_DOC={t:'Flood risk',
@@ -3189,6 +3333,8 @@ function factorDocHTML(k,mode){
    +'<div class="wcmp"><span><b>'+Math.round((here||0)*100)+'%</b>on this score</span>'
    +'<span><b>'+(there?Math.round(there*100)+'%':'not used')+'</b>on the '+otherName+' score</span></div>'
    +'<p style="font-size:13.5px;line-height:1.6;margin-top:10px">'+d.why+'</p></div>'
+  +(d['not']?'<div class="block"><h2 style="font-size:14px">What it does not cover</h2>'
+   +'<p style="font-size:13.5px;line-height:1.6;margin-top:8px">'+d['not']+'</p></div>':'')
   +'<div class="block"><h2 style="font-size:14px">What it describes</h2>'
    +'<p style="font-size:13.5px;line-height:1.6;margin-top:8px">'
    +(d.level==='zone'
@@ -3285,12 +3431,234 @@ function investHTML(a){
   +'infrastructure dates come from '+esc(KFSRC)+', as of '+esc(a.kfAsOf)+'.</p></div>';
 }
 
+/* ========== investor terminal ==========
+ Desktop only and dense on purpose: this is the analyst view, not the buyer's.
+ On a phone it says so rather than reflowing a scatter and a nine-column table
+ into something unreadable.
+
+ Every chart is positioned divs. The filters here are the terminal's own and
+ touch no global state, so nothing in Explore or Listings moves when they do. */
+/* The Knight Frank zone table, derived from the fields already on AREAS rather
+   than restated as a second copy that could drift from them. */
+/* Built on first use, not at load: this block sits above the AREAS literal and
+   an eager IIFE here reads it inside its temporal dead zone and throws. */
+let _KFZONE=null;
+function kfZoneTable(){
+ if(_KFZONE)return _KFZONE;
+ const out={};
+ AREAS.forEach(a=>{
+  if(!a.kfZone||out[a.kfZone])return;
+  out[a.kfZone]={unsold:a.zoneUnsold,qts:a.qts,qtsPrev:a.qtsPrev,thin:!!a.qtsThin};
+ });
+ _KFZONE=out; return out;
+}
+let TERMF={zone:'',band:'',seg:'',minScore:0,pipe:'',flood:false,sweet:false};
+let TERMSORT={k:'score',dir:-1};
+
+function termRows(){
+ return AREAS.filter(a=>{
+  if(TERMF.zone&&a.z!==TERMF.zone)return false;
+  if(TERMF.minScore&&investScore(a)<TERMF.minScore)return false;
+  if(TERMF.flood&&floodOf(a).tier==='high')return false;
+  if(TERMF.sweet&&sweetSpotScore(a).v<10)return false;
+  if(TERMF.pipe){
+   const keys=(a.pipeList||[]).filter(k=>KFPIPE[k]&&KFPIPE[k].s===TERMF.pipe);
+   if(!keys.length)return false;
+  }
+  if(TERMF.band){
+   const v=basisVal(a)*1000;
+   if(TERMF.band==='u1'&&v>10000000)return false;
+   if(TERMF.band==='1-2'&&(v<=10000000||v>20000000))return false;
+   if(TERMF.band==='2+'&&v<=20000000)return false;
+  }
+  if(TERMF.seg){
+   const has=SOC.some(s=>{const ar=areaForSoc(s); return ar&&ar.n===a.n&&s.seg===TERMF.seg;});
+   if(!has)return false;
+  }
+  return true;
+ });
+}
+const termMedian=(rows,fn)=>{
+ const v=rows.map(fn).filter(x=>typeof x==='number'&&isFinite(x)).sort((a,b)=>a-b);
+ if(!v.length)return null;
+ const m=Math.floor(v.length/2);
+ return v.length%2?v[m]:(v[m-1]+v[m])/2;
+};
+const termAvg=(rows,fn)=>{
+ const v=rows.map(fn).filter(x=>typeof x==='number'&&isFinite(x));
+ return v.length? v.reduce((a,b)=>a+b,0)/v.length : null;
+};
+
+function termFilters(){
+ const o=(k,v,lab)=>'<button type="button" class="ui-chip'+(TERMF[k]===v?' on':'')
+   +'" data-tf="'+k+'" data-tv="'+esc(String(v))+'">'+esc(lab)+'</button>';
+ const sec=(lab,body)=>'<div class="fsec"><span class="fl">'+lab+'</span>'
+   +'<div class="tchips">'+body+'</div></div>';
+ return '<div class="termrail">'
+  +'<div class="fhead"><h3>Filters</h3>'
+  +'<button class="clearall" type="button" id="termClear">Clear all</button></div>'
+  +sec('Zone', o('zone','','All')+ZONES5.map(z=>o('zone',z,z)).join(''))
+  +sec('Price band', o('band','','Any')+o('band','u1','Under 1 Cr')
+      +o('band','1-2','1–2 Cr')+o('band','2+','Over 2 Cr'))
+  +sec('Segment', o('seg','','Any')+['resale','nearpossession','construction','launch','plotted']
+      .map(k=>o('seg',k,SEGLAB(k))).join(''))
+  +sec('Minimum score', [0,40,50,60,70].map(v=>
+      '<button type="button" class="ui-chip'+(TERMF.minScore===v?' on':'')
+      +'" data-tf="minScore" data-tv="'+v+'">'+(v?v+'+':'Any')+'</button>').join(''))
+  +sec('Pipeline status', o('pipe','','Any')
+      +['building','funded','approved','planned'].map(k=>o('pipe',k,k)).join(''))
+  +sec('Risk', '<button type="button" class="ui-chip'+(TERMF.flood?' on':'')
+      +'" data-tfb="flood">Hide high flood risk</button>'
+      +'<button type="button" class="ui-chip'+(TERMF.sweet?' on':'')
+      +'" data-tfb="sweet">Only sweet spots</button>')
+  +'</div>';
+}
+function termStats(rows){
+ const med=termMedian(rows,a=>basisVal(a)*1000);
+ const g=termAvg(rows,a=>growthOf(a)), y=termAvg(rows,a=>yieldOf(a));
+ return '<div class="termstats">'
+  +metricTile('Matching', String(rows.length), 'of '+AREAS.length+' researched')
+  +metricTile('Median entry', med!==null?cr(med):'—', 'a 1,000 sqft flat, all in')
+  +metricTile('Average growth', g!==null?g.toFixed(1)+'%':'—', 'twelve months')
+  +metricTile('Average yield', y!==null?y.toFixed(1)+'%':'—', 'gross, on the basis')
+  +'</div>';
+}
+/* ---- scatter: growth against entry price, positioned divs ---- */
+function termScatter(rows){
+ if(!rows.length)return '<div class="emptystate"><b>Nothing matches these filters.</b>'
+  +'<p>Clear one and try again.</p></div>';
+ const xs=rows.map(a=>basisVal(a)), ys=rows.map(a=>growthOf(a));
+ const xMin=Math.min.apply(null,xs), xMax=Math.max.apply(null,xs);
+ const yMin=Math.min.apply(null,ys), yMax=Math.max.apply(null,ys);
+ const xSpan=(xMax-xMin)||1, ySpan=(yMax-yMin)||1;
+ const xMed=termMedian(rows,a=>basisVal(a)), yMed=termMedian(rows,a=>growthOf(a));
+ const px=v=>((v-xMin)/xSpan)*100, py=v=>((v-yMin)/ySpan)*100;
+ const dots=rows.map(a=>{
+  const n=investScore(a), b=scoreBand(n);
+  return '<button type="button" class="sdot '+b.k+'" data-openanl="'+esc(a.n)+'" '
+   +'style="left:'+px(basisVal(a)).toFixed(2)+'%;bottom:'+py(growthOf(a)).toFixed(2)+'%" '
+   +'title="'+esc(a.n)+' — ₹'+Math.round(basisVal(a)).toLocaleString('en-IN')
+   +'/sqft, '+growthOf(a)+'% growth, score '+n+'">'+n+'</button>';
+ }).join('');
+ return '<div class="scatwrap">'
+  +'<div class="scatY"><span>'+yMax+'%</span><span>'+yMin+'%</span></div>'
+  +'<div class="scatplot">'
+   +'<div class="quad" style="left:0;bottom:'+py(yMed).toFixed(2)+'%;'
+     +'width:'+px(xMed).toFixed(2)+'%;height:'+(100-py(yMed)).toFixed(2)+'%"></div>'
+   +'<i class="gx" style="left:'+px(xMed).toFixed(2)+'%"></i>'
+   +'<i class="gy" style="bottom:'+py(yMed).toFixed(2)+'%"></i>'
+   +'<span class="qlab tl">Cheap and climbing</span>'
+   +'<span class="qlab tr">Dear and climbing</span>'
+   +'<span class="qlab bl">Cheap and flat</span>'
+   +'<span class="qlab br">Dear and flat</span>'
+   +dots+'</div>'
+  +'<div class="scatX"><span>₹'+Math.round(xMin).toLocaleString('en-IN')+'</span>'
+  +'<span>price per sqft →</span>'
+  +'<span>₹'+Math.round(xMax).toLocaleString('en-IN')+'</span></div></div>';
+}
+const TERMCOLS=[
+ ['n','Location','t'],['z','Zone','t'],['ask','Asking','n'],['reg','Registered','n'],
+ ['growth','Growth','n'],['rent','Rent','n'],['yld','Yield','n'],['qts','QTS','n'],
+ ['score','Score','n']
+];
+const termVal=(a,k)=>({n:a.n,z:a.z,ask:a.ask,reg:a.reg||0,growth:growthOf(a),
+  rent:a.rent,yld:yieldOf(a),qts:a.qts,score:investScore(a)})[k];
+function termTable(rows){
+ const sorted=rows.slice().sort((x,y)=>{
+  const A=termVal(x,TERMSORT.k), B=termVal(y,TERMSORT.k);
+  if(typeof A==='string')return A.localeCompare(B)*TERMSORT.dir;
+  return (A-B)*TERMSORT.dir;
+ });
+ const head=TERMCOLS.map(c=>'<th class="'+(c[2]==='n'?'num':'')+'">'
+  +'<button type="button" class="thsort'+(TERMSORT.k===c[0]?' on':'')+'" data-ts="'+c[0]+'">'
+  +esc(c[1])+(TERMSORT.k===c[0]?'<i>'+(TERMSORT.dir>0?'↑':'↓')+'</i>':'')
+  +'</button></th>').join('');
+ const body=sorted.map(a=>'<tr data-openanl="'+esc(a.n)+'">'
+  +'<td><b>'+esc(a.n)+'</b></td><td>'+esc(a.z)+'</td>'
+  +'<td class="num">₹'+a.ask.toLocaleString('en-IN')+'</td>'
+  +'<td class="num">'+(a.reg?'₹'+a.reg.toLocaleString('en-IN'):'—')+'</td>'
+  +'<td class="num">'+growthOf(a)+'%</td>'
+  +'<td class="num">₹'+(a.rent/1000)+'k</td>'
+  +'<td class="num">'+yieldOf(a).toFixed(1)+'%</td>'
+  +'<td class="num">'+a.qts+'</td>'
+  +'<td class="num">'+scoreBadge(investScore(a),'sm')+'</td></tr>').join('');
+ return '<div class="scroller termtable"><table><thead><tr>'+head+'</tr></thead>'
+  +'<tbody>'+body+'</tbody></table></div>';
+}
+/* ---- supply and liquidity, from the Knight Frank zone table ---- */
+function termZonePanels(){
+ const K=kfZoneTable(), zs=Object.keys(K);
+ const maxU=Math.max.apply(null,zs.map(z=>K[z].unsold));
+ const supply=zs.map(z=>{const d=K[z];
+  return '<div class="zbar"><span class="zl">'+esc(z)+'</span>'
+   +'<span class="zt"><i style="width:'+Math.round((d.unsold/maxU)*100)+'%"></i></span>'
+   +'<span class="zv">'+d.unsold.toLocaleString('en-IN')+'</span></div>';}).join('');
+ const maxQ=Math.max.apply(null,zs.map(z=>K[z].qts));
+ const liq=zs.map(z=>{const d=K[z];
+  const worse=d.qts>d.qtsPrev;
+  return '<div class="zbar"><span class="zl">'+esc(z)
+   +(d.thin?badge('thin','warn'):'')+'</span>'
+   +'<span class="zt"><i class="'+(worse?'warn':'')+'" style="width:'
+   +Math.round((d.qts/maxQ)*100)+'%"></i></span>'
+   +'<span class="zv">'+d.qts+' <em>'+(worse?'↑':'↓')+d.qtsPrev+'</em></span></div>';}).join('');
+ return '<div class="termpanels">'
+  +'<div class="tpanel"><h3>Unsold inventory by zone</h3>'
+  +'<p class="anlsub">Homes built and not yet sold, H1 2026. These are Knight Frank’s '
+  +'five zones, not the ones this tool filters by.</p>'+supply
+  +srcFooter('Knight Frank Research','H1 2026')+'</div>'
+  +'<div class="tpanel"><h3>Quarters to sell by zone</h3>'
+  +'<p class="anlsub">How long each zone takes to clear its stock, against a year earlier. '
+  +'The city figure is '+KFCITY.y2026.qts+', up from '+KFCITY.y2024.qts+' two years ago.</p>'+liq
+  +srcFooter('Knight Frank Research','H1 2026')+'</div></div>';
+}
+function renderTerminal(){
+ const host=document.getElementById('termPane'); if(!host)return;
+ if(EXMODE!=='terminal'){host.innerHTML='';return;}
+ const rows=termRows();
+ host.innerHTML='<div class="termnote">The terminal is built for a wide screen. '
+   +'On a phone the scatter and the nine-column table cannot be read, so they are not drawn.</div>'
+  +'<div class="termgrid">'+termFilters()
+  +'<div class="termmain">'+termStats(rows)
+  +'<div class="tpanel"><h3>Growth against entry price</h3>'
+  +'<p class="anlsub">Each circle is a location, placed on what it costs and how fast it has '
+  +'risen, coloured by score band. The shaded quadrant is cheap and climbing.</p>'
+  +termScatter(rows)+srcFooter('Knight Frank H1 2026 where tracked, portal-derived elsewhere','')
+  +'</div>'
+  +'<div class="tpanel"><h3>All '+rows.length+' matching locations</h3>'
+  +'<p class="anlsub">Tap a heading to sort. Tap a row for the full read.</p>'
+  +termTable(rows)+srcFooter('Mixed sources — open any location for its own provenance','')
+  +'</div>'
+  +termZonePanels()
+  +'</div></div>';
+ wireTerminal();
+}
+function wireTerminal(){
+ const host=document.getElementById('termPane'); if(!host)return;
+ host.querySelectorAll('[data-tf]').forEach(b=>b.addEventListener('click',()=>{
+  const k=b.dataset.tf, v=b.dataset.tv;
+  TERMF[k]= k==='minScore' ? +v : v;
+  renderTerminal();}));
+ host.querySelectorAll('[data-tfb]').forEach(b=>b.addEventListener('click',()=>{
+  TERMF[b.dataset.tfb]=!TERMF[b.dataset.tfb]; renderTerminal();}));
+ const c=host.querySelector('#termClear');
+ if(c)c.addEventListener('click',()=>{
+  TERMF={zone:'',band:'',seg:'',minScore:0,pipe:'',flood:false,sweet:false};
+  renderTerminal();});
+ host.querySelectorAll('[data-ts]').forEach(b=>b.addEventListener('click',()=>{
+  const k=b.dataset.ts;
+  if(TERMSORT.k===k)TERMSORT.dir=-TERMSORT.dir;
+  else TERMSORT={k:k,dir:k==='n'||k==='z'?1:-1};
+  renderTerminal();}));
+ host.querySelectorAll('[data-openanl]').forEach(b=>b.addEventListener('click',()=>
+  locAnalytics(b.dataset.openanl)));
+}
+
 /* ---- Explore: Discover | Momentum | Search ----
  Only Discover owns the map and the portal tables. Momentum is the Knight Frank
  view and deliberately shows a smaller set, so it hides everything that would
  imply city-wide coverage. */
 function setExploreMode(m){
- if(['discover','momentum','search'].indexOf(m)<0)m='discover';
+ if(['discover','momentum','search','terminal'].indexOf(m)<0)m='discover';
  EXMODE=m;
  document.querySelectorAll('#sec-explore .segmented button').forEach(b=>
   b.setAttribute('aria-pressed',String(b.dataset.mode===m)));
@@ -3304,8 +3672,11 @@ function setExploreMode(m){
  if(tb)tb.style.display = m==='discover'?'':'none';
  const mp=document.getElementById('momentumPane');
  if(mp)mp.style.display = m==='momentum'?'':'none';
+ const tp=document.getElementById('termPane');
+ if(tp)tp.style.display = m==='terminal'?'':'none';
  if(m==='search'){const i=document.getElementById('locSearch'); if(i)setTimeout(()=>i.focus(),30);}
  else if(m==='momentum'){renderMomentum();}
+ else if(m==='terminal'){renderTerminal();}
  else {renderHeatMap(); renderRanked(false);}
 }
 document.querySelectorAll('#sec-explore .segmented button').forEach(b=>
@@ -3533,7 +3904,7 @@ function readHash(){
  if(a==='loc'){goSection('explore',null,{silent:true}); setExploreMode('search'); showLocality(b); return true;}
  if(a==='soc'){goSection('listings',null,{silent:true}); openProperty(b); return true;}
  if(SECTIONS.indexOf(a)>=0){
-  if(a==='explore'&&(b==='search'||b==='momentum')){goSection('explore',null,{silent:true});setExploreMode(b);}
+  if(a==='explore'&&(b==='search'||b==='momentum'||b==='terminal')){goSection('explore',null,{silent:true});setExploreMode(b);}
   else goSection(a,b||null,{silent:true});
   return true;
  }
@@ -4705,6 +5076,8 @@ function wireSlideLinks(){
   b.addEventListener('click',()=>showArea(b.dataset.openarea)));
  document.querySelectorAll('#soBody [data-help]').forEach(b=>
   b.addEventListener('click',()=>openHelp(b.dataset.help)));
+ document.querySelectorAll('#soBody [data-fullread]').forEach(b=>
+  b.addEventListener('click',()=>locAnalytics(b.dataset.fullread)));
  wireFactorDocs();
 }
 
@@ -4757,6 +5130,7 @@ function showArea(name){
     :'Price is rising faster than rent, which compresses yields and usually means expectation is running ahead of demand.'}</p>
   ${kfChartHTML(a)}
   ${investHTML(a)}
+  <div class="block"><button class="act" data-fullread="${esc(a.n)}" style="width:100%">See the full read ›</button></div>
   <div class="block"><h2 style="font-size:15px">Communities here</h2>${nearbySoc(a.lat,a.lng,a.n,8)}</div>`;
  openSlide(esc(a.n),'',html);
  wireSlideLinks();
@@ -4765,6 +5139,151 @@ function showArea(name){
  }
  noteView('area',a.n,a.n);
  HASHLOCK=true;try{history.replaceState(null,'','#/area/'+encodeURIComponent(a.n));}catch(e){}HASHLOCK=false;
+}
+
+/* ========== location analytics ==========
+ The panel is the summary; this is the full read. Every chart here is built
+ from positioned divs — no library, and nothing is drawn that the data cannot
+ support honestly. Where a figure would have to be guessed, there is an empty
+ state saying so instead. */
+
+/* the median of any numeric read across all 86, for "against the city" */
+function cityMid(fn){
+ const v=AREAS.map(fn).filter(x=>typeof x==='number'&&isFinite(x)).sort((a,b)=>a-b);
+ if(!v.length)return null;
+ const m=Math.floor(v.length/2);
+ return v.length%2 ? v[m] : (v[m-1]+v[m])/2;
+}
+/* a thin band marker: where this score sits on the whole scale, with a tick */
+function bandMarker(n){
+ const pct=Math.max(0,Math.min(100,n));
+ return '<div class="bandbar"><span class="bb-track">'
+  +'<i class="bb-r"></i><i class="bb-a"></i><i class="bb-g"></i>'
+  +'<b style="left:'+pct+'%"></b></span>'
+  +'<span class="bb-ends"><span>0</span><span>60</span><span>80</span><span>100</span></span></div>';
+}
+/* the real-world value behind each 0-10 factor, so a bar is readable */
+function factorActual(a,k){
+ switch(k){
+  case 'growth': return growthOf(a)+'% a year, city median '+cityMid(x=>growthOf(x))+'%';
+  case 'rent':   return a.ry+'% rent growth, '+yieldOf(a).toFixed(1)+'% gross yield';
+  case 'pipe':   return (a.pipeScore||0).toFixed(1)+'/10 committed, '
+    +((a.pipeList||[]).length||'no')+' project'+((a.pipeList||[]).length===1?'':'s');
+  case 'infra':  return a.infraNowNote||'nothing runs here yet';
+  case 'tech':   { const t=techParkScore(a); return t?(t.mins+' min to the nearest cluster, '
+    +t.inReach+' of 3 within reach'):'no drive times'; }
+  case 'liq':    return a.qts+' quarters to sell, '+(a.qts>a.qtsPrev?'up from ':'down from ')
+    +a.qtsPrev+' a year ago';
+  case 'sweet':  { const c=sweetCuts(); return 'cut-offs: growth '+c.growth+'%, price ₹'
+    +Math.round(c.price).toLocaleString('en-IN'); }
+  case 'live':   return 'hand-scored, not measured';
+  case 'budget': { const b=budgetFitScore(a); return b?('about '+cr(b.all)+' all in'):''; }
+  case 'commute':{ const c=commuteScore(a,selectedHubs()); return c?(c.mins+' min to '
+    +HUBLABEL[c.hub]):'no workplace named'; }
+ }
+ return '';
+}
+/* ---- the three-year column chart, divs only ---- */
+function kfColumns(a){
+ if(!a.kfSeries)return '';
+ const s=a.kfSeries, pts=[['2024',s.y2024],['2025',s.y2025],['2026',s.y2026]];
+ const hi=Math.max.apply(null,pts.map(p=>p[1]));
+ return '<div class="colchart">'+pts.map(p=>
+  '<span class="col"><b style="height:'+Math.round((p[1]/hi)*100)+'%"></b>'
+  +'<em>₹'+p[1].toLocaleString('en-IN')+'</em>'
+  +'<i>H1 '+p[0]+'</i></span>').join('')+'</div>';
+}
+/* ---- against the city: a track with the median marked ---- */
+function vsCity(label,val,median,fmt,invert){
+ if(typeof val!=='number'||typeof median!=='number'||!median)
+  return '<div class="vsrow"><span class="vl">'+esc(label)+'</span>'
+   +'<span class="vt"></span><span class="vd">no data</span></div>';
+ /* the scale runs to twice the median so the marker always sits mid-track */
+ const max=median*2;
+ const pos=Math.max(2,Math.min(98,(val/max)*100));
+ const d=Math.round((val/median-1)*100);
+ const good = invert ? d<0 : d>0;
+ return '<div class="vsrow"><span class="vl">'+esc(label)+'<em>'+fmt(val)+'</em></span>'
+  +'<span class="vt"><i style="width:'+pos+'%"></i><u title="city median '+fmt(median)+'"></u></span>'
+  +'<span class="vd '+(d===0?'':(good?'up':'dn'))+'">'
+  +(d===0?'at median':(Math.abs(d)+'% '+(d>0?'above':'below')))+'</span></div>';
+}
+/* ---- the deep screen ---- */
+function locAnalytics(name){
+ const a=AREAS.find(x=>x.n===name); if(!a)return;
+ const iv=investFull(a), n=iv.score, b=scoreBand(n), r=rankOf(a,investScore);
+ const mids={psf:cityMid(x=>basisVal(x)),rent:cityMid(x=>x.rent),yld:cityMid(x=>yieldOf(x))};
+ const rows=iv.parts.map(p=>{
+  const zone=p.prec&&p.prec.indexOf('ZONE')===0;
+  return '<div class="fbrow">'
+   +factorBar(esc(p.label)+explainButton(p.k,'invest',p.label)
+     +(zone?badge('zone level','warn'):''),
+     p.v10,10,p.v10.toFixed(1))
+   +'<p class="fbn">'+esc(factorActual(a,p.k))+'</p></div>';
+ }).join('');
+ const gap=frothPct(a);
+ const hist=a.kfSeries
+  ? '<div class="block"><h2 style="font-size:15px">Price history'
+    +explainButton('growth','invest','Price growth')+'</h2>'
+    +kfColumns(a)
+    +'<div class="tile3" style="margin-top:12px">'
+    +metricTile('Asking now','₹'+a.ask.toLocaleString('en-IN'),'portal listings')
+    +metricTile('Deeds record', a.reg?'₹'+a.reg.toLocaleString('en-IN'):'not published',
+       a.reg?'sub-registrar':'none published here')
+    +'</div>'
+    +(gap!==null&&gap>=30?calloutCard('warn','Asking runs ahead of deeds',
+       'Sellers advertise <strong>'+gap+'% above</strong> what the sub-registrar recorded. '
+       +'Treat the asking rate as an opening position.'):'')
+    +srcFooter('Knight Frank Research, India Real Estate','H1 2026')+'</div>'
+  : '<div class="block"><h2 style="font-size:15px">Price history</h2>'
+    +'<div class="emptystate"><b>No verified price history for '+esc(a.n)+'.</b>'
+    +'<p>Knight Frank publish a tracked series for 17 Bengaluru locations and this is not '
+    +'one of them. The growth figure above is portal-derived: it describes a level, not a '
+    +'measured trend, and drawing it as a chart would imply a series that does not exist.</p>'
+    +'</div></div>';
+ const near=AREAS.filter(x=>x.n!==a.n)
+   .map(x=>({x,d:Math.abs(investScore(x)-n)})).sort((p,q)=>p.d-q.d).slice(0,3);
+ const html=
+  '<div class="anlhead">'
+  +'<div class="ah-l"><div class="ah-z">'+esc(a.z)+' Bengaluru · '+esc(a.cor)+'</div>'
+  +'<h2>'+esc(a.n)+'</h2></div>'+scoreBadge(n)+'</div>'
+  +bandMarker(n)
+  +'<p class="anlband"><strong>'+esc(b.lab)+' band.</strong> '+ORD(r.rank)+' of '+r.of+' locations.</p>'
+  +'<div class="block"><h2 style="font-size:15px">The score, broken open'
+  +explainButton('invest','score','invest')+'</h2>'
+  +'<div class="bdhead2" style="margin-top:12px"><span>Factor</span><span>Score</span><span>of 10</span></div>'
+  +rows+'</div>'
+  +hist
+  +'<div class="block"><h2 style="font-size:15px">Against the city</h2>'
+  +'<p class="anlsub">The line marks the median across all '+AREAS.length+' researched areas.</p>'
+  +vsCity('Price per sqft',basisVal(a),mids.psf,v=>'₹'+Math.round(v).toLocaleString('en-IN'),true)
+  +vsCity('2BHK rent',a.rent,mids.rent,v=>'₹'+Math.round(v).toLocaleString('en-IN'),false)
+  +vsCity('Gross yield',yieldOf(a),mids.yld,v=>v.toFixed(1)+'%',false)
+  +'</div>'
+  +'<div class="block"><h2 style="font-size:15px">What is coming'
+  +explainButton('pipe','invest','What is coming here')+'</h2>'
+  +(pipeHTML(a)||'<p class="anlsub">Nothing committed here, on any published plan.</p>')
+  +floodRowHTML(a)+'</div>'
+  +'<div class="block"><h2 style="font-size:15px">Similar locations</h2>'
+  +'<p class="anlsub">Nearest on investment score.</p>'
+  +'<div class="simrow">'+near.map(z=>
+    '<button type="button" class="simtile" data-openanl="'+esc(z.x.n)+'">'
+    +scoreBadge(investScore(z.x),'sm')+'<span><b>'+esc(z.x.n)+'</b>'
+    +esc(z.x.z)+' Bengaluru</span></button>').join('')+'</div></div>'
+  +'<div class="pfoot"><button class="ilink" data-cmp="'+esc(a.n)+'">Compare</button>'
+  +'<button class="ilink" data-nearsoc="'+esc(a.n)+'">See '
+  +nearbyCount(a)+' projects</button></div>';
+ openSlide(esc(a.n),'The full read',html);
+ wireSlideLinks(); wireFactorDocs();
+ document.querySelectorAll('#soBody [data-openanl]').forEach(x=>
+  x.addEventListener('click',()=>locAnalytics(x.dataset.openanl)));
+ document.querySelectorAll('#soBody [data-nearsoc]').forEach(x=>
+  x.addEventListener('click',()=>showArea(x.dataset.nearsoc)));
+ document.querySelectorAll('#soBody [data-cmp]').forEach(x=>
+  x.addEventListener('click',()=>{closeSlide(); goSection('shortlist','compare');}));
+}
+function nearbyCount(a){
+ return SOC.filter(s=>{const ar=areaForSoc(s); return ar&&ar.n===a.n;}).length;
 }
 
 /* ---- Tier 2: wider coverage. Real geography, inherited pricing. ---- */

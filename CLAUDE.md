@@ -474,6 +474,33 @@ Every score is shown with a **rank** — `rankLabel(a, scorer)` gives "4th of
 86". A number against an invisible scale tells a buyer nothing. The live
 spread sentence stays as it is.
 
+## The analytics screens
+
+Three surfaces, all built from the nine components and all charted with
+positioned divs — **no chart library, and nothing drawn that the data cannot
+support**. Where a figure would have to be guessed, there is an empty state
+saying so instead.
+
+- `locAnalytics(name)` — the full read, reached from "See the full read" on
+  the summary panel. Every factor carries the **actual value** under its bar,
+  not only a 0–10 number, because "8.1/10" tells a buyer nothing on its own.
+  The three-year column chart draws **only** where `kfSeries` exists: 17 of 86,
+  and the other 69 get an empty state. Never fall back to portal data there —
+  a chart implies a measured series.
+- `renderTerminal()` — a fourth Explore mode, desktop only. Its filters live in
+  `TERMF` and touch no global state, so nothing in Explore or Listings moves
+  when they change. On a phone it says it is built for a wide screen rather
+  than reflowing a scatter and a nine-column table into something unreadable.
+- `kfZoneTable()` derives the Knight Frank zone figures from the fields already
+  on `AREAS` rather than restating them as a second copy that could drift.
+  It is **lazy on purpose**: an eager IIFE there reads `AREAS` inside its
+  temporal dead zone and throws.
+
+Every `FACTOR_DOC` entry carries a `not:` field — **what the factor does not
+cover**. That section is as load-bearing as the others: it is where the tool
+admits that commute is modelled rather than measured, that liveability knows
+almost nothing, and that a high yield says nothing about vacancy.
+
 ## The intake
 
 Seven questions for a live-in buyer, **six for an investor** — household is a
