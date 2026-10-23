@@ -183,9 +183,15 @@ either, re-run the script:
   `py` is now the Knight Frank reading.
 - `dataTier` — `verified` | `portal`. `scorePrecision` says the same thing for
   the investment score, and always names the zone-level inputs.
-- `infraScore` 0–10 and `infraNote` — the rail and employment pipeline. The
-  rubric is a judgement call, documented at the top of `tools/kf_merge.py`;
-  argue with it there, not by editing the numbers.
+- `infraScore` 0–10 and `infraNote` — the committed pipeline. Both are
+  generated from the `PROJECTS` table in `tools/kf_merge.py`: one row per
+  project, carrying `kind`, `status`, an opening date and the areas it serves.
+  The scorer reads those rows and names no line, corridor or area in any
+  branch, so new kinds — roads, tunnels, employment nodes — are added as rows
+  rather than as code. Band weights come from status and date alone, via
+  `HORIZONS`; `--as-of=YYYY` reproduces an earlier run or looks ahead. The
+  rubric is a judgement call, documented at the top of that file; argue with
+  it there, not by editing the numbers.
 
 Knight Frank track transactions rather than listings, so where they and a
 portal figure disagree, theirs wins. The three-year chart draws from `kfSeries`
