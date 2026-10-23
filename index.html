@@ -433,15 +433,8 @@ details.bd[open] summary:before{transform:rotate(90deg)}
 .hhero p.hx .big{font-size:1.2em}
 .hhero .act{background:#fff;color:var(--primary);border-color:#fff;font-weight:600}
 .hhero .act:hover{background:rgba(255,255,255,.9)}
-.htiles{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:12px}
-@media(max-width:460px){.htiles{grid-template-columns:repeat(2,1fr)}}
-.htiles button{appearance:none;font:inherit;cursor:pointer;text-align:left;
-  background:var(--tile);border:1px solid var(--line);border-radius:var(--r-tile);
-  padding:10px 11px 9px;min-height:var(--tap);display:block}
-.htiles button:hover{border-color:var(--primary)}
-.htiles b{font-family:var(--font);font-size:21px;font-weight:600;display:block;line-height:1.1}
-.htiles span{font-size:11px;color:var(--muted);display:block;margin-top:3px}
 .hrows{margin-top:8px}
+.hsec:first-child{margin-top:18px}
 .hrow{display:flex;align-items:center;gap:11px;width:100%;appearance:none;font:inherit;
   cursor:pointer;text-align:left;background:var(--card);border:1px solid var(--line);
   border-radius:var(--r-tile);padding:9px 12px;margin-top:7px;min-height:var(--tap)}
@@ -831,6 +824,183 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 }
 .so-body{overflow-y:auto;padding:18px 20px 40px;flex:1}
 .so-body .block:first-child{margin-top:0}
+/* ---- Market: a dashboard, not a page. One markup, two grids. ---- */
+/* the dashboard has to fit one screen, and the nav item already says Market
+   in the same glance. The heading stays for screen readers and is taken out
+   of the visual flow rather than deleted. */
+#sec-market .sechead{margin-bottom:6px}
+#sec-market .sechead .segmented{margin-bottom:4px}
+#sec-market .sechead h1{position:absolute;width:1px;height:1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;margin:0}
+
+.mktctl{display:none}
+.mnote{display:block;font-size:11.5px;color:var(--muted);line-height:1.45;flex-basis:100%}
+.msel{margin:0}
+.mhero{display:block;width:100%;text-align:left;appearance:none;font:inherit;cursor:pointer;
+  background:var(--grad-primary);color:#fff;border:0;border-radius:var(--r-card);
+  padding:8px 14px 9px;box-shadow:var(--shadow-primary);min-height:var(--tap)}
+.mhero .hl{display:block;font-family:var(--label);font-size:10px;font-weight:700;
+  letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.74)}
+.mhero .hv{display:block;font-family:var(--font);font-size:23px;font-weight:600;
+  line-height:1.08;margin-top:1px}
+.mhero .hs{display:block;font-size:10.5px;color:rgba(255,255,255,.78);margin-top:1px}
+.mgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.mgrid>.mhero{grid-column:1/-1;margin-bottom:0}
+.mwide2{display:block}
+.mhalf>.zonepanel{grid-column:1/-1}
+.rbars.flat{display:block}
+.rbars.flat .rbar{min-height:0;padding:4px 2px}
+.rbars.flat .rbar .rn{font-size:11.5px}
+.rbars.flat .rbar .rv{font-size:11px}
+.mtile,.mpanel{appearance:none;font:inherit;cursor:pointer;text-align:left;display:block;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r-tile);
+  padding:7px 10px 6px;min-height:var(--tap);width:100%}
+.mpanel.mdesk{display:none}
+.mtile:hover,.mpanel:hover{border-color:var(--primary)}
+.mtile:focus-visible,.mpanel:focus-visible,.mhero:focus-visible{outline:2px solid var(--accent);
+  outline-offset:2px}
+.mtile .ml{display:block;font-family:var(--label);font-size:9.5px;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--muted);line-height:1.3}
+.mtile .mnum{display:block;font-family:var(--font);font-size:17px;font-weight:600;
+  line-height:1.12;margin-top:0}
+.mtile .mfoot{display:flex;align-items:flex-end;justify-content:space-between;gap:6px;
+  margin-top:2px}
+.mdelta{font-family:var(--label);font-size:10.5px;font-weight:700;white-space:nowrap}
+.mdelta.up{color:var(--good-fg)}
+.mdelta.dn{color:var(--risk-fg)}
+.mdelta.flat{color:var(--muted);font-weight:600}
+.spark{display:flex;align-items:flex-end;gap:2px;height:15px;flex:0 0 auto}
+.spark i{display:block;width:5px;border-radius:1px;background:var(--line);min-height:2px}
+.spark i.on{background:var(--grad-primary)}
+.mpanel{margin-top:6px}
+.mpanel .mpl{display:flex;align-items:baseline;gap:6px;font-family:var(--label);font-size:9.5px;
+  font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);
+  line-height:1.25;margin-bottom:5px;white-space:nowrap}
+.mpanel .mpl i{font-style:normal;font-weight:600;letter-spacing:.02em;text-transform:none;
+  font-size:10px;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.mhalf{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.mhalf .mpanel{margin-top:6px}
+.mempty{font-size:12px;color:var(--muted);padding:8px 0}
+/* the momentum quadrant */
+.quad{display:block;position:relative;height:104px;background:var(--tile);border-radius:var(--r-seg);
+  overflow:hidden}
+.quad .qx{position:absolute;left:0;right:0;top:50%;height:1px;background:var(--line)}
+.quad .qy{position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--line)}
+.qdot{display:block;position:absolute;appearance:none;border:0;padding:0;border-radius:50%;
+  transform:translate(-50%,50%);background:var(--line)}
+.qdot.up{background:var(--primary)}
+.qdot.dn{background:var(--risk-fg)}
+.qdot.flat{background:var(--slate);opacity:.55}
+button.qdot{cursor:pointer}
+button.qdot:hover{outline:2px solid var(--ink);outline-offset:1px}
+.qlab{display:block;position:absolute;font-family:var(--label);font-size:8.5px;font-weight:600;
+  letter-spacing:.04em;text-transform:uppercase;color:var(--muted);pointer-events:none}
+.qlab.tl{top:4px;left:6px}.qlab.tr{top:4px;right:6px}
+.qlab.bl{bottom:4px;left:6px}.qlab.br{bottom:4px;right:6px}
+/* flood donut */
+.donut{display:flex;align-items:center;gap:9px}
+.donut svg{width:56px;height:56px}
+.donut .dnl{font-size:10px;line-height:1.45;color:var(--muted)}
+.donut .dnl b{color:var(--ink);font-weight:700}
+.donut.big{margin-bottom:6px}
+.donut.big svg{width:104px;height:104px}
+.donut.big .dnl{font-size:13px}
+/* supply bars */
+.sbars{display:block}
+.sbr{display:grid;grid-template-columns:46px minmax(0,1fr) auto;align-items:center;gap:5px;
+  margin-bottom:4px;font-size:10px}
+.sbr em{font-style:normal;color:var(--muted)}
+.sbr i{display:block;height:9px;border-radius:999px;background:var(--line)}
+.sbr i.lau{background:var(--slate)}
+.sbr i.sol{background:var(--grad-primary)}
+.sbr b{font-family:var(--label);font-size:10.5px;font-weight:700}
+.sbars.big .sbr{grid-template-columns:72px minmax(0,1fr) auto;font-size:13px;margin-bottom:9px}
+.sbars.big .sbr i{height:14px}
+.sbars.big .sbr b{font-size:13px}
+/* zone health */
+.zbarline{display:flex;width:100%;height:14px;border-radius:999px;overflow:hidden;background:var(--tile)}
+.zseg{display:block;background:var(--grad-primary)}
+.zseg+.zseg{border-left:2px solid var(--card)}
+.zseg.thin{background:var(--line)}
+.zlabs{display:flex;flex-wrap:wrap;gap:2px 10px;margin-top:5px}
+.zlab{display:inline-flex;align-items:baseline;gap:4px;font-size:9.5px;line-height:1.3}
+.zlab b{font-weight:700}
+.zlab i{font-style:normal;color:var(--muted)}
+.zlab.thin b,.zlab.thin i{color:var(--muted)}
+.thinrow td{color:var(--muted)}
+/* sheet content: ranked bars, three-period history, the read */
+.rbars{display:block;margin-top:10px}
+.rbar{display:grid;grid-template-columns:minmax(0,1fr) 96px 52px;align-items:center;gap:8px;
+  width:100%;appearance:none;font:inherit;cursor:pointer;text-align:left;background:none;
+  border:0;border-bottom:1px solid var(--line-soft);padding:7px 2px;min-height:var(--tap)}
+.rbar:hover{background:var(--tile)}
+.rbar .rn{font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rbar .rt{display:block;height:8px;border-radius:999px;background:var(--tile)}
+.rbar .rt i{display:block;height:100%;border-radius:999px;background:var(--slate)}
+.rbar .rt i.risk{background:var(--risk-fg)}
+.rbar .rt i.good{background:var(--grad-primary)}
+.rbar .rv{font-family:var(--label);font-size:12px;font-weight:700;text-align:right}
+.hbars{display:flex;align-items:flex-end;gap:10px;height:132px;margin-top:12px}
+.hb{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;
+  height:100%;text-align:center}
+.hb i{display:block;width:100%;max-width:70px;border-radius:var(--r-seg) var(--r-seg) 0 0;
+  background:var(--grad-primary)}
+.hb b{font-family:var(--label);font-size:12px;font-weight:700;margin-top:6px}
+.hb em{font-style:normal;font-size:10.5px;color:var(--muted)}
+.mread{background:var(--tile);border-radius:var(--r-tile);padding:13px 14px;margin-top:16px}
+.mread b{display:block;font-family:var(--label);font-size:10px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.mread p{margin:0;font-size:13.5px;line-height:1.55}
+/* Compare: pick three */
+.pickbar{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+.pickchip{display:inline-flex;align-items:center;gap:7px;appearance:none;font:inherit;
+  font-size:13px;font-weight:600;cursor:pointer;background:var(--grad-primary);color:#fff;
+  border:0;border-radius:var(--r-chip);padding:0 14px;min-height:var(--tap)}
+.pickchip i{font-style:normal;font-size:11px;opacity:.8}
+.pickadd{appearance:none;font:inherit;font-size:13px;cursor:pointer;background:var(--tile);
+  color:var(--ink);border:1px dashed var(--line);border-radius:var(--r-chip);padding:0 14px;
+  min-height:var(--tap)}
+.pickadd:hover{border-color:var(--primary);border-style:solid}
+.pickpop{background:var(--card);border:1px solid var(--line);border-radius:var(--r-tile);
+  padding:11px;margin-bottom:14px}
+.pickpop[hidden]{display:none}
+.pickpop input{width:100%;font:inherit;font-size:14px;padding:10px 12px;min-height:var(--tap);
+  border:1px solid var(--line);border-radius:var(--r-seg);background:var(--tile);color:var(--ink)}
+.pickres{display:grid;gap:2px;margin-top:8px;max-height:244px;overflow-y:auto}
+.pickres button{appearance:none;font:inherit;cursor:pointer;text-align:left;background:none;
+  border:0;border-radius:var(--r-seg);padding:8px 10px;min-height:var(--tap)}
+.pickres button:hover{background:var(--tile)}
+.pickres b{display:block;font-size:13.5px;font-weight:600}
+.pickres span{display:block;font-size:11.5px;color:var(--muted)}
+.pickgrid{display:block}
+.pkhead{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:8px;
+  padding-bottom:9px;border-bottom:1.5px solid var(--ink);margin-bottom:4px}
+.pkhead b{display:block;font-size:13.5px;font-weight:700;line-height:1.2}
+.pkhead i{font-style:normal;display:block;font-size:11px;color:var(--muted);margin-top:2px}
+.pkrow{padding:7px 0;border-bottom:1px solid var(--line-soft)}
+.pkl{display:block;font-family:var(--label);font-size:9.5px;font-weight:700;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.pkv{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:8px}
+.pkv>span{font-size:13.5px;font-weight:600;min-width:0;overflow-wrap:anywhere}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media(min-width:860px){
+  .mktctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .mhero{display:flex;align-items:baseline;gap:14px;padding:14px 18px}
+  .mhero .hv{font-size:30px;margin:0}
+  .mhero .hs{flex:1;text-align:right;margin:0}
+  .mgrid{grid-template-columns:repeat(5,1fr);gap:10px}
+  .mgrid>.mhero{grid-column:auto}
+  .mwide2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .mpanel.mdesk{display:block}
+  .mhalf>.zonepanel{grid-column:auto}
+  .rbars.flat .rbar{grid-template-columns:minmax(0,1fr) 72px 44px}
+  .mtile{padding:12px 14px 11px}
+  .mtile .mnum{font-size:23px}
+  .mhalf{grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .mpanel{margin-top:10px}
+  .quad{height:208px}
+  .pkhead,.pkv{gap:14px}
+}
 /* ---- the detail panel's tab strip. Between the fixed head and the scrolling
    body, so it stays put while the middle moves. ---- */
 .so-strip{display:flex;gap:6px;overflow-x:auto;padding:10px 20px 11px;flex:0 0 auto;
@@ -1322,7 +1492,7 @@ td,th{border-color:var(--line)}
   .sb-item[aria-current="true"] .sb-ico{background:var(--tint);border-radius:var(--r-chip)}
   .sb-ico{display:flex;align-items:center;justify-content:center;width:40px;height:24px;
     font-size:16px}
-  .main{padding:0 var(--s-screen) 92px}
+  .main{padding:0 var(--s-screen) 70px}
 }
 /* ---- sidebar on desktop ---- */
 @media(min-width:901px){
@@ -1483,24 +1653,8 @@ body{background:var(--grad-bg);background-attachment:fixed}
   padding:16px 18px;margin-bottom:var(--s-cards);box-shadow:var(--shadow-primary)}
 .gradcard h3{font-size:18px;font-weight:800;letter-spacing:-.01em;margin:0 0 6px;color:#fff}
 .gradcard p{font-size:13.5px;margin:0;color:rgba(255,255,255,.88)}
-.mrows{display:flex;flex-direction:column}
-.mrow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;
-  background:var(--card);border-radius:var(--r-tile);padding:12px 14px;margin-bottom:8px;
-  cursor:pointer;font-family:var(--font);color:inherit;min-height:var(--tap)}
-.mrow .mn{flex:1;min-width:0}
-.mrow .mn b{display:block;font-size:14.5px;font-weight:700}
-.mrow .mn span{display:block;font-size:12px;color:var(--muted);margin-top:1px}
-.mrow .mv{display:flex;align-items:baseline;gap:7px;font-variant-numeric:tabular-nums;
-  white-space:nowrap}
-.mrow .mv em{font-style:normal;font-size:13px;color:var(--muted)}
-.mrow .mv i{font-style:normal;font-size:12px;color:var(--muted)}
-.mrow .mv b{font-size:16px;font-weight:800}
-.mrow.up .mv b{color:var(--good-fg)}
-.mrow.dn .mv b{color:var(--warn-fg)}
 .mmore{display:inline-block;margin:2px 0 16px;font-size:13.5px;font-weight:700;
   color:var(--primary);min-height:var(--tap)}
-.forayou{background:var(--tint);color:var(--primary);border-radius:var(--r-tile);
-  padding:12px 14px;font-size:13.5px;line-height:1.5;margin-top:12px}
 .crow{display:flex;align-items:flex-start;gap:11px;padding:9px 0;
   border-bottom:1px solid var(--line-soft)}
 .crow:last-child{border-bottom:0}
@@ -1538,14 +1692,23 @@ body{background:var(--grad-bg);background-attachment:fixed}
 .fcard{display:block;width:100%;text-align:left;background:var(--card);border:0;
   border-radius:var(--r-card);padding:var(--s-in);margin-bottom:12px;cursor:pointer;
   font-family:var(--font);color:inherit}
-.fhead{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
+.fhead{display:flex;align-items:flex-start;gap:12px;margin-bottom:6px}
 .fhead .fn{flex:1;min-width:0}
 .fhead .fn b{display:block;font-size:17px;font-weight:800;letter-spacing:-.01em}
 .fhead .fn span{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
 .frank{font-family:var(--label);font-size:11px;font-weight:700;letter-spacing:.04em;
   text-transform:uppercase;color:var(--primary);background:var(--tint);
   border-radius:var(--r-chip);padding:5px 10px;white-space:nowrap;flex:0 0 auto}
-.fq{display:block;padding:9px 0;border-top:1px solid var(--line-soft)}
+.fmeta{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex:0 0 auto}
+.fgrow{display:inline-flex;align-items:baseline;gap:5px;font-family:var(--label);
+  font-size:12px;font-weight:700;background:var(--tile);border-radius:var(--r-chip);
+  padding:3px 9px;white-space:nowrap}
+.fgrow i{font-style:normal;font-weight:600;font-size:10.5px;color:var(--muted)}
+.fgrow.up{background:var(--good-bg);color:var(--good-fg)}
+.fgrow.dn{background:var(--warn-bg);color:var(--warn-fg)}
+.fq-row{display:flex;align-items:baseline;gap:8px}
+.fq-row em{margin:0;flex:1}
+.fq{display:block;padding:7px 0;border-top:1px solid var(--line-soft)}
 .fq em{font-style:normal;display:block;font-size:12px;color:var(--muted);margin-bottom:2px}
 .fq b{font-size:16px;font-weight:800}
 .fq small{display:block;font-size:11.5px;color:var(--muted);margin-top:4px}
@@ -1716,7 +1879,6 @@ body{background:var(--grad-bg);background-attachment:fixed}
 <section class="sec" id="sec-market">
   <div class="sechead">
     <h1>Market</h1>
-    <p>What is moving across Bengaluru, and what that means for your offer.</p>
     <div class="segmented" role="group" aria-label="Market view">
       <button data-msub="moving" aria-pressed="true">Moving</button>
       <button data-msub="compare" aria-pressed="false">Compare</button>
@@ -4237,14 +4399,15 @@ function fiveCard(a,i,peers){
  return '<button type="button" class="fcard" data-openanl="'+esc(a.n)+'">'
   +'<span class="fhead"><span class="fn"><b>'+esc(a.n)+'</b>'
   +'<span>'+esc(a.z+' Bengaluru · '+a.cor)+'</span></span>'
-  +'<span class="frank">'+ORD(rankOf(a,areaFit).rank)+' of '+AREAS.length+'</span></span>'
+  +'<span class="fmeta"><span class="frank">'+ORD(rankOf(a,areaFit).rank)+' of '
+   +AREAS.length+'</span>'
+  +'<span class="fgrow'+(was!==null&&g<was?' dn':was!==null?' up':'')+'">'+(g>=0?'+':'')+g+'%'
+  +(was!==null?'<i>was '+was+'%</i>':'')+'</span></span></span>'
   +(sq!==null?'<span class="fq"><em>'+cr(cap)+' buys</em><b>'+sq.toLocaleString('en-IN')
     +' sq ft</b><span class="fbar"><i style="width:'+Math.round((sq/maxSq)*100)+'%"></i></span>'
     +'<small>more than '+beat+' of your '+peers.length+' options</small></span>':'')
-  +(c?'<span class="fq"><em>Drive to '+esc(HUBLABEL[c.hub]||'work')+'</em><b>'+c.mins+' min</b>'
-    +(best!==null&&c.mins===best?'<span class="ftag">shortest</span>':'')+'</span>':'')
-  +'<span class="fq"><em>Prices last year</em><b>'+(g>=0?'+':'')+g+'%</b>'
-  +(was!==null?'<span class="ftag '+(g<was?'dn':'up')+'">was '+was+'%</span>':'')+'</span>'
+  +(c?'<span class="fq fq-row"><em>Drive to '+esc(HUBLABEL[c.hub]||'work')+'</em><b>'+c.mins
+    +' min</b>'+(best!==null&&c.mins===best?'<span class="ftag">shortest</span>':'')+'</span>':'')
   +risk
   +'</button>';
 }
@@ -4376,53 +4539,404 @@ document.querySelectorAll('#sec-explore .segmented button').forEach(b=>
  restate the pipeline on Moving as well as Coming; that duplication is what
  made the old page run long, so Moving links to Coming and stops. */
 const RISE_THRESHOLD=4;   /* points of growth change. OURS, not Knight Frank's. */
-function marketMoves(){
- const rows=kfAreas().map(a=>({a:a,d:a.growth26-a.growth25}));
- return {rising:rows.filter(x=>x.d>=RISE_THRESHOLD).sort((x,y)=>y.d-x.d),
-         slowing:rows.filter(x=>x.d<=-RISE_THRESHOLD).sort((x,y)=>x.d-y.d),
-         flat:rows.filter(x=>Math.abs(x.d)<RISE_THRESHOLD),
-         total:rows.length};
+/* ========== Market: an analytics surface ==========
+ A dashboard, not a page. Every tile is a tap target and the long content —
+ the full chart, the ranked list, how to read it, the source — lives in the
+ sheet behind it. The ranked 86 exists in exactly one place, the rank sheet,
+ reached from here and from "See all N". Do not render a second copy. */
+let MKTPERIOD='y2026', MKTZONE='';
+const MKTPERIODS=[['y2024','H1 2024'],['y2025','H1 2025'],['y2026','H1 2026']];
+const MKTPREV={y2026:'y2025',y2025:'y2024',y2024:null};
+
+function mktAreas(){ return MKTZONE?AREAS.filter(a=>a.z===MKTZONE):AREAS; }
+function frothList(){
+ return mktAreas().filter(a=>a.reg&&frothPct(a)!==null)
+  .map(a=>({a:a,v:frothPct(a)})).sort((x,y)=>y.v-x.v);
 }
-function moveRow(x,dir){
- const a=x.a;
- return '<button type="button" class="mrow '+dir+'" data-openanl="'+esc(a.n)+'">'
-  +'<span class="mn"><b>'+esc(a.n)+'</b><span>'+esc(a.cor)+'</span></span>'
-  +'<span class="mv"><em>'+a.growth25+'%</em>'
-  +'<i>'+(dir==='up'?'→':'→')+'</i>'
-  +'<b>'+a.growth26+'%</b></span></button>';
+function frothMedian(){
+ const v=frothList().map(x=>x.v).sort((a,b)=>a-b);
+ return v.length?v[Math.floor(v.length/2)]:null;
 }
-function marketMoving(){
- const m=marketMoves();
- const show=5;
- const head=(t,n,key,dir)=>'<div class="resh"><h3>'+t+infoDot(key)+'</h3>'
-   +'<small>'+n+' of '+m.total+' tracked</small></div>';
- const more=(list,dir)=>list.length>show
-   ? '<button class="ilink mmore" data-moreside="'+dir+'">See all '+list.length+' →</button>' : '';
- return '<div class="gradcard"><h3>Momentum has rotated north and east.</h3>'
-   +'<p>'+m.rising.length+' locations accelerated, '+m.slowing.length+' slowed.</p></div>'
-  +head('Rising',m.rising.length,'rising','up')
-  +'<div class="mrows" id="mRise">'+m.rising.slice(0,show).map(x=>moveRow(x,'up')).join('')+'</div>'
-  +more(m.rising,'rise')
-  +head('Slowing',m.slowing.length,'rising','dn')
-  +'<div class="mrows" id="mSlow">'+m.slowing.slice(0,show).map(x=>moveRow(x,'dn')).join('')+'</div>'
-  +more(m.slowing,'slow')
-  +'<div class="block"><h3 style="font-size:16px;margin:0 0 6px">The thing nobody mentions</h3>'
-  +'<p style="font-size:13.5px;color:var(--muted);line-height:1.55;margin:0 0 12px">'
-  +'Sales have sat at roughly 27,000 homes a half for three years while launches rose 36%. '
-  +'Builders kept building into demand that did not grow.</p>'
-  +'<div class="tile3">'
-  +metricTile('Unsold homes',KFCITY.y2026.unsold.toLocaleString('en-IN'),
-     'was '+KFCITY.y2024.unsold.toLocaleString('en-IN')+' two years ago')
-  +metricTile('Quarters to clear',String(KFCITY.y2026.qts)+infoDot('qts'),
-     'was '+KFCITY.y2024.qts)
-  +metricTile('Average price','₹'+KFCITY.y2026.price.toLocaleString('en-IN'),
-     'per sqft, city-wide')
+function floodCounts(){
+ const c={high:0,medium:0,low:0,unknown:0};
+ mktAreas().forEach(a=>{c[floodOf(a).tier]++;});
+ return c;
+}
+function mktMoves(){
+ return kfAreas().filter(a=>!MKTZONE||a.z===MKTZONE)
+  .map(a=>({a:a,d:a.growth26-a.growth25}));
+}
+/* three half-years is a short series, so it is drawn as three bars and
+   labelled with its periods rather than smoothed into a line it cannot support */
+function mktSpark(vals){
+ const max=Math.max.apply(null,vals)||1;
+ const act=MKTPERIODS.findIndex(x=>x[0]===MKTPERIOD);
+ return '<span class="spark" aria-hidden="true">'+vals.map((v,i)=>
+  '<i class="'+(i===act?'on':'')+'" style="height:'+Math.max(10,Math.round((v/max)*100))+'%"></i>')
+  .join('')+'</span>';
+}
+function mktDelta(now,prev,suffix,invert){
+ if(prev==null)return '<span class="mdelta flat">no earlier reading</span>';
+ const d=now-prev, pct=prev?Math.round((d/prev)*100):0;
+ const up=d>0, good=invert?!up:up;
+ return '<span class="mdelta '+(d===0?'flat':good?'up':'dn')+'">'
+  +(d>0?'↑':d<0?'↓':'·')+' '
+  +(suffix==='pt'?(d>0?'+':'')+d.toFixed(1)+' pts':(pct>0?'+':'')+pct+'%')+'</span>';
+}
+function mktTile(key,label,value,delta,spark){
+ return '<button type="button" class="mtile" data-mkt="'+key+'">'
+  +'<span class="ml">'+label+'</span>'
+  +'<span class="mnum">'+value+'</span>'
+  +'<span class="mfoot">'+(delta||'')+(spark||'')+'</span></button>';
+}
+/* ---- the momentum quadrant: how fast against whether it is speeding up ---- */
+function mktQuadrant(inter){
+ const rows=mktMoves();
+ if(!rows.length)return '<span class="mempty">No tracked locations in this zone.</span>';
+ const gs=rows.map(x=>x.a.growth26), ds=rows.map(x=>x.d);
+ const gMin=Math.min.apply(null,gs), gMax=Math.max.apply(null,gs);
+ const dAbs=Math.max.apply(null,ds.map(Math.abs))||1;
+ const gSpan=(gMax-gMin)||1;
+ const dots=rows.map(x=>{
+  const px=((x.a.growth26-gMin)/gSpan)*100;
+  const py=((x.d+dAbs)/(dAbs*2))*100;
+  const r=9+Math.round((Math.abs(x.d)/dAbs)*13);
+  const cls='qdot '+(x.d>=RISE_THRESHOLD?'up':x.d<=-RISE_THRESHOLD?'dn':'flat');
+  const style='left:'+px.toFixed(1)+'%;bottom:'+py.toFixed(1)+'%;width:'+r+'px;height:'+r+'px';
+  const title=esc(x.a.n)+' \u2014 '+x.a.growth26+'% a year, '+(x.d>0?'+':'')+x.d+' points on last year';
+  return inter
+   ? '<button type="button" class="'+cls+'" style="'+style+'" data-openanl="'+esc(x.a.n)
+     +'" title="'+title+'"></button>'
+   : '<span class="'+cls+'" style="'+style+'" title="'+title+'"></span>';
+ }).join('');
+ return '<span class="quad"><i class="qx"></i><i class="qy"></i>'+dots
+  +'<span class="qlab tl">slow, speeding up</span><span class="qlab tr">fast, speeding up</span>'
+  +'<span class="qlab bl">slow, easing</span><span class="qlab br">fast, easing</span></span>';
+}
+/* ---- flood as market exposure. Same data as the per-area warning, different
+   job: how much of the researched city carries a published flag at all. ---- */
+function mktDonut(){
+ const c=floodCounts(), total=c.high+c.medium+c.low+c.unknown;
+ const segs=[['high',c.high,'var(--risk-fg)'],['medium',c.medium,'var(--warn-fg)'],
+   ['low',c.low,'var(--primary)'],['unknown',c.unknown,'var(--line)']];
+ const C=2*Math.PI*26;
+ let off=0;
+ const arcs=segs.map(sg=>{
+  const len=total?(sg[1]/total)*C:0;
+  const el='<circle cx="32" cy="32" r="26" fill="none" stroke="'+sg[2]+'" stroke-width="11"'
+   +' stroke-dasharray="'+len.toFixed(2)+' '+(C-len).toFixed(2)+'"'
+   +' stroke-dashoffset="'+(-off).toFixed(2)+'" transform="rotate(-90 32 32)"></circle>';
+  off+=len; return el;
+ }).join('');
+ return '<svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true">'+arcs+'</svg>'
+  +'<span class="dnl"><b>'+c.high+'</b> high · <b>'+c.medium+'</b> medium<br>'
+  +'<b>'+c.low+'</b> low · <b>'+c.unknown+'</b> not listed</span>';
+}
+/* ---- zone health. Central is greyed because 187 units cannot carry a
+   quarters-to-sell figure, and printing 12.5 beside the others would read as
+   a finding rather than as too small a sample. ---- */
+function mktZoneBar(){
+ const K=kfZoneTable(), zs=Object.keys(K);
+ const total=zs.reduce((n,z)=>n+(K[z].unsold||0),0)||1;
+ const segs=zs.map(z=>{
+  const d=K[z], w=((d.unsold||0)/total)*100;
+  return '<span class="zseg'+(d.thin?' thin':'')+'" style="width:'+w.toFixed(1)+'%" '
+   +'title="'+esc(z)+' \u2014 '+(d.unsold||0).toLocaleString('en-IN')+' unsold'
+   +(d.thin?', too few to read':', '+d.qts+' quarters to sell')+'"></span>';
+ }).join('');
+ const labs=zs.map(z=>{
+  const d=K[z];
+  return '<span class="zlab'+(d.thin?' thin':'')+'"><b>'+esc(z)+'</b>'
+   +(d.thin?'<i>'+(d.unsold||0).toLocaleString('en-IN')+' only \u2014 too few to read</i>'
+     :'<i>'+d.qts+' q</i>')+'</span>';
+ }).join('');
+ return '<span class="zbarline">'+segs+'</span><span class="zlabs">'+labs+'</span>';
+}
+/* ---- supply against absorption, city level ---- */
+function mktSupply(){
+ const p=KFCITY[MKTPERIOD];
+ const max=Math.max(p.launch,p.sales)||1;
+ const bar=(lab,v,cls)=>'<span class="sbr"><em>'+lab+'</em>'
+  +'<i class="'+cls+'" style="width:'+Math.round((v/max)*100)+'%"></i>'
+  +'<b>'+v.toLocaleString('en-IN')+'</b></span>';
+ return bar('Launched',p.launch,'lau')+bar('Sold',p.sales,'sol');
+}
+
+function marketDash(){
+ const p=KFCITY[MKTPERIOD], prevKey=MKTPREV[MKTPERIOD], q=prevKey?KFCITY[prevKey]:null;
+ const fm=frothMedian();
+ const price=MKTPERIODS.map(x=>KFCITY[x[0]].price);
+ const unsold=MKTPERIODS.map(x=>KFCITY[x[0]].unsold);
+ const qts=MKTPERIODS.map(x=>KFCITY[x[0]].qts);
+ const sales=MKTPERIODS.map(x=>KFCITY[x[0]].sales);
+ const m=mktMoves();
+ const rising=m.filter(x=>x.d>=RISE_THRESHOLD).length, slow=m.filter(x=>x.d<=-RISE_THRESHOLD).length;
+ return '<div class="mktctl">'
+  +'<span class="segmented msel" role="group" aria-label="Period">'
+   +MKTPERIODS.map(x=>'<button data-mper="'+x[0]+'" aria-pressed="'+(x[0]===MKTPERIOD)+'">'
+     +x[1]+'</button>').join('')+'</span>'
+  +'<span class="segmented msel" role="group" aria-label="Zone">'
+   +[['','All zones'],['North','N'],['South','S'],['East','E'],['West','W'],['Central','C']]
+     .map(z=>'<button data-mzone="'+z[0]+'" aria-pressed="'+(z[0]===MKTZONE)+'">'+z[1]
+       +'</button>').join('')+'</span>'
+  +'<span class="mnote">The five figures across the top are city-wide and the zone filter '
+  +'does not touch them. It filters the location-level panels below.</span>'
   +'</div>'
-  +'<div class="forayou"><b>For you:</b> more room to negotiate than a year ago, '
-  +'especially in the south, where stock is clearing slowest.</div>'
-  +srcFooter('Knight Frank Research, India Real Estate','H1 2026')+'</div>'
-  +'<button class="ilink mmore" data-msubgo="coming">What is committed across the city →</button>';
+  +'<div class="mgrid">'
+  +'<button type="button" class="mhero" data-mkt="froth">'
+   +'<span class="hl">Ask over registered deeds</span>'
+   +'<span class="hv">'+(fm===null?'no deeds published':'+'+fm+'%')+'</span>'
+   +'<span class="hs">median of '+frothList().length+' with registered deeds'
+   +(MKTZONE?' in '+esc(MKTZONE):'')+'</span></button>'
+  +mktTile('price','Average price','\u20b9'+p.price.toLocaleString('en-IN'),
+     mktDelta(p.price,q&&q.price),mktSpark(price))
+  +mktTile('unsold','Unsold stock',p.unsold.toLocaleString('en-IN'),
+     mktDelta(p.unsold,q&&q.unsold,null,true),mktSpark(unsold))
+  +mktTile('qts','To clear',p.qts+' q',
+     mktDelta(p.qts,q&&q.qts,'pt',true),mktSpark(qts))
+  +mktTile('sales','Sales per half',p.sales.toLocaleString('en-IN'),
+     mktDelta(p.sales,q&&q.sales),mktSpark(sales))
+  +'</div>'
+  +'<div class="mwide2">'
+   +'<button type="button" class="mpanel" data-mkt="momentum">'
+    +'<span class="mpl">Momentum<i>'+rising+' speeding up \u00b7 '+slow+' easing</i></span>'
+    +mktQuadrant()+'</button>'
+   /* the ranked gap sits beside the quadrant where there is room for it; on a
+      phone it is the hero's sheet instead, not a second copy on the dashboard */
+   +'<button type="button" class="mpanel mdesk" data-mkt="froth">'
+    +'<span class="mpl">Ask over deeds<i>widest gaps</i></span>'
+    +mktBars(frothList().slice(0,8),v=>'+'+v+'%','risk',true)+'</button>'
+  +'</div>'
+  +'<div class="mhalf">'
+   +'<button type="button" class="mpanel" data-mkt="flood">'
+    +'<span class="mpl">Flood exposure<i>published lists</i></span>'
+    +'<span class="donut">'+mktDonut()+'</span></button>'
+   +'<button type="button" class="mpanel" data-mkt="supply">'
+    +'<span class="mpl">Supply<i>against absorption</i></span>'
+    +'<span class="sbars">'+mktSupply()+'</span></button>'
+   +'<button type="button" class="mpanel zonepanel" data-mkt="zones">'
+    +'<span class="mpl">Zone health<i>unsold stock by zone</i></span>'
+    +mktZoneBar()+'</button>'
+  +'</div>';
 }
+
+/* ---- the sheets. Full chart, ranked list, how to read it, source. ---- */
+function mktBars(items,fmt,cls,flat){
+ const max=Math.max.apply(null,items.map(x=>Math.abs(x.v)))||1;
+ /* flat draws the same bars as spans, for use inside a panel that is itself
+    a button — a button may not contain another button */
+ return '<'+(flat?'span':'div')+' class="rbars'+(flat?' flat':'')+'">'+items.map((x,i)=>
+  '<'+(flat?'span':'button type="button"')+' class="rbar"'
+  +(flat?'':' data-openanl="'+esc(x.a.n)+'"')+'>'
+  +'<span class="rn">'+(i+1)+'. '+esc(x.a.n)+'</span>'
+  +'<span class="rt"><i class="'+(cls||'')+'" style="width:'
+  +Math.round((Math.abs(x.v)/max)*100)+'%"></i></span>'
+  +'<span class="rv">'+fmt(x.v)+'</span></'+(flat?'span':'button')+'>').join('')
+  +'</'+(flat?'span':'div')+'>';
+}
+function mktHistory(label,vals,fmt){
+ const max=Math.max.apply(null,vals)||1;
+ return '<div class="hbars">'+MKTPERIODS.map((pr,i)=>
+  '<span class="hb"><i style="height:'+Math.max(12,Math.round((vals[i]/max)*100))+'%"></i>'
+  +'<b>'+fmt(vals[i])+'</b><em>'+pr[1]+'</em></span>').join('')+'</div>';
+}
+function mktRead(t){ return '<div class="mread"><b>Read it this way</b><p>'+t+'</p></div>'; }
+
+const METRICS={
+ froth:{t:'Ask over registered deeds',s:'The one number no portal publishes'},
+ price:{t:'Average price',s:'City-wide, per square foot'},
+ unsold:{t:'Unsold stock',s:'Homes built and not yet sold'},
+ qts:{t:'Quarters to clear',s:'At the current rate of sale'},
+ sales:{t:'Sales per half',s:'Homes sold in six months'},
+ momentum:{t:'Momentum',s:'Whether growth sped up or slowed'},
+ flood:{t:'Flood exposure',s:'Across the researched city'},
+ supply:{t:'Supply against absorption',s:'Launched against sold'},
+ zones:{t:'Zone health',s:'Unsold stock and how fast it clears'},
+ rank:{t:'All '+'86 locations ranked',s:'Every researched area, sortable'}
+};
+function openMetricSheet(key){
+ const meta=METRICS[key]||{t:'',s:''};
+ let body='';
+ const p=KFCITY[MKTPERIOD], prev=MKTPREV[MKTPERIOD]?KFCITY[MKTPREV[MKTPERIOD]]:null;
+ const money=v=>'₹'+Math.round(v).toLocaleString('en-IN');
+ const plain=v=>Math.round(v).toLocaleString('en-IN');
+ if(key==='froth'){
+  const list=frothList();
+  body=(list.length
+    ?'<div class="tile3">'
+      +metricTile('Median gap','+'+frothMedian()+'%','across '+list.length+' locations')
+      +metricTile('Widest','+'+list[0].v+'%',esc(list[0].a.n))
+      +metricTile('Narrowest','+'+list[list.length-1].v+'%',esc(list[list.length-1].a.n))
+      +'</div>'+mktBars(list,v=>'+'+v+'%','risk')
+    :panelEmpty('No registered deeds here','No location in this zone has a published '
+      +'sub-registrar figure to compare an asking price against.'))
+   +mktRead('A small gap means the price is supported by what buyers actually paid. '
+     +'A large one means you are negotiating against marketing — the asking rate is '
+     +'an opening position, not a value.')
+   +srcFooter('Portal asking rates against Kaveri registered transactions','2026');
+ } else if(key==='price'||key==='unsold'||key==='qts'||key==='sales'){
+  const spec={price:['price',money,'per square foot, city-wide'],
+    unsold:['unsold',plain,'homes built and unsold'],
+    qts:['qts',v=>v.toFixed(1)+' q','at the current rate of sale'],
+    sales:['sales',plain,'homes sold in the half']}[key];
+  const vals=MKTPERIODS.map(x=>KFCITY[x[0]][spec[0]]);
+  body=mktHistory(meta.t,vals,spec[1])
+   +'<div class="tile3" style="margin-top:14px">'
+   +metricTile('Now',spec[1](p[spec[0]]),spec[2])
+   +(prev?metricTile('A year before',spec[1](prev[spec[0]]),'same half, one year earlier'):'')
+   +metricTile('Two years before',spec[1](KFCITY.y2024[spec[0]]),'H1 2024')
+   +'</div>'
+   +(key==='price'
+     ?mktRead('This is the city average across every segment, so it moves with the mix as '
+       +'well as with prices. For one location use its own basis, which says where its '
+       +'number came from.')
+     :key==='unsold'
+     ?mktRead('Unsold stock is not a problem by itself — it is choice. It becomes one '
+       +'when it rises while sales do not, which is what the sales tile shows.')
+     :key==='qts'
+     ?mktRead('How long the unsold stock would take to clear at the current rate. Rising '
+       +'means the market is slowing, and it is the number that decides how much room you '
+       +'have to negotiate.')
+     :mktRead('Sales have sat near 27,000 homes a half for three years while launches rose '
+       +'36%. Builders kept building into demand that did not grow, and that gap is where '
+       +'your negotiating room comes from.'))
+   +(key!=='price'?'<div class="block"><h2 style="font-size:15px">By zone</h2>'
+      +mktZoneBar()+'</div>':'')
+   +srcFooter(KFSRC,'H1 2026');
+ } else if(key==='momentum'){
+  const m=mktMoves();
+  const up=m.filter(x=>x.d>=RISE_THRESHOLD).sort((x,y)=>y.d-x.d);
+  const dn=m.filter(x=>x.d<=-RISE_THRESHOLD).sort((x,y)=>x.d-y.d);
+  body=mktQuadrant(true)
+   +'<div class="block"><div class="resh"><h3>Speeding up'+infoDot('rising')+'</h3>'
+    +'<small>'+up.length+' of '+m.length+'</small></div>'
+    +(up.length?mktBars(up,v=>(v>0?'+':'')+v+' pts','good'):panelEmpty('None',
+      'No tracked location sped up by '+RISE_THRESHOLD+' points or more.'))+'</div>'
+   +'<div class="block"><div class="resh"><h3>Easing'+infoDot('rising')+'</h3>'
+    +'<small>'+dn.length+' of '+m.length+'</small></div>'
+    +(dn.length?mktBars(dn,v=>v+' pts','risk'):panelEmpty('None',
+      'No tracked location slowed by '+RISE_THRESHOLD+' points or more.'))+'</div>'
+   +mktRead('This is the change in the rate, not the rate. A location growing 20% after 6% '
+     +'is speeding up; one growing 12% after 18% is easing even though 12% is the better '
+     +'number. Only the 17 locations Knight Frank track by transaction have both readings.')
+   +srcFooter('Knight Frank H1 2025 and H1 2026. The '+RISE_THRESHOLD
+     +'-point threshold is ours, not theirs','H1 2026');
+ } else if(key==='flood'){
+  const c=floodCounts();
+  const byTier=t=>mktAreas().filter(a=>floodOf(a).tier===t);
+  const group=(t,lab)=>{const g=byTier(t); if(!g.length)return '';
+   return '<div class="block"><div class="resh"><h3>'+lab+'</h3><small>'+g.length+'</small></div>'
+    +'<div class="chiprow">'+g.map(a=>'<button type="button" class="ui-chip" data-openanl="'
+     +esc(a.n)+'">'+esc(a.n)+'</button>').join('')+'</div></div>';};
+  body='<span class="donut big">'+mktDonut()+'</span>'
+   +group('high','On the high-risk lists')+group('medium','Localised flooding reported')
+   +group('low','Little recorded flooding')
+   +'<div class="block"><div class="resh"><h3>Not on any published list</h3><small>'
+    +c.unknown+'</small></div><p class="anlsub">'+FLOOD_UNKNOWN+'</p></div>'
+   +mktRead('This is exposure across the city, not a score. Flood risk is decided on the '
+     +'street and our geography is the micro-market, so it stays out of every weight table '
+     +'and appears as a warning on the location instead.')
+   +srcFooter(FLOOD.src,FLOOD.asOf);
+ } else if(key==='supply'){
+  body='<span class="sbars big">'+mktSupply()+'</span>'
+   +mktHistory('Launched',MKTPERIODS.map(x=>KFCITY[x[0]].launch),plain)
+   +mktHistory('Sold',MKTPERIODS.map(x=>KFCITY[x[0]].sales),plain)
+   +mktRead('Launches rose 36% across three halves while sales stayed flat. Supply running '
+     +'ahead of absorption is what pushed quarters-to-clear from 3.7 to 5.3, and it is the '
+     +'reason there is more room to negotiate than there was.')
+   +srcFooter(KFSRC,'H1 2026');
+ } else if(key==='zones'){
+  const K=kfZoneTable();
+  body=mktZoneBar()
+   +'<div class="scroller" style="margin-top:16px"><table><thead><tr><th>Zone</th>'
+    +'<th class="num">Unsold</th><th class="num">Quarters to sell</th>'
+    +'<th class="num">A year before</th></tr></thead><tbody>'
+    +Object.keys(K).map(z=>{const d=K[z];
+      return '<tr'+(d.thin?' class="thinrow"':'')+'><td><strong>'+esc(z)+'</strong>'
+       +(d.thin?'<br><small>too few to read</small>':'')+'</td>'
+       +'<td class="num">'+(d.unsold||0).toLocaleString('en-IN')+'</td>'
+       +'<td class="num">'+(d.thin?'—':d.qts)+'</td>'
+       +'<td class="num">'+(d.thin?'—':d.qtsPrev)+'</td></tr>';}).join('')
+    +'</tbody></table></div>'
+   +mktRead('Quarters-to-sell is the zone’s liquidity: how long its unsold stock would '
+     +'take to clear. Central is left blank rather than shown, because 187 units is too '
+     +'small a sample for the figure to mean anything.')
+   +srcFooter('Knight Frank Research, zone level','H1 2026');
+ } else if(key==='rank'){
+  const rows=mktAreas().slice();
+  body='<p class="anlsub" style="margin-top:0">All '+rows.length+' researched area'
+   +(rows.length===1?'':'s')+(MKTZONE?' in '+esc(MKTZONE):'')
+   +'. Tap a column to sort, a row to open it.</p>'
+   +termTable(rows)
+   +srcFooter('Mixed sources — open any location for its own provenance','');
+ }
+ openSlide(esc(meta.t),esc(meta.s),body);
+ wireSlideLinks();
+ const host=document.getElementById('soBody');
+ host.querySelectorAll('[data-openanl]').forEach(b=>
+  b.addEventListener('click',()=>showArea(b.dataset.openanl)));
+ host.querySelectorAll('[data-ts]').forEach(b=>b.addEventListener('click',()=>{
+  const k=b.dataset.ts;
+  if(TERMSORT.k===k)TERMSORT.dir=-TERMSORT.dir;
+  else TERMSORT={k:k,dir:k==='n'||k==='z'?1:-1};
+  openMetricSheet('rank');}));
+}
+
+/* ---- Compare: pick up to three, same ten rows every time ---- */
+let PICK3=[];
+const PICKROWS=[
+ ['Asking ₹/sqft', a=>'₹'+a.ask.toLocaleString('en-IN')],
+ ['Registered deeds', a=>a.reg?'₹'+a.reg.toLocaleString('en-IN'):'none published'],
+ ['Price growth', a=>growthOf(a)+'% a year'],
+ ['2BHK rent', a=>'₹'+a.rent.toLocaleString('en-IN')],
+ ['Gross yield', a=>yieldOf(a).toFixed(1)+'%'],
+ ['Commute', a=>{const c=commuteScore(a,selectedHubs());
+   return c?c.mins+' min to '+esc(HUBLABEL[c.hub].replace(/ \/.*$/,'')):'no workplace set';}],
+ ['Quarters to sell', a=>typeof a.qts==='number'
+   ?(a.qtsThin?'too few to read':a.qts.toFixed(1)+' q'):'—'],
+ ['Flood risk', a=>floodOf(a).meta.lab],
+ ['Pipeline', a=>typeof a.pipeScore==='number'?a.pipeScore.toFixed(1)+'/10':'—'],
+ ['Investment score', a=>scoreBadge(investScore(a),'sm')]
+];
+function comparePick(){
+ const picked=PICK3.map(n=>AREAS.find(a=>a.n===n)).filter(Boolean);
+ const chips=picked.map(a=>'<button type="button" class="pickchip" data-unpick="'+esc(a.n)+'">'
+   +esc(a.n)+'<i aria-hidden="true">✕</i><span class="sr">remove</span></button>').join('');
+ const add=picked.length<3
+  ? '<button type="button" class="pickadd" id="pickAdd">+ Add a location</button>' : '';
+ const grid=picked.length
+  ? '<div class="pickgrid" style="--cols:'+picked.length+'">'
+    +'<div class="pkhead">'+picked.map(a=>'<span><b>'+esc(a.n)+'</b><i>'+esc(a.z)
+      +' Bengaluru</i></span>').join('')+'</div>'
+    +PICKROWS.map(r=>'<div class="pkrow"><span class="pkl">'+r[0]+'</span>'
+      +'<span class="pkv">'+picked.map(a=>'<span>'+r[1](a)+'</span>').join('')+'</span></div>')
+      .join('')+'</div>'
+  : panelEmpty('Pick up to three locations',
+      'The same ten rows every time, so the shape is the one you already know. '
+      +'Add a location above, or open the ranked list to find one.');
+ return '<div class="pickbar">'+chips+add+'</div>'
+  +'<div class="pickpop" id="pickPop" hidden>'
+   +'<input type="search" id="pickSearch" placeholder="Search the '+AREAS.length
+   +' researched areas" autocomplete="off" spellcheck="false">'
+   +'<div class="pickres" id="pickRes"></div></div>'
+  +grid
+  +'<button class="ilink mmore" data-mkt="rank">See all '+mktAreas().length+' ranked →</button>';
+}
+function paintPickResults(){
+ const host=document.getElementById('pickRes'); if(!host)return;
+ const q=(document.getElementById('pickSearch').value||'').trim().toLowerCase();
+ const hits=AREAS.filter(a=>PICK3.indexOf(a.n)<0&&(!q||a.n.toLowerCase().indexOf(q)>=0))
+   .slice(0,q?12:8);
+ host.innerHTML=hits.length?hits.map(a=>'<button type="button" data-pick="'+esc(a.n)+'">'
+   +'<b>'+esc(a.n)+'</b><span>'+esc(a.z)+' Bengaluru</span></button>').join('')
+  :'<p class="anlsub" style="margin:8px 0 0">Nothing matches, and nothing is looked up '
+   +'live — this searches the '+AREAS.length+' researched areas only.</p>';
+ host.querySelectorAll('[data-pick]').forEach(b=>b.addEventListener('click',()=>{
+  if(PICK3.length<3)PICK3.push(b.dataset.pick);
+  renderMarket();
+ }));
+}
+
 function marketComing(){
  const byStatus={};
  Object.keys(KFPIPE).forEach(k=>{const p=KFPIPE[k];(byStatus[p.s]=byStatus[p.s]||[]).push([k,p]);});
@@ -4445,36 +4959,36 @@ function marketComing(){
   +'not started; amber is approved and unfunded; grey is planned only.</p>'
   +blocks+srcFooter('Published project status and dates','2026');
 }
-function marketCompare(){
- const rows=AREAS.slice().sort((a,b)=>investScore(b)-investScore(a));
- return '<p class="anlsub" style="margin-top:0">All '+rows.length+' researched areas. '
-  +'Scroll sideways for the rest of the columns; tap a row for the full read.</p>'
-  +termTable(rows)
-  +srcFooter('Mixed sources — open any location for its own provenance','');
-}
 function renderMarket(){
  const host=document.getElementById('marketPane'); if(!host)return;
- document.querySelectorAll('#sec-market .segmented button').forEach(b=>
+ document.querySelectorAll('#sec-market .segmented[aria-label="Market view"] button').forEach(b=>
   b.setAttribute('aria-pressed',String(b.dataset.msub===MSUB)));
  host.innerHTML = MSUB==='coming'? marketComing()
-   : MSUB==='compare'? marketCompare() : marketMoving();
+   : MSUB==='compare'? comparePick() : marketDash();
  host.querySelectorAll('[data-openanl]').forEach(b=>
   b.addEventListener('click',()=>showArea(b.dataset.openanl)));
  host.querySelectorAll('[data-msubgo]').forEach(b=>
   b.addEventListener('click',()=>{setMarketSub(b.dataset.msubgo);writeHash();}));
- host.querySelectorAll('[data-moreside]').forEach(b=>b.addEventListener('click',()=>{
-  const m=marketMoves(), which=b.dataset.moreside==='rise'?m.rising:m.slowing;
-  const el=document.getElementById(b.dataset.moreside==='rise'?'mRise':'mSlow');
-  el.innerHTML=which.map(x=>moveRow(x,b.dataset.moreside==='rise'?'up':'dn')).join('');
-  el.querySelectorAll('[data-openanl]').forEach(z=>
-   z.addEventListener('click',()=>showArea(z.dataset.openanl)));
-  b.remove();}));
- if(MSUB==='compare')host.querySelectorAll('[data-ts]').forEach(b=>
-  b.addEventListener('click',()=>{
-   const k=b.dataset.ts;
-   if(TERMSORT.k===k)TERMSORT.dir=-TERMSORT.dir;
-   else TERMSORT={k:k,dir:k==='n'||k==='z'?1:-1};
-   renderMarket();}));
+ /* every tile and panel on the dashboard opens its own sheet */
+ host.querySelectorAll('[data-mkt]').forEach(b=>b.addEventListener('click',e=>{
+  /* a dot inside a panel opens its location, not the panel's sheet */
+  if(e.target.closest&&e.target.closest('[data-openanl]'))return;
+  openMetricSheet(b.dataset.mkt);
+ }));
+ host.querySelectorAll('[data-mper]').forEach(b=>b.addEventListener('click',e=>{
+  e.stopPropagation(); MKTPERIOD=b.dataset.mper; renderMarket();}));
+ host.querySelectorAll('[data-mzone]').forEach(b=>b.addEventListener('click',e=>{
+  e.stopPropagation(); MKTZONE=b.dataset.mzone; renderMarket();}));
+ host.querySelectorAll('[data-unpick]').forEach(b=>b.addEventListener('click',()=>{
+  PICK3=PICK3.filter(n=>n!==b.dataset.unpick); renderMarket();}));
+ const add=document.getElementById('pickAdd');
+ if(add)add.addEventListener('click',()=>{
+  const pop=document.getElementById('pickPop');
+  pop.hidden=!pop.hidden;
+  if(!pop.hidden){paintPickResults(); document.getElementById('pickSearch').focus();}
+ });
+ const ps=document.getElementById('pickSearch');
+ if(ps)ps.addEventListener('input',paintPickResults);
 }
 
 /* ---- Market: three sub-tabs ----
@@ -4484,12 +4998,12 @@ function renderMarket(){
 function setMarketSub(m){
  if(['moving','compare','coming'].indexOf(m)<0)m='moving';
  MSUB=m;
- document.querySelectorAll('#sec-market .segmented button').forEach(b=>
+ document.querySelectorAll('#sec-market .sechead .segmented button').forEach(b=>
   b.setAttribute('aria-pressed',String(b.dataset.msub===m)));
  paintPanels();
  renderMarket();
 }
-document.querySelectorAll('#sec-market .segmented button').forEach(b=>
+document.querySelectorAll('#sec-market .sechead .segmented button').forEach(b=>
  b.addEventListener('click',()=>{setMarketSub(b.dataset.msub);writeHash();}));
 
 /* The quick-search field in Explore's header had no handler at all, so typing
@@ -4638,20 +5152,6 @@ function blockNext(){
   +'<button class="act" id="hNext">'+esc(a.cta)+'</button></div>';
 }
 
-/* ---- four counters, each a way in to what it counts ---- */
-function blockCounts(){
- const ids=Object.keys(track), st=id=>(track[id]||{}).status||'';
- const done=Object.keys(checks_).filter(k=>checks_[k]).length;
- const tiles=[
-  [ids.length,'tracked','board'],
-  [ids.filter(i=>st(i)).length,'visited','board'],
-  [ids.filter(i=>st(i)==='short').length,'shortlisted','compare'],
-  [done+'/18','checks cleared','legal']];
- return '<div class="htiles">'+tiles.map(t=>
-  '<button type="button" data-hgo="'+t[2]+'"><b>'+t[0]+'</b><span>'+t[1]+'</span></button>')
-  .join('')+'</div>';
-}
-
 /* ---- the three areas the answers point at, with what the money buys ---- */
 function blockAreas(){
  const top=topAreas(3); if(!top.length)return '';
@@ -4673,10 +5173,12 @@ function blockAreas(){
 
 /* ---- two rows only: the fastest riser and the fastest faller ---- */
 function blockMoved(){
- const m=marketMoves();
+ const m=mktMoves();
+ const up=m.filter(x=>x.d>=RISE_THRESHOLD).sort((x,y)=>y.d-x.d);
+ const dn=m.filter(x=>x.d<=-RISE_THRESHOLD).sort((x,y)=>x.d-y.d);
  const pick=[];
- if(m.rising.length)pick.push([m.rising[0],'up']);
- if(m.slowing.length)pick.push([m.slowing[0],'dn']);
+ if(up.length)pick.push([up[0],'up']);
+ if(dn.length)pick.push([dn[0],'dn']);
  if(!pick.length)return '';
  const rows=pick.map(([x,dir])=>
   '<button type="button" class="hrow" data-harea="'+esc(x.a.n)+'">'
@@ -4746,12 +5248,10 @@ function renderHome(){
  if(sub){sub.hidden=personalised();
   if(!personalised())sub.textContent='Answer seven questions and this becomes your search.';}
  const a=nextAction();
- host.innerHTML=blockNext()+blockCounts()+blockAreas()+blockMoved()+blockFindings();
+ host.innerHTML=blockNext()+blockAreas()+blockMoved()+blockFindings();
  const n=document.getElementById('hNext'); if(n)n.addEventListener('click',a.go);
  document.querySelectorAll('#sec-home [data-hedit]').forEach(x=>
   x.addEventListener('click',()=>openIntake(+x.dataset.hedit||0)));
- host.querySelectorAll('[data-hgo]').forEach(x=>
-  x.addEventListener('click',()=>goSection('shortlist',x.dataset.hgo)));
  host.querySelectorAll('[data-harea]').forEach(x=>
   x.addEventListener('click',()=>{goSection('explore');showArea(x.dataset.harea);}));
 }

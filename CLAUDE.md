@@ -421,6 +421,13 @@ info dot's ink on the ground at 4.75. Re-check with the ratio helper before
 introducing a new pair, and darken the foreground rather than shipping
 something short.
 
+### Class names collide the same way function names do
+
+`.pl` was already the pipeline chip, with a dashed border and 5px of padding.
+A new panel label reusing the name inherited both and came out 42px tall
+instead of 13, on four panels at once. **Grep for a class before you style
+it**, exactly as for a function. That one is now `.mpl`.
+
 ### One file, no module scope
 
 Every function in this file is a global, and **a declaration later in the file
@@ -626,8 +633,10 @@ every screen, it probably belongs on Home.
 
 ### Home answers "what next", not "what exists"
 
-Six parts, in order: the profile pill, one gradient hero, four counter tiles,
-your three areas, what moved, the sharing foot. `nextAction()` picks the hero
+Five parts, in order: the profile pill, one gradient hero, your three areas,
+what moved, the sharing foot. There were four counter tiles as well; they
+restated Your activity, which has its own nav item and its own sub-tabs, and
+the hero already names the state in words. `nextAction()` picks the hero
 from state and returns `{state, line, cta, go}` — four states, and each one
 names an action rather than describing the situation:
 
@@ -648,6 +657,47 @@ Explore is the three modes and nothing else. It is not a page to scroll.
 Two screens showing the same 86 rows is the failure mode this structure exists
 to prevent. Before adding a list or a chart, check whether Market > Compare or
 Explore > Position already carries it.
+
+## Market is a dashboard, not a page
+
+Market > Moving is an analytics surface and has a harder budget than any other
+screen: **one screen at 375, no scroll.** Everything on it is a tap target and
+nothing on it is long. The long content — the full chart, the ranked list,
+how to read it, the source — lives in the sheet behind each tile.
+
+One markup, two grids. The same DOM lays out as a phone dashboard and as a
+desktop one; there is no second design and no second template:
+
+    .mgrid    hero + four tiles   2 columns on a phone, 5 across on desktop
+    .mwide2   momentum quadrant   stacked on a phone, beside the ranked
+              + ranked gap bars   asking-over-deeds bars on desktop
+    .mhalf    flood, supply,      flood|supply then zone health on a phone,
+              zone health         all three across the bottom on desktop
+
+`.mdesk` is the one panel that is desktop-only — the ranked asking-over-deeds
+bars, which on a phone are the hero's sheet rather than a second copy on the
+dashboard.
+
+`openMetricSheet(key)` builds every sheet, and each one has the same four
+parts: the chart, the ranked list, a **Read it this way** line, and the source.
+`METRICS` holds the titles. The sheets reuse `openSlide`, so they inherit the
+dismissal registry; they are not a new overlay.
+
+**The ranked 86 lives in exactly one place** — the `rank` sheet, reached from
+Compare's "See all N ranked" and from the analytics panels. Compare itself is
+pick-up-to-three with the same ten rows every time. Do not put a table of 86
+on a tab again.
+
+A period selector and a zone filter sit in the header on desktop. The period
+genuinely re-reads `KFCITY`; the zone filter touches only the location-level
+panels, and the header says so in a line, because a filter that silently fails
+to filter the big numbers is worse than no filter.
+
+Central is greyed in zone health and labelled with its unit count rather than
+its quarters-to-sell, because 187 units cannot carry that figure. Flood sits
+here as market exposure — a donut of the published tiers across the city. It
+is the same data as the per-area warning doing a different job, and it is
+still not scored.
 
 ## The detail panel
 
@@ -701,11 +751,11 @@ the duplicate rather than shrinking type.
 
 A detail-panel tab has its own budget: **about 1.2 screens**, measured as
 `#soBody.scrollHeight / 812`. Over that and something belongs in another tab or
-behind a fold.
+behind a fold. **Market > Moving has the hardest budget of all: 1.0.**
 
-Known and accepted exceptions: **Explore > Your 5** (five cards are ~1.9
-screens on their own), **Listings** (the full directory of 106), the long-form
-**guide articles**, and **Home** at ~1.55 (the six parts above are its floor).
+Known and accepted exceptions: **Explore > Your 5** (~2.6 — five cards at
+about 230px each), **Listings** (the full directory of 106), the long-form
+**guide articles**, and **Home** at ~1.34.
 A calculator opened from a project's Prices tab is its own screen and is far
 over — which is why none of the three opens until it is asked for.
 
@@ -718,10 +768,18 @@ checks, the footer disclaimer. Each `<details class="foldnote">` keeps the load-
 bearing words on the summary line — "Peak times are modelled, not measured" is
 the warning, so it stays visible and the arithmetic folds.
 
-Fixed chrome is charged to every screen, so it is worth guarding: the masthead
-plus the folded footer is about 230px at 375. The footer disclaimer is folded
-behind a `<details class="foldnote">` whose summary still carries the warning —
-keep the warning on the summary line if you touch it.
+Fixed chrome is charged to every screen, so it is worth guarding. The only
+thing that persists is the nav — a 65px fixed bar at the bottom on a phone, a
+rail on desktop. Everything else fixed is an overlay that is off-screen or
+`pointer-events:none` until opened. `.main`'s bottom padding is that bar's
+clearance and nothing else; it was 92px for a 65px bar, which charged 27px of
+nothing to all sixteen screens.
+
+The footer disclaimer is folded behind a `<details class="foldnote">` whose
+summary still carries the warning — keep the warning on the summary line if
+you touch it. Market's own `<h1>` is visually hidden rather than deleted: the
+nav item already says Market in the same glance, and the dashboard has to fit
+one screen.
 
 ## How to verify
 
@@ -752,7 +810,8 @@ Confirm all of the following before reporting the work done:
    its stated fallback rather than breaking.
 2. The browser console is clean — no errors.
 3. Every section still renders when opened — all five, both of Explore's other
-   modes, all three Market sub-tabs, and every guide article. All five panel
+   modes, all three Market sub-tabs, every Market tile opening its sheet, and
+   every guide article. All five panel
    tabs on an area, on a project and on a locality, reached by clicking, with
    the head and the action bar staying put while the middle scrolls.
 4. Local mode still works with no `#cfg` in the URL.
