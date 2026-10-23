@@ -397,14 +397,11 @@ Two notes on filling these in:
 ## Design tokens and the component library
 
 Every colour, radius and spacing value resolves to a custom property on
-`:root`. New work uses the first group of names; the second group is the
-previous ledger palette kept as **aliases**, because 581 rules across the
-stylesheet reference them and rewriting all of those in one pass would risk
-breaking sections that are only meant to be restyled. A rule written against
-`--graphite` now resolves to `--muted`. Delete an alias only once nothing
-references it.
+`:root`. The previous ledger palette is **gone** — all 462 references were
+rewritten and the alias block deleted. These are the only names:
 
-    --bg --card --tile --primary --tint --ink --muted --line
+    --bg --card --tile --primary --tint --ink --muted
+    --line --line-soft --accent
     --warn-bg --warn-fg --risk-bg --risk-fg --band-mid
     --r-card 22 --r-tile 15 --r-seg 12 --r-chip 999
     --s-screen 18 --s-cards 14 --s-in 14 --tap 44
@@ -417,6 +414,23 @@ Every foreground/background pair in use clears 4.5:1. The tightest is
 `--band-mid` on `--tile` at 4.61. Re-check with the ratio helper before
 introducing a new pair, and darken the foreground rather than shipping
 something short.
+
+### One file, no module scope
+
+Every function in this file is a global, and **a declaration later in the file
+silently overwrites an earlier one of the same name**. There is no warning and
+no error — the earlier one simply stops existing, and the symptom is a feature
+that renders nothing.
+
+**Grep before naming any new top-level function.** This has already cost
+three names:
+
+- `sourceFooter` — a component was shadowed by the society provenance footer
+  declared further down. Renamed to `srcFooter`.
+- `badge` and `chip` — the components are shadowed by `const` locals inside
+  `tunedChips()` and a results renderer. Harmless because those two functions
+  do not need the globals, but do not call `badge()` or `chip()` from inside
+  them without renaming the local first.
 
 ### Component library
 
@@ -459,6 +473,28 @@ sites destructure it.
 Every score is shown with a **rank** — `rankLabel(a, scorer)` gives "4th of
 86". A number against an invisible scale tells a buyer nothing. The live
 spread sentence stays as it is.
+
+## The intake
+
+Seven questions for a live-in buyer, **six for an investor** — household is a
+live-in question and asking an investor about it would collect something
+nothing reads. The flow is derived from `iqList()` rather than a switch, so
+the progress dots, the back button and the step count cannot drift from the
+questions actually asked. `iqDef(key)` holds one definition per question;
+adding or reordering a question means editing those two and nothing else.
+
+An option tap writes the answer and re-renders in place. **Advancing is the
+Continue button's job** — a mis-tap must never jump someone forward a screen.
+
+Between the last question and the placard sits the **profile confirmation**.
+Nothing is recommended until the person agrees we understood them, each row
+jumps back to its own question, and the "what this rules out" card counts the
+exclusions off the same filters the shortlist uses rather than estimating.
+
+Two placards from one data set: `placardLive()` and `placardInvest()`. Both
+carry rank out of 86 and a flood tier where one exists, and both link to the
+weights through a card that **reads the live table** rather than restating it,
+so a weight change cannot leave stale copy behind.
 
 ## Tabs
 
