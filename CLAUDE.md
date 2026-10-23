@@ -84,6 +84,28 @@ costs zero requests for places already resolved. Nominatim forbids systematic
 querying; deleting the cache means hitting them all over again. Misses are
 cached too, deliberately — an unresolvable name should not be re-asked.
 
+`tools/enrich.py` carries two safeguards worth knowing before editing it:
+
+- `GEO_FIX` holds corrections for places Nominatim resolves to the right name
+  in the wrong part of the city — Bengaluru has two Kothanurs and two Bagalurs.
+  Each fix is candidate queries **plus the box the answer must land in**; a
+  candidate outside the box is rejected and the run says so, so a manual
+  override is a checked one rather than merely a hand-typed one. Where no query
+  can satisfy the box, `anchor` adopts the coordinate of another real OSM
+  locality in the same micro-market from `data/localities.json`. Never type a
+  coordinate in from memory.
+- A pin that **moves** invalidates everything derived from it. Drive times, the
+  nearest station and the metro journey all describe wherever the old
+  coordinate was, so a correction drops them rather than inheriting them, and
+  `patch_index` removes a field that no longer has a value instead of leaving
+  the previous one in place. The "never downgrade on a failed stage" rule still
+  holds; this is the separate case.
+
+`--areas=A,B` re-runs a named handful. It merges into `data/enrichment.json`
+rather than replacing it, and leaves the Tier 2 set alone entirely: parent
+areas are assigned by nearest-of-all-86, so re-deriving them from a subset
+re-parents every locality to it.
+
 Rules 1 and 2 are about the app. A `tools/` script is not a violation of either.
 
 ## Third-party services — swap plan
@@ -142,6 +164,33 @@ Do not average broker figures. Store the authoritative number, and where
 sources disagree store the observed range plus a `conflict` note. An averaged
 figure nobody quoted cannot be defended to a buyer. A `rera` figure must read
 as visibly more trustworthy in the UI than a `broker` one.
+
+`AREAS` additionally carries the Knight Frank layer, written by
+`tools/kf_merge.py` from `data/knight-frank.md` — do not hand-edit these
+either, re-run the script:
+
+- `kfZone` — Knight Frank's own five-zone classification. **This is not `z`.**
+  It is the join key for their zone-level figures and nothing else; `z` still
+  drives every filter, map and zone preference. Nine areas differ between the
+  two, Sarjapur Road most consequentially (ours East, theirs South).
+- `qts` / `qtsPrev` / `zoneUnsold` — quarters-to-sell and unsold stock for that
+  KF zone, H1 2026 and H1 2025. **Zone level, never area level.** `qtsThin`
+  marks a zone whose sample is too small to read as signal (Central, 187 units).
+- `growth26` / `growth25` / `trend` / `kfSeries` — the tracked price readings.
+  Only the 17 locations Knight Frank follow have them; everywhere else they are
+  `null`, and must stay `null` rather than being filled from portal data.
+- `growthPortal` — the portal figure `py` held before the merge. On those 17,
+  `py` is now the Knight Frank reading.
+- `dataTier` — `verified` | `portal`. `scorePrecision` says the same thing for
+  the investment score, and always names the zone-level inputs.
+- `infraScore` 0–10 and `infraNote` — the rail and employment pipeline. The
+  rubric is a judgement call, documented at the top of `tools/kf_merge.py`;
+  argue with it there, not by editing the numbers.
+
+Knight Frank track transactions rather than listings, so where they and a
+portal figure disagree, theirs wins. The three-year chart draws from `kfSeries`
+only: an area without one gets an empty state, never a portal line, because a
+chart implies a measured series.
 
 Both arrays also carry fields written by `tools/enrich.py` — do not hand-edit
 these, re-run the script instead: `lat`/`lng`, `dt` (drive times per hub, as

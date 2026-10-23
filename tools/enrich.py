@@ -89,6 +89,95 @@ OVERRIDES = {
     'Kumbalgodu / Bidadi': 'Bidadi, Karnataka, India',
 }
 
+# ---------------------------------------------------------------- geo fixes
+# Three AREAS resolved to a real place with the right name in the wrong part of
+# the city. Bengaluru has two Kothanurs and two Bagalurs; "Thanisandra" landed
+# on the Nagawara point, which is a different micro-market with its own entry.
+# Each fix lists candidate queries in preference order and the box the answer
+# must fall inside. A candidate landing outside the box is REJECTED and the run
+# says so, rather than swapping one wrong pin for another: the point of a
+# manual override is that it is checked, not that it is manual.
+#   box = (lat_min, lat_max, lon_min, lon_max)
+GEO_FIX = {
+    'Bagalur': {
+        'why': 'resolved to the Bagalur near Halasuru in the centre; we want '
+               'the airport-corridor Bagalur off Hennur-Bagalur Road',
+        # East edge stops at 77.70 so the Bagalur on Budigere Road (77.741),
+        # which is the Old Madras Road one and already has its own entry as
+        # Budigere Cross, cannot be picked up here.
+        'box': (13.09, 13.22, 77.60, 77.70),
+        'queries': ['Bagalur, Jala Hobli, Bengaluru North, Karnataka, India',
+                    'Bagalur Village, Bengaluru North, Karnataka, India',
+                    'Bagaluru, Bengaluru North, Karnataka, India',
+                    'Bagalur, Bengaluru North, Karnataka, India',
+                    'Bagalur, Yelahanka, Bengaluru, Karnataka, India',
+                    'Bagaluru, Karnataka, India'],
+    },
+    'Thanisandra': {
+        'why': 'resolved to the same point as Nagawara / RT Nagar, which is a '
+               'separate entry; Thanisandra proper is north of it',
+        # North of Nagawara (13.0529) and west of Kothanur (77.637), which are
+        # the two neighbours it keeps collapsing into.
+        'box': (13.058, 13.095, 77.605, 77.655),
+        # Nominatim has no Thanisandra point north of Nagawara: every spelling
+        # tried lands within 300 m of it, because the two localities meet
+        # there. So the fallback is an ANCHOR — a different, real OSM place
+        # inside the same micro-market, taken from data/localities.json rather
+        # than typed in from memory. Rachenahalli sits on Thanisandra Main
+        # Road between Nagawara and Jakkur, which is the corridor this entry
+        # describes. It is a proxy, and geoPrecision stays honest about that.
+        'anchor': 'Rachenahalli',
+        'queries': ['Thanisandra, 560077, Karnataka, India',
+                    'Thanisandra Village, Bengaluru North, Karnataka, India',
+                    'Thanisandra, Jakkur, Bengaluru, Karnataka, India',
+                    'Thanisandra Main Road, Bengaluru North, Karnataka, India',
+                    'Thanisandra, Bengaluru North, Karnataka, India',
+                    'Thanisandra Village, Bengaluru, Karnataka, India',
+                    'Thanisandra, Byatarayanapura, Bengaluru, Karnataka, India'],
+    },
+    'Kothanur / Kothnur': {
+        'why': 'resolved to the southern Kothnur near Yelachenahalli, which '
+               'gave it a Green Line station it does not have; we want the '
+               'northern Kothanur off Hennur Road',
+        'box': (13.04, 13.12, 77.60, 77.72),
+        'queries': ['Kothanur, Bengaluru North, Karnataka, India',
+                    'Kothanur, Hennur, Bengaluru, Karnataka, India',
+                    'Kothanur, Bengaluru Urban, Karnataka, India'],
+    },
+}
+
+
+def fix_anchor(name):
+    """The sourced fallback for a GEO_FIX that no query can satisfy: another
+    OSM locality in the same micro-market, read from the Tier 2 set this repo
+    already holds. Returns None if the anchor is missing or out of its box."""
+    f = GEO_FIX.get(name)
+    if not f or not f.get('anchor'):
+        return None
+    want = f['anchor']
+    raw = load_json(os.path.join(DATA_DIR, 'localities.json'), None)
+    rows = raw if isinstance(raw, list) else (raw or {}).get('localities', [])
+    for r in rows:
+        if str(r.get('n', '')).strip().lower() == want.lower():
+            lat = r.get('lat')
+            lon = r.get('lng', r.get('lon'))
+            if lat is None or lon is None or not in_fix_box(name, lat, lon):
+                return None
+            return {'lat': float(lat), 'lon': float(lon),
+                    'display_name': 'anchored on %s (data/localities.json)' % want,
+                    'class': 'place', 'type': 'anchor', 'query_variant': -1,
+                    'query': '(anchor: %s)' % want}
+    return None
+
+
+def in_fix_box(name, lat, lon):
+    f = GEO_FIX.get(name)
+    if not f:
+        return True
+    s_, n_, w_, e_ = f['box']
+    return s_ <= lat <= n_ and w_ <= lon <= e_
+
+
 # A locality lookup should never return a transit relation or a lake. Both have
 # been observed: a bus route scored above the town it is named after, and a
 # lake above the settlement beside it. Rejected wherever they come from,
@@ -249,18 +338,23 @@ def geocode_all(items, cache, pacer, dry_run=False):
     for it in items:
         # The brief's query shape. A second, more specific attempt is made only
         # if this one fails, so a miss costs at most one extra request.
-        if it['_name'] in OVERRIDES:
+        fix = GEO_FIX.get(it['_name'])
+        if fix:
+            # A corrected entry takes its candidates and nothing else. Falling
+            # back to the original query would just re-resolve the wrong place.
+            queries = list(fix['queries'])
+        elif it['_name'] in OVERRIDES:
             queries = [OVERRIDES[it['_name']]]
         else:
             queries = ['%s, Bengaluru, Karnataka, India' % it['_name']]
-        if it['_name'] not in OVERRIDES and it.get('a') and it['a'] != it['_name']:
+        if not fix and it['_name'] not in OVERRIDES and it.get('a') and it['a'] != it['_name']:
             queries.append('%s, %s, Bengaluru, Karnataka, India' % (it['_name'], it['a']))
         # Several AREAS are compound labels ("Banaswadi / Kammanahalli",
         # "Banashankari overall") that Nominatim cannot parse as written.
         # Fall back to the first place named in them.
         plain = re.split(r'\s*/\s*', it['_name'])[0]
         plain = re.sub(r'\s+overall$', '', plain, flags=re.I).strip()
-        if it['_name'] not in OVERRIDES and plain and plain != it['_name']:
+        if not fix and it['_name'] not in OVERRIDES and plain and plain != it['_name']:
             queries.append('%s, Bengaluru, Karnataka, India' % plain)
 
         hit = None
@@ -296,14 +390,30 @@ def geocode_all(items, cache, pacer, dry_run=False):
                 print('  ~ %s -> rejected %s/%s (%s)'
                       % (q, rec.get('class'), rec.get('type'), rec['display_name'][:48]))
                 rec = None
+            if rec and not in_fix_box(it['_name'], rec['lat'], rec['lon']):
+                print('  ~ %s -> %.5f,%.5f is outside the box this fix requires; rejected'
+                      % (q, rec['lat'], rec['lon']))
+                rec = None
             if rec:
                 hit = dict(rec)
                 hit['query'] = q
                 break
 
         if not hit:
+            hit = fix_anchor(it['_name'])
+            if hit:
+                print('  anchored %s -> %.5f,%.5f  %s'
+                      % (it['_name'], hit['lat'], hit['lon'], hit['display_name']))
+        if not hit:
+            if it['_name'] in GEO_FIX:
+                print('  !! %s: no candidate landed inside the required box. '
+                      'The existing coordinate is kept.' % it['_name'])
             unresolved.append(it['_name'])
             continue
+        if it['_name'] in GEO_FIX:
+            print('  fixed %s -> %.5f,%.5f via %r\n        %s'
+                  % (it['_name'], hit['lat'], hit['lon'], hit['query'],
+                     hit.get('display_name', '')[:96]))
         if not in_bbox(hit['lat'], hit['lon']):
             outside.append((it['_name'], hit['lat'], hit['lon'], hit.get('display_name', '')))
         resolved[it['_name']] = hit
@@ -750,7 +860,7 @@ def js_str(s):
     return s.replace('\\', '\\\\').replace("'", "\\'")
 
 
-def patch_index(lines, areas, socs, enrich):
+def patch_index(lines, areas, socs, enrich, moved=()):
     """Rewrite only the fields this script owns, leaving every line otherwise
     byte-identical. Existing lat/lng is kept when a geocode failed or landed
     outside the box, so a bad lookup can never move a pin silently."""
@@ -763,6 +873,12 @@ def patch_index(lines, areas, socs, enrich):
             return pat.sub(',%s:%s' % (key, value), line, count=1)
         m = ROW.match(line)
         return line[:m.end()] + ',%s:%s' % (key, value) + line[m.end():]
+
+    def drop(line, key):
+        """Remove a field outright. Needed where a corrected coordinate means
+        the old value is not merely stale but about a different place."""
+        pat = re.compile(r",%s:(?:'(?:[^']|\\')*'|\[[^\]]*\]|\{[^}]*\}|-?[\d.]+)" % key)
+        return pat.sub('', line, count=1)
 
     for coll, rows in (('areas', areas), ('socs', socs)):
         for it in rows:
@@ -793,6 +909,10 @@ def patch_index(lines, areas, socs, enrich):
                 line = field(line, 'geoPrecision', "'%s'" % gp)
 
             mj = rec.get('metroJourney')
+            if not mj and name in moved:
+                # too far from any station to have a journey at all. Leaving the
+                # previous one in place would keep quoting the old pin's ride.
+                line = drop(line, 'mt')
             if mj:
                 line = field(line, 'mt', '{%s}' % ','.join(
                     '%s:[%d,%d]' % (h, v[0], v[1]) for h, v in sorted(mj.items())))
@@ -923,11 +1043,14 @@ def main():
     skip_geo = '--skip-geocode' in sys.argv
     only = None
     stages = None
+    pick = None
     for a in sys.argv[1:]:
         if a.startswith('--limit='):
             only = int(a.split('=', 1)[1])
         if a.startswith('--only='):
             stages = set(a.split('=', 1)[1].split(','))
+        if a.startswith('--areas='):
+            pick = set(x.strip() for x in a.split('=', 1)[1].split(',') if x.strip())
 
     def run(stage):
         return stages is None or stage in stages
@@ -936,6 +1059,17 @@ def main():
     lines, areas, socs = read_arrays()
     if only:
         areas, socs = areas[:only], socs[:only]
+    if pick:
+        # Re-run a named handful. patch_index only rewrites entries it is given
+        # a record for, so every other line in index.html stays byte-identical;
+        # societies are left out entirely so none of them re-borrows a position
+        # from a deliberately truncated area list.
+        missing = pick - set(a['_name'] for a in areas)
+        if missing:
+            sys.exit('--areas: no such AREAS entry: %s' % sorted(missing))
+        areas = [a for a in areas if a['_name'] in pick]
+        socs = []
+        print('--areas: limited to %s' % ', '.join(sorted(pick)))
     print('parsed %d AREAS, %d SOC from index.html' % (len(areas), len(socs)))
 
     cache = load_json(GEOCACHE, {})
@@ -1107,6 +1241,11 @@ def main():
         print('  --only: reusing %d localities from %s'
               % (len(locs), os.path.relpath(LOCOUT, ROOT)))
 
+    if locs and pick:
+        print('  --areas: Tier 2 left untouched. Parent areas are assigned by '
+              'nearest-of-all-86, so re-deriving them from a subset would '
+              're-parent every locality to it.')
+        locs = []
     if locs:
         # Tier 1 wins any name collision: a researched area must never be
         # shadowed by a thinner Tier 2 record of the same place.
@@ -1195,7 +1334,11 @@ def main():
 
     # ---- 4. write
     print('\n[4/5] writing %s' % os.path.relpath(OUT, ROOT))
-    enrich = {'areas': {}, 'socs': {},
+    # A subset run carries the previous records forward: enrichment.json is the
+    # record of the whole city, and a three-area re-run must not reduce it to
+    # three areas.
+    enrich = {'areas': dict(prev.get('areas', {})) if pick else {},
+              'socs': dict(prev.get('socs', {})) if pick else {},
               'meta': {'generated': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
                        'hubs': [{'key': h[0], 'label': h[1], 'lat': h[2], 'lon': h[3]} for h in HUBS],
                        'peak_bands_km_to_multiplier': [
@@ -1209,10 +1352,23 @@ def main():
                                'multiplied by a factor banded on road distance. It is not '
                                'measured traffic and no traffic data was used.'},
               'stations': stations or prev.get('stations') or []}
+    moved = set()
     for tag, coll, res, unres in (('A', 'areas', a_res, a_un), ('S', 'socs', s_res, s_un)):
         for n, r in res.items():
             k = '%s\x00%s' % (tag, n)
             was = prev.get(coll, {}).get(n) or {}
+            # "Never downgrade" is right for a stage that failed this run, and
+            # wrong for a pin that MOVED: drive times, nearest station and
+            # metro journey all describe wherever the old coordinate was. A
+            # corrected geocode must not inherit the answers for the place it
+            # was corrected away from.
+            prevgeo = was.get('geo') or {}
+            if prevgeo.get('lat') is not None and haversine_km(
+                    prevgeo['lat'], prevgeo['lon'], r['lat'], r['lon']) > 0.1:
+                print('  %s moved %.1f km: dropping its cached drive, metro and journey'
+                      % (n, haversine_km(prevgeo['lat'], prevgeo['lon'], r['lat'], r['lon'])))
+                was = {}
+                moved.add(n)
             enrich[coll][n] = {
                 'geo': {'lat': r['lat'], 'lon': r['lon'],
                         'display_name': r.get('display_name', ''),
@@ -1240,7 +1396,7 @@ def main():
 
     # ---- 5. patch
     print('\n[5/5] patching index.html')
-    changed = patch_index(lines, areas, socs, enrich)
+    changed = patch_index(lines, areas, socs, enrich, moved)
     patch_tables(hub_info, mstations)
     print('  metro journey fields: %d' % changed.get('mt', 0))
     print('  coordinates written: %d   kept existing: %d' % (changed['lat'], changed['kept_coords']))

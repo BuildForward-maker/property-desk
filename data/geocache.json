@@ -62,12 +62,38 @@
   "query_variant": 0,
   "type": "suburb"
  },
+ "Bagalur Village, Bengaluru North, Karnataka, India": null,
+ "Bagalur, Bengaluru North, Karnataka, India": {
+  "class": "highway",
+  "display_name": "Bagalur - Budigere Road, Budigere, Devanahalli taluku, Bengaluru North, Karnataka, 562129, India",
+  "lat": 13.1377017,
+  "lon": 77.741005,
+  "query_variant": 1,
+  "type": "secondary"
+ },
  "Bagalur, Bengaluru, Karnataka, India": {
   "display_name": "New Bagalur Layout, Richards Town, Sagayapuram, Bengaluru North City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560084, India",
   "lat": 13.0079918,
   "lon": 77.6184726,
   "query_variant": 0,
   "type": "neighbourhood"
+ },
+ "Bagalur, Jala Hobli, Bengaluru North, Karnataka, India": null,
+ "Bagalur, Yelahanka, Bengaluru, Karnataka, India": {
+  "class": "highway",
+  "display_name": "Bagalur Road, Dwaraka Nagar, Kogilu, Bengaluru North City Corporation, Bengaluru, Yelahanka taluku, Bengaluru Urban, Karnataka, 560063, India",
+  "lat": 13.1215244,
+  "lon": 77.6143661,
+  "query_variant": 2,
+  "type": "secondary"
+ },
+ "Bagaluru, Bengaluru North, Karnataka, India": {
+  "class": "place",
+  "display_name": "Bagaluru, Mutakadahalli, Hosakote taluk, Bengaluru North, Karnataka, 562122, India",
+  "lat": 13.1473955,
+  "lon": 77.8537155,
+  "query_variant": 0,
+  "type": "hamlet"
  },
  "Banashankari 2nd Stage, Bengaluru, Karnataka, India": {
   "display_name": "Banashankari 2nd Stage, Ganesh Mandira Ward, Bengaluru West City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560070, India",
@@ -549,6 +575,14 @@
   "lon": 77.5821221,
   "query_variant": 0,
   "type": "insurance"
+ },
+ "Kothanur, Bengaluru North, Karnataka, India": {
+  "class": "highway",
+  "display_name": "Kothanur Main Road, LBS Nagar, K Narayanapura, Sampigehalli, Bengaluru North City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560077, India",
+  "lat": 13.0668754,
+  "lon": 77.6372619,
+  "query_variant": 0,
+  "type": "secondary"
  },
  "Kudlu / Kudlu Gate, Bengaluru, Karnataka, India": {
   "display_name": "Kudlu Gate, Service Road, Singasandra, Bandepalya, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560068, India",
@@ -1139,6 +1173,14 @@
  "Suncity Gloria, Sarjapur Road, Bengaluru, Karnataka, India": null,
  "Sunny Groves, Bengaluru, Karnataka, India": null,
  "Sunny Groves, Sarjapur Road, Bengaluru, Karnataka, India": null,
+ "Thanisandra Main Road, Bengaluru North, Karnataka, India": {
+  "class": "highway",
+  "display_name": "Thanisandra Main Road, Kempapura, Bengaluru North City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560045, India",
+  "lat": 13.0403517,
+  "lon": 77.6243304,
+  "query_variant": 3,
+  "type": "primary"
+ },
  "Thanisandra Main Road, Bengaluru, Karnataka, India": {
   "display_name": "Thanisandra Main Road, Telecom Layout 10th Block, Nagavara, Hennur, Bengaluru North City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560045, India",
   "lat": 13.0441254,
@@ -1146,12 +1188,39 @@
   "query_variant": 0,
   "type": "primary"
  },
+ "Thanisandra Village, Bengaluru North, Karnataka, India": null,
+ "Thanisandra Village, Bengaluru, Karnataka, India": null,
+ "Thanisandra, 560077, Karnataka, India": {
+  "class": "place",
+  "display_name": "Thanisandra, Bengaluru North City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560045, India",
+  "lat": 13.054713,
+  "lon": 77.6339258,
+  "query_variant": 0,
+  "type": "quarter"
+ },
+ "Thanisandra, Bengaluru North, Karnataka, India": {
+  "class": "boundary",
+  "display_name": "Thanisandra, Bengaluru North City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
+  "lat": 13.0522499,
+  "lon": 77.6316152,
+  "query_variant": 0,
+  "type": "administrative"
+ },
  "Thanisandra, Bengaluru, Karnataka, India": {
   "display_name": "Thanisandra, Bengaluru North City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
   "lat": 13.0522499,
   "lon": 77.6316152,
   "query_variant": 0,
   "type": "administrative"
+ },
+ "Thanisandra, Byatarayanapura, Bengaluru, Karnataka, India": null,
+ "Thanisandra, Jakkur, Bengaluru, Karnataka, India": {
+  "class": "highway",
+  "display_name": "Thanisandra, Rachenahalli Main Road, Arkavathy Layout 11th Block, Thanisandra, Bengaluru North City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560045, India",
+  "lat": 13.0559857,
+  "lon": 77.6320513,
+  "query_variant": 2,
+  "type": "bus_stop"
  },
  "Trifecta Vanto, Bengaluru, Karnataka, India": {
   "class": "landuse",

@@ -160,36 +160,36 @@
   "Bagalur": {
    "drive": {
     "cbd": [
-     8,
-     18,
-     5.7
-    ],
-    "ecity": [
-     31,
-     56,
-     24.4
-    ],
-    "itpl": [
      20,
      36,
-     16.4
+     19.2
+    ],
+    "ecity": [
+     43,
+     65,
+     36.5
+    ],
+    "itpl": [
+     32,
+     58,
+     28.5
     ],
     "orr": [
-     24,
-     43,
-     18.9
+     37,
+     56,
+     32.6
     ]
    },
    "geo": {
-    "display_name": "New Bagalur Layout, Richards Town, Sagayapuram, Bengaluru North City Corporation, Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, 560084, India",
+    "display_name": "Bagalur Road, Dwaraka Nagar, Kogilu, Bengaluru North City Corporation, Bengaluru, Yelahanka taluku, Bengaluru Urban, Karnataka, 560063, India",
     "in_bbox": true,
-    "lat": 13.0079918,
-    "lon": 77.6184726,
-    "query": "Bagalur, Bengaluru, Karnataka, India"
+    "lat": 13.1215244,
+    "lon": 77.6143661,
+    "query": "Bagalur, Yelahanka, Bengaluru, Karnataka, India"
    },
    "metro": {
-    "km": 3.61,
-    "name": "Halasuru"
+    "km": 12.97,
+    "name": "Yeshwantpur"
    },
    "metroJourney": null
   },
@@ -2128,51 +2128,38 @@
   "Kothanur / Kothnur": {
    "drive": {
     "cbd": [
-     16,
-     35,
-     13.6
+     15,
+     33,
+     12.9
     ],
     "ecity": [
-     18,
-     32,
-     17.3
+     39,
+     59,
+     32.7
     ],
     "itpl": [
-     32,
-     58,
-     29.0
+     24,
+     43,
+     20.7
     ],
     "orr": [
-     18,
-     40,
-     14.9
+     31,
+     56,
+     24.1
     ]
    },
    "geo": {
-    "display_name": "United India Insurance Co. Ltd., Kothnur Main Road, Krishna Nagar, Kothnur, RBI Layout, Bengaluru South City Corporation, Bengaluru, Bangalore South, Bengaluru Urban, Karnataka, 560076, India",
+    "display_name": "Kothanur Main Road, LBS Nagar, K Narayanapura, Sampigehalli, Bengaluru North City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, 560077, India",
     "in_bbox": true,
-    "lat": 12.8858154,
-    "lon": 77.5821221,
-    "query": "Kothanur / Kothnur, Bengaluru, Karnataka, India"
+    "lat": 13.0668754,
+    "lon": 77.6372619,
+    "query": "Kothanur, Bengaluru North, Karnataka, India"
    },
    "metro": {
-    "km": 1.73,
-    "name": "Yelachenahalli"
+    "km": 8.52,
+    "name": "Benniganahalli"
    },
-   "metroJourney": {
-    "cbd": [
-     72,
-     1
-    ],
-    "ecity": [
-     74,
-     1
-    ],
-    "itpl": [
-     109,
-     1
-    ]
-   }
+   "metroJourney": null
   },
   "Kudlu / Kudlu Gate": {
    "drive": {
@@ -3272,35 +3259,35 @@
   "Thanisandra": {
    "drive": {
     "cbd": [
-     13,
-     29,
-     10.8
+     16,
+     35,
+     12.5
     ],
     "ecity": [
-     37,
-     56,
-     30.6
+     39,
+     59,
+     32.3
     ],
     "itpl": [
-     22,
-     40,
-     18.6
+     24,
+     43,
+     20.3
     ],
     "orr": [
-     29,
-     52,
-     22.0
+     32,
+     58,
+     23.7
     ]
    },
    "geo": {
-    "display_name": "Thanisandra, Bengaluru North City Corporation, Bengaluru, Bangalore East, Bengaluru Urban, Karnataka, India",
+    "display_name": "anchored on Rachenahalli (data/localities.json)",
     "in_bbox": true,
-    "lat": 13.0522499,
-    "lon": 77.6316152,
-    "query": "Thanisandra, Bengaluru, Karnataka, India"
+    "lat": 13.05886,
+    "lon": 77.62326,
+    "query": "(anchor: Rachenahalli)"
    },
    "metro": {
-    "km": 7.2,
+    "km": 8.2,
     "name": "Baiyappanahalli"
    },
    "metroJourney": null
@@ -3676,7 +3663,7 @@
    "south": 12.7,
    "west": 77.3
   },
-  "generated": "2026-09-22T07:49:37Z",
+  "generated": "2026-10-23T10:43:34Z",
   "hubs": [
    {
     "key": "itpl",
