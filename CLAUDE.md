@@ -302,6 +302,49 @@ Nominatim resolved the complex itself, `'area'` where it fell back to the
 micro-market's coordinates. Area-level entries are labelled as approximate in
 the UI; keep that distinction visible.
 
+## Data we do not have
+
+Written down because a brief has already asserted some of it as held, and the
+scoring quietly inherited the assertion. **Nothing in this list exists in this
+repo.** If a factor description, a weight table or a commit message implies any
+of it, that text is wrong and should be corrected rather than the data assumed.
+
+Two factors currently carry weight on thinner evidence than their names
+suggest, and their `FACTOR_DOC` entries say so in the UI:
+
+- **`live` (liveability)** is a hand-written regex table, `LOCQ`. It matches
+  41 of 86 areas; the other 45 take the default and are therefore identical to
+  each other. It is editorial judgement, not measurement.
+- **`infra` (current infrastructure)** covers operational metro only. It is
+  close to a restatement of metro distance under a broader name.
+
+What would make them real, none of which we hold:
+
+| Missing | Would feed | Why it matters |
+|---|---|---|
+| Hospital and school density, with travel time | `live`, `infra` | The two amenities families actually choose on |
+| Flooding history by locality | `live` | The single largest downside risk in Bengaluru, and invisible in price until it happens |
+| Water supply — Cauvery connection vs tanker dependence | `live` | A recurring monthly cost and a hard constraint in the outer east and north |
+| Air quality by locality | `live` | Separates arterial-adjacent stock from interior stock |
+| Green cover and tree canopy | `live` | Much of the difference between an old and a new micro-market |
+| Footpath and street-lighting quality | `live` | Whether the area is walkable, which is most of day-to-day liveability |
+| Bus route density and frequency | `infra` | How most of the city actually moves; we model only metro and car |
+| Operational road quality — carriageway width, service roads | `infra` | The project rows hold exactly one road, and it is unbuilt |
+| Operational employment nodes with headcount | `infra`, `tech` | `tech` uses drive time to three fixed hubs, not where jobs actually are |
+| Power and water outage frequency | `live` | Routinely decides a purchase and appears in no listing |
+
+Two notes on filling these in:
+
+- **Do not substitute a proxy that restates a factor we already weight.**
+  Distance to the CBD looks like a maturity proxy for `live`, but commute
+  already carries 24% for a CBD worker, so it would count the same kilometres
+  twice and inflate whatever the buyer already said mattered.
+- **Do not derive coverage from `SOC`.** Society count per area looks like a
+  density signal and is a record of where research effort went: 52 of 86 areas
+  hold no society at all, and the top of the list is Sarjapur Road and
+  Whitefield because that is where the search was focused. Using it would
+  encode our own sampling as a property of the city.
+
 ## Tabs
 
 Seventeen tabs, wired by `data-t` on `nav.rail button` to `#p-<name>` panels:
