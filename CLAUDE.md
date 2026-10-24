@@ -548,12 +548,61 @@ almost nothing, and that a high yield says nothing about vacancy.
 
 ## The intake
 
-Seven questions for a live-in buyer, **six for an investor** — household is a
-live-in question and asking an investor about it would collect something
-nothing reads. The flow is derived from `iqList()` rather than a switch, so
-the progress dots, the back button and the step count cannot drift from the
-questions actually asked. `iqDef(key)` holds one definition per question;
-adding or reordering a question means editing those two and nothing else.
+Seven questions for a live-in buyer, **five for an investor**. The flow is
+derived from `iqList()` rather than a switch, so the progress dots, the back
+button and the step count cannot drift from the questions actually asked.
+`iqDef(key)` holds one definition per question; adding or reordering a
+question means editing those two and nothing else.
+
+Household, workplace and travel are live-in questions. The desk used to ask an
+investor where their *tenants* would work and how those tenants would travel;
+nobody buying a ₹1 Cr flat to let knows either, and the questions implied a
+precision that does not exist. In their place is the one thing an investor can
+answer — **income now, growth later, or both** — and it moves the weights in
+`personalWeights()`, which is the only reason to ask it:
+
+    income  yield +6, rent growth +4, asking-vs-deeds +2, price growth −8
+    growth  price growth +8, yield −6, rent growth −4, asking-vs-deeds +2
+    both    the standard investor weighting, unchanged
+
+`personalWeights()`'s invest branch reads no workplace and no travel mode at
+all. A hub stored from an earlier live-in session must not leak into an
+investor's weighting now that the question is gone.
+
+**What this does and does not move.** `personalWeights()` drives `socFit`, so
+the goal changes the project ranking. Area ranking does not read it: `areaFit`
+is `W_PERSONAL` whatever the purpose, and `investScore` is `W_INVEST`. That is
+existing behaviour, not something this question introduced, but it means the
+investor's area list is the same list whichever goal they pick.
+
+### Screen zero: say it instead of filling a form
+
+Before question 1 sits a screen that lets somebody describe their situation.
+`IPHASE` is `'voice' | 'caught' | 'q'` and sits in front of `iStep` in
+`renderIntake()`. It is offered once per session, never to somebody editing an
+answer, and **never in a browser without SpeechRecognition** — that browser
+gets the questions with one line saying voice needs Chrome, not a mic that
+does nothing.
+
+The microphone asks for permission **on the tap and never on load**. Handlers
+are attached before `start()` so a `start()` that throws is still reported:
+a blocked mic says so in `VERR` rather than sitting there.
+
+`voiceExtract()` is **patterns only, and the screen says so**: a number
+followed by cr/crore/lakh/lac/L, a few purpose phrases, the four hubs the desk
+already measures, and timing words. Anything else is not understood and is not
+claimed to be. The full transcript is stored in `INTAKE.voice` so a model can
+read it properly later without asking anybody to speak again, and the caught
+screen shows it verbatim.
+
+After the caught screen, `nextUnanswered()` routes to the first question that
+still has no answer, and `iNext` keeps skipping answered ones while `VCAUGHT`
+is set. Somebody who said four things is not walked through all seven.
+
+A 38px microphone sits in every section header. It opens a sheet that says
+asking arrives with the next release and offers search instead — the
+affordance now, the asking later. It hides its "set up by voice" button where
+SpeechRecognition is missing.
 
 An option tap writes the answer and re-renders in place. **Advancing is the
 Continue button's job** — a mis-tap must never jump someone forward a screen.
@@ -760,9 +809,15 @@ A detail-panel tab has its own budget: **about 1.2 screens**, measured as
 `#soBody.scrollHeight / 812`. Over that and something belongs in another tab or
 behind a fold. **Market > Moving has the hardest budget of all: 1.0.**
 
-Known and accepted exceptions: **Explore > Your 5** (~2.6 — five cards at
+Known and accepted exceptions: **Explore > Your 5** (~2.65 — five cards at
 about 230px each), **Listings** (the full directory of 106), the long-form
-**guide articles**, and **Home** at ~1.34.
+**guide articles**, and **Home** at ~1.36. Screen zero fits one screen with no
+scroll, and must stay that way.
+
+Market's head is the sub-tabs and the microphone on one row, with the heading
+visually hidden and the section's top padding cut to 18px. Adding anything to
+it costs the dashboard its one-screen budget: the header mic alone put Moving
+over until the row was shared.
 A calculator opened from a project's Prices tab is its own screen and is far
 over — which is why none of the three opens until it is asked for.
 

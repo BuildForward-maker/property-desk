@@ -824,12 +824,58 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 }
 .so-body{overflow-y:auto;padding:18px 20px 40px;flex:1}
 .so-body .block:first-child{margin-top:0}
+/* ---- screen zero: the microphone, and the tap path beside it as an equal ---- */
+.vbody{display:flex;flex-direction:column}
+.vmic{display:flex;flex-direction:column;align-items:center;gap:10px;margin:22px 0 4px}
+.vbtn{position:relative;appearance:none;border:0;cursor:pointer;width:96px;height:96px;
+  border-radius:50%;background:var(--grad-primary);color:#fff;display:flex;
+  align-items:center;justify-content:center;box-shadow:var(--shadow-primary)}
+.vbtn:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.vbtn .ico-g svg{width:34px;height:34px;stroke-width:1.5}
+.vring{position:absolute;border-radius:50%;border:1px solid var(--primary);pointer-events:none}
+.vring.r1{inset:-12px;opacity:.26}
+.vring.r2{inset:-24px;opacity:.13}
+.vmic.live .vring.r1{animation:vpulse 1.6s ease-out infinite}
+.vmic.live .vring.r2{animation:vpulse 1.6s ease-out .8s infinite}
+@keyframes vpulse{0%{transform:scale(.92);opacity:.3}100%{transform:scale(1.14);opacity:0}}
+.vlab{font-family:var(--label);font-size:12px;font-weight:600;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--muted)}
+.vwave{display:flex;align-items:center;gap:3px;height:34px}
+.vwave i{display:block;width:4px;height:10px;border-radius:2px;background:#fff;
+  animation:vbar .9s ease-in-out infinite}
+@keyframes vbar{0%,100%{height:9px}50%{height:30px}}
+.vheard{min-height:44px;margin:14px 0 0;font-size:15px;line-height:1.5;text-align:center;
+  color:var(--ink)}
+.vheard:empty{min-height:22px}
+.vheard.verr{color:var(--risk-fg);font-size:13.5px}
+.vlimit{margin:14px 0 0;font-size:12px;line-height:1.5;color:var(--muted);text-align:center}
+.vsplit{display:flex;align-items:center;gap:12px;margin:20px 0 14px;color:var(--muted);
+  font-size:11.5px}
+.vsplit::before,.vsplit::after{content:"";flex:1;height:1px;background:var(--line)}
+.vtap{width:100%}
+.vunsup{margin:0 0 14px;font-size:12.5px;line-height:1.5;color:var(--muted);
+  background:var(--tile);border-radius:var(--r-tile);padding:10px 12px}
+.vsaid{margin-top:18px;background:var(--tile);border-radius:var(--r-tile);padding:13px 14px}
+.vsaid b{display:block;font-family:var(--label);font-size:10px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.vsaid p{margin:0;font-size:14px;line-height:1.55}
+.vsaid small{display:block;margin-top:8px;font-size:11.5px;line-height:1.5;color:var(--muted)}
+/* ---- the header microphone. The affordance now, the asking later. ---- */
+.hdrmic{appearance:none;border:0;cursor:pointer;width:38px;height:38px;min-width:38px;
+  border-radius:50%;background:var(--tint);color:var(--primary);display:inline-flex;
+  align-items:center;justify-content:center;flex:0 0 auto}
+.hdrmic:hover{background:var(--primary);color:#fff}
+.hdrmic:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hdrmic .ico-g svg{width:19px;height:19px}
+.sechead .headrow{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.sechead .headrow h1{margin:0;flex:1;min-width:0}
 /* ---- Market: a dashboard, not a page. One markup, two grids. ---- */
 /* the dashboard has to fit one screen, and the nav item already says Market
    in the same glance. The heading stays for screen readers and is taken out
    of the visual flow rather than deleted. */
-#sec-market .sechead{margin-bottom:6px}
-#sec-market .sechead .segmented{margin-bottom:4px}
+#sec-market .sechead{padding-top:18px;margin-bottom:0}
+#sec-market .headrow{align-items:center;margin-bottom:0}
+#sec-market .sechead .segmented{margin:0;flex:1;min-width:0}
 #sec-market .sechead h1{position:absolute;width:1px;height:1px;overflow:hidden;
   clip:rect(0 0 0 0);white-space:nowrap;margin:0}
 
@@ -1789,7 +1835,7 @@ body{background:var(--grad-bg);background-attachment:fixed}
 <section class="sec on" id="sec-home">
   <div class="sechead">
     <div class="hprofile" id="hProfile"></div>
-    <h1 id="homeGreeting">Your search<span class="hlive" id="hLive" hidden></span></h1>
+    <div class="headrow"><h1 id="homeGreeting">Your search<span class="hlive" id="hLive" hidden></span></h1><button type="button" class="hdrmic" data-askmic="1" aria-label="Ask a question out loud">MICICON</button></div>
     <p id="homeSub" hidden></p>
   </div>
   <div class="homewrap" id="homeBlocks"></div>
@@ -1802,7 +1848,7 @@ body{background:var(--grad-bg);background-attachment:fixed}
 
 <section class="sec" id="sec-explore">
   <div class="sechead">
-    <h1>Explore Bengaluru</h1>
+    <div class="headrow"><h1>Explore Bengaluru</h1><button type="button" class="hdrmic" data-askmic="1" aria-label="Ask a question out loud">MICICON</button></div>
     <p>Your five best matches, every area’s position on price against growth, or the map. Search above for any locality in the city.</p>
     <div class="searchrow" style="margin-bottom:14px">
       <span class="sfield"><input type="search" id="exQuick" placeholder="Search any locality"
@@ -1836,14 +1882,14 @@ body{background:var(--grad-bg);background-attachment:fixed}
 
 <section class="sec" id="sec-listings">
   <div class="sechead">
-    <h1>Listings</h1>
+    <div class="headrow"><h1>Listings</h1><button type="button" class="hdrmic" data-askmic="1" aria-label="Ask a question out loud">MICICON</button></div>
     <p>Ninety communities, ranked against your budget and dates. Open any one for its own costs, rent and resale workings, prefilled.</p>
   </div>
 </section>
 
 <section class="sec" id="sec-shortlist">
   <div class="sechead">
-    <h1>Your activity</h1>
+    <div class="headrow"><h1>Your activity</h1><button type="button" class="hdrmic" data-askmic="1" aria-label="Ask a question out loud">MICICON</button></div>
     <p>Everything you tracked, with somewhere to write what you actually thought.</p>
     <div class="progress">
       <div class="pbar" id="pbar"></div>
@@ -1879,12 +1925,13 @@ body{background:var(--grad-bg);background-attachment:fixed}
 
 <section class="sec" id="sec-market">
   <div class="sechead">
-    <h1>Market</h1>
-    <div class="segmented" role="group" aria-label="Market view">
-      <button data-msub="moving" aria-pressed="true">Moving</button>
-      <button data-msub="compare" aria-pressed="false">Compare</button>
-      <button data-msub="coming" aria-pressed="false">Coming</button>
-    </div>
+    <div class="headrow"><h1>Market</h1>
+      <div class="segmented" role="group" aria-label="Market view">
+        <button data-msub="moving" aria-pressed="true">Moving</button>
+        <button data-msub="compare" aria-pressed="false">Compare</button>
+        <button data-msub="coming" aria-pressed="false">Coming</button>
+      </div>
+      <button type="button" class="hdrmic" data-askmic="1" aria-label="Ask a question out loud">MICICON</button></div>
   </div>
   <div id="marketPane"></div>
 </section>
@@ -3143,11 +3190,17 @@ let RANKMODE='you';          /* 'you' | 'overall' */
 let LASTRANK=[];             /* previous order, to highlight what moved */
 
 function tunedChips(){
+ const inv=INTAKE.purpose==='invest';
  const hubs=selectedHubs();
  const b=IQ_BUDGET.find(x=>x.k===INTAKE.budget);
  const tr=travelOpt();
+ const gl=IQ_GOAL.find(x=>x.k===INTAKE.goal);
  const chip=(key,label,val)=>'<button class="chip'+(val?'':' ghost')+'" data-chip="'+key+'">'
    +'<b>'+label+'</b> '+(val||'not set')+'</button>';
+ /* an investor is not asked about a commute, so showing them an empty
+    workplace chip would be asking for an answer the desk no longer wants */
+ if(inv)return chip('goal','Buying for', gl?gl.lab:'')
+   +chip('budget','Budget', b?(b.cap?'up to '+cr(b.cap):'no ceiling'):'');
  return chip('work','Workplace', hubs.length?hubs.map(h=>HUBLABEL[h]).join(' + ')
      :((INTAKE.workplace||[]).length?'no commute weighting':''))
   +chip('budget','Budget', b?(b.cap?'up to '+cr(b.cap):'no ceiling'):'')
@@ -3200,6 +3253,8 @@ function openChip(which){
    +IQ_BUDGET.map(o=>opt('budget',o.k,o.lab,INTAKE.budget===o.k)).join('')+'</div>';
  if(which==='travel')inner='<h5>How you get around</h5><div class="chipopts">'
    +IQ_TRAVEL.map(o=>opt('travel',o.k,o.lab,INTAKE.travel===o.k)).join('')+'</div>';
+ if(which==='goal')inner='<h5>What are you buying this for?</h5><div class="chipopts">'
+   +IQ_GOAL.map(o=>opt('goal',o.k,o.lab,INTAKE.goal===o.k)).join('')+'</div>';
  host.innerHTML='<div class="chipedit">'+inner+'</div>';
  const only=host.querySelector('[data-only]');
  if(only)only.addEventListener('click',async()=>{
@@ -3220,6 +3275,7 @@ function openChip(which){
   }
   if(kind==='budget')INTAKE.budget=val;
   if(kind==='travel')INTAKE.travel=val;
+  if(kind==='goal')INTAKE.goal=val;
   await saveIntake();
   applyIntake();
   renderTuned(); openChip(which); renderRanked(true); renderHeat();
@@ -3419,6 +3475,7 @@ function kfChartHTML(a){
    risk   risk                     risk bg, risk stroke
    good   verified                 good bg, good stroke */
 const ICONS={
+ mic:'<rect x="7.6" y="2.6" width="4.8" height="9" rx="2.4"/><path d="M4.8 9.4a5.2 5.2 0 0 0 10.4 0"/><path d="M10 14.6V17.4M7.4 17.4h5.2"/>',
  home:'<path d="M3.2 8.4 10 3l6.8 5.4"/><path d="M5 7.9V16a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V7.9"/><path d="M8.2 17v-4.4h3.6V17"/>',
  explore:'<circle cx="10" cy="10" r="7"/><path d="m12.8 7.2-1.6 4-4 1.6 1.6-4z"/>',
  listings:'<rect x="3" y="3.6" width="14" height="12.8" rx="1.6"/><path d="M3 8h14M7.6 8v8.4"/>',
@@ -5154,13 +5211,19 @@ function homeProfile(){
  if(!personalised())
   return '<span class="pp"><i>Not set up yet</i></span>'
    +'<button class="ilink" data-hedit="0">Answer the questions \u203a</button>';
+ const inv=INTAKE.purpose==='invest';
  const bits=[];
- bits.push(INTAKE.purpose==='invest'?'Invest':'Live in');
+ bits.push(inv?'Invest':'Live in');
  const bud=IQ_BUDGET.find(x=>x.k===INTAKE.budget);
  if(bud)bits.push(bud.cap?cr(bud.cap):'no ceiling');
- const hubs=selectedHubs();
- if(hubs.length)bits.push(HUBLABEL[hubs[0]].replace(/ \/.*$/,''));
- const tr=travelOpt(); if(tr)bits.push(tr.lab.toLowerCase());
+ if(inv){
+  const gl=IQ_GOAL.find(x=>x.k===INTAKE.goal);
+  if(gl)bits.push(gl.lab.toLowerCase());
+ } else {
+  const hubs=selectedHubs();
+  if(hubs.length)bits.push(HUBLABEL[hubs[0]].replace(/ \/.*$/,''));
+  const tr=travelOpt(); if(tr)bits.push(tr.lab.toLowerCase());
+ }
  return '<span class="pp">'+bits.map(esc).join(' <i>\u00b7</i> ')+'</span>'
   +'<button class="ilink" data-hedit="0">Edit</button>';
 }
@@ -7893,7 +7956,7 @@ const SEGS=[
  {k:'plotted',       lab:'Plotted',          note:'plotted development in a gated layout'}
 ];
 const SEGLAB=k=>(SEGS.find(s=>s.k===k)||{lab:k}).lab;
-let INTAKE={purpose:null,budget:null,timeline:null,zones:[],workplace:[],travel:null,household:null,done:false,skipped:false};
+let INTAKE={purpose:null,budget:null,timeline:null,zones:[],workplace:[],travel:null,household:null,goal:null,voice:null,done:false,skipped:false};
 let iStep=0;
 
 async function saveIntake(){
@@ -7977,10 +8040,14 @@ function personalWeights(){
 
  if(invest){
   w.growth=.24; w.rentg=.18; w.yld=.20; w.gap=.12; w.afford=.08;
-  /* tenant commute is rental demand: a flat tenants cannot commute from
-     does not rent, whatever the yield says */
-  if(hubs.length){w.commute=.18; w.growth-=.04; w.afford-=.02;}
-  if(tr&&hubs.length){w.metro=.06*tr.metro;}
+  /* No commute term. The desk used to ask an investor where their tenants
+     work and how those tenants travel; nobody buying a flat to let knows
+     either, and a stored answer from a live-in session must not leak into
+     an investor's weighting now that the questions are gone. */
+  /* income or growth: the one thing an investor can actually answer */
+  const goal=INTAKE.goal;
+  if(goal==='income'){ w.yld+=.06; w.rentg+=.04; w.gap+=.02; w.growth-=.08; }
+  else if(goal==='growth'){ w.growth+=.08; w.yld-=.06; w.rentg-=.04; w.gap+=.02; }
  } else {
   w.loc=.26; w.afford=.18; w.gap=.08; w.growth=.06; w.rentg=.04; w.yld=.04;
   if(hubs.length){
@@ -8449,8 +8516,15 @@ function iDots(step){
  for(let i=1;i<=n;i++)out+='<i class="'+(i<=step?'on':'')+'"></i>';
  return '<div class="idots" aria-hidden="true">'+out+'</div>';
 }
-function openIntake(step){
+function openIntake(step,opts){
  iStep=step||0;
+ /* screen zero is offered once, at the start, to somebody who has not already
+    answered. Editing an answer must not put the microphone in the way, and a
+    browser without SpeechRecognition never sees a mic it cannot use — it gets
+    the questions, with one line saying why. */
+ IPHASE=(SPEECHOK && !step && !INTAKE.done && !VSEEN && !(opts&&opts.skipVoice))
+   ? 'voice' : 'q';
+ VSEEN=true;
  document.getElementById('intake').classList.add('on');
  document.body.style.overflow='hidden';
  renderIntake();
@@ -8466,6 +8540,240 @@ function closeIntake(){
  document.getElementById('intake').classList.remove('on');
  document.body.style.overflow='';
 }
+/* ---- the header microphone ----
+ The affordance is built now and the asking is wired later. It says so rather
+ than opening something that cannot answer, and it offers the search that can. */
+function openMicSheet(){
+ const host=document.getElementById('sheet'); if(!host)return;
+ host.querySelector('.sheet-body').innerHTML=
+  '<div class="sheet-h"><h3>Asking out loud</h3></div>'
+  +'<p class="sheet-one">Describing what you want in a sentence arrives with the next '
+  +'release — the desk can record what you say today but has nothing to answer with yet.</p>'
+  +'<div class="sheet-tiles">'
+  +metricTile('Works today','Setting up','speak your answers to the questions')
+  +metricTile('Coming','Asking anything','a question about any area or project')+'</div>'
+  +calloutCard('warn','Until then',
+     'Search finds any area, project or locality by name, from data already on the '
+     +'device. Nothing is looked up live.')
+  +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">'
+  +'<button class="act small" data-micgo="search">Search instead</button>'
+  /* offering "by voice" in a browser that has no SpeechRecognition would be
+     a button that cannot do what it says */
+  +(SPEECHOK?'<button class="act ghost small" data-micgo="intake">Set up by voice</button>':'')
+  +'</div>';
+ host.classList.remove('pop'); host.style.width=''; host.style.left='';
+ host.classList.add('on');
+ document.getElementById('sheetScrim').classList.add('on');
+ host.querySelectorAll('[data-micgo]').forEach(b=>b.addEventListener('click',()=>{
+  closeTermSheet();
+  if(b.dataset.micgo==='search'){goSection('explore'); setExploreMode('search');
+   const i=document.getElementById('locSearch'); if(i)setTimeout(()=>i.focus(),60);}
+  else {VSEEN=false; INTAKE.done=false; openIntake(0);}
+ }));
+}
+/* the icon comes from the one icon set rather than being inlined five times */
+function wireHeaderMics(){
+ document.querySelectorAll('[data-askmic]').forEach(b=>{
+  if(!b.dataset.wired){b.innerHTML=uiIcon('mic','nav',false); b.dataset.wired='1';
+   b.addEventListener('click',openMicSheet);}
+ });
+}
+
+/* ========== screen zero: say it instead of filling a form ==========
+ A rigid filter form is the wrong thing to open with. This lets somebody
+ describe their situation, keeps the whole transcript, and then asks only the
+ questions the transcript did not answer.
+
+ There is no model behind this yet, only patterns, and the screen says so.
+ The transcript is stored so that when a model does land it can read what was
+ actually said without asking anybody to speak again. */
+const SPEECHOK=!!(window.SpeechRecognition||window.webkitSpeechRecognition);
+let IPHASE='q';          /* 'voice' | 'caught' | 'q' */
+let VREC=null;           /* the live SpeechRecognition, while it runs */
+let VTEXT='';            /* final transcript */
+let VINTERIM='';         /* what is being said right now */
+let VCAUGHT=null;        /* what the patterns found */
+let VSEEN=false;         /* screen zero is offered once per session */
+let VSILENCE=null;       /* the 2-second stop */
+let VERR='';             /* why the mic is not running, said rather than swallowed */
+
+/* ---- patterns only. Four things, and the screen names all four. ---- */
+const VHUBWORDS={
+ itpl: ['whitefield','itpl','kadugodi','hoodi','varthur','brookefield'],
+ orr:  ['bellandur','outer ring road','orr','marathahalli','sarjapur road','ecospace'],
+ ecity:['electronic city','electronics city','ecity','e city','hosur road','bommasandra'],
+ cbd:  ['mg road','m g road','cbd','indiranagar','koramangala','domlur','richmond']
+};
+function voiceExtract(raw){
+ const t=' '+String(raw||'').toLowerCase().replace(/[,]/g,' ')+' ';
+ const got={};
+ /* budget: a number followed by cr, crore, lakh, lac or a bare L */
+ const m=t.match(/(\d+(?:\.\d+)?)\s*(crores?|cr\b|lakhs?|lacs?|l\b)/);
+ if(m){
+  const n=parseFloat(m[1]);
+  const rupees=/^(cr|crore)/.test(m[2])?n*10000000:n*100000;
+  /* the smallest band that still covers what they said */
+  const band=IQ_BUDGET.filter(b=>b.cap).sort((a,b)=>a.cap-b.cap)
+    .find(b=>rupees<=b.cap)||IQ_BUDGET.find(b=>b.k==='2.5+');
+  got.budget={k:band.k, said:m[0].trim().replace(/\s+/g,' '), rupees:rupees};
+ }
+ /* purpose */
+ if(/\b(invest|investment|investing|rent it out|rental income|returns|yield|put money)\b/.test(t))
+  got.purpose={k:'invest', said:'investing'};
+ else if(/\b(live in|move in|moving in|my family|to live|own use|stay there)\b/.test(t))
+  got.purpose={k:'live', said:'a home to live in'};
+ /* workplace: only the hubs the desk already measures */
+ const hubs=[];
+ Object.keys(VHUBWORDS).forEach(k=>{
+  if(VHUBWORDS[k].some(w=>t.indexOf(' '+w)>=0||t.indexOf(w+' ')>=0))hubs.push(k);
+ });
+ if(hubs.length)got.work={k:hubs.slice(0,2),
+   said:hubs.slice(0,2).map(k=>(IQ_WORK.find(w=>w.k===k)||{}).lab).join(' and ')};
+ /* timeline */
+ const MONTHS=/\b(january|february|march|april|may|june|july|august|september|october|november|december)\b/;
+ if(/\b(this year|right away|straight away|immediately|within six months|next few months|asap)\b/.test(t)
+    ||MONTHS.test(t))
+  got.time={k:'6m', said:'within 6 months'};
+ else if(/\b(next year|a year|one year|couple of years|two years|1 to 2 years)\b/.test(t))
+  got.time={k:'1-2y', said:'1 to 2 years'};
+ else if(/\b(three years|3 years|few years|long term|long-term)\b/.test(t))
+  got.time={k:'3y', said:'3+ years'};
+ else if(/\b(no rush|not in a hurry|flexible|whenever|no hurry)\b/.test(t))
+  got.time={k:'flex', said:'flexible'};
+ return got;
+}
+/* what the patterns found, written into the answers */
+function voiceApply(got){
+ if(got.purpose)INTAKE.purpose=got.purpose.k;
+ if(got.budget) INTAKE.budget=got.budget.k;
+ if(got.time)   INTAKE.timeline=got.time.k;
+ /* an investor is not asked where they work, so a hub heard in passing is
+    not written into their answers */
+ if(got.work&&INTAKE.purpose!=='invest')INTAKE.workplace=got.work.k.slice(0,2);
+ INTAKE.voice={t:VTEXT,at:new Date().toISOString().slice(0,10)};
+ try{saveIntake();}catch(e){}
+}
+/* the first question that still has no answer, so somebody who said four
+   things is not walked through all seven */
+function nextUnanswered(from){
+ const list=iqList();
+ for(let i=Math.max(0,from);i<list.length;i++){
+  const d=iqDef(list[i]);
+  if(d&&!d.done)return i;
+ }
+ return list.length;
+}
+
+function vWave(){
+ return '<span class="vwave" aria-hidden="true">'
+  +[0,1,2,3,4,5,6].map(i=>'<i style="animation-delay:'+(i*90)+'ms"></i>').join('')+'</span>';
+}
+function scrVoice(){
+ const live=!!VREC;
+ return '<div class="iqtop"><span class="iqnav ghost"></span>'
+  +'<div class="iqdots" aria-hidden="true"></div>'
+  +'<button class="iqskip" id="iSkip">Skip</button></div>'
+  +'<div class="iqbody vbody">'
+  +'<h2 class="iqh">Tell me what you’re looking for</h2>'
+  +'<p class="iqhelp">Budget, where you work, what is worrying you. However it comes out.</p>'
+  +'<div class="vmic'+(live?' live':'')+'">'
+   +'<button type="button" id="vBtn" class="vbtn" aria-label="Hold to talk">'
+    +'<span class="vring r1"></span><span class="vring r2"></span>'
+    +(live?vWave():uiIcon('mic','nav',false))
+   +'</button>'
+   +'<span class="vlab">'+(live?'Listening… let go to stop':'Hold to talk')+'</span>'
+  +'</div>'
+  +'<p class="vheard'+(VERR?' verr':'')+'" id="vHeard">'
+   +(VERR?esc(VERR):(VINTERIM||VTEXT?esc((VTEXT+' '+VINTERIM).trim()):''))+'</p>'
+  +'<p class="vlimit">I am reading for budget, location and timing. '
+  +'The questions below cover the rest.</p>'
+  +'<div class="vsplit"><span>or</span></div>'
+  +'<button type="button" class="act ghost vtap" id="vTap">Rather tap? Answer 7 questions</button>'
+  +'</div>';
+}
+/* ---- what was caught, as editable rows ---- */
+function scrVoiceCaught(){
+ const g=VCAUGHT||{};
+ const rows=[];
+ if(g.purpose)rows.push(['purpose','Buying for',g.purpose.said]);
+ if(g.budget) rows.push(['budget','Budget',(IQ_BUDGET.find(b=>b.k===g.budget.k)||{}).lab
+   +' — you said “'+esc(g.budget.said)+'”']);
+ if(g.work&&INTAKE.purpose!=='invest')rows.push(['work','Workplace',g.work.said]);
+ if(g.time)   rows.push(['time','Timing',g.time.said]);
+ const left=iqList().filter(k=>{const d=iqDef(k); return d&&!d.done;}).length;
+ return '<div class="iqtop">'
+  +'<button class="iqnav" id="iBack" aria-label="Back">‹</button>'
+  +'<div class="iqdots" aria-hidden="true"></div>'
+  +'<button class="iqskip" id="iSkip">Skip</button></div>'
+  +'<div class="iqbody">'
+  +'<h2 class="iqh">I caught these — check them</h2>'
+  +'<p class="iqhelp">Tap any row to change it. Everything else is still a question.</p>'
+  +(rows.length
+    ? '<div class="pcards">'+rows.map(r=>'<button type="button" class="pcard" data-edit="'
+       +r[0]+'"><span class="pl">'+esc(r[1])+'</span><span class="pv">'+r[2]+'</span>'
+       +'<span class="pe">Change</span></button>').join('')+'</div>'
+    : panelEmpty('Nothing matched a pattern',
+       'Nothing in what you said matched a budget, a hub the desk measures, or a '
+       +'timing word. The transcript is kept either way.'))
+  +'<div class="vsaid"><b>What you said</b><p>'+esc(VTEXT||'—')+'</p>'
+  +'<small>Kept as written. There is no model reading this yet, so only budget, '
+  +'location and timing were taken from it.</small></div>'
+  +'</div>'
+  +'<div class="iqfoot"><button class="act" id="vGo">'
+  +(left?'Answer the remaining '+left+(left===1?' question':' questions'):'Review my answers')
+  +'</button></div>';
+}
+function vStop(){
+ if(VSILENCE){clearTimeout(VSILENCE);VSILENCE=null;}
+ if(VREC){try{VREC.stop();}catch(e){}}
+}
+function vStart(){
+ if(!SPEECHOK||VREC)return;
+ const C=window.SpeechRecognition||window.webkitSpeechRecognition;
+ const r=new C();
+ r.lang='en-IN'; r.interimResults=true; r.continuous=true;
+ r.onresult=e=>{
+  let interim='';
+  for(let i=e.resultIndex;i<e.results.length;i++){
+   const res=e.results[i];
+   if(res.isFinal)VTEXT=(VTEXT+' '+res[0].transcript).trim();
+   else interim+=res[0].transcript;
+  }
+  VINTERIM=interim;
+  const h=document.getElementById('vHeard');
+  if(h)h.textContent=(VTEXT+' '+VINTERIM).trim();
+  /* two seconds of quiet ends it, so nobody has to hold a button forever */
+  if(VSILENCE)clearTimeout(VSILENCE);
+  VSILENCE=setTimeout(vStop,2000);
+ };
+ r.onerror=e=>{
+  VREC=null;
+  VERR=(e&&e.error==='not-allowed')
+   ? 'The microphone was not allowed. Tap the questions below instead.'
+   : 'The microphone stopped. Tap the questions below instead.';
+  renderIntake();
+ };
+ r.onend=()=>{
+  VREC=null;
+  if(VSILENCE){clearTimeout(VSILENCE);VSILENCE=null;}
+  VINTERIM='';
+  if(VTEXT.trim()){
+   VCAUGHT=voiceExtract(VTEXT);
+   voiceApply(VCAUGHT);
+   IPHASE='caught';
+  }
+  renderIntake();
+ };
+ /* handlers first, so a start() that throws is still reported rather than
+    leaving a mic that does nothing when tapped */
+ VREC=r; VERR='';
+ /* permission is requested here, on the tap, and never on load */
+ try{r.start();}
+ catch(e){VREC=null;
+  VERR='The microphone could not start in this browser. Tap the questions below instead.';}
+ renderIntake();
+}
+
 /* ========== intake: one question per screen ==========
  The flow is derived from a table rather than a switch, so the progress dots,
  the back button and the step count cannot drift from the questions actually
@@ -8481,10 +8789,25 @@ const IQ_HOLD=[
  {k:'short',lab:'Under 3 years'},{k:'mid',lab:'3 to 7 years'},
  {k:'long', lab:'Longer than 7 years'},{k:'open',lab:'No fixed horizon'}
 ];
+/* An investor buying a ₹1 Cr flat does not know who will rent it, so the
+   desk stopped asking where their tenants work and how those tenants travel.
+   This is the question they can actually answer, and it moves the weights —
+   otherwise there is no point asking it. */
+const IQ_GOAL=[
+ {k:'income',lab:'Rental income now',
+  note:'Weighted towards yield, rent growth and how easily the place resells.'},
+ {k:'growth',lab:'Price growth later',
+  note:'Weighted towards price growth and what is committed but not yet built.'},
+ {k:'both',  lab:'Both, roughly evenly',
+  note:'The desk’s standard investor weighting, with neither side favoured.'}
+];
 function iqList(){
- const base=['purpose','budget','zones','time','work','travel'];
- /* household only means something for somebody who will live there */
- return INTAKE.purpose==='invest' ? base : base.concat(['house']);
+ /* five for an investor, seven for somebody moving in. Work and travel are
+    live-in questions: an investor has no commute here and no way to know
+    their tenant's. */
+ return INTAKE.purpose==='invest'
+  ? ['purpose','budget','zones','time','goal']
+  : ['purpose','budget','zones','time','work','travel','house'];
 }
 function iqIndex(key){ return iqList().indexOf(key); }
 function iqAt(i){ return iqList()[i]; }
@@ -8519,18 +8842,22 @@ function iqDef(key){
    kind:'single', attr:'time',
    opts:IQ_TIME.map(o=>({k:o.k,lab:o.lab,note:o.note,on:INTAKE.timeline===o.k})),
    done:!!INTAKE.timeline};
-  case 'work': return {t:inv?'Where would your tenants work?':'Where do you go on a weekday?',
-   h:inv?'Whoever rents this flat has a commute, and it is the demand engine for the rent you collect.'
-        :'Pick up to two. The desk already knows the peak drive and the whole metro journey to each.',
+  case 'work': return {t:'Where do you go on a weekday?',
+   h:'Pick up to two. The desk already knows the peak drive and the whole metro journey to each.',
    kind:'multi', attr:'work', max:2,
    note:'Picking two scores against <strong>the worse</strong> of the two commutes, not the average — the bad day is the one you live with.',
    opts:IQ_WORK.map(o=>({k:o.k,lab:o.lab,on:(INTAKE.workplace||[]).indexOf(o.k)>=0})),
    done:true};
-  case 'travel': return {t:inv?'How would a tenant get there?':'How will you usually travel?',
+  case 'travel': return {t:'How will you usually travel?',
    h:'This picks which journey is measured, not how heavily it counts.',
    kind:'single', attr:'travel',
    opts:IQ_TRAVEL.map(o=>({k:o.k,lab:o.lab,note:o.note,on:INTAKE.travel===o.k})),
    done:!!INTAKE.travel};
+  case 'goal': return {t:'What are you buying this for?',
+   h:'Income and growth are not the same bet, and the desk weights them differently.',
+   kind:'single', attr:'goal',
+   opts:IQ_GOAL.map(o=>({k:o.k,lab:o.lab,note:o.note,on:INTAKE.goal===o.k})),
+   done:!!INTAKE.goal};
   case 'house': return {t:'Who is moving in?',
    h:'A household with school-age children wants a different area from a couple, at the same budget.',
    kind:'single', attr:'house',
@@ -8560,6 +8887,9 @@ function scrQuestion(key){
  return iqChrome(i)
   +'<div class="iqbody">'
   +'<div class="iqn">Question '+(i+1)+' of '+iqTotal()+'</div>'
+  +(i===0&&!SPEECHOK
+    ?'<p class="vunsup">Speaking your answers needs Chrome \u2014 this browser does not '
+     +'offer it, so here are the questions.</p>':'')
   +'<h2 class="iqh">'+esc(d.t)+'</h2>'
   +'<p class="iqhelp">'+esc(d.h)+'</p>'
   +(d.note?'<p class="iqnote">'+d.note+'</p>':'')
@@ -8580,6 +8910,7 @@ function profileRows(){
  const tr=travelOpt();
  const hh=IQ_HOUSE.find(x=>x.k===INTAKE.household);
  const work=(INTAKE.workplace||[]).map(k=>(IQ_WORK.find(w=>w.k===k)||{}).lab).filter(Boolean);
+ const gl=IQ_GOAL.find(x=>x.k===INTAKE.goal);
  const rows=[
   ['purpose','Buying for', inv?'Somewhere to put money':'A home to live in',
    inv?'Scored on growth, rent and what is committed.':'Scored on your commute, what runs here and liveability.'],
@@ -8587,13 +8918,15 @@ function profileRows(){
    b&&b.cap?(cr(b.cap)+' all in means a ticket price near <strong>'+cr(Math.round(b.cap/1.076))
      +'</strong> once stamp duty, registration and costs are in'):'nothing is filtered on price'],
   ['zones','Preferred areas', INTAKE.zones.length?INTAKE.zones.join(', '):'Suggest for me',
-   INTAKE.zones.length?'A preference, not a filter — a better fit elsewhere still ranks, marked as outside your zones.'
+   INTAKE.zones.length?'A preference, not a filter \u2014 a better fit elsewhere still ranks, marked as outside your zones.'
     :'The whole city is in scope.'],
-  ['time', inv?'Holding from':'Moving in', t?t.lab:'not set', t?t.note:''],
-  ['work', inv?'Tenants would work':'Weekday destination', work.length?work.join(' and '):'not set',
-   work.length>1?'Scored against <strong>the worse</strong> of the two commutes, not the average.':''],
-  ['travel','Travel mode', tr?tr.lab:'not set', tr?tr.note:'']
+  ['time', inv?'Holding from':'Moving in', t?t.lab:'not set', t?t.note:'']
  ];
+ if(inv)rows.push(['goal','Buying it for', gl?gl.lab:'not set', gl?gl.note:'']);
+ else rows.push(
+  ['work','Weekday destination', work.length?work.join(' and '):'not set',
+   work.length>1?'Scored against <strong>the worse</strong> of the two commutes, not the average.':''],
+  ['travel','Travel mode', tr?tr.lab:'not set', tr?tr.note:'']);
  if(!inv)rows.push(['house','Household', hh?hh.lab:'not set', hh?hh.note:'']);
  return rows;
 }
@@ -8645,9 +8978,12 @@ function scrProfile(){
 function renderIntake(){
  const w=document.getElementById('iwrap');
  const n=iqTotal();
- /* iStep indexes the question list; n is the profile screen, n+1 the placard */
+ /* iStep indexes the question list; n is the profile screen, n+1 the placard.
+    IPHASE sits in front of all of it for screen zero. */
  if(iStep<0)iStep=0;
- if(iStep<n)      w.innerHTML=scrQuestion(iqAt(iStep));
+ if(IPHASE==='voice')   w.innerHTML=scrVoice();
+ else if(IPHASE==='caught')w.innerHTML=scrVoiceCaught();
+ else if(iStep<n)      w.innerHTML=scrQuestion(iqAt(iStep));
  else if(iStep===n)w.innerHTML=scrProfile();
  else              w.innerHTML=scrResults();
  w.scrollTop=0;
@@ -8667,12 +9003,15 @@ function qShell(step,kicker,head,sub,body,opts){
  +'</div>';
 }
 function summaryLine(){
- const p=INTAKE.purpose==='invest'?'investing':'buying a home to live in';
+ const inv=INTAKE.purpose==='invest';
+ const p=inv?'investing':'buying a home to live in';
  const b=IQ_BUDGET.find(x=>x.k===INTAKE.budget), t=IQ_TIME.find(x=>x.k===INTAKE.timeline);
  const z=INTAKE.zones.length?INTAKE.zones.join(', '):'any zone';
- const hubs=selectedHubs();
- const work=hubs.length?', working in '+hubs.map(h=>HUBLABEL[h]).join(' and '):'';
- const tr=travelOpt();
+ const hubs=inv?[]:selectedHubs();
+ const gl=inv?IQ_GOAL.find(x=>x.k===INTAKE.goal):null;
+ const work=hubs.length?', working in '+hubs.map(h=>HUBLABEL[h]).join(' and ')
+   :(gl?', for '+gl.lab.toLowerCase():'');
+ const tr=inv?null:travelOpt();
  const trv=tr?', '+tr.lab.toLowerCase():'';
  const hh=INTAKE.purpose!=='invest'&&INTAKE.household
    ?', '+(IQ_HOUSE.find(x=>x.k===INTAKE.household)||{lab:''}).lab.toLowerCase():'';
@@ -8985,6 +9324,8 @@ function wireIntake(){
   INTAKE.timeline=b.dataset.time; save(); renderIntake();}));
  document.querySelectorAll('#iwrap [data-house]').forEach(b=>b.addEventListener('click',()=>{
   INTAKE.household=b.dataset.house; save(); renderIntake();}));
+ document.querySelectorAll('#iwrap [data-goal]').forEach(b=>b.addEventListener('click',()=>{
+  INTAKE.goal=b.dataset.goal; save(); renderIntake();}));
  document.querySelectorAll('#iwrap [data-travel]').forEach(b=>b.addEventListener('click',()=>{
   INTAKE.travel=b.dataset.travel; save(); renderIntake();}));
  document.querySelectorAll('#iwrap [data-zone]').forEach(b=>b.addEventListener('click',()=>{
@@ -9007,17 +9348,36 @@ function wireIntake(){
   }
   save(); renderIntake();}));
 
+ /* screen zero */
+ if(g('vBtn')){
+  const b=g('vBtn');
+  const down=e=>{e.preventDefault(); vStart();};
+  const up=e=>{e.preventDefault(); vStop();};
+  b.addEventListener('pointerdown',down);
+  b.addEventListener('pointerup',up);
+  b.addEventListener('pointerleave',up);
+  /* a tap works too, for anyone who cannot hold */
+  b.addEventListener('click',e=>{e.preventDefault(); if(!VREC)vStart();});
+ }
+ if(g('vTap'))g('vTap').addEventListener('click',()=>{vStop(); IPHASE='q'; iStep=0; renderIntake();});
+ if(g('vGo'))g('vGo').addEventListener('click',()=>{
+  IPHASE='q'; iStep=nextUnanswered(0); renderIntake();});
+
  if(g('iSkip'))g('iSkip').addEventListener('click',skipIntake);
- if(g('iBack'))g('iBack').addEventListener('click',()=>{iStep=Math.max(0,iStep-1); renderIntake();});
+ if(g('iBack'))g('iBack').addEventListener('click',()=>{
+  if(IPHASE==='caught'){IPHASE='voice'; renderIntake(); return;}
+  iStep=Math.max(0,iStep-1); renderIntake();});
  if(g('iNext'))g('iNext').addEventListener('click',()=>{
   const key=iqAt(iStep), d=key?iqDef(key):null;
   if(d&&!d.done)return;
-  iStep=iStep+1; renderIntake();});
+  /* somebody who answered four things aloud is not walked through all seven */
+  iStep=VCAUGHT?nextUnanswered(iStep+1):iStep+1;
+  renderIntake();});
  if(g('iConfirm'))g('iConfirm').addEventListener('click',()=>{finishIntake();});
  /* a row on the review screen jumps straight back to its own question */
  document.querySelectorAll('#iwrap [data-edit]').forEach(b=>b.addEventListener('click',()=>{
   const i=iqIndex(b.dataset.edit);
-  if(i>=0){iStep=i; renderIntake();}}));
+  if(i>=0){IPHASE='q'; iStep=i; renderIntake();}}));
  document.querySelectorAll('#iwrap [data-openarea]').forEach(b=>b.addEventListener('click',()=>{
   closeIntake(); showArea(b.dataset.openarea);}));
  document.querySelectorAll('#iwrap [data-opensoc]').forEach(b=>b.addEventListener('click',()=>{
@@ -9594,5 +9954,6 @@ if(slS)slS.addEventListener('click',openSettings);
 const slI=document.getElementById('slIntake');
 if(slI)slI.addEventListener('click',()=>openIntake(0));
 
+wireHeaderMics();
 boot();
 </script>
