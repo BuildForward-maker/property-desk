@@ -4556,14 +4556,23 @@ function renderYourFive(){
  const host=document.getElementById('fivePane'); if(!host)return;
  if(EXMODE!=='five'){host.innerHTML='';return;}
  if(!personalised()){
+  /* twenty, not eighty-six. Somebody who skipped the questions has no frame
+     for what they are reading, and a list that long is the thing the whole
+     restructure exists to prevent. The rest is one tap away. */
   const all=AREAS.slice().sort((a,b)=>investScore(b)-investScore(a));
+  const show=all.slice(0,20);
   host.innerHTML=genericCard()
-   +'<div class="fintro"><span>All '+all.length+', ranked on the investment score</span></div>'
-   +'<div class="genrows">'+all.map(genericRow).join('')+'</div>';
+   +'<div class="fintro"><span>Top '+show.length+' of '+all.length
+   +', ranked on the investment score</span></div>'
+   +'<div class="genrows">'+show.map(genericRow).join('')+'</div>'
+   +'<button class="ilink mmore" data-genall="1">See all '+mktAreas().length
+   +' ranked \u2192</button>';
   const b=document.getElementById('genAsk');
   if(b)b.addEventListener('click',()=>openIntake(0));
   host.querySelectorAll('[data-openanl]').forEach(x=>
    x.addEventListener('click',()=>showArea(x.dataset.openanl)));
+  host.querySelectorAll('[data-genall]').forEach(x=>
+   x.addEventListener('click',()=>openMetricSheet('rank')));
   return;
  }
  const five=topAreas(5);

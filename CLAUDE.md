@@ -634,12 +634,15 @@ which one exists:
   After question 1 there is no exit, because they have started and Back is the
   way back. The review screen and the placard have none either.
 
-Taking that exit lands on Explore in the **generic state**: all 86 ranked on
+Taking that exit lands on Explore in the **generic state**: the **top 20** on
 the investment score, the mode control relabelled **"Ranked for everyone"**
-rather than "Your 5", and a card at the top saying so with a way back into the
-questions. `genericCard()` **does not close**. Without it the screen is just a
-list and nothing explains why it is not the five they were promised. Answering
-the questions is what removes it.
+rather than "Your 5", a card at the top saying so with a way back into the
+questions, and "See all 86 ranked" into the one ranked sheet. Twenty, not
+eighty-six: somebody who skipped the questions has the least frame for what
+they are reading, and a screen of 86 rows is the thing the restructure exists
+to prevent. `genericCard()` **does not close**. Without it the screen is just
+a list and nothing explains why it is not the five they were promised.
+Answering the questions is what removes it.
 
 Between the last question and the placard sits the **profile confirmation**.
 Nothing is recommended until the person agrees we understood them, each row
@@ -863,7 +866,7 @@ A detail-panel tab has its own budget: **about 1.2 screens**, measured as
 behind a fold. **Market > Moving has the hardest budget of all: 1.0.**
 
 Known and accepted exceptions: **Explore > Your 5** (~2.65 — five cards at
-about 230px each), **Listings** (the full directory of 106), the long-form
+about 230px each) and its generic twin at ~2.81, **Listings** (the full directory of 106), the long-form
 **guide articles**, and **Home** at ~1.36. Screen zero fits one screen with no
 scroll, and must stay that way.
 
