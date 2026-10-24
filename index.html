@@ -884,14 +884,14 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 .msel{margin:0}
 .mhero{display:block;width:100%;text-align:left;appearance:none;font:inherit;cursor:pointer;
   background:var(--grad-primary);color:#fff;border:0;border-radius:var(--r-card);
-  padding:8px 14px 9px;box-shadow:var(--shadow-primary);min-height:var(--tap)}
+  padding:14px;box-shadow:var(--shadow-primary);min-height:64px}
 .mhero .hl{display:block;font-family:var(--label);font-size:10px;font-weight:700;
   letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.74)}
 .mhero .hv{display:block;font-family:var(--font);font-size:23px;font-weight:600;
   line-height:1.08;margin-top:1px}
 .mhero.thin .hv{font-size:18px;font-weight:500;color:rgba(255,255,255,.92)}
 .mhero .hs{display:block;font-size:10.5px;color:rgba(255,255,255,.78);margin-top:1px}
-.mgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.mgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
 .mgrid>.mhero{grid-column:1/-1;margin-bottom:0}
 .mwide2{display:block}
 .mhalf>.zonepanel{grid-column:1/-1}
@@ -901,17 +901,17 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 .rbars.flat .rbar .rv{font-size:11px}
 .mtile,.mpanel{appearance:none;font:inherit;cursor:pointer;text-align:left;display:block;
   background:var(--card);border:1px solid var(--line);border-radius:var(--r-tile);
-  padding:7px 10px 6px;min-height:var(--tap);width:100%}
+  padding:14px;min-height:64px;width:100%}
 .mpanel.mdesk{display:none}
 .mtile:hover,.mpanel:hover{border-color:var(--primary)}
 .mtile:focus-visible,.mpanel:focus-visible,.mhero:focus-visible{outline:2px solid var(--accent);
   outline-offset:2px}
 .mtile .ml{display:block;font-family:var(--label);font-size:9.5px;font-weight:700;
   letter-spacing:.07em;text-transform:uppercase;color:var(--muted);line-height:1.3}
-.mtile .mnum{display:block;font-family:var(--font);font-size:17px;font-weight:600;
-  line-height:1.12;margin-top:0}
+.mtile .mnum{display:block;font-family:var(--font);font-size:19px;font-weight:600;
+  line-height:1.15;margin-top:2px}
 .mtile .mfoot{display:flex;align-items:flex-end;justify-content:space-between;gap:6px;
-  margin-top:2px}
+  margin-top:4px}
 .mdelta{font-family:var(--label);font-size:10.5px;font-weight:700;white-space:nowrap}
 .mdelta.up{color:var(--good-fg)}
 .mdelta.dn{color:var(--risk-fg)}
@@ -919,14 +919,25 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 .spark{display:flex;align-items:flex-end;gap:2px;height:15px;flex:0 0 auto}
 .spark i{display:block;width:5px;border-radius:1px;background:var(--line);min-height:2px}
 .spark i.on{background:var(--grad-primary)}
-.mpanel{margin-top:6px}
+.mpanel{margin-top:9px}
 .mpanel .mpl{display:flex;align-items:baseline;gap:6px;font-family:var(--label);font-size:9.5px;
   font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);
   line-height:1.25;margin-bottom:5px;white-space:nowrap}
 .mpanel .mpl i{font-style:normal;font-weight:600;letter-spacing:.02em;text-transform:none;
   font-size:10px;min-width:0;overflow:hidden;text-overflow:ellipsis}
-.mhalf{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.mhalf .mpanel{margin-top:6px}
+.mhalf{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.mhalf .mpanel{margin-top:9px}
+@media(max-width:1023px){
+  /* three across: the headline each, and the chart in the sheet behind it */
+  .mhalf{grid-template-columns:repeat(3,1fr)}
+  .mhalf>.zonepanel{grid-column:auto}
+  .mhalf .mfig{display:block}
+  .mhalf .donut,.mhalf .sbars,.mhalf .zbarline,.mhalf .zlabs{display:none}
+  .mhalf .mpl i{display:none}
+  .mhalf .mpl{white-space:normal}
+  .mhalf .mpanel{padding:12px 10px}
+}
+.mfig{display:none;font-family:var(--font);font-size:15px;font-weight:600;line-height:1.3}
 .mempty{font-size:12px;color:var(--muted);padding:8px 0}
 /* the momentum quadrant */
 .quad{display:block;position:relative;height:104px;background:var(--tile);border-radius:var(--r-seg);
@@ -941,7 +952,8 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 button.qdot{cursor:pointer}
 button.qdot:hover{outline:2px solid var(--ink);outline-offset:1px}
 .qlab{display:block;position:absolute;font-family:var(--label);font-size:8.5px;font-weight:600;
-  letter-spacing:.04em;text-transform:uppercase;color:var(--muted);pointer-events:none}
+  letter-spacing:.04em;text-transform:uppercase;color:var(--muted);pointer-events:none;
+  background:var(--tile);padding:1px 3px;border-radius:3px;max-width:46%;z-index:1}
 .qlab.tl{top:4px;left:6px}.qlab.tr{top:4px;right:6px}
 .qlab.bl{bottom:4px;left:6px}.qlab.br{bottom:4px;right:6px}
 /* flood donut */
@@ -1030,22 +1042,38 @@ button.qdot:hover{outline:2px solid var(--ink);outline-offset:1px}
 .pkv{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:8px}
 .pkv>span{font-size:13.5px;font-weight:600;min-width:0;overflow-wrap:anywhere}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-@media(min-width:860px){
-  .mktctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-  .mhero{display:flex;align-items:baseline;gap:14px;padding:14px 18px}
-  .mhero .hv{font-size:30px;margin:0}
-  .mhero .hs{flex:1;text-align:right;margin:0}
-  .mgrid{grid-template-columns:repeat(5,1fr);gap:10px}
+@media(min-width:1024px){
+  /* a 12-column dashboard grid, not the phone column stretched. Same markup,
+     same components, same sheets — only the grid changes.
+     A dashboard is not prose, so it is not held to the reading width the
+     other sections use. */
+  #sec-market{max-width:none}
   .mgrid>.mhero{grid-column:auto}
-  .mwide2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .mpanel.mdesk{display:block}
-  .mhalf>.zonepanel{grid-column:auto}
-  .rbars.flat .rbar{grid-template-columns:minmax(0,1fr) 72px 44px}
-  .mtile{padding:12px 14px 11px}
+  .mktctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0;flex:1 1 auto;
+    justify-content:flex-end}
+  .mexp{margin-left:4px}
+  .mnote{display:none}
+  #sec-market .headrow{flex-wrap:wrap;gap:10px}
+  #sec-market .sechead .segmented{flex:0 0 auto}
+  .mgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+  .mwide2,.mhalf{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;margin-top:12px}
+  .mwide2>.mpanel:first-child{grid-column:span 7}
+  .mwide2>.mpanel.mdesk{grid-column:span 5;display:block}
+  .mhalf>.mpanel:nth-child(1){grid-column:span 3}
+  .mhalf>.mpanel:nth-child(2){grid-column:span 5}
+  .mhalf>.zonepanel{grid-column:span 4}
+  .mpanel{margin-top:0}
+  .mhero{display:block;padding:14px 16px}
+  .mhero .hv{font-size:23px;margin-top:2px}
+  .mhero .hs{margin-top:2px}
   .mtile .mnum{font-size:23px}
-  .mhalf{grid-template-columns:1fr 1fr 1fr;gap:10px}
-  .mpanel{margin-top:10px}
-  .quad{height:208px}
+  .quad{height:270px}
+  .donut svg{width:84px;height:84px}
+  .donut .dnl{font-size:12px}
+  .sbars .sbr{grid-template-columns:62px minmax(0,1fr) auto;font-size:12px}
+  .sbars .sbr i{height:12px}
+  .rbars.flat .rbar{grid-template-columns:minmax(0,1fr) 90px 50px;padding:5px 2px}
+  .rbars.flat .rbar .rn{font-size:12.5px}
   .pkhead,.pkv{gap:14px}
 }
 /* ---- the detail panel's tab strip. Between the fixed head and the scrolling
@@ -1329,6 +1357,11 @@ td,th{border-color:var(--line)}
 .iqdots i{width:7px;height:7px;border-radius:50%;background:var(--line);display:block}
 .iqdots i.past{background:var(--tint)}
 .iqdots i.on{background:var(--primary);width:22px;border-radius:999px}
+.iqexit{display:flex;justify-content:center;margin-top:16px}
+.iqfoot .iqskip.wide{margin-top:10px}
+.iqskip.wide{width:100%;min-height:var(--tap);border:1px solid var(--line);
+  border-radius:var(--r-chip);padding:0 18px;font-size:14px;color:var(--muted)}
+.iqskip.wide:hover{border-color:var(--ink);color:var(--ink)}
 .iqskip{border:0;background:none;color:var(--muted);font-family:var(--font);font-size:14px;
   font-weight:600;cursor:pointer;min-height:var(--tap);padding:0 6px;flex:0 0 auto}
 .iqbody{flex:1;padding:8px 0 110px}
@@ -1549,7 +1582,7 @@ td,th{border-color:var(--line)}
   .sb-item[aria-current="true"]{background:var(--tint);color:var(--primary);
     border-left-color:transparent}
   .sb-brand b{font-family:var(--font);font-weight:800}
-  .main{padding:0 26px 90px}
+  .main{padding:0 26px 34px}
   .sec{max-width:820px}
 }
 
@@ -1733,6 +1766,23 @@ body{background:var(--grad-bg);background-attachment:fixed}
 .tilesfold[open]>summary::after{content:"\25b4"}
 
 /* ---- Explore: Your 5 ---- */
+.gencard{background:var(--grad-primary);color:#fff;border-radius:var(--r-card);
+  padding:18px 18px 16px;box-shadow:var(--shadow-primary);margin-bottom:14px}
+.gencard h3{font-family:var(--font);font-size:clamp(19px,4.6vw,24px);font-weight:500;
+  line-height:1.24;margin:0 0 6px;color:#fff}
+.gencard p{margin:0 0 14px;font-size:13.5px;line-height:1.5;color:rgba(255,255,255,.88)}
+.gencard .act{background:#fff;color:var(--primary);border-color:#fff;font-weight:600}
+.gencard .act:hover{background:rgba(255,255,255,.9)}
+.genrows{display:block}
+.genrow{display:flex;align-items:center;gap:11px;width:100%;appearance:none;font:inherit;
+  cursor:pointer;text-align:left;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r-tile);padding:9px 12px;margin-top:7px;min-height:var(--tap)}
+.genrow:hover{border-color:var(--primary)}
+.genrow .gi{font-family:var(--label);font-size:11px;font-weight:700;color:var(--muted);
+  min-width:20px;text-align:right}
+.genrow .gn{flex:1;min-width:0}
+.genrow .gn b{display:block;font-size:14px;font-weight:600}
+.genrow .gn span{display:block;font-size:11.5px;color:var(--muted);margin-top:2px}
 .fintro{display:flex;align-items:center;justify-content:space-between;gap:10px;
   margin-bottom:10px;font-size:12.5px;color:var(--muted)}
 .fintro .ilink{font-weight:700;color:var(--primary);font-size:13px;min-height:var(--tap)}
@@ -1812,7 +1862,7 @@ body{background:var(--grad-bg);background-attachment:fixed}
   <div class="sheet-grab" aria-hidden="true"></div>
   <div class="sheet-body"></div>
 </div>
-<div id="intake" role="dialog" aria-modal="true" aria-label="Set up your search"><button class="pclose" id="intakeClose" aria-label="Close and skip setup" title="Skip setup">✕</button><div class="iwrap" id="iwrap"></div></div>
+<div id="intake" role="dialog" aria-modal="true" aria-label="Set up your search"><button class="pclose" id="intakeClose" aria-label="Close" title="Close" hidden>✕</button><div class="iwrap" id="iwrap"></div></div>
 
 <div class="shell">
 
@@ -1856,7 +1906,7 @@ body{background:var(--grad-bg);background-attachment:fixed}
       <button class="sgo" id="exQuickGo" aria-label="Search">&#9906;</button>
     </div>
     <div class="segmented" role="group" aria-label="Explore mode">
-      <button data-mode="five" aria-pressed="true">Your 5</button>
+      <button data-mode="five" aria-pressed="true"><span id="exFiveLab">Your 5</span></button>
       <button data-mode="position" aria-pressed="false">Position</button>
       <button data-mode="discover" aria-pressed="false">Map</button>
     </div>
@@ -1931,6 +1981,7 @@ body{background:var(--grad-bg);background-attachment:fixed}
         <button data-msub="compare" aria-pressed="false">Compare</button>
         <button data-msub="coming" aria-pressed="false">Coming</button>
       </div>
+      <div class="mktctl" id="mktCtl"></div>
       <button type="button" class="hdrmic" data-askmic="1" aria-label="Ask a question out loud">MICICON</button></div>
   </div>
   <div id="marketPane"></div>
@@ -4482,16 +4533,37 @@ function fiveCard(a,i,peers){
   +risk
   +'</button>';
 }
+/* ---- the generic state ----
+ Somebody who browsed without answering gets the whole city ranked the way it
+ is ranked for everybody, and a card that says so. The card does not close,
+ because without it this screen is just a list and nothing explains why it is
+ not the five they were promised. */
+function genericCard(){
+ return '<div class="gencard"><h3>This is the whole city, unsorted for you.</h3>'
+  +'<p>Four questions and we will narrow it to five areas that fit.</p>'
+  +'<button class="act" id="genAsk">Answer the questions</button></div>';
+}
+function genericRow(a,i){
+ const b=scoreBand(investScore(a));
+ return '<button type="button" class="genrow" data-openanl="'+esc(a.n)+'">'
+  +'<span class="gi">'+(i+1)+'</span>'
+  +scoreBadge(investScore(a),'sm')
+  +'<span class="gn"><b>'+esc(a.n)+'</b><span>'+esc(a.z)+' Bengaluru \u00b7 '
+  +esc(b.lab)+' \u00b7 \u20b9'+Math.round(basisVal(a)).toLocaleString('en-IN')+'/sqft</span></span>'
+  +'</button>';
+}
 function renderYourFive(){
  const host=document.getElementById('fivePane'); if(!host)return;
  if(EXMODE!=='five'){host.innerHTML='';return;}
  if(!personalised()){
-  host.innerHTML='<div class="emptystate"><b>Answer the questions first.</b>'
-   +'<p>These five come from what you tell us about budget, commute and timing. '
-   +'Until then, the map and the position chart show the whole city.</p>'
-   +'<p style="margin-top:10px"><button class="act" id="fiveAsk">Answer the questions</button></p></div>';
-  const b=document.getElementById('fiveAsk');
+  const all=AREAS.slice().sort((a,b)=>investScore(b)-investScore(a));
+  host.innerHTML=genericCard()
+   +'<div class="fintro"><span>All '+all.length+', ranked on the investment score</span></div>'
+   +'<div class="genrows">'+all.map(genericRow).join('')+'</div>';
+  const b=document.getElementById('genAsk');
   if(b)b.addEventListener('click',()=>openIntake(0));
+  host.querySelectorAll('[data-openanl]').forEach(x=>
+   x.addEventListener('click',()=>showArea(x.dataset.openanl)));
   return;
  }
  const five=topAreas(5);
@@ -4574,6 +4646,10 @@ function setExploreMode(m){
  EXMODE=m;
  document.querySelectorAll('#sec-explore .segmented button').forEach(b=>
   b.setAttribute('aria-pressed',String(b.dataset.mode===m)));
+ /* the label has to say what the list is, not what it would be if they had
+    answered: calling 86 generic rows "Your 5" is a lie on the control */
+ const lab=document.getElementById('exFiveLab');
+ if(lab)lab.textContent=personalised()?'Your 5':'Ranked for everyone';
  document.getElementById('searchPane').style.display = m==='search'?'':'none';
  document.querySelectorAll('section.panel[data-sec="explore"]').forEach(p=>{
   p.style.display = m==='discover' ? '' : 'none';
@@ -4672,10 +4748,16 @@ function mktQuadrant(inter){
  const gMin=Math.min.apply(null,gs), gMax=Math.max.apply(null,gs);
  const dAbs=Math.max.apply(null,ds.map(Math.abs))||1;
  const gSpan=(gMax-gMin)||1;
+ /* circles are 21-35px now, so they are kept inside an inset plot area:
+    at the full range they sat on the corner labels and clipped at the edge */
+ const IN=14;
+ const map=v=>IN+v*(100-IN*2)/100;
  const dots=rows.map(x=>{
-  const px=((x.a.growth26-gMin)/gSpan)*100;
-  const py=((x.d+dAbs)/(dAbs*2))*100;
-  const r=9+Math.round((Math.abs(x.d)/dAbs)*13);
+  const px=map(((x.a.growth26-gMin)/gSpan)*100);
+  const py=map(((x.d+dAbs)/(dAbs*2))*100);
+  /* no circle smaller than 21px: below that it stops being a tap target
+     and starts being a speck */
+  const r=21+Math.round((Math.abs(x.d)/dAbs)*14);
   const cls='qdot '+(x.d>=RISE_THRESHOLD?'up':x.d<=-RISE_THRESHOLD?'dn':'flat');
   const style='left:'+px.toFixed(1)+'%;bottom:'+py.toFixed(1)+'%;width:'+r+'px;height:'+r+'px';
   const title=esc(x.a.n)+' \u2014 '+x.a.growth26+'% a year, '+(x.d>0?'+':'')+x.d+' points on last year';
@@ -4737,6 +4819,43 @@ function mktSupply(){
  return bar('Launched',p.launch,'lau')+bar('Sold',p.sales,'sol');
 }
 
+/* the numbers on the dashboard, as a file. No library: a Blob and an anchor. */
+function mktExport(){
+ const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+ const p=KFCITY[MKTPERIOD], per=(MKTPERIODS.find(x=>x[0]===MKTPERIOD)||['',''])[1];
+ const rows=[['Property Desk — Bengaluru market'],[ 'Period',per],
+   ['Zone filter',MKTZONE||'all zones'],[],
+   ['City figures'],['Average price per sqft',p.price],['Unsold stock',p.unsold],
+   ['Quarters to clear',p.qts],['Sold in the half',p.sales],['Launched in the half',p.launch],[],
+   ['Ask over registered deeds'],['Location','Zone','Asking','Registered','Gap %']];
+ frothList().forEach(x=>rows.push([x.a.n,x.a.z,x.a.ask,x.a.reg,x.v]));
+ rows.push([],['Momentum, the 17 tracked by transaction'],
+   ['Location','Zone','H1 2025 %','H1 2026 %','Change in points']);
+ mktMoves().forEach(x=>rows.push([x.a.n,x.a.z,x.a.growth25,x.a.growth26,x.d]));
+ rows.push([],['Zone health'],['Zone','Unsold','Quarters to sell','A year before','Readable']);
+ const K=kfZoneTable();
+ Object.keys(K).forEach(z=>rows.push([z,K[z].unsold,K[z].thin?'':K[z].qts,
+   K[z].thin?'':K[z].qtsPrev,K[z].thin?'too few to read':'yes']));
+ const csv=rows.map(r=>r.map(q).join(',')).join('\n');
+ const b=new Blob([csv],{type:'text/csv'});
+ const a=document.createElement('a'); a.href=URL.createObjectURL(b);
+ a.download='bengaluru-market-'+MKTPERIOD+(MKTZONE?'-'+MKTZONE.toLowerCase():'')+'.csv';
+ a.click();
+}
+function marketCtl(){
+ return ''
+  +'<span class="segmented msel" role="group" aria-label="Period">'
+   +MKTPERIODS.map(x=>'<button data-mper="'+x[0]+'" aria-pressed="'+(x[0]===MKTPERIOD)+'">'
+     +x[1]+'</button>').join('')+'</span>'
+  +'<span class="segmented msel" role="group" aria-label="Zone">'
+   +[['','All zones'],['North','N'],['South','S'],['East','E'],['West','W'],['Central','C']]
+     .map(z=>'<button data-mzone="'+z[0]+'" aria-pressed="'+(z[0]===MKTZONE)+'">'+z[1]
+       +'</button>').join('')+'</span>'
+  +'<button type="button" class="act ghost small mexp" data-mexport="1">Export</button>'
+  +'<span class="mnote">The five figures across the top are city-wide and the zone filter '
+  +'does not touch them. It filters the location-level panels below.</span>'
+
+}
 function marketDash(){
  const p=KFCITY[MKTPERIOD], prevKey=MKTPREV[MKTPERIOD], q=prevKey?KFCITY[prevKey]:null;
  const fm=frothMedian(), nFroth=frothList().length;
@@ -4745,18 +4864,12 @@ function marketDash(){
  const qts=MKTPERIODS.map(x=>KFCITY[x[0]].qts);
  const sales=MKTPERIODS.map(x=>KFCITY[x[0]].sales);
  const m=mktMoves();
+ const fc=floodCounts();
+ const K=kfZoneTable();
+ const slowest=Object.keys(K).filter(z=>!K[z].thin)
+   .map(z=>[z,K[z].qts]).sort((a,b)=>b[1]-a[1])[0]||['\u2014',0];
  const rising=m.filter(x=>x.d>=RISE_THRESHOLD).length, slow=m.filter(x=>x.d<=-RISE_THRESHOLD).length;
- return '<div class="mktctl">'
-  +'<span class="segmented msel" role="group" aria-label="Period">'
-   +MKTPERIODS.map(x=>'<button data-mper="'+x[0]+'" aria-pressed="'+(x[0]===MKTPERIOD)+'">'
-     +x[1]+'</button>').join('')+'</span>'
-  +'<span class="segmented msel" role="group" aria-label="Zone">'
-   +[['','All zones'],['North','N'],['South','S'],['East','E'],['West','W'],['Central','C']]
-     .map(z=>'<button data-mzone="'+z[0]+'" aria-pressed="'+(z[0]===MKTZONE)+'">'+z[1]
-       +'</button>').join('')+'</span>'
-  +'<span class="mnote">The five figures across the top are city-wide and the zone filter '
-  +'does not touch them. It filters the location-level panels below.</span>'
-  +'</div>'
+ return ''
   +'<div class="mgrid">'
   +'<button type="button" class="mhero'+(fm===null?' thin':'')+'" data-mkt="froth">'
    +'<span class="hl">Ask over registered deeds</span>'
@@ -4792,12 +4905,16 @@ function marketDash(){
   +'<div class="mhalf">'
    +'<button type="button" class="mpanel" data-mkt="flood">'
     +'<span class="mpl">Flood exposure<i>published lists</i></span>'
+    +'<span class="mfig">'+fc.high+' high</span>'
     +'<span class="donut">'+mktDonut()+'</span></button>'
    +'<button type="button" class="mpanel" data-mkt="supply">'
     +'<span class="mpl">Supply<i>against absorption</i></span>'
+    +'<span class="mfig">'+(p.launch-p.sales>0?'+':'')
+    +(p.launch-p.sales).toLocaleString('en-IN')+'</span>'
     +'<span class="sbars">'+mktSupply()+'</span></button>'
    +'<button type="button" class="mpanel zonepanel" data-mkt="zones">'
     +'<span class="mpl">Zone health<i>unsold stock by zone</i></span>'
+    +'<span class="mfig">'+esc(slowest[0])+' '+slowest[1]+'q</span>'
     +mktZoneBar()+'</button>'
   +'</div>';
 }
@@ -5055,6 +5172,8 @@ function renderMarket(){
  const host=document.getElementById('marketPane'); if(!host)return;
  document.querySelectorAll('#sec-market .segmented[aria-label="Market view"] button').forEach(b=>
   b.setAttribute('aria-pressed',String(b.dataset.msub===MSUB)));
+ const ctl=document.getElementById('mktCtl');
+ if(ctl)ctl.innerHTML = MSUB==='moving'? marketCtl() : '';
  host.innerHTML = MSUB==='coming'? marketComing()
    : MSUB==='compare'? comparePick() : marketDash();
  host.querySelectorAll('[data-openanl]').forEach(b=>
@@ -5067,10 +5186,14 @@ function renderMarket(){
   if(e.target.closest&&e.target.closest('[data-openanl]'))return;
   openMetricSheet(b.dataset.mkt);
  }));
- host.querySelectorAll('[data-mper]').forEach(b=>b.addEventListener('click',e=>{
+
+ const sec=document.getElementById('sec-market');
+ sec.querySelectorAll('[data-mper]').forEach(b=>b.addEventListener('click',e=>{
   e.stopPropagation(); MKTPERIOD=b.dataset.mper; renderMarket();}));
- host.querySelectorAll('[data-mzone]').forEach(b=>b.addEventListener('click',e=>{
+ sec.querySelectorAll('[data-mzone]').forEach(b=>b.addEventListener('click',e=>{
   e.stopPropagation(); MKTZONE=b.dataset.mzone; renderMarket();}));
+ sec.querySelectorAll('[data-mexport]').forEach(b=>b.addEventListener('click',e=>{
+  e.stopPropagation(); mktExport();}));
  host.querySelectorAll('[data-unpick]').forEach(b=>b.addEventListener('click',()=>{
   PICK3=PICK3.filter(n=>n!==b.dataset.unpick); renderMarket();}));
  const add=document.getElementById('pickAdd');
@@ -8570,6 +8693,10 @@ function openIntake(step,opts){
  IPHASE=(SPEECHOK && !step && !INTAKE.done && !VSEEN && !(opts&&opts.skipVoice))
    ? 'voice' : 'q';
  VSEEN=true;
+ const x=document.getElementById('intakeClose');
+ /* never both: the X is for somebody with a profile to return to, and the
+    named exit is for somebody without one */
+ if(x)x.hidden=!hasProfile();
  document.getElementById('intake').classList.add('on');
  document.body.style.overflow='hidden';
  renderIntake();
@@ -8577,9 +8704,13 @@ function openIntake(step,opts){
 /* Closing the intake is the same decision as "skip": the answers are optional,
    so an X must not be a dead end or lose what was already chosen. */
 async function skipIntake(){
+ const first=!hasProfile();
  if(!INTAKE.done){INTAKE.skipped=true;INTAKE.done=false;}
  try{await saveIntake();}catch(e){}
  applyIntake(); closeIntake();
+ /* with no answers there is no "your five", so land on the whole city ranked
+    for everybody rather than on an empty state */
+ if(first){goSection('explore'); setExploreMode('five');}
 }
 function closeIntake(){
  document.getElementById('intake').classList.remove('on');
@@ -8717,7 +8848,7 @@ function scrVoice(){
  const live=!!VREC;
  return '<div class="iqtop"><span class="iqnav ghost"></span>'
   +'<div class="iqdots" aria-hidden="true"></div>'
-  +'<button class="iqskip" id="iSkip">Skip</button></div>'
+  +'<span class="iqnav ghost"></span></div>'
   +'<div class="iqbody vbody">'
   +'<h2 class="iqh">Tell me what you’re looking for</h2>'
   +'<p class="iqhelp">Budget, where you work, what is worrying you. However it comes out.</p>'
@@ -8734,6 +8865,7 @@ function scrVoice(){
   +'The questions below cover the rest.</p>'
   +'<div class="vsplit"><span>or</span></div>'
   +'<button type="button" class="act ghost vtap" id="vTap">Rather tap? Answer 7 questions</button>'
+  +'<div class="iqexit">'+iqExit(0)+'</div>'
   +'</div>';
 }
 /* ---- what was caught, as editable rows ---- */
@@ -8749,7 +8881,7 @@ function scrVoiceCaught(){
  return '<div class="iqtop">'
   +'<button class="iqnav" id="iBack" aria-label="Back">‹</button>'
   +'<div class="iqdots" aria-hidden="true"></div>'
-  +'<button class="iqskip" id="iSkip">Skip</button></div>'
+  +'<span class="iqnav ghost"></span></div>'
   +'<div class="iqbody">'
   +'<h2 class="iqh">I caught these — check them</h2>'
   +'<p class="iqhelp">Tap any row to change it. Everything else is still a question.</p>'
@@ -8912,6 +9044,18 @@ function iqDef(key){
  return null;
 }
 /* the chrome every question shares */
+/* ---- one way out, never two ----
+ Somebody with a stored profile has somewhere to return to, so the X returns
+ them there. Somebody without one has nowhere to land, so the exit is named
+ for what it costs — "Skip" implies losing nothing — and it is offered on
+ screen zero and question 1 only. After that they have started, and Back is
+ the way back. */
+function hasProfile(){ return !!INTAKE.done; }
+function iqExit(i){
+ if(hasProfile())return '';                 /* the X does this job */
+ if(i>0)return '';                          /* started: Back covers it */
+ return '<button class="iqskip wide" id="iSkip">Browse without answering</button>';
+}
 function iqChrome(i){
  const total=iqTotal();
  const dots=Array.from({length:total},(_,n)=>
@@ -8919,7 +9063,7 @@ function iqChrome(i){
  return '<div class="iqtop">'
   +(i>0?'<button class="iqnav" id="iBack" aria-label="Back">‹</button>':'<span class="iqnav ghost"></span>')
   +'<div class="iqdots" aria-label="Question '+(i+1)+' of '+total+'">'+dots+'</div>'
-  +'<button class="iqskip" id="iSkip">Skip</button></div>';
+  +'<span class="iqnav ghost"></span></div>';
 }
 function iqOption(d,o){
  return '<button type="button" class="iopt'+(o.on?' on':'')+'" data-'+d.attr+'="'+esc(o.k)+'"'
@@ -8941,7 +9085,8 @@ function scrQuestion(key){
   +'<div class="iopts">'+d.opts.map(o=>iqOption(d,o)).join('')+'</div>'
   +'</div>'
   +'<div class="iqfoot"><button class="act" id="iNext"'+(d.done?'':' disabled')+'>'
-  +(i+1===iqTotal()?'Review my answers':'Continue')+'</button></div>';
+  +(i+1===iqTotal()?'Review my answers':'Continue')+'</button>'
+  +(i===0?iqExit(i):'')+'</div>';
 }
 
 /* ---- profile confirmation ----
@@ -9010,7 +9155,7 @@ function scrProfile(){
  return '<div class="iqtop">'
   +'<button class="iqnav" id="iBack" aria-label="Back">‹</button>'
   +'<div class="iqdots" aria-label="Review"></div>'
-  +'<button class="iqskip" id="iSkip">Skip</button></div>'
+  +'<span class="iqnav ghost"></span></div>'
   +'<div class="iqbody">'
   +'<h2 class="iqh">Here’s what we understood</h2>'
   +'<p class="iqhelp">Tap anything to change it. Nothing is recommended until you confirm.</p>'
@@ -9022,6 +9167,8 @@ function scrProfile(){
 
 function renderIntake(){
  const w=document.getElementById('iwrap');
+ const x=document.getElementById('intakeClose');
+ if(x)x.hidden=!hasProfile();
  const n=iqTotal();
  /* iStep indexes the question list; n is the profile screen, n+1 the placard.
     IPHASE sits in front of all of it for screen zero. */
@@ -9197,7 +9344,7 @@ function placardHead(){
  return '<div class="iqtop">'
   +'<button class="iqnav" id="iBack" aria-label="Back">‹</button>'
   +'<div class="iqdots"></div>'
-  +'<button class="iqskip" id="iSkip">Close</button></div>'
+  +'<span class="iqnav ghost"></span></div>'
   +'<div class="iqbody"><div class="iqn">'+(inv?'Investment':'Best fit for you')+'</div>'
   +'<h2 class="iqh">'+(inv?'Where money grows':'Best fit for you')+'</h2>'
   +'<p class="iqhelp">'+esc(summaryLine())+'</p>';

@@ -620,6 +620,27 @@ SpeechRecognition is missing.
 An option tap writes the answer and re-renders in place. **Advancing is the
 Continue button's job** — a mis-tap must never jump someone forward a screen.
 
+### One way out, and somewhere to land
+
+There is never both a Skip and an X on the same screen. `hasProfile()` decides
+which one exists:
+
+- **With a stored profile**, the X in the corner, and nothing else. They have
+  somewhere to return to, so closing returns them there — the section
+  underneath is untouched, so Market > Compare is still Market > Compare.
+- **Without one**, no X at all. One named exit, **"Browse without answering"**,
+  at the foot of screen zero and of question 1 only. Not "Skip": that implies
+  losing nothing, and what is lost is every personalised thing downstream.
+  After question 1 there is no exit, because they have started and Back is the
+  way back. The review screen and the placard have none either.
+
+Taking that exit lands on Explore in the **generic state**: all 86 ranked on
+the investment score, the mode control relabelled **"Ranked for everyone"**
+rather than "Your 5", and a card at the top saying so with a way back into the
+questions. `genericCard()` **does not close**. Without it the screen is just a
+list and nothing explains why it is not the five they were promised. Answering
+the questions is what removes it.
+
 Between the last question and the placard sits the **profile confirmation**.
 Nothing is recommended until the person agrees we understood them, each row
 jumps back to its own question, and the "what this rules out" card counts the
@@ -727,14 +748,33 @@ screen: **one screen at 375, no scroll.** Everything on it is a tap target and
 nothing on it is long. The long content — the full chart, the ranked list,
 how to read it, the source — lives in the sheet behind each tile.
 
-One markup, two grids. The same DOM lays out as a phone dashboard and as a
-desktop one; there is no second design and no second template:
+One markup, two grids, breaking at **1024px**. The same DOM lays out as a
+phone dashboard and as a twelve-column desktop one; there is no second design
+and no second template:
 
-    .mgrid    hero + four tiles   2 columns on a phone, 5 across on desktop
-    .mwide2   momentum quadrant   stacked on a phone, beside the ranked
-              + ranked gap bars   asking-over-deeds bars on desktop
-    .mhalf    flood, supply,      flood|supply then zone health on a phone,
-              zone health         all three across the bottom on desktop
+    .mgrid    hero + four tiles   2 columns on a phone, 5 equal across the
+                                  full width on desktop
+    .mwide2   momentum quadrant   stacked on a phone; 7 columns and 5 on
+              + ranked gap bars   desktop, quadrant at least 270px tall
+    .mhalf    flood, supply,      3 across on a phone showing their headline
+              zone health         only; 3, 5 and 4 columns on desktop with
+                                  the charts
+
+A dashboard is not prose, so `#sec-market` drops the 820px reading width on
+desktop. The header carries the title, the sub-tabs, the zone filter, the
+period selector and Export on one row: `marketCtl()` renders into `#mktCtl`
+inside the header, not on top of the pane, and clears on the other sub-tabs.
+
+**Mobile minimums, which are floors and not targets:** 14px tile padding,
+19px value, 9.5px label at .07em, 9px gaps, every tappable tile at least
+64px, the quadrant at least 104px with no circle under 21px. When all of that
+would not fit, **a panel moves into its sheet rather than shrinking below
+them** — which is why flood, supply and zone health show one figure each on a
+phone and keep their charts for the sheet behind them. The sheets are the
+same on both widths.
+
+Both widths measure **1.00 screens**: 812px at 375×812, 800px at 1280×800.
+Anything added to either has to come out of something else.
 
 `.mdesk` is the one panel that is desktop-only — the ranked asking-over-deeds
 bars, which on a phone are the hero's sheet rather than a second copy on the
