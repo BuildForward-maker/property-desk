@@ -569,11 +569,24 @@ answer — **income now, growth later, or both** — and it moves the weights in
 all. A hub stored from an earlier live-in session must not leak into an
 investor's weighting now that the question is gone.
 
-**What this does and does not move.** `personalWeights()` drives `socFit`, so
-the goal changes the project ranking. Area ranking does not read it: `areaFit`
-is `W_PERSONAL` whatever the purpose, and `investScore` is `W_INVEST`. That is
-existing behaviour, not something this question introduced, but it means the
-investor's area list is the same list whichever goal they pick.
+**What the goal moves.** `personalWeights()` drives `socFit`, so it changes the
+project ranking. `areaFitFull()` reads the purpose too: an investor is scored
+on `investTable()` — `W_INVEST`, tilted by their goal — with the `'invest'`
+factor values and **no commute penalty**, because they do not live there.
+
+    income  rent 19→24, liq 9→13, taken off growth 21→16 and pipe 15→11
+    growth  growth 21→26, pipe 15→19, taken off rent 19→14 and liq 9→5
+    both    W_INVEST untouched
+
+Both tilts are integers summing to exactly 100, like the tables they come
+from. `investScore()` is deliberately **not** tilted: it is the desk's
+comparable number for every buyer, and the goal belongs to the personal fit.
+
+Anything that states the weights has to read the table that was used, not the
+one it was tilted from. `openScoreDoc(mode, goal)` takes the goal and shows
+the tilted table with a callout naming the change; the personal-fit line on a
+location's Score tab passes it. A sheet showing 21% beside a score computed on
+26% is the stale copy the "reads the live table" rule exists to prevent.
 
 ### Screen zero: say it instead of filling a form
 

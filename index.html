@@ -4112,9 +4112,12 @@ function openFactorDoc(k,mode){
    mode==='invest'?'In the investment score':'In your personal fit score',
    factorDocHTML(k,mode));
 }
-function openScoreDoc(mode){
+function openScoreDoc(mode,goal){
  const d=SCORE_DOC[mode]||SCORE_DOC.live;
- const tbl=(mode==='invest'?W_INVEST:W_PERSONAL);
+ /* an investor's personal fit uses their table tilted by their answer, so the
+    sheet has to show that table rather than the one it was tilted from */
+ const tilted=mode==='invest'&&goal&&W_INVEST_GOAL[goal];
+ const tbl=tilted||(mode==='invest'?W_INVEST:W_PERSONAL);
  const rows=Object.keys(tbl).sort((a,b)=>tbl[b]-tbl[a]).map(k=>
   '<tr><td><button class="ilink" data-fdoc="'+k+'" data-fmode="'+mode+'">'
    +esc(FACTOR_LABEL[k])+'</button>'
@@ -4123,7 +4126,17 @@ function openScoreDoc(mode){
    +'</td><td class="num">'+Math.round(tbl[k]*100)+'%</td>'
    +'<td style="font-size:12.5px;color:var(--muted)">'+esc(FACTOR_DOC[k]?FACTOR_DOC[k].what.split('.')[0]+'.':'')+'</td></tr>').join('');
  openSlide(esc(d.t),'How this score is put together',
-  d.b+'<div class="block"><h2 style="font-size:15px">Every factor, and what it counts for</h2>'
+  d.b
+  +(tilted?calloutCard('ok','Tilted towards '
+     +(goal==='income'?'income':'growth'),
+     'You said you are buying for '+(goal==='income'?'rental income now':'price growth later')
+     +', so '+(goal==='income'
+       ?'rental return rises from 19% to 24% and demand and liquidity from 9% to 13%, '
+        +'taken off price growth and pipeline'
+       :'price growth rises from 21% to 26% and pipeline from 15% to 19%, taken off '
+        +'rental return and liquidity')
+     +'. The table below is the one actually used.'):'')
+  +'<div class="block"><h2 style="font-size:15px">Every factor, and what it counts for</h2>'
   +'<table style="margin-top:10px"><thead><tr><th>Factor</th><th class="num">Weight</th>'
   +'<th>What it measures</th></tr></thead><tbody>'+rows+'</tbody></table>'
   +'<p class="bdnote">Tap any factor for where its number comes from and why the '
@@ -4151,7 +4164,7 @@ document.addEventListener('click',e=>{
  const f=e.target.closest&&e.target.closest('[data-fdoc]');
  if(f){e.preventDefault();e.stopPropagation();openFactorDoc(f.dataset.fdoc,f.dataset.fmode);return;}
  const g=e.target.closest&&e.target.closest('[data-sdoc]');
- if(g){e.preventDefault();e.stopPropagation();openScoreDoc(g.dataset.sdoc);return;}
+ if(g){e.preventDefault();e.stopPropagation();openScoreDoc(g.dataset.sdoc,g.dataset.sgoal);return;}
  const h=e.target.closest&&e.target.closest('[data-flooddoc]');
  if(h){e.preventDefault();e.stopPropagation();
   openSlide(esc(FLOOD_DOC.t),'A warning layer, not a scoring factor',FLOOD_DOC.b);}
@@ -6746,7 +6759,12 @@ function areaPanelTabs(a){
     +rankLabel(a,investScore)+' on the investment score.'+infoDot('invest-score')+'</p>'
    +(personalised()?'<p class="anlband" style="margin-top:6px">'
       +scoreBadge(areaFit(a),'sm')+' <strong>Personal fit '+areaFit(a)+'.</strong> '
-      +rankLabel(a,areaFit)+' on your answers.'+infoDot('fit-score')+'</p>':'')
+      +rankLabel(a,areaFit)+' on your answers.'+infoDot('fit-score')
+      +'<button type="button" class="ui-i" data-sdoc="'
+      +(INTAKE.purpose==='invest'?'invest':'live')+'"'
+      +(INTAKE.purpose==='invest'?' data-sgoal="'+esc(INTAKE.goal||'both')+'"':'')
+      +' aria-label="How your weighting is put together"><span>i</span></button>'
+      +'</p>':'')
    +'<div class="block"><h2 style="font-size:15px">The score, broken open'
     +explainButton('invest','score','invest')+'</h2>'
     +'<div class="bdhead2" style="margin-top:12px"><span>Factor</span><span>Score</span>'
@@ -8157,13 +8175,30 @@ function metroScore(x){
 
 /* ---- the scorer. Returns the breakdown too, so the ranking can be
    interrogated instead of taken on faith. ---- */
+/* The investor's table, tilted by the one thing they were asked. Both tilts
+   are integers summing to 100, like the tables they come from, so a buyer can
+   still add them up. Income takes from growth and pipeline; growth takes from
+   rent and liquidity. 'both' is W_INVEST untouched. */
+const W_INVEST_GOAL={
+ income:{growth:.16, rent:.24, pipe:.11, tech:.13, infra:.11, liq:.13, sweet:.08, live:.04},
+ growth:{growth:.26, rent:.14, pipe:.19, tech:.13, infra:.11, liq:.05, sweet:.08, live:.04}
+};
+function investTable(){ return W_INVEST_GOAL[INTAKE.goal]||W_INVEST; }
+
+/* Personal fit read W_PERSONAL whatever the purpose, which meant an investor's
+   area ranking ignored everything they had been asked. An investor is scored
+   on the investor's table, tilted by their goal; somebody moving in is scored
+   exactly as before. */
 function areaFitFull(a){
- const f=factorValues(a,'live');
- const w=weighFactors(W_PERSONAL,f.vals);
+ const invest=INTAKE.purpose==='invest';
+ const f=factorValues(a,invest?'invest':'live');
+ const w=weighFactors(invest?investTable():W_PERSONAL,f.vals);
  let total=0; w.parts.forEach(p=>total+=p.contrib);
- const penalty=commutePenalty(f.cm?f.cm.mins:null);
+ /* no commute, so no commute penalty: an investor does not live there */
+ const penalty=invest?0:commutePenalty(f.cm?f.cm.mins:null);
  return {score:Math.round(total*(1-penalty)*100), parts:w.parts, dropped:w.dropped,
-   mode:'live', commute:f.cm, metro:metroScore(a), tech:f.tp, budget:f.bf,
+   mode:invest?'invest':'live', goal:invest?(INTAKE.goal||'both'):null,
+   commute:f.cm, metro:metroScore(a), tech:f.tp, budget:f.bf,
    pipe:f.pf, infraNow:f.nf, penalty:penalty};
 }
 const PART_LABELS=[
@@ -8474,10 +8509,20 @@ function breakdownHTML(full,id){
   +'<div class="bdhead2"><span>Factor and weight</span><span>Score</span><span>Points</span></div>'
   +rows+pen+dropNote(full)
   +'<p class="bdnote">'+(mode==='invest'
-    ?'Weights are fixed for the investment score. '
+    ?(full.goal&&full.goal!=='both'
+      ?'The investor\u2019s weighting, tilted towards '
+       +(full.goal==='income'?'rental return and liquidity':'price growth and pipeline')
+       +' because that is what you said you are buying for. Change it with '
+       +'Change my answers. '
+      :full.goal
+      ?'The investor\u2019s weighting, with neither income nor growth favoured \u2014 '
+       +'that is what \u201cboth, roughly evenly\u201d means. '
+      :'Weights are fixed for the investment score. ')
     :'Weights come from your answers. Change them in the tuned bar on Explore '
      +'or with Change my answers. ')
-  +'<button class="ilink" data-sdoc="'+mode+'">How this score is put together \u203a</button>'
+  +'<button class="ilink" data-sdoc="'+mode+'"'
+  +(full.goal?' data-sgoal="'+esc(full.goal)+'"':'')
+  +'>How this score is put together \u203a</button>'
   +'</p></details>';
 }
 
@@ -9062,24 +9107,6 @@ function pipeBar(a){
   +'<span>Pipeline<b>'+p.toFixed(1)+'</b>'+bar(p)+'</span>'
   +'</div>'
   +(t?'<div class="pbw">'+esc(t.l.replace(/^the /,''))+' \u2014 '+esc(t.says)+'</div>':'');
-}
-function areaCard(a){
- const full=personalised()?areaFitFull(a):null;
- return '<div class="rescard"><h4>'+esc(a.n)+'</h4>'
- +'<div class="rz">'+a.z+' Bengaluru · '+esc(a.cor)+' · fit '+areaFit(a)
- +(a._outzone?'<span class="outzone">outside your zones</span>':'')+'</div>'
- +(full?whyForYou(a,full):'')
- +'<div class="rnums">'
- +'<span>Asking<b>₹'+a.ask.toLocaleString('en-IN')+'</b></span>'
- +'<span>Registered<b>'+(a.reg?'₹'+a.reg.toLocaleString('en-IN'):'not published')+'</b></span>'
- +'<span>Price growth<b>'+a.py+'% a year</b></span>'
- +'<span>2BHK rent<b>₹'+a.rent.toLocaleString('en-IN')+'</b></span>'
- +'</div>'
- +(INTAKE.purpose==='invest'?pipeBar(a):'')
- +'<p class="rwhy">'+esc(areaWhy(a))+'</p>'
- +(INTAKE.purpose==='invest'?'':comingHere(a))
- +(full?breakdownHTML(full):'')
- +'</div>';
 }
 function socCard(s){
  const full=personalised()?socFitFull(s):null;
