@@ -1179,7 +1179,7 @@ kbd,code{font-family:var(--label)}
 .sec{max-width:760px;margin:0 auto}
 
 /* the Explore header: a white block that owns the top of the screen */
-#sec-explore>.sechead,#sec-listings>.sechead,#sec-shortlist>.sechead,
+#sec-explore.on>.sechead,#sec-listings>.sechead,#sec-shortlist.on>.sechead,
 #sec-guide>.sechead,#sec-home>.sechead{
   background:var(--card);border-radius:0 0 24px 24px;
   margin:0 calc(var(--s-screen)*-1) var(--s-cards);
@@ -1574,6 +1574,138 @@ td,th{border-color:var(--line)}
     font-size:16px}
   .main{padding:0 var(--s-screen) 70px}
 }
+
+.exfilt{display:none;margin-left:auto}
+.workpin{background:none;border:0}
+.workpin span{display:inline-block;transform:translate(-50%,-100%);white-space:nowrap;
+  background:var(--ink);color:var(--bg);font-family:var(--label);font-size:10px;
+  font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:4px 8px;
+  border-radius:var(--r-chip);box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.workpin span::after{content:"";position:absolute;left:50%;bottom:-4px;width:0;height:0;
+  transform:translateX(-50%);border:4px solid transparent;border-top-color:var(--ink)}
+/* the counts, the progress and the view control live in one element now. On a
+   phone it is a plain block in the same place as before; on desktop it is the
+   rail. */
+.arail{display:block}
+.arail .anav{display:none}
+/* mobile keeps the map to its own mode; the inline style that used to do this
+   is gone so the desktop split can override it */
+#sec-explore:not([data-mode="discover"]) section.panel[data-sec="explore"]{display:none}
+/* ========== desktop layouts, 1024 and up ==========
+ Market dropped the reading width first; the other four floated in an 820px
+ column with 106px of dead space either side. They drop it too. Guide articles
+ keep it: prose at 1068px is unreadable, and line length beats filling space.
+ One set of markup throughout — only the grid changes at the breakpoint. */
+@media(min-width:1024px){
+  #sec-home,#sec-explore,#sec-listings,#sec-shortlist{max-width:none}
+  /* ---- Home: hero and what moved side by side, areas three across ---- */
+  #sec-home .sechead{display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap}
+  #sec-home .sechead .headrow{order:1;flex:1;min-width:0;margin:0}
+  #sec-home .hprofile{order:2;margin:0;align-items:center}
+  #sec-home .headrow .hdrmic{order:3}
+  .homewrap{max-width:none;display:grid;grid-template-columns:1.65fr 1fr;
+    gap:20px;align-items:stretch}
+  .homewrap>.hhero{grid-column:1;grid-row:1;display:flex;flex-direction:column;
+    justify-content:center;padding:34px 32px}
+  .homewrap>.hhero p.hx{font-size:34px;line-height:1.18;margin-bottom:22px}
+  .homewrap>.hhero .act{align-self:flex-start}
+  .homewrap>.hmoved{grid-column:2;grid-row:1;margin-top:0;background:var(--card);
+    border:1px solid var(--line);border-radius:var(--r-card);padding:16px 18px}
+  .homewrap>.hareas{grid-column:1/-1;grid-row:2;margin-top:0}
+  .homewrap>.foldnote{grid-column:1/-1;grid-row:3;margin-top:0}
+  .hareas .hrows{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .hareas .hrow{flex-direction:column;align-items:flex-start;gap:10px;padding:16px 18px;
+    margin-top:0;min-height:120px}
+  .hareas .hrow .hn b{font-size:17px}
+  .hmoved .hrows{margin-top:4px}
+  /* ---- Explore: a persistent split. The map never moves. ---- */
+  #sec-explore.on{display:grid;grid-template-columns:400px minmax(0,1fr);
+    grid-template-areas:"head head" "left right";gap:0 22px;align-items:start}
+  /* the heading, the search and the mode control share one band so the map
+     gets the height it needs */
+  #sec-explore.on>.sechead{grid-area:head;display:grid;grid-template-columns:minmax(0,1fr) auto;
+    gap:4px 20px;align-items:center}
+  #sec-explore.on>.sechead .headrow{grid-column:1;grid-row:1;margin:0}
+  #sec-explore.on>.sechead>p{grid-column:1;grid-row:2;margin:0}
+  #sec-explore.on>.sechead .searchrow{grid-column:2;grid-row:1;margin:0!important;width:320px}
+  #sec-explore.on>.sechead .segmented{grid-column:2;grid-row:2;margin:0;justify-self:end}
+  /* beats the mobile :not() rule, which is more specific than a bare
+     descendant selector and would otherwise win inside the query */
+  #sec-explore[data-mode] section.panel[data-sec="explore"]{display:block}
+  #sec-explore.on>#p-heat{grid-area:right;position:sticky;top:18px;margin:0}
+  #sec-explore.on>#tunedBar,#sec-explore.on>#rankedPane,#sec-explore.on>#fivePane,
+  #sec-explore.on>#posPane,#sec-explore.on>#momentumPane,#sec-explore.on>#termPane,
+  #sec-explore.on>#searchPane{grid-area:left;min-width:0}
+  #sec-explore.on>#tunedBar{align-self:start}
+  /* the left column scrolls on its own so the map never gets pushed down.
+     No overscroll-behavior: reaching the end hands the scroll back to the
+     page, so the rail cannot trap it. */
+  #sec-explore.on>#fivePane,#sec-explore.on>#posPane,#sec-explore.on>#searchPane,
+  #sec-explore.on>#momentumPane,#sec-explore.on>#termPane{align-self:start;
+    max-height:calc(100vh - 170px);overflow-y:auto;padding-right:4px}
+  /* the map panel keeps the lens and the map; the rest of it is noise beside
+     a list that already says the same things */
+  #p-heat>.lede,#p-heat>.banner,#p-heat>.filtercard,#p-heat>.tilesfold,
+  #p-heat>#heatDetail,#p-heat>.hk{display:none}
+  #p-heat{padding:0}
+  #p-heat .mapcard{margin:0}
+  #p-heat #heatMap{height:calc(100vh - 300px);min-height:420px}
+  #p-heat>.lens{margin:0 0 10px}
+  #p-heat>.bandkey{margin-top:8px}
+  #p-heat>.mapnote{margin-top:8px;font-size:11.5px;line-height:1.45}
+  .exfilt{display:inline-flex}
+  /* ---- Listings: a sticky filter rail beside the table ---- */
+  #p-areas.on{display:grid;grid-template-columns:232px minmax(0,1fr);
+    grid-template-areas:"lhead lhead" "rail body";gap:0 24px;align-items:start}
+  #p-areas.on>.lede,#p-areas.on>.banner{grid-area:lhead}
+  #p-areas.on>.filters{grid-area:rail;position:sticky;top:18px;display:block;
+    max-height:calc(100vh - 36px);overflow:auto;background:var(--card);
+    border:1px solid var(--line);border-radius:var(--r-card);padding:14px}
+  #p-areas.on>.filters .field{margin-bottom:12px}
+  #p-areas.on>.segbar,#p-areas.on>#segEmpty,#p-areas.on>.scroller,#p-areas.on>.note,
+  #p-areas.on>.block,#p-areas.on>p,#p-areas.on>div:not(.filters):not(.banner){grid-column:body}
+  .lrailhead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+    margin-bottom:10px}
+  .lrailhead b{font-family:var(--label);font-size:10px;font-weight:700;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--muted)}
+  .lrailfoot{margin-top:6px;padding-top:10px;border-top:1px solid var(--line);
+    font-size:12px;color:var(--muted)}
+  .lrailfoot b{color:var(--ink)}
+  /* ---- Your activity: counts and sub-nav in a rail ---- */
+  #sec-shortlist.on{display:grid;grid-template-columns:232px minmax(0,1fr);
+    grid-template-areas:"ahead ahead" "rail body";gap:0 24px;align-items:start}
+  #sec-shortlist.on>.sechead{grid-area:ahead;display:grid;
+    grid-template-columns:1fr auto;align-items:start}
+
+  #sec-shortlist.on>.arail{grid-area:rail;position:sticky;top:18px;display:block;
+    max-height:calc(100vh - 36px);overflow-y:auto}
+  #sec-shortlist.on>.arail .segmented{display:none}
+  #sec-shortlist.on>.arail .anav{display:grid}
+  #sec-shortlist.on>section.panel{grid-area:body;min-width:0}
+  .arail .pstats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .arail .pstats span{display:block;background:var(--card);border:1px solid var(--line);
+    border-radius:var(--r-tile);padding:10px 11px;font-size:11px;line-height:1.3}
+  .arail .pstats b{display:block;font-family:var(--font);font-size:19px;font-weight:600;
+    color:var(--ink)}
+  .arail .pbar{display:flex;gap:4px;margin:12px 0 4px}
+  .anav{display:grid;gap:2px;margin-top:14px}
+  .anav button{appearance:none;font:inherit;font-size:13.5px;text-align:left;cursor:pointer;
+    background:none;border:0;border-radius:var(--r-seg);padding:0 12px;min-height:var(--tap);
+    color:var(--muted)}
+  .anav button:hover{background:var(--tile);color:var(--ink)}
+  .anav button[aria-pressed="true"]{background:var(--tint);color:var(--primary);font-weight:600}
+  .anav hr{border:0;border-top:1px solid var(--line);margin:8px 10px}
+  .arail .pacts{display:grid;gap:4px;margin-top:14px}
+  /* Board: three columns, one per status */
+  .boardcols{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start}
+  .boardcols .bcol>h4{display:flex;align-items:baseline;gap:6px;
+    font-family:var(--label);font-size:10px;font-weight:700;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+  .boardcols .bcol>h4 span{color:var(--ink);font-size:12px}
+  .bempty{font-size:12.5px;color:var(--muted);background:var(--tile);
+    border-radius:var(--r-tile);padding:14px;margin:0}
+  .boardcols .bcol .card{margin-bottom:12px}
+}
 /* ---- sidebar on desktop ---- */
 @media(min-width:901px){
   .sidebar{background:var(--card);border-right:1px solid var(--line);padding:20px 0 16px}
@@ -1941,6 +2073,8 @@ body{background:var(--grad-bg);background-attachment:fixed}
   <div class="sechead">
     <div class="headrow"><h1>Your activity</h1><button type="button" class="hdrmic" data-askmic="1" aria-label="Ask a question out loud">MICICON</button></div>
     <p>Everything you tracked, with somewhere to write what you actually thought.</p>
+  </div>
+  <aside class="arail" id="aRail">
     <div class="progress">
       <div class="pbar" id="pbar"></div>
       <div class="pstats" id="pstats"></div>
@@ -1959,7 +2093,8 @@ body{background:var(--grad-bg);background-attachment:fixed}
       <button data-sub="negotiate" aria-pressed="false">Negotiate</button>
       <button data-sub="guide" aria-pressed="false">How this works</button>
     </div>
-  </div>
+    <nav class="anav" id="aNav" aria-label="Your activity views"></nav>
+  </aside>
 </section>
 
 <section class="panel" id="p-costs" data-sec="shortlist" data-sub="costs">
@@ -2160,6 +2295,8 @@ body{background:var(--grad-bg);background-attachment:fixed}
   <div id="segEmpty"></div>
 
   <div class="filters calc">
+    <div class="lrailhead"><b>Filter</b>
+      <button type="button" class="ilink" id="fClear">Clear</button></div>
     <div class="field"><label for="fBudget">Ticket ceiling, ₹</label><input type="number" id="fBudget" value="11800000" step="100000"></div>
     <div class="field"><label for="fStretch">Stretch allowed</label><select id="fStretch">
       <option value="0">None — hard ceiling</option><option value="10" selected>Up to 10% over</option>
@@ -2175,6 +2312,7 @@ body{background:var(--grad-bg);background-attachment:fixed}
     <div class="field"><label for="fFlood">Flood risk</label><select id="fFlood">
       <option value="">Show everything</option>
       <option value="hide">Hide high flood risk</option></select></div>
+    <div class="lrailfoot" id="fCount"></div>
   </div>
 
   <div class="scroller"><table id="socTable">
@@ -2972,6 +3110,7 @@ alter publication supabase_realtime add table desk_prefs;</pre>
       <button data-lens="stage" aria-pressed="false">Market stage</button>
       <button data-lens="froth" aria-pressed="false">Asking vs registered</button>
     </span>
+    <button type="button" class="act ghost small exfilt" id="exFilt">Filters</button>
   </div>
   <div class="filtercard">
     <div class="fhead"><h3>Filter</h3>
@@ -3219,6 +3358,7 @@ function goSection(sec,sub,opts){
  if(sec==='explore'){renderTuned(); setExploreMode(EXMODE);}
  if(sec==='listings'){renderSoc();}
  if(sec==='shortlist'){
+  renderActivityNav();
   fillPropSelects();
   const s=SUB.shortlist;
   if(s==='board')renderVisits();
@@ -4660,8 +4800,12 @@ function setExploreMode(m){
  const lab=document.getElementById('exFiveLab');
  if(lab)lab.textContent=personalised()?'Your 5':'Ranked for everyone';
  document.getElementById('searchPane').style.display = m==='search'?'':'none';
+ /* the map panel is shown or hidden by CSS off this flag, not by an inline
+    style, so the desktop split can keep the map up in every mode */
+ const sec=document.getElementById('sec-explore');
+ if(sec)sec.dataset.mode=m;
  document.querySelectorAll('section.panel[data-sec="explore"]').forEach(p=>{
-  p.style.display = m==='discover' ? '' : 'none';
+  p.style.display='';
  });
  /* the ranked list of 86 was why Explore read as a page; it belongs to the
     Map mode now, below the map, not as the thing you land on */
@@ -4679,6 +4823,7 @@ function setExploreMode(m){
  if(fp)fp.style.display = m==='five'?'':'none';
  const pp=document.getElementById('posPane');
  if(pp)pp.style.display = m==='position'?'':'none';
+ if(typeof HMAP!=='undefined'&&HMAP)setTimeout(()=>{try{HMAP.invalidateSize();}catch(e){}},80);
  if(m==='search'){const i=document.getElementById('locSearch'); if(i)setTimeout(()=>i.focus(),30);}
  else if(m==='momentum'){renderMomentum();}
  else if(m==='terminal'){renderTerminal();}
@@ -5396,7 +5541,7 @@ function blockAreas(){
    +scoreBadge(personalised()?areaFit(a):investScore(a),'sm')
    +'<span class="hn"><b>'+esc(a.n)+'</b><span>'+esc(bits.join(' \u00b7 '))+'</span></span></button>';
  }).join('');
- return '<div class="hsec"><h2>Your three areas</h2>'
+ return '<div class="hsec hareas"><h2>Your three areas</h2>'
   +(personalised()?'':'<p class="hs">Ranked overall until you answer the questions.</p>')
   +'<div class="hrows">'+rows+'</div></div>';
 }
@@ -5414,7 +5559,7 @@ function blockMoved(){
   '<button type="button" class="hrow" data-harea="'+esc(x.a.n)+'">'
   +'<span class="hn"><b>'+esc(x.a.n)+'</b><span>'+x.a.growth25+'% \u2192 '+x.a.growth26+'% a year</span></span>'
   +'<span class="hd '+dir+'">'+(x.d>0?'+':'')+x.d+' pts</span></button>').join('');
- return '<div class="hsec"><h2>What moved</h2>'
+ return '<div class="hsec hmoved"><h2>What moved</h2>'
   +'<p class="hs">Biggest change against last year.</p>'
   +'<div class="hrows">'+rows+'</div></div>';
 }
@@ -6373,11 +6518,51 @@ function renderBandKey(){
  el.innerHTML=SCORE_BANDS.map(b=>'<span><i style="background:'+b.c+'"></i>'
   +esc(b.lab)+' \u00b7 '+(b.min>=80?'80+':b.min>=60?'60\u201379':'under 60')+'</span>').join('');
 }
+/* ---- the workplace, on the map ----
+ Drive times are the whole argument for the map, and they are measured to four
+ hubs the reader cannot see. The pin is the enriched coordinate of the
+ micro-market each hub sits in — our own data, not a coordinate typed in from
+ memory — and the label says so. */
+const WORKPIN={itpl:'Whitefield',orr:'Bellandur',ecity:'Electronic City',cbd:'MG Road / CBD'};
+let WPLAYER=null;
+function renderWorkPins(){
+ if(typeof HMAP==='undefined'||!HMAP||typeof L==='undefined')return;
+ if(!WPLAYER)WPLAYER=L.layerGroup().addTo(HMAP);
+ WPLAYER.clearLayers();
+ selectedHubs().forEach(h=>{
+  const a=AREAS.find(x=>x.n===WORKPIN[h]);
+  if(!a||typeof a.lat!=='number')return;
+  const ic=L.divIcon({className:'workpin',
+    html:'<span>'+esc(HUBLAB[h]||h)+'</span>', iconSize:[null,null]});
+  L.marker([a.lat,a.lng],{icon:ic,zIndexOffset:900})
+   .bindTooltip('Your workplace — pinned at the '+esc(a.n)
+     +' micro-market centre, which is what the drive times are measured to',
+     {direction:'top'})
+   .addTo(WPLAYER);
+ });
+}
+/* ---- the filter card, as a sheet ----
+ It is borrowed DOM, like the calculators: moved into the slide-over and handed
+ back, so there is one filter card and its handlers keep working. */
+let FILTHOME=null;
+function returnFilters(){
+ const f=document.querySelector('#soBody .filtercard');
+ if(f&&FILTHOME)FILTHOME.appendChild(f);
+}
+function openFilterSheet(){
+ const card=document.querySelector('#p-heat .filtercard'); if(!card)return;
+ FILTHOME=card.parentNode;
+ openSlide('Filter the map','Zone, pipeline and flood risk','');
+ const body=document.getElementById('soBody');
+ body.appendChild(card);
+ wireSlideLinks();
+}
 function renderHeatMap(){
  renderBandKey();
  if(!ensureHeatMap()){showMapSkeleton();return;}
  hideMapSkeleton();
  HDOTS.clearLayers();
+ renderWorkPins();
  const list=heatMapAreas();
  list.forEach(a=>{
   const s=sweetScore(a), fill=heatColor(a);
@@ -6598,7 +6783,7 @@ function openSlide(title,sub,html){
  document.getElementById('soTitle').innerHTML=title;
  document.getElementById('soSub').innerHTML=sub||'';
  const body=document.getElementById('soBody');
- returnCalcs();
+ returnCalcs(); returnFilters();
  body.innerHTML=''; 
  if(typeof html==='string')body.innerHTML=html; else if(html)body.appendChild(html);
  const strip=document.getElementById('soTabs');
@@ -6610,7 +6795,7 @@ function openSlide(title,sub,html){
  document.getElementById('soClose').focus();
 }
 function closeSlide(){
- returnCalcs();
+ returnCalcs(); returnFilters();
  PANELNOW=null;
  const strip=document.getElementById('soTabs');
  if(strip){strip.hidden=true;strip.innerHTML='';}
@@ -6662,7 +6847,7 @@ function setPanelTab(k){
   b.setAttribute('aria-selected',String(b.dataset.ptab===k)));
  const body=document.getElementById('soBody');
  /* the three calculators are borrowed DOM, so hand them back before the wipe */
- returnCalcs();
+ returnCalcs(); returnFilters();
  body.innerHTML='';
  const h=o.tabs[k];
  if(typeof h==='function')h(body);
@@ -7371,6 +7556,8 @@ function renderSoc(){
   const an=A===undefined||A===null, bn=B===undefined||B===null;
   if(an&&bn)return 0; if(an)return 1; if(bn)return -1;
   return (typeof A==='string'?A.localeCompare(B):A-B)*sortDir;});
+ const fc=document.getElementById('fCount');
+ if(fc)fc.innerHTML='<b>'+rows.length+'</b> of '+SOC.length+' communities match';
  document.querySelector('#socTable tbody').innerHTML=rows.map(s=>{
   const id=slug(s.n), band=priBand(s.pscore), tracked=!!track[id];
   const fitTag=s.hi<=bud?'<span class="tag green">Fits</span>':s.lo<=bud?'<span class="tag amber">Lower units fit</span>':
@@ -7456,6 +7643,19 @@ function shortlistedHTML(id){
  return '<div class="shortlisted">Shortlisted on '+fmtShort(d)+'</div>';
 }
 
+/* the sub-nav as a rail on desktop. Built from the segmented control that
+   already exists, so there is one list of views and it cannot drift. */
+const ANAV_SPLIT=4;   /* Board, Compare, Photos, Route, then the rest */
+function renderActivityNav(){
+ const host=document.getElementById('aNav'); if(!host)return;
+ const subs=[...document.querySelectorAll('#sec-shortlist .segmented button')];
+ host.innerHTML=subs.map((b,i)=>
+  (i===ANAV_SPLIT?'<hr>':'')
+  +'<button type="button" data-anav="'+esc(b.dataset.sub)+'" aria-pressed="'
+  +(SUB.shortlist===b.dataset.sub)+'">'+esc(b.textContent)+'</button>').join('');
+ host.querySelectorAll('[data-anav]').forEach(b=>
+  b.addEventListener('click',()=>goSection('shortlist',b.dataset.anav)));
+}
 function renderVisits(){
  const f=document.getElementById('vFilter').value, so=document.getElementById('vSort').value;
  let list=trackedList();
@@ -7464,7 +7664,12 @@ function renderVisits(){
  list.sort((a,b)=> so==='score'?scoreOf(b)-scoreOf(a): so==='date'?(b.t_.date||'').localeCompare(a.t_.date||''): b.pscore-a.pscore);
  const el=document.getElementById('visitList');
  if(!list.length){el.innerHTML='<div class="empty"><strong>Your tracked properties will appear here</strong> — each with a status, a visit date, notes, photos and a score out of 100.<br><button class="act small" data-goto="listings">Browse listings</button></div>';updateProgress();return;}
- el.innerHTML=list.map(x=>{
+ /* One card builder, one data path. On a wide screen the same cards are
+    grouped into three status columns; on a phone they stay the single
+    sorted list they have always been, because the sort control is the
+    phone's way of ordering them. */
+ const wide=window.matchMedia&&window.matchMedia('(min-width:1024px)').matches;
+ const cardFor=x=>{
   const sc=scoreOf(x), band=priBand(x.pscore), st=x.t_.status;
   const nph=(photos[x.id]||[]).length;
   return `<div class="card st-${st||'none'}">
@@ -7494,7 +7699,19 @@ function renderVisits(){
    </div>
    ${timelineHTML(x.id)}
    <button class="act ghost tiny" data-untrack="${x.id}" style="margin-top:10px">Remove from tracker</button></div>`;
- }).join('');
+ };
+ if(!wide){ el.innerHTML=list.map(cardFor).join(''); }
+ else {
+  const groups=[['To visit',x=>!x.t_.status],
+    ['Seen',x=>x.t_.status&&x.t_.status!=='short'],
+    ['Shortlisted',x=>x.t_.status==='short']];
+  el.innerHTML='<div class="boardcols">'+groups.map(g=>{
+   const col=list.filter(g[1]);
+   return '<div class="bcol"><h4>'+g[0]+' <span>'+col.length+'</span></h4>'
+    +(col.length?col.map(cardFor).join('')
+      :'<p class="bempty">Nothing here yet.</p>')+'</div>';
+  }).join('')+'</div>';
+ }
  const nameOf=i=>socById(i)?socById(i).n:i;
  el.querySelectorAll('[data-vs]').forEach(s=>s.addEventListener('change',e=>{
   const id=e.target.dataset.vs; track[id].status=e.target.value;
@@ -9948,6 +10165,23 @@ document.addEventListener('keydown',e=>{
  if(e.key==='Enter'){e.preventDefault();const r=res[PALSEL];
   if(r){closeModals();openResult(r.kind,r.n,r.id);}}
 });
+const fcl=document.getElementById('fClear');
+if(fcl)fcl.addEventListener('click',()=>{
+ const set=(id,v)=>{const e=document.getElementById(id); if(e&&e.value!==v){e.value=v;}};
+ set('fStretch','10'); set('fZone',''); set('fStatus',''); set('fAge','');
+ set('fPri',''); set('fSearch',''); set('fFlood','');
+ const cap=(typeof budCap==='function'&&budCap())||11800000;
+ set('fBudget',String(cap));
+ if(typeof renderSoc==='function')renderSoc();
+});
+/* the Board groups or ungroups when the window crosses the breakpoint */
+if(window.matchMedia){
+ const mq=window.matchMedia('(min-width:1024px)');
+ const onBp=()=>{ if(SEC==='shortlist'&&SUB.shortlist==='board'&&typeof renderVisits==='function')renderVisits(); };
+ if(mq.addEventListener)mq.addEventListener('change',onBp); else if(mq.addListener)mq.addListener(onBp);
+}
+const exf=document.getElementById('exFilt');
+if(exf)exf.addEventListener('click',openFilterSheet);
 const pi=document.getElementById('palInput');
 if(pi)pi.addEventListener('input',()=>{PALSEL=0;paintPalette();});
 

@@ -811,6 +811,59 @@ here as market exposure — a donut of the published tiers across the city. It
 is the same data as the per-area warning doing a different job, and it is
 still not scored.
 
+## Desktop layouts
+
+Every section drops the 820px reading width at **1024px and up** except the
+guide articles, which keep it: prose at 1068px is unreadable and line length
+beats filling space. Before this, four sections floated in an 820px column
+with 106px of dead space either side.
+
+One set of markup throughout. Only the grid changes at the breakpoint, and
+`matchMedia` appears exactly once (the Board, below) where a grid could not
+express the difference.
+
+    Home        1.65fr / 1fr — hero left, "what moved" right, three area
+                cards across beneath. Source order is unchanged, so the phone
+                is unchanged; the grid places them by row and column.
+    Explore     400px left / map right, a persistent split. The left column
+                scrolls on its own and the map is sticky, so changing mode
+                never moves the map.
+    Listings    232px sticky filter rail / table. Clear at the rail's top, a
+                live match count at its foot.
+    Your        232px rail — counts as a 2x2, then the views vertically with
+    activity    a divider after Route — and the panels fill the rest. The
+                Board becomes three status columns.
+
+**A bare `display:grid` on a section overrides `.sec{display:none}` and leaves
+every section on the page at once.** Three rules did this and every page got
+two to three screens taller before it was caught. Scope the display to the
+open state: `#sec-explore.on`, `#sec-shortlist.on`, `#p-areas.on`.
+
+The map panel is shown or hidden by `#sec-explore[data-mode]`, not by an
+inline style, because a media query cannot beat an inline style. That flag is
+also what lets the split keep the map up in all three modes. The mobile rule
+uses `:not([data-mode="discover"])`, which is more specific than a bare
+descendant selector, so the desktop override needs `[data-mode]` on it to win.
+
+Rails use `position:sticky` and set **no `overscroll-behavior`**, so reaching
+the end of a rail hands the scroll back to the page rather than trapping it.
+
+The Explore filter card is borrowed DOM, like the calculators: `openFilterSheet()`
+moves it into the slide-over and `returnFilters()` hands it back, so there is
+one filter card and its handlers keep working.
+
+`renderWorkPins()` marks the chosen workplace on the map using the enriched
+coordinate of the micro-market each hub sits in — our own data, never a
+coordinate typed in from memory — and the tooltip says exactly that.
+
+### Not done, and why
+
+Listings was asked for a three-up card grid. It has no cards: it is a
+sortable eleven-column table, and its sort control is the table head.
+Building cards would either fork mobile and desktop or change the phone,
+both of which the brief ruled out. The rail landed; the table kept its
+width. Converting Listings to cards at both widths is its own round.
+
 ## The detail panel
 
 An area, a project and a locality all open in the same shell: a head that does
