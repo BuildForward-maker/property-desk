@@ -955,6 +955,60 @@ quadrant; every other dot names itself on hover, on focus and on tap. If that
 corner ever holds enough to overlap again, cut by score inside the quadrant
 rather than turning the labels back on everywhere.
 
+A label is centred on its dot, so a dot near either edge had its name sliced
+by the plot's own `overflow:hidden` — 17 of 86, up to 57px, twelve of them
+standing labels. A dot in the outer fifth now carries `edgeL` or `edgeR` and
+anchors its label at the dot's centre instead, reading inwards. The threshold
+is a percentage of the plot, so it holds at any width; check it with the
+label's box against `.posplot`'s padding box, not by eye.
+
+### Explore's left column scrolls on its own
+
+`.exleft` is `max-height:calc(100vh - 170px)` with `overflow-y:auto`, so a
+list of 20 areas in a 630px column is cut at the fold. Two things make the
+cut read as "more below" rather than as a fault:
+
+- **The scrollbar is drawn, not borrowed.** The engines this runs on use
+  overlay scrollbars: `scrollbar-width`, `scrollbar-color` and
+  `::-webkit-scrollbar` all measured `offsetWidth - clientWidth === 0`. The
+  native one is hidden outright and `.exbar` draws a thumb instead, sized
+  `clientHeight² / scrollHeight` and moved by `scrollTop / room`. It is a
+  sticky, zero-height box pinned to the top of the scrollport whose `::after`
+  is the thumb, so it costs no layout.
+- **A 34px fade at the foot**, `.exfade`, which clears once there is nothing
+  left to scroll (`.atend`). The chip row carries the same idea as a mask on
+  its right edge, cleared the same way.
+
+`exleftFade()` drives both and is called on scroll, on resize and from
+`setExploreMode`. No `overscroll-behavior` is set, so reaching the end hands
+the scroll back to the page.
+
+### One prompt, not two
+
+The non-personalised Explore used to stack the quiet `.tuneask` prompt, the
+loud `genericCard()` and the "Top 20 of 86" line before a single area. The
+loud one carries it on desktop and the quiet one is hidden there; a phone
+keeps both, which is why the rule is scoped to the breakpoint rather than
+deleted from `renderTuned()`.
+
+### The header band has a gutter wider than its own corner
+
+`.sechead` is a full-bleed white card with `margin:0 -18px` and
+`border-radius:0 0 24px 24px`. Explore's right-hand controls — the search row
+and the mode toggle — are justified to the content edge, so with the default
+18px padding they ended exactly on the padding line, inside the 24px curve,
+and read as sitting half outside the card. The desktop rule gives that band
+26px on the right and bottom. Measure it as the gap between the control's box
+and the band's border box, not against the content box, which is zero by
+definition.
+
+### "Your search" lives in one place
+
+The Home heading. The sub-line under it used to end "...and this becomes your
+search", which put the phrase on screen twice, one line apart, and said the
+same thing as the profile pill above it and the hero below it. There is no
+`#homeSub` any more.
+
 ### Not done, and why
 
 Listings was asked for a three-up card grid. It has no cards: it is a

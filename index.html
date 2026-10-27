@@ -1590,6 +1590,8 @@ td,th{border-color:var(--line)}
 }
 
 .exfilt{display:none;margin-left:auto}
+/* the bottom-of-column cue belongs to the desktop split only */
+.exfade,.exbar{display:none}
 .workpin{background:none;border:0}
 .workpin span{display:inline-block;transform:translate(-50%,-100%);white-space:nowrap;
  background:var(--ink);color:var(--bg);font-family:var(--label);font-size:10px;
@@ -1677,6 +1679,43 @@ td,th{border-color:var(--line)}
   #sec-explore.on>#p-heat{padding:0;margin-right:0}
   #p-heat .mapcard{margin:0;border-radius:var(--r-card);overflow:hidden}
   #sec-explore.on>#p-heat,#sec-explore.on>#p-heat>*{padding-right:0;margin-right:0}
+  /* --- the header keeps a gutter wider than its own corner ---
+ The band's bottom corners are 24px round, so a control that ends exactly on
+ the padding line at the bottom right sits inside the curve and reads as half
+ outside the card. Both right-hand controls did: zero slack at 1280, 1440 and
+ 1600. */
+  #sec-explore.on>.sechead{padding-right:26px;padding-bottom:26px}
+  /* --- the chip row keeps the panel's padding on both sides ---
+ It used to start flush on the panel's left edge, cut a chip in half at the
+ right, and strand Filters beyond the cut. The chips scroll inside the padded
+ box; Filters sits beside them, inside it. */
+  #sec-explore.on>#p-heat>.lens{padding-left:14px;padding-right:14px}
+  /* the cut at the right edge is a fade rather than a chip sliced in half, and
+ it clears once there is nothing further to scroll */
+  #sec-explore.on>#p-heat>.lens .toggle{
+ -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 22px),transparent);
+ mask-image:linear-gradient(to right,#000 calc(100% - 22px),transparent)}
+  #sec-explore.on>#p-heat>.lens .toggle.atend{-webkit-mask-image:none;mask-image:none}
+  /* --- the left column scrolls, and says so ---
+ It had overflow-y:auto and an overlay scrollbar that never showed, so a card
+ cut off at the fold read as a rendering fault. A thin permanent scrollbar and
+ a 34px fade at the foot make the cut deliberate; the fade clears at the end. */
+  #sec-explore.on>.exleft{scrollbar-width:none}
+  #sec-explore.on>.exleft::-webkit-scrollbar{display:none}
+  #sec-explore.on>.exleft>.exbar{display:block;position:sticky;top:0;height:0;z-index:2;
+ pointer-events:none}
+  #sec-explore.on>.exleft>.exbar::after{content:"";position:absolute;right:0;top:0;width:4px;
+ border-radius:999px;background:var(--slate);opacity:.5;
+ height:var(--thumbh,40px);transform:translateY(var(--thumby,0px))}
+  #sec-explore.on>.exleft>.exfade{display:block;position:sticky;bottom:0;height:34px;
+ margin-top:-34px;pointer-events:none;transition:opacity .15s;
+ background:linear-gradient(to bottom,rgba(242,241,253,0) 0%,var(--bg) 85%)}
+  #sec-explore.on>.exleft.atend>.exfade{opacity:0}
+  /* --- one prompt, not two ---
+ The quiet "Ranked overall" prompt and the loud generic card said the same
+ thing, and together with the Top-20 line they filled the column before a
+ single area appeared. The loud one carries it here. */
+  #sec-explore.on .tuneask{display:none}
   /* the scatter gets the column, so 28 names have room to sit apart */
   #sec-explore.on>#posPane{max-height:none;overflow:visible}
   #sec-explore.on .poswrap{grid-template-rows:minmax(0,1fr) auto;
@@ -2022,6 +2061,8 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
  pointer-events:none;opacity:0;background:rgba(255,255,255,.9);border-radius:3px;
  padding:0 3px}
 .pdot.named .plab{opacity:1}
+.pdot.edgeL .plab{left:50%;transform:none}
+.pdot.edgeR .plab{left:auto;right:50%;transform:none}
 .pdot.yours{outline:2px solid var(--ink);outline-offset:1px}
 .pdot.yours .plab{font-weight:800;background:var(--ink);color:var(--bg)}
 .pdot:focus-visible .plab{opacity:1}
@@ -2073,7 +2114,6 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
   <div class="sechead">
     <div class="hprofile" id="hProfile"></div>
     <div class="headrow"><h1 id="homeGreeting">Your search<span class="hlive" id="hLive" hidden></span></h1><button type="button" class="hdrmic" data-askmic="1" aria-label="Ask a question out loud">MICICON</button></div>
-    <p id="homeSub" hidden></p>
   </div>
   <div class="homewrap" id="homeBlocks"></div>
   <div class="hshare">
@@ -2099,6 +2139,7 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
     </div>
   </div>
   <div class="exleft">
+  <div class="exbar" aria-hidden="true"></div>
   <div id="tunedBar"></div>
   <div id="rankedPane"></div>
   <div id="fivePane"></div>
@@ -2116,6 +2157,7 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
       <button class="helpq" data-help="coverage" aria-label="About coverage tiers">?</button>
     </p>
   </div>
+  <div class="exfade" aria-hidden="true"></div>
   </div>
 </section>
 
@@ -3397,7 +3439,7 @@ function tunedChips(){
 function renderTuned(){
  const host=document.getElementById('tunedBar'); if(!host)return;
  if(!personalised()){
- host.innerHTML='<div class="tuned"><span class="tl">Ranked overall</span>'
+ host.innerHTML='<div class="tuned tuneask"><span class="tl">Ranked overall</span>'
    +'<span style="font-size:12.5px;color:var(--muted);flex:1">Answer a few quick questions and these rankings re-sort around your commute, budget and how you travel.</span>'
    +'<button class="act small" id="tunePrompt">Personalise this</button></div>';
  const p=document.getElementById('tunePrompt');
@@ -4763,9 +4805,14 @@ function renderPosition(){
  const d=20+Math.round(fit*18);
  const inQuad=basisVal(a)<=xMed&&growthOf(a)>=yMed;
  const named=mine[a.n]||inQuad;
+ /* the label is centred on its dot, so a dot near either edge had its name
+ sliced by the plot's own overflow: 17 of them, up to 57px. Dots in the
+ outer fifth anchor their label inwards instead. */
+ const xp=px(basisVal(a));
+ const edge=xp<20?' edgeL':xp>80?' edgeR':'';
  return '<button type="button" class="pdot '+b.k+(mine[a.n]?' yours':'')
-   +(named?' named':'')+'" data-openanl="'+esc(a.n)+'" '
-   +'style="left:'+px(basisVal(a)).toFixed(2)+'%;bottom:'+py(growthOf(a)).toFixed(2)+'%;'
+   +(named?' named':'')+edge+'" data-openanl="'+esc(a.n)+'" '
+   +'style="left:'+xp.toFixed(2)+'%;bottom:'+py(growthOf(a)).toFixed(2)+'%;'
    +'width:'+d+'px;height:'+d+'px" title="'+esc(a.n)+', ₹'
    +Math.round(basisVal(a)).toLocaleString('en-IN')+'/sqft, '+growthOf(a)+'%">'
    +'<span class="plab">'+esc(a.n)+'</span></button>';
@@ -4831,6 +4878,7 @@ function setExploreMode(m){
  const pp=document.getElementById('posPane');
  if(pp)pp.style.display = m==='position'?'':'none';
  mapKickSoon();
+ exleftFadeSoon();
  if(m==='search'){const i=document.getElementById('locSearch'); if(i)setTimeout(()=>i.focus(),30);}
  else if(m==='momentum'){renderMomentum();}
  else if(m==='terminal'){renderTerminal();}
@@ -5662,9 +5710,6 @@ function renderHome(){
  where the detail that explains them is */
  const live=document.getElementById('hLive');
  if(live)live.hidden=(MODE!=='shared');
- const sub=document.getElementById('homeSub');
- if(sub){sub.hidden=personalised();
- if(!personalised())sub.textContent='Answer seven questions and this becomes your search.';}
  const a=nextAction();
  host.innerHTML=blockNext()+blockAreas()+blockMoved()+blockFindings();
  const n=document.getElementById('hNext'); if(n)n.addEventListener('click',a.go);
@@ -6641,6 +6686,42 @@ function mapKickSoon(){
  MAPKICK=setTimeout(()=>{MAPKICK=null;mapKick();},120);
 }
 window.addEventListener('resize',mapKickSoon);
+/* ---- the left column's "more below" cue ----
+ The column scrolls on desktop and cut its last card at the fold with no sign
+ that it did. A 34px fade sits at its foot and clears once there is nothing
+ left to scroll, so the cut always means "more", never "broken". Nothing here
+ runs on a phone: .exleft is display:contents there and has no scrollport. */
+function exleftFade(){
+ const el=document.querySelector('#sec-explore>.exleft');
+ if(el){
+ const room=el.scrollHeight-el.clientHeight;
+ el.classList.toggle('atend',room<=2||el.scrollTop>=room-2);
+ /* the engine's own scrollbar is an overlay here and reserves no width, so
+ the bar is drawn rather than borrowed: a thumb proportional to how much of
+ the column is on screen, moved by how far down it is */
+ const bar=el.querySelector('.exbar');
+ if(bar){
+  if(room<=2){bar.style.setProperty('--thumbh','0px');}
+  else{
+  const h=Math.max(36,Math.round(el.clientHeight*el.clientHeight/el.scrollHeight));
+  const y=Math.round((el.clientHeight-h)*(el.scrollTop/room));
+  bar.style.setProperty('--thumbh',h+'px');
+  bar.style.setProperty('--thumby',y+'px');
+  }
+ }
+ }
+ const tog=document.querySelector('#p-heat>.lens .toggle');
+ if(tog){const r=tog.scrollWidth-tog.clientWidth;
+ tog.classList.toggle('atend',r<=2||tog.scrollLeft>=r-2);}
+}
+function exleftFadeSoon(){ setTimeout(exleftFade,140); }
+(function(){
+ const el=document.querySelector('#sec-explore>.exleft');
+ if(el)el.addEventListener('scroll',exleftFade,{passive:true});
+ const tog=document.querySelector('#p-heat>.lens .toggle');
+ if(tog)tog.addEventListener('scroll',exleftFade,{passive:true});
+ window.addEventListener('resize',exleftFadeSoon);
+})();
 function renderHeatMap(){
  renderBandKey();
  if(!ensureHeatMap()){showMapSkeleton();return;}
