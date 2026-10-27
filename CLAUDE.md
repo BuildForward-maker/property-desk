@@ -848,6 +848,34 @@ descendant selector, so the desktop override needs `[data-mode]` on it to win.
 Rails use `position:sticky` and set **no `overscroll-behavior`**, so reaching
 the end of a rail hands the scroll back to the page rather than trapping it.
 
+**A grid cell is not a stack.** Two items placed in the same named area overlap;
+two items given only a `grid-column` are auto-placed into successive *rows*,
+which is how Listings ended up with a screen of white between its tabs and its
+table and how Explore drew its tuned bar underneath its cards. A column that
+holds more than one thing needs a wrapper — `.exleft`, `.lbody` — and the
+wrapper is `display:contents` below the breakpoint so the phone never sees it.
+Where a rail must span the body's rows, place every child explicitly by row
+rather than relying on auto-placement.
+
+### The map's box keeps changing under it
+
+Leaflet measures its container once, and a container with height 0 renders
+nothing and throws nothing. In the split the map has a box in every Explore
+mode, so it can be created after boot, resized by a mode switch, by the nav
+collapsing, or by the window. `mapKick()` builds it if it does not exist and
+has real height, otherwise calls `invalidateSize()`; `mapKickSoon()` debounces
+that behind a frame. It is called on entering Explore, on every mode change,
+on nav collapse and on window resize. **Do not assume the map was built at
+boot** — at boot the section is hidden and the container is 0 high.
+
+### The nav rail collapses
+
+`NAVMINI` toggles `body.navmini`, which takes the grid from 212px to 64px,
+hides `.sb-lab` (visually, not from screen readers) and puts each item's name
+on its `title`. The state is one key through the existing store. It exists
+only at 901px and up; a phone uses the bottom bar and never sees the control.
+Collapsing changes the map's width, so it calls `mapKickSoon()`.
+
 The Explore filter card is borrowed DOM, like the calculators: `openFilterSheet()`
 moves it into the slide-over and `returnFilters()` hands it back, so there is
 one filter card and its handlers keep working.
@@ -855,6 +883,12 @@ one filter card and its handlers keep working.
 `renderWorkPins()` marks the chosen workplace on the map using the enriched
 coordinate of the micro-market each hub sits in — our own data, never a
 coordinate typed in from memory — and the tooltip says exactly that.
+
+### Equal heights come from the grid
+
+`min-height` on a card is a number somebody typed. Where cards in a row should
+match, let the grid stretch them: `align-items:stretch` on the row and
+`height:100%` on the card.
 
 ### Not done, and why
 

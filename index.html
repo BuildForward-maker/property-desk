@@ -556,7 +556,6 @@ details.bd[open] summary:before{transform:rotate(90deg)}
 .pseg.on{background:var(--primary)}
 .pstats{display:flex;flex-wrap:wrap;gap:20px;font-size:13px;color:var(--muted);align-items:center}
 .pstats b{color:var(--ink)}
-.pacts{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px}
 nav.rail{position:sticky;top:0;z-index:40;background:var(--bg);border-bottom:1px solid var(--line);
 display:flex;gap:2px;overflow-x:auto;margin-top:22px}
 nav.rail button{appearance:none;background:none;border:0;border-bottom:2.5px solid transparent;font:inherit;
@@ -1588,6 +1587,8 @@ td,th{border-color:var(--line)}
    rail. */
 .arail{display:block}
 .arail .anav{display:none}
+/* the two column wrappers exist only for the desktop grid */
+.exleft,.lbody{display:contents}
 /* mobile keeps the map to its own mode; the inline style that used to do this
    is gone so the desktop split can override it */
 #sec-explore:not([data-mode="discover"]) section.panel[data-sec="explore"]{display:none}
@@ -1614,8 +1615,13 @@ td,th{border-color:var(--line)}
   .homewrap>.hareas{grid-column:1/-1;grid-row:2;margin-top:0}
   .homewrap>.foldnote{grid-column:1/-1;grid-row:3;margin-top:0}
   .hareas .hrows{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-  .hareas .hrow{flex-direction:column;align-items:flex-start;gap:10px;padding:16px 18px;
-    margin-top:0;min-height:120px}
+  /* equal heights come from the grid stretching the row, not from a number
+     typed into min-height */
+  .hareas .hrows{align-items:stretch}
+  .hareas .hrow{flex-direction:column;align-items:flex-start;justify-content:flex-start;
+    gap:10px;padding:16px 18px;margin-top:0;height:100%}
+  /* one padding for one component: the moved rows match the area cards */
+  .hmoved .hrow{padding:16px 18px;margin-top:8px}
   .hareas .hrow .hn b{font-size:17px}
   .hmoved .hrows{margin-top:4px}
   /* ---- Explore: a persistent split. The map never moves. ---- */
@@ -1633,15 +1639,7 @@ td,th{border-color:var(--line)}
      descendant selector and would otherwise win inside the query */
   #sec-explore[data-mode] section.panel[data-sec="explore"]{display:block}
   #sec-explore.on>#p-heat{grid-area:right;position:sticky;top:18px;margin:0}
-  #sec-explore.on>#tunedBar,#sec-explore.on>#rankedPane,#sec-explore.on>#fivePane,
-  #sec-explore.on>#posPane,#sec-explore.on>#momentumPane,#sec-explore.on>#termPane,
-  #sec-explore.on>#searchPane{grid-area:left;min-width:0}
-  #sec-explore.on>#tunedBar{align-self:start}
-  /* the left column scrolls on its own so the map never gets pushed down.
-     No overscroll-behavior: reaching the end hands the scroll back to the
-     page, so the rail cannot trap it. */
-  #sec-explore.on>#fivePane,#sec-explore.on>#posPane,#sec-explore.on>#searchPane,
-  #sec-explore.on>#momentumPane,#sec-explore.on>#termPane{align-self:start;
+  #sec-explore.on>.exleft{grid-area:left;display:block;min-width:0;align-self:start;
     max-height:calc(100vh - 170px);overflow-y:auto;padding-right:4px}
   /* the map panel keeps the lens and the map; the rest of it is noise beside
      a list that already says the same things */
@@ -1655,15 +1653,19 @@ td,th{border-color:var(--line)}
   #p-heat>.mapnote{margin-top:8px;font-size:11.5px;line-height:1.45}
   .exfilt{display:inline-flex}
   /* ---- Listings: a sticky filter rail beside the table ---- */
+  /* explicit rows, because the rail must span the body's rows rather than be
+     auto-placed into one of its own. The source order is untouched. */
   #p-areas.on{display:grid;grid-template-columns:232px minmax(0,1fr);
-    grid-template-areas:"lhead lhead" "rail body";gap:0 24px;align-items:start}
-  #p-areas.on>.lede,#p-areas.on>.banner{grid-area:lhead}
-  #p-areas.on>.filters{grid-area:rail;position:sticky;top:18px;display:block;
+    gap:0 24px;align-items:start}
+  #p-areas.on>.lede{grid-column:1/-1;grid-row:1}
+  #p-areas.on>.banner{grid-column:1/-1;grid-row:2}
+  #p-areas.on>.segbar{grid-column:2;grid-row:3}
+  #p-areas.on>#segEmpty{grid-column:2;grid-row:4}
+  #p-areas.on>.lbody{grid-column:2;grid-row:5;min-width:0;display:block}
+  #p-areas.on>.filters{grid-column:1;grid-row:3/span 3;position:sticky;top:18px;display:block;
     max-height:calc(100vh - 36px);overflow:auto;background:var(--card);
     border:1px solid var(--line);border-radius:var(--r-card);padding:14px}
   #p-areas.on>.filters .field{margin-bottom:12px}
-  #p-areas.on>.segbar,#p-areas.on>#segEmpty,#p-areas.on>.scroller,#p-areas.on>.note,
-  #p-areas.on>.block,#p-areas.on>p,#p-areas.on>div:not(.filters):not(.banner){grid-column:body}
   .lrailhead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;
     margin-bottom:10px}
   .lrailhead b{font-family:var(--label);font-size:10px;font-weight:700;letter-spacing:.08em;
@@ -1674,8 +1676,7 @@ td,th{border-color:var(--line)}
   /* ---- Your activity: counts and sub-nav in a rail ---- */
   #sec-shortlist.on{display:grid;grid-template-columns:232px minmax(0,1fr);
     grid-template-areas:"ahead ahead" "rail body";gap:0 24px;align-items:start}
-  #sec-shortlist.on>.sechead{grid-area:ahead;display:grid;
-    grid-template-columns:1fr auto;align-items:start}
+  #sec-shortlist.on>.sechead{grid-area:ahead}
 
   #sec-shortlist.on>.arail{grid-area:rail;position:sticky;top:18px;display:block;
     max-height:calc(100vh - 36px);overflow-y:auto}
@@ -1695,7 +1696,6 @@ td,th{border-color:var(--line)}
   .anav button:hover{background:var(--tile);color:var(--ink)}
   .anav button[aria-pressed="true"]{background:var(--tint);color:var(--primary);font-weight:600}
   .anav hr{border:0;border-top:1px solid var(--line);margin:8px 10px}
-  .arail .pacts{display:grid;gap:4px;margin-top:14px}
   /* Board: three columns, one per status */
   .boardcols{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start}
   .boardcols .bcol>h4{display:flex;align-items:baseline;gap:6px;
@@ -1705,6 +1705,19 @@ td,th{border-color:var(--line)}
   .bempty{font-size:12.5px;color:var(--muted);background:var(--tile);
     border-radius:var(--r-tile);padding:14px;margin:0}
   .boardcols .bcol .card{margin-bottom:12px}
+}
+/* ---- the nav rail, collapsed ---- */
+.sb-mini{color:var(--muted)}
+@media(min-width:901px){
+  .navmini .app{grid-template-columns:64px minmax(0,1fr)}
+  .navmini .sidebar{padding:20px 0 16px}
+  .navmini .sb-brand,.navmini .sb-kbd{display:none}
+  .navmini .sb-lab{position:absolute;width:1px;height:1px;overflow:hidden;
+    clip:rect(0 0 0 0);white-space:nowrap}
+  .navmini .sb-item{justify-content:center;margin-right:0;border-radius:0;
+    padding-left:0!important;padding-right:0}
+  .navmini .sb-item[aria-current="true"]{background:var(--tint)}
+  .navmini .sb-count{position:absolute;transform:translate(14px,-10px)}
 }
 /* ---- sidebar on desktop ---- */
 @media(min-width:901px){
@@ -2002,15 +2015,17 @@ body{background:var(--grad-bg);background-attachment:fixed}
 <div class="app">
 <aside class="sidebar" role="navigation" aria-label="Sections">
   <div class="sb-brand"><b>Property Desk</b>2BHK Bengaluru</div>
-  <button class="sb-item" data-sec="home" aria-current="true"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.2 8.4 10 3l6.8 5.4"/><path d="M5 7.9V16a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V7.9"/><path d="M8.2 17v-4.4h3.6V17"/></svg></span></span>Home</button>
-  <button class="sb-item" data-sec="explore"  aria-current="false"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7"/><path d="m12.8 7.2-1.6 4-4 1.6 1.6-4z"/></svg></span></span>Explore</button>
-  <button class="sb-item" data-sec="market" aria-current="false"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14.6 7.6 10l3 3 5.4-6"/><path d="M12.6 7h3.4v3.4"/></svg></span></span>Market</button>
-<button class="sb-item" data-sec="listings" aria-current="false"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3.6" width="14" height="12.8" rx="1.6"/><path d="M3 8h14M7.6 8v8.4"/></svg></span></span>Listings</button>
-  <button class="sb-item" data-sec="shortlist" aria-current="false"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m10 3.4 2.1 4.3 4.7.7-3.4 3.3.8 4.7-4.2-2.2-4.2 2.2.8-4.7L3.2 8.4l4.7-.7z"/></svg></span></span>Your activity<span class="sb-count" id="sbCount" hidden>0</span></button>
+  <button class="sb-item" data-sec="home" aria-current="true"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.2 8.4 10 3l6.8 5.4"/><path d="M5 7.9V16a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V7.9"/><path d="M8.2 17v-4.4h3.6V17"/></svg></span></span><span class="sb-lab">Home</span></button>
+  <button class="sb-item" data-sec="explore"  aria-current="false"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7"/><path d="m12.8 7.2-1.6 4-4 1.6 1.6-4z"/></svg></span></span><span class="sb-lab">Explore</span></button>
+  <button class="sb-item" data-sec="market" aria-current="false"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14.6 7.6 10l3 3 5.4-6"/><path d="M12.6 7h3.4v3.4"/></svg></span></span><span class="sb-lab">Market</span></button>
+<button class="sb-item" data-sec="listings" aria-current="false"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3.6" width="14" height="12.8" rx="1.6"/><path d="M3 8h14M7.6 8v8.4"/></svg></span></span><span class="sb-lab">Listings</span></button>
+  <button class="sb-item" data-sec="shortlist" aria-current="false"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m10 3.4 2.1 4.3 4.7.7-3.4 3.3.8 4.7-4.2-2.2-4.2 2.2.8-4.7L3.2 8.4l4.7-.7z"/></svg></span></span><span class="sb-lab">Your activity</span><span class="sb-count" id="sbCount" hidden>0</span></button>
     <div class="sb-spacer"></div>
   <div class="sb-kbd"><kbd>⌘K</kbd> search anything</div>
   <div class="sb-foot">
-    <button class="sb-item" id="openSettings" style="padding-left:0"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="2.6"/><path d="M10 2.8v2M10 15.2v2M17.2 10h-2M5 10H2.8M15.1 4.9l-1.4 1.4M6.3 13.7l-1.4 1.4M15.1 15.1l-1.4-1.4M6.3 6.3 4.9 4.9"/></svg></span></span>Settings</button>
+    <button class="sb-item sb-mini" id="navMini" aria-pressed="false"
+      aria-label="Collapse the navigation to icons"><span class="sb-ico"><span class="ico-g">__RAILICON__</span></span><span class="sb-lab">Collapse</span></button>
+    <button class="sb-item" id="openSettings" style="padding-left:0"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="2.6"/><path d="M10 2.8v2M10 15.2v2M17.2 10h-2M5 10H2.8M15.1 4.9l-1.4 1.4M6.3 13.7l-1.4 1.4M15.1 15.1l-1.4-1.4M6.3 6.3 4.9 4.9"/></svg></span></span><span class="sb-lab">Settings</span></button>
   </div>
 </aside>
 <main class="main">
@@ -2043,6 +2058,7 @@ body{background:var(--grad-bg);background-attachment:fixed}
       <button data-mode="discover" aria-pressed="false">Map</button>
     </div>
   </div>
+  <div class="exleft">
   <div id="tunedBar"></div>
   <div id="rankedPane"></div>
   <div id="fivePane"></div>
@@ -2060,6 +2076,7 @@ body{background:var(--grad-bg);background-attachment:fixed}
       <button class="helpq" data-help="coverage" aria-label="About coverage tiers">?</button>
     </p>
   </div>
+  </div>
 </section>
 
 <section class="sec" id="sec-listings">
@@ -2072,16 +2089,11 @@ body{background:var(--grad-bg);background-attachment:fixed}
 <section class="sec" id="sec-shortlist">
   <div class="sechead">
     <div class="headrow"><h1>Your activity</h1><button type="button" class="hdrmic" data-askmic="1" aria-label="Ask a question out loud">MICICON</button></div>
-    <p>Everything you tracked, with somewhere to write what you actually thought.</p>
   </div>
   <aside class="arail" id="aRail">
     <div class="progress">
       <div class="pbar" id="pbar"></div>
       <div class="pstats" id="pstats"></div>
-      <div class="pacts">
-        <button class="ilink" id="slIntake">Change my answers</button>
-        <button class="ilink" id="slSetup">Settings and sharing</button>
-      </div>
     </div>
     <div class="segmented" role="group" aria-label="Shortlist view">
       <button data-sub="board" aria-pressed="true">Board</button>
@@ -2314,6 +2326,7 @@ body{background:var(--grad-bg);background-attachment:fixed}
       <option value="hide">Hide high flood risk</option></select></div>
     <div class="lrailfoot" id="fCount"></div>
   </div>
+  <div class="lbody">
 
   <div class="scroller"><table id="socTable">
     <thead><tr>
@@ -2338,6 +2351,7 @@ body{background:var(--grad-bg);background-attachment:fixed}
       <thead><tr><th class="num">#</th><th>Micro-market</th><th class="num">₹/sqft</th><th class="num">Sqft you get</th><th class="num">2BHK rent</th><th class="num">Yield</th><th>Why it ranks here</th></tr></thead>
       <tbody></tbody>
     </table></div>
+  </div>
   </div>
 </section>
 
@@ -3355,7 +3369,7 @@ function goSection(sec,sub,opts){
  paintPanels();
  if(sec==='home')renderHome();
  if(sec==='market')renderMarket();
- if(sec==='explore'){renderTuned(); setExploreMode(EXMODE);}
+ if(sec==='explore'){renderTuned(); setExploreMode(EXMODE); mapKickSoon();}
  if(sec==='listings'){renderSoc();}
  if(sec==='shortlist'){
   renderActivityNav();
@@ -3666,6 +3680,7 @@ function kfChartHTML(a){
    risk   risk                     risk bg, risk stroke
    good   verified                 good bg, good stroke */
 const ICONS={
+ rail:'<rect x="3" y="4" width="14" height="12" rx="1.6"/><path d="M8 4v12"/><path d="M12.4 8.4 10.8 10l1.6 1.6"/>',
  mic:'<rect x="7.6" y="2.6" width="4.8" height="9" rx="2.4"/><path d="M4.8 9.4a5.2 5.2 0 0 0 10.4 0"/><path d="M10 14.6V17.4M7.4 17.4h5.2"/>',
  home:'<path d="M3.2 8.4 10 3l6.8 5.4"/><path d="M5 7.9V16a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V7.9"/><path d="M8.2 17v-4.4h3.6V17"/>',
  explore:'<circle cx="10" cy="10" r="7"/><path d="m12.8 7.2-1.6 4-4 1.6 1.6-4z"/>',
@@ -4823,7 +4838,7 @@ function setExploreMode(m){
  if(fp)fp.style.display = m==='five'?'':'none';
  const pp=document.getElementById('posPane');
  if(pp)pp.style.display = m==='position'?'':'none';
- if(typeof HMAP!=='undefined'&&HMAP)setTimeout(()=>{try{HMAP.invalidateSize();}catch(e){}},80);
+ mapKickSoon();
  if(m==='search'){const i=document.getElementById('locSearch'); if(i)setTimeout(()=>i.focus(),30);}
  else if(m==='momentum'){renderMomentum();}
  else if(m==='terminal'){renderTerminal();}
@@ -6557,6 +6572,51 @@ function openFilterSheet(){
  body.appendChild(card);
  wireSlideLinks();
 }
+/* ---- the map's box keeps changing under it ----
+ Leaflet measures its container once. The desktop split gives the map a box in
+ every Explore mode, not only on the map tab, so the container can be created
+ after boot, resized by a mode switch, resized by the nav collapsing, or
+ resized by the window. A container with height 0 renders nothing and throws
+ nothing, so build it only once it has a real height, and tell it afterwards. */
+/* ---- the nav rail, collapsed to icons ----
+ Desktop only: a phone uses the bottom bar and never sees this. The state is
+ one key through the existing store, so it survives a reload. */
+let NAVMINI=false;
+function applyNavMini(){
+ document.body.classList.toggle('navmini',!!NAVMINI);
+ const b=document.getElementById('navMini');
+ if(b){b.setAttribute('aria-pressed',String(!!NAVMINI));
+  b.setAttribute('aria-label',NAVMINI?'Expand the navigation':'Collapse the navigation to icons');
+  const lab=b.querySelector('.sb-lab'); if(lab)lab.textContent=NAVMINI?'Expand':'Collapse';}
+ /* every rail item needs its name back as a tooltip once the label is gone */
+ document.querySelectorAll('.sidebar .sb-item').forEach(it=>{
+  const lab=it.querySelector('.sb-lab');
+  if(lab)it.title=NAVMINI?lab.textContent.trim():'';
+ });
+ /* the map's box just changed width */
+ if(typeof mapKickSoon==='function')mapKickSoon();
+}
+async function setNavMini(v){
+ NAVMINI=!!v; applyNavMini();
+ try{await local.set('navmini',NAVMINI?1:0);}catch(e){}
+}
+async function loadNavMini(){
+ try{const v=await local.get('navmini'); NAVMINI=!!(v&&v!==0&&v!=='0');}catch(e){NAVMINI=false;}
+ applyNavMini();
+}
+function mapKick(){
+ const el=document.getElementById('heatMap'); if(!el)return;
+ if(!el.clientHeight||!el.clientWidth)return;
+ if(typeof HMAP==='undefined'||!HMAP){ if(typeof renderHeatMap==='function')renderHeatMap(); return; }
+ try{HMAP.invalidateSize();}catch(e){}
+}
+let MAPKICK=null;
+function mapKickSoon(){
+ if(MAPKICK)clearTimeout(MAPKICK);
+ /* after the browser has laid the new box out, not during the click */
+ MAPKICK=setTimeout(()=>{MAPKICK=null;mapKick();},120);
+}
+window.addEventListener('resize',mapKickSoon);
 function renderHeatMap(){
  renderBandKey();
  if(!ensureHeatMap()){showMapSkeleton();return;}
@@ -8975,6 +9035,9 @@ function openMicSheet(){
 }
 /* the icon comes from the one icon set rather than being inlined five times */
 function wireHeaderMics(){
+ const rb=document.getElementById('navMini');
+ if(rb){const g=rb.querySelector('.ico-g');
+  if(g&&g.textContent==='__RAILICON__')g.innerHTML=uiIcon('rail','nav',false);}
  document.querySelectorAll('[data-askmic]').forEach(b=>{
   if(!b.dataset.wired){b.innerHTML=uiIcon('mic','nav',false); b.dataset.wired='1';
    b.addEventListener('click',openMicSheet);}
@@ -10180,6 +10243,8 @@ if(window.matchMedia){
  const onBp=()=>{ if(SEC==='shortlist'&&SUB.shortlist==='board'&&typeof renderVisits==='function')renderVisits(); };
  if(mq.addEventListener)mq.addEventListener('change',onBp); else if(mq.addListener)mq.addListener(onBp);
 }
+const nmb=document.getElementById('navMini');
+if(nmb)nmb.addEventListener('click',()=>setNavMini(!NAVMINI));
 const exf=document.getElementById('exFilt');
 if(exf)exf.addEventListener('click',openFilterSheet);
 const pi=document.getElementById('palInput');
@@ -10311,6 +10376,7 @@ async function boot(){
  renderMarketTables();
  const connected=await initSupabase();
  await loadIntake();
+ await loadNavMini();
  if(connected){
   await pullTrack(); await pullChecks(); await pullPhotos();
   subscribeRealtime(); renderFeed();
@@ -10366,10 +10432,6 @@ if(cs)cs.addEventListener('click',()=>{navigator.clipboard?.writeText(document.g
  cs.textContent='Copied';setTimeout(()=>cs.textContent='Copy the SQL',1600);});
 const gs=document.getElementById('goSetup');
 if(gs)gs.addEventListener('click',openSettings);
-const slS=document.getElementById('slSetup');
-if(slS)slS.addEventListener('click',openSettings);
-const slI=document.getElementById('slIntake');
-if(slI)slI.addEventListener('click',()=>openIntake(0));
 
 wireHeaderMics();
 boot();
