@@ -421,6 +421,41 @@ info dot's ink on the ground at 4.75. Re-check with the ratio helper before
 introducing a new pair, and darken the foreground rather than shipping
 something short.
 
+### The page is in standards mode
+
+`<!doctype html>` is the first line of the file. Without it the page spent its
+whole life in quirks mode, which is where the percentage-height bugs came
+from, and it also quietly withheld three things the stylesheet declares — all
+of them inside tables, because quirks mode resets font properties and
+line-height there.
+
+Four rules now **state** what quirks mode used to do by accident, so the
+layout does not depend on a parse mode:
+
+- `table{line-height:normal}` — the tables were laid out against `normal`.
+  Letting body's 1.55 in added about 2px to every cell line: 211px on
+  Listings and 44px on Market > Compare.
+- `.dd label small{display:block}` and `.artlist button small{display:block}` —
+  the title-then-note pattern. As a block the note keeps the 1.5 that
+  `small` asks for, instead of each of its lines being stretched to the row's
+  own line-height. 111px on Legal, 15px on the guide list.
+- `.field label:has(.hint){line-height:normal}` — a label carrying a hint is
+  one dense two-part block.
+
+**One difference was kept, deliberately.** `body` declares
+`font-variant-numeric: tabular-nums lining-nums`, and quirks mode was denying
+it to every table in the app — the one place a column of figures most needs
+digits of equal width. With the doctype the numeric columns take about 3-4px
+more and the auto table layout takes it from the prose column beside them, so
+6 of 86 rows in the micro-market table wrap one extra line: Listings 12,210 →
+12,286px at 1280, 14,476 → 14,480 at 375, and the brief's table +18.5px.
+`table{font-variant-numeric:normal}` would undo it in one line; do not, and do
+not remove the doctype to recover the pixels either.
+
+Everything else measures the same to the hundredth of a pixel. Where
+`documentElement.scrollHeight` reads 1px lower than it used to, the fractional
+body height is identical and only the rounding changed.
+
 ### Class names collide the same way function names do
 
 `.pl` was already the pipeline chip, with a dashed border and 5px of padding.
