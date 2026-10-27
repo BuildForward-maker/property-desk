@@ -827,7 +827,10 @@ express the difference.
                 is unchanged; the grid places them by row and column.
     Explore     400px left / map right, a persistent split. The left column
                 scrolls on its own and the map is sticky, so changing mode
-                never moves the map.
+                never moves the map. **Map is not a mode here** — the toggle
+                switches the left column between Your 5 and Position, and
+                `setExploreMode` rewrites 'discover' to 'five' above 1024.
+                A phone keeps all three.
     Listings    232px sticky filter rail / table. Clear at the rail's top, a
                 live match count at its foot.
     Your        232px rail — counts as a 2x2, then the views vertically with
@@ -856,6 +859,24 @@ holds more than one thing needs a wrapper — `.exleft`, `.lbody` — and the
 wrapper is `display:contents` below the breakpoint so the phone never sees it.
 Where a rail must span the body's rows, place every child explicitly by row
 rather than relying on auto-placement.
+
+### Copy rules
+
+**No em dashes in anything a reader sees.** Each one becomes the punctuation
+the sentence actually wants: a comma for an appositive, a full stop where both
+halves are independent clauses, a colon where it introduces what was just
+announced. Code comments keep theirs, and a lone — in a table cell is a
+"no value" placeholder, not prose. Never leave a double space behind one.
+
+**The product is not 2BHK-only.** Copy says "a flat", "typical rent", "a
+listing". Where a figure genuinely is a 2BHK figure it keeps the label and
+says why: `AREAS.rent` and `SOC.sz` are 2BHK-only, so they read "2BHK rent,
+the only size we hold rent data for". Never relabel a 2BHK number as if it
+covered every size. Listings has no size filter and never did; the dataset is
+2BHK-based, which is a data limit to state, not a filter to remove.
+
+**The foot of the page is one line.** Eleven px, muted, with an asterisk that
+opens the full note as a sheet. The long version lives in `FULLNOTE`.
 
 ### The map's box keeps changing under it
 
@@ -886,9 +907,18 @@ coordinate typed in from memory — and the tooltip says exactly that.
 
 ### Equal heights come from the grid
 
-`min-height` on a card is a number somebody typed. Where cards in a row should
-match, let the grid stretch them: `align-items:stretch` on the row and
-`height:100%` on the card.
+`min-height` on a card is a number somebody typed, and `height:100%` on a
+stretched item clips anything taller than the row. Where cards in a row should
+match, `align-items:stretch` on the row is the whole fix: say nothing about
+the card's height and it sizes to its content while the grid equalises it.
+
+### The scatter names only what can be read
+
+Eighty-six labels on one plot is not a chart. Position gives a standing label
+to the five the desk recommends and to everything in the cheap-and-climbing
+quadrant; every other dot names itself on hover, on focus and on tap. If that
+corner ever holds enough to overlap again, cut by score inside the quadrant
+rather than turning the labels back on everywhere.
 
 ### Not done, and why
 
