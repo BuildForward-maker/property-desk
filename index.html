@@ -24,6 +24,7 @@
 --z-scrim:900;      /* the dimming layer behind a panel */
 --z-slideover:1000; /* the detail panel */
 --z-modal:1100;     /* settings, command palette */
+--z-gate:1150;      /* the sign-in gate, above the app and the intake */
 --z-toast:1200;     /* transient confirmations, above everything */
 /* ---- design tokens ----
  Every colour in the app resolves to one of these. The old ledger names below
@@ -1358,6 +1359,61 @@ td,th{border-color:var(--line)}
 .bd{background:var(--tile);border-radius:var(--r-tile);padding:2px 12px}
 .bd summary{padding:11px 0;font-weight:700;font-size:13px}
 
+/* ---- the gate: sign in, then the profile ----
+ It is the same furniture as the intake, one screen at a time on the app's
+ own ground, because a Supabase-branded login in the middle of this would be
+ the only screen in the product that is not ours. It only ever appears where
+ there is a backend to sign in to: opened from the filesystem, or from a link
+ with no #cfg, there is nothing to authenticate against and the app goes
+ straight to local mode. */
+#gate{position:fixed;inset:0;background:var(--grad-bg);z-index:var(--z-gate);
+ overflow-y:auto;display:none}
+#gate.on{display:block}
+.gwrap{max-width:460px;margin:0 auto;padding:56px var(--s-screen) 48px;min-height:100%;
+ display:flex;flex-direction:column;justify-content:center;box-sizing:border-box}
+@media(max-width:620px){.gwrap{padding:34px var(--s-screen) 40px}}
+.gcard{background:var(--card);border-radius:var(--r-card);padding:26px 24px 24px;
+ box-shadow:var(--shadow-primary)}
+@media(max-width:620px){.gcard{padding:22px 18px 20px}}
+.gcard h1{font-family:var(--font);font-size:27px;font-weight:800;letter-spacing:-.02em;
+ margin:0 0 6px;line-height:1.1}
+.gcard .glede{font-size:13.5px;color:var(--muted);margin:0 0 20px;line-height:1.5}
+.gcard label{display:block;font-size:12px;font-weight:700;color:var(--muted);
+ font-family:var(--label);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px}
+.gcard input{width:100%;box-sizing:border-box;font:inherit;font-size:16px;
+ padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-seg);
+ background:var(--card);color:var(--ink)}
+.gcard input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.gfield{margin-bottom:16px}
+.gfield .ghint{font-size:12px;color:var(--muted);margin:6px 0 0;line-height:1.45}
+.gcard .act{width:100%;justify-content:center;margin-top:2px}
+.gnote{font-size:12.5px;color:var(--muted);margin:12px 0 0;line-height:1.5;text-align:center}
+.gprivacy{font-size:11.5px;color:var(--muted);margin:16px 0 0;line-height:1.5}
+.gprivacy button{font:inherit;font-size:11.5px;background:none;border:0;padding:0;
+ color:var(--accent);text-decoration:underline;cursor:pointer;position:relative}
+/* an 11.5px line inside a sentence cannot be 44px tall, so the reach comes
+ from a pseudo-element the way the info dot's does */
+.gprivacy button::after{content:"";position:absolute;left:0;right:0;top:50%;
+ transform:translateY(-50%);height:var(--tap)}
+.gerr{font-size:13px;color:var(--risk-fg);background:var(--risk-bg);border-radius:var(--r-seg);
+ padding:10px 12px;margin:0 0 14px;line-height:1.45}
+.gok{font-size:13px;color:var(--good-fg);background:var(--good-bg);border-radius:var(--r-seg);
+ padding:10px 12px;margin:0 0 14px;line-height:1.45}
+.gread{font-size:14px;font-weight:600;color:var(--ink);background:var(--tile);
+ border-radius:var(--r-seg);padding:12px 14px}
+.gsep{border-top:1px solid var(--line-soft);margin:22px 0 0;padding-top:18px}
+.gsep h2{font-size:14px;font-weight:700;margin:0 0 4px;font-family:var(--font)}
+.gsep p{font-size:12.5px;color:var(--muted);margin:0 0 12px;line-height:1.5}
+.glink{font:inherit;font-size:13px;background:none;border:0;padding:10px 0;color:var(--accent);
+ text-decoration:underline;cursor:pointer;min-height:var(--tap)}
+.gfoot{text-align:center;margin-top:18px}
+.acct{background:var(--tile);border-radius:var(--r-tile);padding:4px 12px;margin-bottom:14px}
+.acctrow{display:flex;justify-content:space-between;gap:12px;padding:8px 0;font-size:13px;
+ border-bottom:1px solid var(--line-soft)}
+.acctrow:last-child{border-bottom:0}
+.acctrow span{color:var(--muted)}
+.acctrow b{font-weight:700;word-break:break-all;text-align:right}
+
 /* ---- intake: one question per screen ---- */
 #intake{background:var(--bg)}
 .iwrap{max-width:560px;margin:0 auto;padding:0 var(--s-screen) 0;min-height:100%;
@@ -2088,6 +2144,7 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
   <div class="sheet-grab" aria-hidden="true"></div>
   <div class="sheet-body"></div>
 </div>
+<div id="gate" role="dialog" aria-modal="true" aria-label="Sign in to Property Desk"><div class="gwrap" id="gwrap"></div></div>
 <div id="intake" role="dialog" aria-modal="true" aria-label="Set up your search"><button class="pclose" id="intakeClose" aria-label="Close" title="Close" hidden>✕</button><div class="iwrap" id="iwrap"></div></div>
 
 <div class="shell">
@@ -2811,6 +2868,39 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
   </div>
 </section>
 
+<section class="panel" id="p-privacy" data-sec="guide" data-sub="privacy">
+  <p class="lede">An account exists so your work survives a new phone and so a partner can see the same shortlist. That is the whole reason, and it is the whole list of what is kept.</p>
+  <div class="block">
+    <h2>What is stored</h2>
+    <table>
+      <tr><th>What</th><th>Why</th></tr>
+      <tr><td><b>Email</b></td><td>It is how you sign in. There is no password to store, so the link sent to this address is the credential.</td></tr>
+      <tr><td><b>Name</b></td><td>It is what the activity feed puts against a change, so two people sharing a workspace can tell who did what.</td></tr>
+      <tr><td><b>Mobile</b></td><td>Optional, and only so we can reach you if something in your saved work breaks. It is not verified, no code is sent to it, and nothing else uses it.</td></tr>
+      <tr><td><b>Your workspace</b></td><td>The flats you track, your visit notes and scores, your answers to the seven questions, and the legal checklist. Keyed to your workspace, readable only by its members.</td></tr>
+    </table>
+  </div>
+  <div class="block">
+    <h2>What is not</h2>
+    <ul class="plain">
+      <li>No password, because there is not one.</li>
+      <li>No payment details. The app takes no money.</li>
+      <li>No identity documents. Do not put a PAN, a bank statement or a scanned deed in a note; the notes field is for "the lift was out", not for paperwork.</li>
+      <li>No tracking pixels, no analytics, no advertising network. The only requests this page makes are to your own database, the map tiles and the two libraries named in the sources.</li>
+    </ul>
+  </div>
+  <div class="block">
+    <h2>Who can see it</h2>
+    <p>Members of your workspace, and nobody else. Membership is a row somebody with the workspace has to add deliberately; holding a link is not enough. Adding somebody by email only works if they already have an account here, because creating one for a person who has not asked would put their address in a table they never agreed to.</p>
+    <p>Nothing is sold, and nothing is shared with anyone else.</p>
+  </div>
+  <div class="block">
+    <h2>Having it deleted</h2>
+    <p>Email the address you signed in with to the person who runs your copy of this and ask for deletion, and two things happen: the profile row carrying your name, email and mobile goes, and your membership rows go with it. Removing the last member of a workspace removes nothing from that workspace by itself, so say whether you want the tracked flats and notes deleted too.</p>
+    <p><b>Export first if you want a copy.</b> Settings, then Export everything as JSON, gives you the lot as a plain file, before anything is removed.</p>
+  </div>
+</section>
+
 <section class="panel" id="p-prices" data-sec="guide" data-sub="prices">
   <p class="lede">The portals disagree with each other by up to 2.4x for the same locality, and none of them is the number you should negotiate against.</p>
   <div class="block">
@@ -3267,14 +3357,30 @@ const local={
 /* config travels inside the link: #cfg=<base64 json> */
 let CFG=null, sb=null, MODE='local';
 function readCfg(){
+ /* the hash is still where config lives. The query string is read too, and
+ only because of the magic link: an implicit-flow redirect comes back with
+ #access_token=... in the hash, which would overwrite #cfg= and strand the
+ person on a page with no backend. So the link we ask Supabase to return to
+ carries ?cfg=, and writeCfgToUrl() puts it back in the hash the moment the
+ session is in hand. Everything downstream still reads the hash. */
+ const grab=str=>{
  try{
- const h=location.hash||'';
- const m=h.match(/cfg=([^&]+)/);
- if(!m)return null;
- const j=JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(m[1])))));
- if(j&&j.u&&j.k&&j.w)return j;
+  const m=(str||'').match(/cfg=([^&]+)/);
+  if(!m)return null;
+  const j=JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(m[1])))));
+  if(j&&j.u&&j.k&&j.w)return j;
  }catch(e){}
- return null;
+ return null;};
+ return grab(location.hash)||grab(location.search);
+}
+/* rewrite the address bar so the link is always the hash form, and so a
+ workspace created on first sign-in replaces whatever the link arrived with */
+function writeCfgToUrl(){
+ if(!CFG)return;
+ const b64=encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(CFG)))));
+ let h=(location.hash||'').replace(/^#/,'');
+ h=h.split('&').filter(x=>x&&!/^(cfg|access_token|refresh_token|expires_in|expires_at|token_type|type|provider_token)=/.test(x)).join('&');
+ try{history.replaceState(null,'',location.pathname+'#'+(h?h+'&':'')+'cfg='+b64);}catch(e){}
 }
 function writeCfgLink(c,base){
  const b64=btoa(unescape(encodeURIComponent(JSON.stringify(c))));
@@ -3285,25 +3391,357 @@ function setConn(state,text){
  const el=document.getElementById('connState');
  if(el)el.innerHTML=`<span class="dot ${state}"></span>${text}`;
  const who=document.getElementById('connWho');
- if(who)who.innerHTML=CFG&&CFG.n?`<span class="who">Signed in as ${CFG.n}</span>`:'';
+ const nm=(AUTH&&AUTH.profile&&AUTH.profile.name)||(CFG&&CFG.n)||'';
+ if(who)who.innerHTML=nm?`<span class="who">Signed in as ${nm}</span>`:'';
 }
+/* ========== accounts ==========
+ The link used to be the credential: anyone holding #cfg could read and write
+ that workspace, because every policy was `using (true)`. Now the link only
+ names a workspace, and membership decides. A signed-in person who is not a
+ member of the workspace in the link is told so rather than shown somebody
+ else's flats.
+
+ Four things this must not break:
+ - The file still runs with no backend at all. No #cfg means nothing to sign
+ in to, so there is no gate and no account: local mode, the whole app.
+ - Signing out is not a downgrade to a broken app. It is local mode.
+ - A magic link is opened wherever the person reads their email, often not
+ the device that asked for it, so the flow stays implicit rather than PKCE,
+ whose verifier only exists in the browser that started it.
+ - Somebody who already has rows keyed to a workspace with no membership row
+ would lose them the moment the policies tightened. claimWorkspace() is the
+ one-time door back in, and it is on the profile screen rather than buried
+ in settings, because that is the first screen they will see. */
+let AUTH={user:null,profile:null,ws:[],state:'off'};
+/* 'off'    no backend in the link: local mode, no gate
+   'out'    there is a backend and nobody is signed in
+   'new'    signed in, profile not written yet
+   'in'     signed in, profile saved, a member of this workspace
+   'denied' signed in, but not a member of the workspace the link names */
+function signedIn(){ return !!(AUTH.user&&AUTH.user.id); }
+function myName(){ return (AUTH.profile&&AUTH.profile.name)||(CFG&&CFG.n)||''; }
+
+function cfgRedirect(){
+ /* ?cfg= rather than #cfg=, so Supabase's own hash does not overwrite it */
+ if(!CFG)return location.origin+location.pathname;
+ const b64=encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(CFG)))));
+ return location.origin+location.pathname+'?cfg='+b64;
+}
+async function sendMagicLink(email){
+ if(!sb)throw new Error('No workspace is configured in this link.');
+ const {error}=await sb.auth.signInWithOtp({email:(email||'').trim(),
+ options:{emailRedirectTo:cfgRedirect()}});
+ if(error)throw error;
+ return true;
+}
+async function loadProfile(){
+ AUTH.profile=null;
+ if(!sb||!signedIn())return null;
+ try{
+ const {data,error}=await sb.from('profiles').select('id,email,name,mobile')
+   .eq('id',AUTH.user.id).maybeSingle();
+ if(error)throw error;
+ AUTH.profile=data||null;
+ }catch(e){ AUTH.profile=null; }
+ return AUTH.profile;
+}
+async function loadMemberships(){
+ AUTH.ws=[];
+ if(!sb||!signedIn())return AUTH.ws;
+ try{
+ const {data,error}=await sb.from('workspace_members').select('workspace')
+   .eq('user_id',AUTH.user.id);
+ if(error)throw error;
+ AUTH.ws=(data||[]).map(r=>r.workspace);
+ }catch(e){ AUTH.ws=[]; }
+ return AUTH.ws;
+}
+async function saveProfile(name,mobile){
+ if(!sb||!signedIn())throw new Error('Not signed in.');
+ const row={id:AUTH.user.id,email:AUTH.user.email||'',
+ name:(name||'').trim(),mobile:((mobile||'').trim()||null)};
+ const {error}=await sb.from('profiles').upsert(row,{onConflict:'id'});
+ if(error)throw error;
+ AUTH.profile=row;
+ return row;
+}
+const dupe=e=>/duplicate key|already exists|23505/i.test((e&&(e.message||e.details))||'');
+async function joinWorkspace(code,role){
+ if(!sb||!signedIn())throw new Error('Not signed in.');
+ const w=(code||'').trim();
+ if(!w)throw new Error('Enter the workspace code first.');
+ const {error}=await sb.from('workspace_members')
+ .insert({workspace:w,user_id:AUTH.user.id,role:role||'owner'});
+ if(error&&!dupe(error))throw error;
+ await loadMemberships();
+ return w;
+}
+async function createWorkspace(){ return joinWorkspace(randomCode(),'owner'); }
+/* Adding somebody is a lookup, never a sign-up. Creating an account for a
+ person who has not asked for one would put their email in a table they
+ never agreed to, so a miss says so plainly and stops. */
+async function addMemberByEmail(email){
+ if(!sb||!signedIn())throw new Error('Not signed in.');
+ const e=(email||'').trim().toLowerCase();
+ if(!e)throw new Error('Enter an email address.');
+ if(e===(AUTH.user.email||'').toLowerCase())return {ok:false,why:'self'};
+ const {data,error}=await sb.from('profiles').select('id,email').ilike('email',e).limit(1);
+ if(error)throw error;
+ if(!data||!data.length)return {ok:false,why:'noaccount'};
+ const {error:e2}=await sb.from('workspace_members')
+ .insert({workspace:CFG.w,user_id:data[0].id,role:'member'});
+ if(e2&&!dupe(e2))throw e2;
+ return {ok:true,already:!!e2};
+}
+async function signOutNow(){
+ try{ if(sb)await sb.auth.signOut(); }catch(e){}
+ try{ location.reload(); }catch(e){}
+}
+
 async function initSupabase(){
  CFG=readCfg();
- if(!CFG){setConn('local','Local mode. Nothing is shared yet');return false;}
+ if(!CFG){AUTH.state='off';setConn('local','Local mode. Nothing is shared yet');return false;}
  if(typeof window.supabase==='undefined'){
+ AUTH.state='off';
  setConn('err','Database library did not load, check your connection');return false;}
- try{
- sb=window.supabase.createClient(CFG.u,CFG.k);
- const {error}=await sb.from('desk_tracking').select('prop_id').eq('workspace',CFG.w).limit(1);
- if(error)throw error;
- MODE='shared';
- setConn('live','Shared workspace, live');
- return true;
- }catch(e){
- sb=null;
- setConn('err','Connection failed, '+(e.message||'check the setup tab').slice(0,70));
+ try{ sb=window.supabase.createClient(CFG.u,CFG.k); }
+ catch(e){ sb=null;AUTH.state='off';
+ setConn('err','Connection failed, '+((e&&e.message)||'check the setup tab').slice(0,60));
+ return false; }
+ let session=null;
+ try{ const r=await sb.auth.getSession(); session=r&&r.data&&r.data.session; }catch(e){}
+ writeCfgToUrl();
+ if(!session||!session.user){
+ AUTH.state='out'; MODE='local';
+ setConn('local','Not signed in. Local mode');
+ openGate('signin');
  return false;
  }
+ AUTH.user=session.user;
+ await loadProfile();
+ await loadMemberships();
+ if(!AUTH.profile||!AUTH.profile.name){
+ AUTH.state='new'; MODE='local';
+ setConn('local','Finishing your account');
+ openGate('profile');
+ return false;
+ }
+ return await enterWorkspace();
+}
+/* membership, not the link, is what grants access */
+async function enterWorkspace(){
+ if(!AUTH.ws.length){
+ /* a new account with no rows anywhere gets its own workspace, generated */
+ try{ CFG.w=await createWorkspace(); writeCfgToUrl(); }
+ catch(e){
+  AUTH.state='denied'; MODE='local';
+  setConn('err','Could not create your workspace, '+((e&&e.message)||'').slice(0,50));
+  openGate('denied'); return false; }
+ }
+ if(AUTH.ws.indexOf(CFG.w)<0){
+ AUTH.state='denied'; MODE='local';
+ setConn('err','This workspace is not shared with you');
+ openGate('denied'); return false;
+ }
+ try{
+ const {error}=await sb.from('desk_tracking').select('prop_id').eq('workspace',CFG.w).limit(1);
+ if(error)throw error;
+ }catch(e){
+ AUTH.state='denied'; MODE='local';
+ setConn('err','Connection failed, '+((e&&e.message)||'check the setup tab').slice(0,60));
+ openGate('denied'); return false;
+ }
+ AUTH.state='in'; MODE='shared';
+ if(myName())CFG.n=myName();
+ setConn('live','Shared workspace, live');
+ closeGate();
+ return true;
+}
+
+/* ---- the gate ----
+ One screen at a time, same furniture as the intake. It is deliberately not
+ in the dismissal registry: Escape must not drop somebody into a half-signed-in
+ app. The only way past it is a button that says what it does, and on the
+ first screen one of those buttons is "Browse without an account". */
+let GATE={view:'signin',busy:false,err:'',ok:'',email:'',sentAt:0,tick:null};
+function gateOpen(){ return document.getElementById('gate').classList.contains('on'); }
+function openGate(view){
+ GATE.view=view||'signin'; GATE.err=''; GATE.ok='';
+ document.getElementById('gate').classList.add('on');
+ document.body.style.overflow='hidden';
+ renderGate();
+}
+function closeGate(){
+ if(GATE.tick){clearInterval(GATE.tick);GATE.tick=null;}
+ document.getElementById('gate').classList.remove('on');
+ document.body.style.overflow='';
+}
+/* leaving the gate is also the moment the intake is owed, if it is owed */
+function afterGate(){
+ closeGate();
+ if(!INTAKE.done&&!INTAKE.skipped)openIntake(0);
+}
+const gEsc=t=>String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function gPrivacyLine(){
+ return '<p class="gprivacy">We store your name, email and mobile to run your '
+ +'account. Nothing is sold or shared. <button type="button" id="gPriv">'
+ +'What we keep, and how to have it deleted</button></p>';
+}
+function gClaimBlock(){
+ return '<div class="gsep"><h2>Already using Property Desk?</h2>'
+ +'<p>If you have been working in a workspace already, enter its code and it '
+ +'comes with you. Everything you have tracked stays where it is.</p>'
+ +'<div class="gfield"><label for="gClaim">Workspace code</label>'
+ +'<input id="gClaim" type="text" autocomplete="off" spellcheck="false" '
+ +'placeholder="the code from your old link" value="'+gEsc(CFG&&CFG.w||'')+'"></div>'
+ +'<button type="button" class="act ghost" id="gClaimGo" style="width:100%;justify-content:center">'
+ +'Claim this workspace</button></div>';
+}
+function renderGate(){
+ const host=document.getElementById('gwrap'); if(!host)return;
+ const err=GATE.err?'<div class="gerr">'+gEsc(GATE.err)+'</div>':'';
+ const ok=GATE.ok?'<div class="gok">'+gEsc(GATE.ok)+'</div>':'';
+ let body='';
+ if(GATE.view==='signin'){
+ body='<div class="gcard"><h1>Property Desk</h1>'
+  +'<p class="glede">Where to buy in Bengaluru, scored on what deeds actually record.</p>'
+  +err+ok
+  +'<div class="gfield"><label for="gEmail">Email</label>'
+  +'<input id="gEmail" type="email" inputmode="email" autocomplete="email" '
+  +'spellcheck="false" placeholder="you@example.com" value="'+gEsc(GATE.email)+'"></div>'
+  +'<button type="button" class="act" id="gSend"'+(GATE.busy?' disabled':'')+'>'
+  +(GATE.busy?'Sending':'Email me a link')+'</button>'
+  +'<p class="gnote">No password. We send a one-tap link.</p>'
+  +gPrivacyLine()
+  +'</div><div class="gfoot"><button type="button" class="glink" id="gLocal">'
+  +'Browse without an account</button></div>';
+ }
+ else if(GATE.view==='sent'){
+ const left=Math.max(0,60-Math.round((Date.now()-GATE.sentAt)/1000));
+ body='<div class="gcard"><h1>Check your email</h1>'
+  +'<p class="glede">The link signs you in and expires in an hour. '
+  +'We sent it to <b>'+gEsc(GATE.email)+'</b>.</p>'
+  +err+ok
+  +'<button type="button" class="act ghost" id="gResend"'+(left?' disabled':'')
+  +' style="width:100%;justify-content:center">'
+  +(left?'Resend in '+left+'s':'Send it again')+'</button>'
+  +'<p class="gnote">Opening it on your phone works too. It does not have to be '
+  +'this browser.</p></div>'
+  +'<div class="gfoot"><button type="button" class="glink" id="gBack">'
+  +'Use a different email</button></div>';
+ }
+ else if(GATE.view==='profile'){
+ const p=AUTH.profile||{};
+ body='<div class="gcard"><h1>Two things, then you are in</h1>'
+  +'<p class="glede">So your saved work has a name on it.</p>'
+  +err+ok
+  +'<div class="gfield"><label for="gName">Name</label>'
+  +'<input id="gName" type="text" autocomplete="name" value="'+gEsc(p.name||'')+'"></div>'
+  +'<div class="gfield"><label for="gMob">Mobile <span style="text-transform:none;'
+  +'letter-spacing:0;font-family:var(--font);font-weight:600">(optional)</span></label>'
+  +'<input id="gMob" type="tel" inputmode="tel" autocomplete="tel" value="'+gEsc(p.mobile||'')+'">'
+  +'<p class="ghint">So we can reach you if something in your saved work breaks. '
+  +'We do not verify it and we will not text you otherwise.</p></div>'
+  +'<div class="gfield"><label>Email</label>'
+  +'<div class="gread">'+gEsc((AUTH.user&&AUTH.user.email)||'')+'</div></div>'
+  +'<button type="button" class="act" id="gSave"'+(GATE.busy?' disabled':'')+'>'
+  +(GATE.busy?'Saving':'Save and continue')+'</button>'
+  +gClaimBlock()
+  +gPrivacyLine()+'</div>';
+ }
+ else if(GATE.view==='denied'){
+ body='<div class="gcard"><h1>This workspace is not shared with you</h1>'
+  +'<p class="glede">You are signed in as <b>'+gEsc((AUTH.user&&AUTH.user.email)||'')
+  +'</b>, and that account is not a member of the workspace this link names. '
+  +'Ask whoever sent it to add you by email.</p>'
+  +err+ok
+  +(AUTH.ws.length
+   ?'<button type="button" class="act" id="gMine">Open my own workspace</button>'
+   :'')
+  +gClaimBlock()
+  +'<div class="gfoot"><button type="button" class="glink" id="gLocal">'
+  +'Browse without an account</button> &middot; '
+  +'<button type="button" class="glink" id="gOut">Sign out</button></div></div>';
+ }
+ host.innerHTML=body;
+ wireGate();
+}
+/* "Failed to fetch" is the browser's sentence, not ours. The three that
+ actually happen get read back in words somebody can act on. */
+function gateMsg(e){
+ const m=((e&&e.message)||String(e||'')).trim();
+ if(/failed to fetch|networkerror|load failed|fetch failed/i.test(m))
+ return 'Could not reach the database. Check your connection, then try again.';
+ if(/rate limit|too many|429/i.test(m))
+ return 'Too many attempts just now. Wait a minute, then try again.';
+ if(/signups? not allowed|not authori[sz]ed|disabled/i.test(m))
+ return 'This project is not accepting new sign-ins. Whoever set it up needs to turn email sign-in on.';
+ if(/row-level security|violates row-level|permission denied|42501/i.test(m))
+ return 'The database refused that. Your account is not a member of this workspace.';
+ return m||'Something went wrong.';
+}
+function wireGate(){
+ const g=id=>document.getElementById(id);
+ const fail=e=>{GATE.busy=false;GATE.err=gateMsg(e);renderGate();};
+ if(g('gPriv'))g('gPriv').addEventListener('click',()=>{closeGate();openPrivacyNote();});
+ if(g('gLocal'))g('gLocal').addEventListener('click',afterGate);
+ if(g('gOut'))g('gOut').addEventListener('click',signOutNow);
+ if(g('gSend'))g('gSend').addEventListener('click',async()=>{
+ const em=(g('gEmail').value||'').trim();
+ if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){GATE.err='That does not look like an email address.';renderGate();return;}
+ GATE.email=em; GATE.busy=true; GATE.err=''; renderGate();
+ try{ await sendMagicLink(em); GATE.busy=false; GATE.sentAt=Date.now();
+  GATE.view='sent'; renderGate();
+  GATE.tick=setInterval(()=>{ if(GATE.view!=='sent'){clearInterval(GATE.tick);GATE.tick=null;return;}
+   renderGate(); if(Date.now()-GATE.sentAt>60000){clearInterval(GATE.tick);GATE.tick=null;} },1000);
+ }catch(e){ fail(e); }});
+ if(g('gEmail'))g('gEmail').addEventListener('keydown',e=>{if(e.key==='Enter')g('gSend').click();});
+ if(g('gResend'))g('gResend').addEventListener('click',async()=>{
+ try{ await sendMagicLink(GATE.email); GATE.sentAt=Date.now(); GATE.ok='Sent again.'; renderGate(); }
+ catch(e){ fail(e); }});
+ if(g('gBack'))g('gBack').addEventListener('click',()=>{GATE.view='signin';GATE.err='';GATE.ok='';renderGate();});
+ if(g('gSave'))g('gSave').addEventListener('click',async()=>{
+ const nm=(g('gName').value||'').trim();
+ if(!nm){GATE.err='A name is required. It is what the activity feed uses.';renderGate();return;}
+ GATE.busy=true; GATE.err=''; renderGate();
+ try{
+  await saveProfile(nm,g('gMob')?g('gMob').value:'');
+  GATE.busy=false;
+  const okNow=await enterWorkspace();
+  if(okNow){ await afterSignIn(); afterGate(); }
+ }catch(e){ fail(e); }});
+ if(g('gClaimGo'))g('gClaimGo').addEventListener('click',async()=>{
+ const code=(g('gClaim').value||'').trim();
+ if(!code){GATE.err='Enter the workspace code first.';renderGate();return;}
+ GATE.busy=true; GATE.err=''; renderGate();
+ try{
+  await joinWorkspace(code,'owner');
+  CFG.w=code; writeCfgToUrl();
+  GATE.busy=false; GATE.ok='Claimed. Your existing work is back.';
+  if(AUTH.profile&&AUTH.profile.name){
+  const okNow=await enterWorkspace();
+  if(okNow){ await afterSignIn(); afterGate(); return; }
+  }
+  renderGate();
+ }catch(e){ fail(e); }});
+ if(g('gMine'))g('gMine').addEventListener('click',async()=>{
+ CFG.w=AUTH.ws[0]; writeCfgToUrl();
+ const okNow=await enterWorkspace();
+ if(okNow){ await afterSignIn(); afterGate(); }});
+}
+/* the pulls boot() would have done had the session existed at page load */
+async function afterSignIn(){
+ try{
+ await pullTrack(); await pullChecks();
+ subscribeRealtime(); renderFeed();
+ await loadIntake(); applyIntake();
+ renderVisits(); renderSoc(); updateCount();
+ }catch(e){}
+}
+function openPrivacyNote(){
+ SUB.guide='privacy';
+ goSection('shortlist','guide');
+ if(typeof renderArticles==='function')renderArticles();
 }
 async function logActivity(what){
  if(MODE!=='shared')return;
@@ -3340,7 +3778,8 @@ const GUIDE_ARTICLES=[
  {k:'basics', t:'Bengaluru basics', d:'How the city is laid out, and what the words mean'},
  {k:'sources', t:'Where to search', d:'Which sources are fact, and which are inventory'},
  {k:'returns', t:'What returns are realistic', d:'The arithmetic behind the stories you have heard'},
- {k:'prices', t:'Why the prices disagree', d:'Six sources, one locality, a 2.4\u00d7 spread'}
+ {k:'prices', t:'Why the prices disagree', d:'Six sources, one locality, a 2.4\u00d7 spread'},
+ {k:'privacy', t:'What we keep about you', d:'What is stored, why, and how to have it deleted'}
 ];
 let SEC='explore', SUB={explore:'discover',shortlist:'board',guide:'read'}, EXMODE='five';
 /* Market's own sub-tab, kept out of SUB because SUB is keyed by section and
@@ -10273,6 +10712,11 @@ function openSettings(){
   /* only the connection form and the activity feed come across; the long
  set-up walkthrough now lives in SETUP.md beside the file */
  const keep=document.createElement('div');
+ /* the account comes first: it is the thing that decides whether anything
+ below it is shared at all */
+ const acct=document.createElement('div');
+ acct.id='setAcct';
+ keep.appendChild(acct);
  const form=SETTINGSSRC.querySelector('#cfUrl') ? SETTINGSSRC.querySelector('#cfUrl').closest('.step') : null;
  if(form)keep.appendChild(form);
  const feed=SETTINGSSRC.querySelector('#feed');
@@ -10301,9 +10745,91 @@ function openSettings(){
  location.reload();
   });
  }
- try{prefillCfgForm();renderFeed();}catch(e){}
+ try{renderAccount();prefillCfgForm();renderFeed();}catch(e){}
  document.getElementById('settingsModal').classList.add('on');
  document.getElementById('scrim').classList.add('on');
+}
+/* ---- the account, in settings ----
+ Four states, and each says what it is rather than showing a control that
+ would not work. Local mode is not an error here; it is a mode, and it says
+ what it costs. */
+function renderAccount(){
+ const host=document.getElementById('setAcct'); if(!host)return;
+ const esc=gEsc;
+ const H='<h2 style="font-size:15px">Your account</h2>';
+ const row=(l,v)=>'<div class="acctrow"><span>'+esc(l)+'</span><b>'+esc(v||'not set')+'</b></div>';
+ if(AUTH.state==='off'){
+ host.className='block';
+ host.innerHTML=H+'<p style="font-size:13px;color:var(--muted)">This copy has no '
+  +'workspace in its link, so there is nothing to sign in to. Everything works '
+  +'and everything stays in this browser. Fill in the connection form below to '
+  +'turn sharing on.</p>';
+ return;
+ }
+ if(!signedIn()){
+ host.className='block';
+ host.innerHTML=H+'<p style="font-size:13px;color:var(--muted)">Not signed in. '
+  +'The app is running in local mode: everything works, nothing syncs, and '
+  +'nothing leaves this browser.</p>'
+  +'<button class="act small" id="acSignIn">Sign in</button>';
+ const b=document.getElementById('acSignIn');
+ if(b)b.addEventListener('click',()=>{closeModals();openGate('signin');});
+ return;
+ }
+ const p=AUTH.profile||{};
+ host.className='block';
+ host.innerHTML=H
+ +'<div class="acct">'+row('Email',(AUTH.user&&AUTH.user.email)||'')
+ +row('Name',p.name)+row('Mobile',p.mobile)+'</div>'
+ +'<div class="field"><label for="acName">Name</label>'
+ +'<input id="acName" type="text" value="'+esc(p.name||'')+'"></div>'
+ +'<div class="field"><label for="acMob">Mobile <span class="hint" style="display:inline">'
+ +'optional, so we can reach you if something in your saved work breaks</span></label>'
+ +'<input id="acMob" type="tel" inputmode="tel" value="'+esc(p.mobile||'')+'"></div>'
+ +'<div style="display:flex;gap:8px;flex-wrap:wrap">'
+ +'<button class="act small" id="acSave">Save profile</button>'
+ +'<button class="act ghost small" id="acOut">Sign out</button></div>'
+ +'<p id="acMsg" style="font-size:12.5px;color:var(--muted);margin:10px 0 0"></p>'
+ +'<div class="gsep" style="margin-top:18px"><h2 style="font-size:15px">Your workspace</h2>'
+ +'<p style="font-size:13px;color:var(--muted);margin:0 0 8px">Whoever has this code '
+ +'<b>and</b> an account here can be added to it. The code on its own is no longer '
+ +'enough to get in.</p>'
+ +'<div class="gread" style="word-break:break-all;margin-bottom:12px">'+esc(CFG&&CFG.w||'')+'</div>'
+ +'<div class="field"><label for="acAdd">Add somebody by email</label>'
+ +'<input id="acAdd" type="email" inputmode="email" spellcheck="false" placeholder="partner@example.com"></div>'
+ +'<button class="act ghost small" id="acAddGo">Add to this workspace</button>'
+ +'<p id="acAddMsg" style="font-size:12.5px;color:var(--muted);margin:10px 0 0"></p>'
+ +'<div class="field" style="margin-top:16px"><label for="acClaim">Claim another workspace</label>'
+ +'<input id="acClaim" type="text" spellcheck="false" placeholder="a workspace code you already use">'
+ +'<span class="hint">If you were using Property Desk before accounts existed, this is how '
+ +'that work comes with you.</span></div>'
+ +'<button class="act ghost small" id="acClaimGo">Claim it</button>'
+ +'<p id="acClaimMsg" style="font-size:12.5px;color:var(--muted);margin:10px 0 0"></p></div>';
+ const g=id=>document.getElementById(id);
+ const say=(id,t,bad)=>{const el=g(id);if(el){el.textContent=t;el.style.color=bad?'var(--risk-fg)':'var(--muted)';}};
+ if(g('acSave'))g('acSave').addEventListener('click',async()=>{
+ const nm=(g('acName').value||'').trim();
+ if(!nm){say('acMsg','A name is required. It is what the activity feed uses.',1);return;}
+ try{ await saveProfile(nm,g('acMob').value); CFG.n=nm; writeCfgToUrl();
+  setConn(MODE==='shared'?'live':'local',MODE==='shared'?'Shared workspace, live':'Not signed in. Local mode');
+  say('acMsg','Saved.'); renderAccount(); }
+ catch(e){ say('acMsg',(e&&e.message)||'Could not save that.',1); }});
+ if(g('acOut'))g('acOut').addEventListener('click',signOutNow);
+ if(g('acAddGo'))g('acAddGo').addEventListener('click',async()=>{
+ say('acAddMsg','Looking that address up');
+ try{
+  const r=await addMemberByEmail(g('acAdd').value);
+  if(r.ok)say('acAddMsg',r.already?'They were already a member.':'Added. They will see this workspace next time they sign in.');
+  else if(r.why==='self')say('acAddMsg','That is you.',1);
+  else say('acAddMsg','No account here uses that address. Ask them to sign in once with it first, then add them. We do not create accounts for other people.',1);
+ }catch(e){ say('acAddMsg',(e&&e.message)||'Could not add them.',1); }});
+ if(g('acClaimGo'))g('acClaimGo').addEventListener('click',async()=>{
+ const code=(g('acClaim').value||'').trim();
+ if(!code){say('acClaimMsg','Enter the workspace code first.',1);return;}
+ try{ await joinWorkspace(code,'owner'); CFG.w=code; writeCfgToUrl();
+  say('acClaimMsg','Claimed. Reloading into it.');
+  setTimeout(()=>location.reload(),700); }
+ catch(e){ say('acClaimMsg',(e&&e.message)||'Could not claim that code.',1); }});
 }
 document.getElementById('openSettings').addEventListener('click',openSettings);
 registerOverlay({el:'settingsModal', close:closeModals,
@@ -10397,8 +10923,9 @@ async function boot(){
  updateCount();
  try{const lv=await local.get('lastview'); if(lv&&lv.name)LASTVIEW=lv;}catch(e){}
  if(!readHash())goSection('home',null,{silent:true});
- /* first run only: no answers and never skipped */
- if(!INTAKE.done && !INTAKE.skipped) openIntake(0);
+ /* first run only: no answers and never skipped. The gate comes first where
+ there is one: the intake opens when it closes, from afterGate(). */
+ if(!INTAKE.done && !INTAKE.skipped && !gateOpen()) openIntake(0);
 }
 
 /* ----- setup form ----- */

@@ -110,6 +110,116 @@ alter publication supabase_realtime add table desk_activity;
 alter publication supabase_realtime add table desk_prefs;
 ```
 
+## 2b. Turn on accounts
+
+The block above left every policy at `using (true)`, which means anyone holding
+the link can read and write that workspace. This second block replaces that with
+membership. Run it the same way, in SQL Editor.
+
+**Read the claim rule before you run it.** Rows already in your tables are keyed
+to a workspace and carry no user, so the moment these policies land, a workspace
+with no member row is a workspace nobody can read. `ws_unclaimed()` is the door
+back in: a signed-in person may add *themselves* to a workspace that has no
+members yet, once. After that first claim the door shuts, and only an existing
+member can add anybody else. The app puts this on the profile screen as
+"Already using Property Desk? Enter your workspace code."
+
+```sql
+-- Property Desk: accounts. Run after the first block.
+
+create table if not exists profiles (
+  id         uuid primary key references auth.users on delete cascade,
+  email      text,
+  name       text,
+  mobile     text,
+  created_at timestamptz default now()
+);
+
+create table if not exists workspace_members (
+  workspace  text not null,
+  user_id    uuid not null references auth.users on delete cascade,
+  role       text default 'member',
+  created_at timestamptz default now(),
+  primary key (workspace, user_id)
+);
+
+alter table profiles          enable row level security;
+alter table workspace_members enable row level security;
+
+-- security definer, so a policy on workspace_members can ask about
+-- workspace_members without recursing into its own policy
+create or replace function is_member(w text) returns boolean
+language sql security definer stable set search_path = public as $$
+  select exists (select 1 from workspace_members
+                 where workspace = w and user_id = auth.uid());
+$$;
+
+create or replace function ws_unclaimed(w text) returns boolean
+language sql security definer stable set search_path = public as $$
+  select not exists (select 1 from workspace_members where workspace = w);
+$$;
+
+-- profiles: your own row, in full. Everyone else's is readable only as the
+-- id-and-email lookup that "Add by email" needs, and only to a signed-in user.
+drop policy if exists profiles_self   on profiles;
+drop policy if exists profiles_lookup on profiles;
+create policy profiles_self on profiles for all
+  using (id = auth.uid()) with check (id = auth.uid());
+create policy profiles_lookup on profiles for select
+  using (auth.uid() is not null);
+
+-- membership
+drop policy if exists wm_select on workspace_members;
+drop policy if exists wm_insert on workspace_members;
+drop policy if exists wm_delete on workspace_members;
+create policy wm_select on workspace_members for select
+  using (user_id = auth.uid() or is_member(workspace));
+create policy wm_insert on workspace_members for insert
+  with check (
+    (user_id = auth.uid() and ws_unclaimed(workspace))  -- the one-time claim
+    or is_member(workspace)                              -- adding a partner
+  );
+create policy wm_delete on workspace_members for delete
+  using (user_id = auth.uid() or is_member(workspace));
+
+-- the five data tables: membership decides, not the link
+drop policy if exists desk_tracking_all on desk_tracking;
+drop policy if exists desk_checks_all   on desk_checks;
+drop policy if exists desk_photos_all   on desk_photos;
+drop policy if exists desk_activity_all on desk_activity;
+drop policy if exists desk_prefs_all    on desk_prefs;
+
+create policy desk_tracking_members on desk_tracking for all
+  using (is_member(workspace)) with check (is_member(workspace));
+create policy desk_checks_members   on desk_checks   for all
+  using (is_member(workspace)) with check (is_member(workspace));
+create policy desk_photos_members   on desk_photos   for all
+  using (is_member(workspace)) with check (is_member(workspace));
+create policy desk_activity_members on desk_activity for all
+  using (is_member(workspace)) with check (is_member(workspace));
+create policy desk_prefs_members    on desk_prefs    for all
+  using (is_member(workspace)) with check (is_member(workspace));
+```
+
+Then, in **Authentication → Providers**, make sure **Email** is on and
+**Confirm email** is on; that is what makes the magic link a magic link. In
+**Authentication → URL Configuration**, add the address you published the file
+at to **Redirect URLs**, or the link will bounce.
+
+### Claim your existing workspace first
+
+If you were already using this before accounts, do this before anything else:
+
+1. Open your old link, the one with `#cfg=` in it.
+2. Sign in with your email.
+3. On the profile screen, your workspace code is already filled in. Press
+   **Claim this workspace**.
+4. Everything you had tracked is there.
+
+If you skip it and sign in anyway, the app gives you a fresh empty workspace,
+and the old one sits unclaimed until you enter its code under
+**Settings → Claim another workspace**. Nothing is deleted either way.
+
 ## 3. Copy your two connection values
 
 In the sidebar go to Project Settings → API . Copy the Project URL (looks like https://abcdefgh.supabase.co ) and the anon public key (a long string starting eyJ ). Paste both into the form in step 5. Do not use the service_role key — that one is an admin key and must never go in a web page.
@@ -131,7 +241,54 @@ Press **Connect this browser**, then send the generated link to the other person
 
 ## 6. Check it works
 
-The badge under the headline should read Shared workspace — live in green. Track a property, set a status, type a note. Open the same link on your phone; the note should already be there. Have your partner change a status and watch it appear on your screen without a refresh.
+Nine steps, in this order. Each one names the single thing to look at; if that
+thing is not there, stop there rather than carrying on.
+
+**1. Claim your existing workspace.** Open your old `#cfg=` link. Sign in with
+your email. On the profile screen the workspace code is already filled in.
+Press **Claim this workspace**.
+→ *Look for:* your tracked flats, exactly as they were. If the board is empty,
+do not add anything: check the code against your old link first.
+
+**2. The magic link itself.** Sign out, then sign in again with the same
+address.
+→ *Look for:* the mail arrives within a minute; opening it lands you back in
+the app signed in, and the address bar reads `#cfg=` and not `?cfg=`.
+
+**3. A brand-new account.** Use a second address you control. Sign in, fill in
+the profile, do **not** claim anything.
+→ *Look for:* an empty board, Settings showing a workspace code that is not
+your first one, and your first account's flats nowhere in it.
+
+**4. The wall.** While signed in as the second account, paste your **first**
+account's full `#cfg=` link into the address bar and reload.
+→ *Look for:* "This workspace is not shared with you." Not an empty board, not
+an error: that sentence. If you can read the first account's rows here, the
+policies in 2b did not apply and nothing else in this list matters.
+
+**5. Add by email.** Back as the first account, Settings → Add somebody by
+email → the second account's address.
+→ *Look for:* "Added." Then reload the second account on the first's link; the
+flats are there.
+
+**6. Add somebody who does not exist.** Same box, an address nobody has signed
+in with.
+→ *Look for:* "No account here uses that address." And check Supabase →
+Authentication → Users: that address must **not** have appeared.
+
+**7. Signed-out local mode.** Sign out and stay on the sign-in screen, then
+press **Browse without an account**.
+→ *Look for:* the whole app, a badge reading local mode, and tracking a flat
+that survives a reload. Nothing in the console.
+
+**8. No backend at all.** Open `index.html` straight from your filesystem,
+with no link.
+→ *Look for:* no sign-in screen at all, and Settings saying this copy has no
+workspace in its link.
+
+**9. Deletion.** Settings → Export everything as JSON, then ask for your
+profile row to be deleted.
+→ *Look for:* the export arriving before anything is removed.
 
 ## What you are building
 
@@ -143,13 +300,38 @@ Every change writes to a shared activity feed so neither of you has to ask what 
 
 ## Being honest about the security model
 
-The anon key is meant to be public — it is designed to sit in a web page. It is not an admin key and cannot drop your tables. But the policies above allow anyone who has your link to read and write. Protection comes from the workspace code being long and the link being private. That is fine for two people tracking flats. It is not fine for anything you would call confidential. Do not put your PAN, bank details, or scanned documents in here. Notes about flats, yes. Identity documents, no. If you want it properly locked down , turn on Supabase Auth with email sign-in and change the four policies from using (true) to using (auth.uid() is not null) . Then only people you invite can read anything. That is a thirty-minute job rather than a five-minute one. To wipe everything , run delete from desk_tracking where workspace = 'your-code'; and the same for the other four tables.
+The anon key is meant to be public. It is designed to sit in a web page, it is
+not an admin key, and it cannot drop your tables. What used to be wrong was the
+policies beside it: `using (true)` meant the link *was* the credential, and
+anyone it was forwarded to could read and write.
 
-- The anon key is meant to be public — it is designed to sit in a web page. It is not an admin key and cannot drop your tables.
-- But the policies above allow anyone who has your link to read and write. Protection comes from the workspace code being long and the link being private. That is fine for two people tracking flats. It is not fine for anything you would call confidential.
-- Do not put your PAN, bank details, or scanned documents in here. Notes about flats, yes. Identity documents, no.
-- If you want it properly locked down , turn on Supabase Auth with email sign-in and change the four policies from using (true) to using (auth.uid() is not null) . Then only people you invite can read anything. That is a thirty-minute job rather than a five-minute one.
-- To wipe everything , run delete from desk_tracking where workspace = 'your-code'; and the same for the other four tables.
+With the block in 2b, that is no longer true:
+
+- **Membership decides, not the link.** A link names a workspace. A signed-in
+  person who is not a member of it is told so and sees nothing.
+- **There is no password to steal**, because there is not one. A magic link is
+  single use and expires in an hour.
+- **An unclaimed workspace can be claimed once**, by whoever holds its code.
+  That is the door that lets your existing data through, and it shuts the
+  moment the first member exists.
+- **Nobody is signed up on somebody else's behalf.** Adding a partner by email
+  only works if that address already has an account.
+
+What is still worth knowing:
+
+- The session token lives in this browser's local storage, the way every web
+  app's does. Signing out clears it.
+- The magic link arrives in email, so the security of the account is the
+  security of the mailbox.
+- Do not put a PAN, bank details or scanned documents in here. Notes about
+  flats, yes. Identity documents, no. That is a judgement about what this is
+  for, not about the policies.
+- **Never put the `service_role` key in this file.** It ignores every policy
+  above.
+
+To wipe a workspace, run `delete from desk_tracking where workspace =
+'your-code';` and the same for the other four tables, then
+`delete from workspace_members where workspace = 'your-code';`.
 
 ## If something does not work
 
@@ -180,6 +362,7 @@ playbook.
 
 ## Security, plainly
 
-The anon key is meant to be public, but this schema lets anyone holding your
-workspace code read and write that workspace's rows. Treat the link like a
-shared password, and never put the `service_role` key in this file.
+The anon key is meant to be public and is safe in the page **because** the
+policies in 2b check membership. It was not safe before them, when any holder
+of the link could read and write. Never put the `service_role` key in this
+file: it bypasses every policy.

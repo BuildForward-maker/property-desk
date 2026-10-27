@@ -67,10 +67,50 @@ of the commit.
 ### 6. Local mode must keep working
 
 `MODE` is `'local'` or `'shared'`. When no config is present, the Supabase library
-fails to load, or the connection check in `initSupabase()` throws, the app falls
-back to local mode and remains fully usable. Preserve this. Every Supabase call
-must be guarded (`if(MODE!=='shared')return;`) and wrapped so a failure degrades
-quietly instead of throwing.
+fails to load, the connection check in `initSupabase()` throws, **or nobody is
+signed in**, the app falls back to local mode and remains fully usable. Preserve
+this. Every Supabase call must be guarded (`if(MODE!=='shared')return;`) and
+wrapped so a failure degrades quietly instead of throwing.
+
+Signing out is not a downgrade to a broken app, it is local mode. So is
+declining to sign in at all. The sign-in screen's own exit says so in words:
+"Browse without an account".
+
+### 8. Membership, not the link
+
+The anon key is still public in the hash, and that is now safe, because the
+policies check membership rather than `using (true)`. The link names a
+workspace; it does not grant it. A signed-in person who is not a member of the
+workspace in the link is told so.
+
+`AUTH.state` is the one place that decides what a person sees:
+
+    off     no #cfg at all, so there is nothing to sign in to: local mode,
+            no gate, the whole app. This is the file:// case and rule 1.
+    out     there is a backend and nobody is signed in: local mode, gate
+    new     signed in, profile not written: the profile screen
+    in      signed in, profile saved, a member: the app, shared
+    denied  signed in, not a member of this workspace: said plainly
+
+Three things ride on this and must not be undone:
+
+- **The claim is the migration.** Rows written before accounts carry a
+  workspace and no user, so tightening the policies would strand them. A
+  workspace with no members at all may be claimed once, by whoever holds its
+  code (`ws_unclaimed()` in the SQL); after that only a member can add anybody.
+  It is on the profile screen, the first screen an existing user sees, not
+  buried in settings. **Do not remove it** without a migration that assigns
+  every existing workspace an owner first.
+- **Nobody is signed up on somebody else's behalf.** "Add by email" is a
+  lookup. A miss says so and stops, because creating an account for a person
+  who has not asked puts their address in a table they never agreed to.
+- **The magic link is implicit flow, deliberately.** PKCE keeps its verifier
+  in the browser that asked, and people read email on their phone and work on
+  a laptop. The cost is that the redirect comes back with `#access_token=` in
+  the hash, which would overwrite `#cfg=`; `emailRedirectTo` therefore carries
+  `?cfg=` in the query, `readCfg()` reads the hash first and the query second,
+  and `writeCfgToUrl()` puts it back in the hash as soon as the session is in
+  hand. The canonical link shape is unchanged.
 
 ### 7. `tools/` and `data/` are offline tooling, not app code
 
