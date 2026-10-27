@@ -1027,6 +1027,23 @@ A ranking is only meaningful if the top result is actually good. Where every
 candidate scores badly, say so explicitly rather than presenting a sorted list
 of bad options.
 
+### The console buffer is sticky
+
+A browser console read reports everything that tab has logged since it opened,
+including errors from pages that have since been navigated away from. It is
+therefore **not evidence about the page currently loaded**, and comparing two
+versions by loading them one after the other in the same tab proves nothing:
+the older version's errors are still listed under the newer one.
+
+Three `Uncaught SyntaxError` entries were reported as pre-existing on HEAD for
+exactly this reason. They were three broken intermediate states of a string
+surgery, left in the buffer by three reloads mid-edit; the file was reverted
+and they stayed on screen for the rest of the session.
+
+**Read the console in a tab opened for that one version**, and treat an entry
+with no `file:line:col` as suspect: a genuine page error carries a source
+location, an evaluated snippet does not.
+
 Where a round touches layout but not logic, digest the scores before and after
 and prove them identical rather than asserting it. Hash every area's
 `sweetScore`, `investScore`, `areaOverall`, `areaFitFull`, `investFull`,
