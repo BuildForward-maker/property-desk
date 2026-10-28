@@ -3340,8 +3340,8 @@ alter publication supabase_realtime add table desk_prefs;</pre>
 
  A link's #cfg still wins over them, so every link already in somebody's
  inbox keeps working, including one pointing at a different project. */
-const SB_URL='';   /* https://<project-ref>.supabase.co */
-const SB_KEY='';   /* the anon public key, the long one starting eyJ */
+const SB_URL='https://xhzdnetooocjqumqjvun.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhoemRuZXRvb29janF1bXFqdnVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0NTczNDgsImV4cCI6MjEwNTAzMzM0OH0.XoyC9UKAYsC34fozKJcdGnF8UhU6fUXKiBiuIqlyHU4';
 
 /* ========== storage + shared workspace ========== */
 const mem={};
@@ -3514,23 +3514,13 @@ async function createWorkspace(){ return joinWorkspace(randomCode(),'owner'); }
 /* The lookup is a security definer function and not a select on profiles.
  A policy letting any signed-in person read profiles by email would hand them
  every name and mobile in the table to find one uuid; user_id_by_email returns
- the uuid or null and nothing else.
- PostgREST calls a function by argument name, and the name is not visible from
- here, so the first call tries the likely ones and remembers which answered.
- It only ever walks the list on PGRST202, which is specifically "no function
- with those arguments"; any other error is a real error and is thrown. */
-let RPCARG=null;
+ the uuid or null and nothing else. The argument is named email, so this is a
+ single call; a schema that renames it breaks here loudly rather than quietly
+ reporting that nobody has an account. */
 async function userIdByEmail(e){
- const tries=RPCARG?[RPCARG]:['email','e','p_email','_email'];
- let last=null;
- for(const n of tries){
- const r=await sb.rpc('user_id_by_email',{[n]:e});
- if(!r.error){ RPCARG=n; return r.data||null; }
- last=r.error;
- const m=(r.error.message||'')+' '+(r.error.code||'')+' '+(r.error.hint||'');
- if(!/PGRST202|could not find the function|schema cache/i.test(m))throw r.error;
- }
- throw last||new Error('user_id_by_email is not callable from here.');
+ const {data,error}=await sb.rpc('user_id_by_email',{email:e});
+ if(error)throw error;
+ return data||null;
 }
 async function addMemberByEmail(email){
  if(!sb||!signedIn())throw new Error('Not signed in.');

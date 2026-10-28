@@ -62,9 +62,14 @@ Leaflet's CSS and JS may be loaded from a CDN as an exception to rule 3.
 copy talks to. **The anon key belongs there.** It is designed to sit in a web
 page, it is not an admin key, and since rule 8 the policies behind it check
 membership rather than `using (true)` — publishing it was unsafe before that
-and is safe now. Filling them in is what makes the bare domain show a sign-in
-screen instead of dropping a visitor into local mode; leaving them empty
-restores the older behaviour exactly, which is why they ship empty.
+and is safe now. They are set, to project `xhzdnetooocjqumqjvun`, and that is
+what makes the bare domain show a sign-in screen instead of dropping a visitor
+into local mode. Emptying them restores the older behaviour exactly.
+
+**Decode any key before committing it.** The middle segment must read
+`"role":"anon"` and its `ref` must match the project ref in `SB_URL`. That one
+check is the whole difference between publishing a public key and leaking an
+admin one.
 
 **The `service_role` key is the opposite and must never appear in this file.**
 It ignores every policy.
@@ -133,11 +138,11 @@ Three things ride on this and must not be undone:
   The lookup is the `user_id_by_email` RPC, **not** a select on `profiles`:
   a policy letting any signed-in person read profiles by email would hand
   them every name and mobile in the table to find one uuid. The function is
-  security definer and returns a uuid or null and nothing else. PostgREST
-  calls a function by argument name and that name is not visible from the
-  client, so `userIdByEmail()` tries the likely ones once and remembers which
-  answered; it only walks the list on PGRST202, which is specifically "no
-  function with those arguments", and throws anything else.
+  security definer and returns a uuid or null and nothing else. Its argument
+  is named `email`, so the call is a single literal `rpc`; a schema that
+  renames it breaks loudly here rather than quietly reporting that nobody has
+  an account. Signed out the function answers `PGRST202`, which is correct —
+  it is granted to `authenticated` only.
 - **The magic link is implicit flow, deliberately.** PKCE keeps its verifier
   in the browser that asked, and people read email on their phone and work on
   a laptop. The cost is that the redirect comes back with `#access_token=` in

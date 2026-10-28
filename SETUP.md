@@ -229,19 +229,16 @@ If you skip it and sign in anyway, the app gives you a fresh empty workspace,
 and the old one sits unclaimed until you enter its code under
 **Settings → Claim another workspace**. Nothing is deleted either way.
 
-## 2c. Put the two values in the file
+## 2c. The two values in the file
 
-Open `index.html`, find these two lines near the top of the script, and paste
-your Project URL and **anon** key in:
+Near the top of the script, `SB_URL` and `SB_KEY` name the backend this copy
+talks to. **They are already set**, to project `xhzdnetooocjqumqjvun`. That is
+what makes the published address show a sign-in screen; emptying them puts the
+app back to local mode for anyone without a `#cfg` link.
 
-```js
-const SB_URL='';   /* https://<project-ref>.supabase.co */
-const SB_KEY='';   /* the anon public key, the long one starting eyJ */
-```
-
-That is what makes the published address show a sign-in screen. Leave them
-empty and the app behaves as it did before accounts: local mode for anyone
-without a `#cfg` link.
+Change them only when pointing a fork at a different project. Check any key
+you paste before you commit it: decode the middle segment and confirm
+`"role":"anon"` and that `ref` matches the project ref in the URL.
 
 **The anon key belongs in the page.** It is not an admin key, it cannot drop a
 table, and the policies in 2b decide what it can reach. The `service_role` key
@@ -300,6 +297,11 @@ policies in 2b did not apply and nothing else in this list matters.
 email → the second account's address.
 → *Look for:* "Added." Then reload the second account on the first's link; the
 flats are there.
+→ *If it says no account uses that address* when you know one does, the
+function is the thing to check, not the email. Signed out it answers
+`PGRST202`, which is correct because it is granted to `authenticated` only;
+signed in it must return a uuid. `grant execute on function
+user_id_by_email(text) to authenticated;` is the line that does it.
 
 **6. Add somebody who does not exist.** Same box, an address nobody has signed
 in with.
