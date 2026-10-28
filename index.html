@@ -2938,8 +2938,14 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
       <li>No password, because there is not one.</li>
       <li>No payment details. The app takes no money.</li>
       <li>No identity documents. Do not put a PAN, a bank statement or a scanned deed in a note; the notes field is for "the lift was out", not for paperwork.</li>
-      <li>No tracking pixels, no analytics, no advertising network. The only requests this page makes are to your own database, the map tiles and the two libraries named in the sources.</li>
+      <li>No advertising network, and no tracking that follows you off this site.</li>
     </ul>
+  </div>
+  <div class="block">
+    <h2>What we count</h2>
+    <p>We count which sections get opened and where people stop in the questions. No event carries your name, your email or which flat you looked at. Our analytics sets no cookie and cannot follow you to other sites. We look at this to see which parts are worth building on, and that is all it is for.</p>
+    <p><b>What that means we can and cannot see.</b> We can see that somebody stopped at question five, and not who they were. We can see that the sign-in screen was reached and not finished, and not whose address it was. There is no way back from any of it to a person.</p>
+    <p>The events are: a section being opened and which one; the questions being started, each one completed by its number, and finished; a locked panel being shown and which kind; and sign-in being started, completed or failed. That is the whole list.</p>
   </div>
   <div class="block">
     <h2>Who can see it</h2>
@@ -3395,6 +3401,23 @@ alter publication supabase_realtime add table desk_prefs;</pre>
 const SB_URL='https://xhzdnetooocjqumqjvun.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhoemRuZXRvb29janF1bXFqdnVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0NTczNDgsImV4cCI6MjEwNTAzMzM0OH0.XoyC9UKAYsC34fozKJcdGnF8UhU6fUXKiBiuIqlyHU4';
 
+/* ========== analytics ==========
+ One script, no cookie, no banner, and nothing in an event that names a
+ person. Plausible rather than Umami only because its custom-event call takes
+ the props shape these events want directly; either is one tag and the swap
+ is these two constants.
+
+ What goes out is which section was opened, how far through the questions
+ somebody got, which lock they met, and whether signing in worked. What never
+ goes out is a name, an email, a property, an area or a workspace: the lock
+ event carries the kind of lock, not the flat it was on, and the question
+ event carries a number, not an answer.
+
+ Empty constants mean no tag at all, which is also what a file:// open gets:
+ a page opened from the filesystem has no business calling anything. */
+const ANALYTICS_SRC='';     /* https://plausible.io/js/script.js */
+const ANALYTICS_SITE='';    /* the domain registered with it, for data-domain */
+
 /* ========== storage + shared workspace ========== */
 const mem={};
 /* Persistence for everything that is not in a shared workspace, tried in order:
@@ -3615,8 +3638,13 @@ async function initSupabase(){
  catch(e){ sb=null;AUTH.state='off';
  setConn('err','Connection failed, '+((e&&e.message)||'check the setup tab').slice(0,60));
  return false; }
+ /* "completed" means a link was just followed, not that a stored session was
+ found, so it is read off the URL before Supabase cleans it up rather than
+ fired on every load somebody happens to be signed in for */
+ const cameFromLink=/(^|[#&?])(access_token|code)=/.test(location.hash+location.search);
  let session=null;
  try{ const r=await sb.auth.getSession(); session=r&&r.data&&r.data.session; }catch(e){}
+ if(cameFromLink)logEvent(session&&session.user?'sign-in completed':'sign-in failed');
  writeCfgToUrl();
  if(!session||!session.user){
  AUTH.state='out'; MODE='local';
@@ -3801,11 +3829,11 @@ function wireGate(){
  const em=(g('gEmail').value||'').trim();
  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){GATE.err='That does not look like an email address.';renderGate();return;}
  GATE.email=em; GATE.busy=true; GATE.err=''; renderGate();
- try{ await sendMagicLink(em); GATE.busy=false; GATE.sentAt=Date.now();
+ try{ await sendMagicLink(em); logEvent('sign-in started'); GATE.busy=false; GATE.sentAt=Date.now();
   GATE.view='sent'; renderGate();
   GATE.tick=setInterval(()=>{ if(GATE.view!=='sent'){clearInterval(GATE.tick);GATE.tick=null;return;}
    renderGate(); if(Date.now()-GATE.sentAt>60000){clearInterval(GATE.tick);GATE.tick=null;} },1000);
- }catch(e){ fail(e); }});
+ }catch(e){ logEvent('sign-in failed'); fail(e); }});
  if(g('gEmail'))g('gEmail').addEventListener('keydown',e=>{if(e.key==='Enter')g('gSend').click();});
  if(g('gResend'))g('gResend').addEventListener('click',async()=>{
  try{ await sendMagicLink(GATE.email); GATE.sentAt=Date.now(); GATE.ok='Sent again.'; renderGate(); }
@@ -3864,11 +3892,46 @@ function openPrivacyNote(){
  from a link with no backend, AUTH.state is 'off' and saving locally is the
  whole product: blocking it there would be asking for an account that cannot
  exist, and rule 6 says local mode stays fully usable. */
+/* ---- the one way anything leaves this page for analytics ----
+ logEvent() is the only caller of the vendor's function, so there is exactly
+ one place to read to know what is sent. It never throws: a blocked script, an ad
+ blocker or no constants at all leave it a no-op, and nothing upstream has to
+ care. Props are whitelisted to strings and numbers that the call site wrote
+ by hand; nothing is ever read off a record. */
+let ANALYTICS_ON=false;
+function startAnalytics(){
+ if(!ANALYTICS_SRC||!ANALYTICS_SITE)return;
+ if(location.protocol==='file:')return;
+ try{
+ /* the tag is deferred, so it is not there yet when boot asks whether a
+ magic link just worked. This is the vendor's own stub: calls before the
+ script arrives queue on .q and the script drains them. Without it the
+ earliest events, which are exactly the sign-in ones, are dropped. */
+ window.plausible=window.plausible||function(){
+ (window.plausible.q=window.plausible.q||[]).push(arguments);};
+ const t=document.createElement('script');
+ t.defer=true; t.src=ANALYTICS_SRC; t.setAttribute('data-domain',ANALYTICS_SITE);
+ document.head.appendChild(t);
+ ANALYTICS_ON=true;
+ }catch(e){}
+}
+function logEvent(name,props){
+ if(!ANALYTICS_ON)return;
+ try{
+ const p={};
+ if(props)Object.keys(props).forEach(k=>{
+  const v=props[k];
+  if(typeof v==='number'||typeof v==='string')p[k]=v;
+ });
+ if(typeof window.plausible==='function')window.plausible(name,Object.keys(p).length?{props:p}:undefined);
+ }catch(e){}
+}
 function canSave(){ return signedIn()||AUTH.state==='off'; }
-function requireAccount(line){
+function requireAccount(key){
  if(canSave())return true;
  const el=document.getElementById('keep'); if(!el)return false;
- document.getElementById('keepLine').textContent=line||'This saves with your account.';
+ logEvent('lock sheet shown',{lock:String(key||'other')});
+ document.getElementById('keepLine').textContent=KEEP[key]||'This saves with your account.';
  el.classList.add('on');
  const go=document.getElementById('keepGo');
  if(go)go.focus();
@@ -3929,7 +3992,7 @@ const GUIDE_ARTICLES=[
  {k:'sources', t:'Where to search', d:'Which sources are fact, and which are inventory'},
  {k:'returns', t:'What returns are realistic', d:'The arithmetic behind the stories you have heard'},
  {k:'prices', t:'Why the prices disagree', d:'Six sources, one locality, a 2.4\u00d7 spread'},
- {k:'privacy', t:'What we keep about you', d:'What is stored, why, and how to have it deleted'}
+ {k:'privacy', t:'What we keep about you', d:'What is stored, what is counted, and how to have it deleted'}
 ];
 let SEC='explore', SUB={explore:'discover',shortlist:'board',guide:'read'}, EXMODE='five';
 /* Market's own sub-tab, kept out of SUB because SUB is keyed by section and
@@ -3996,6 +4059,7 @@ function goSection(sec,sub,opts){
  if(s==='guide')renderArticles();
  if(s==='costs')renderCosts();
  }
+ logEvent('section view',{section:sec});
  if(!opts.silent)writeHash();
  if(!opts.keepScroll){try{window.scrollTo({top:0,behavior:'instant'});}catch(e){}}
 }
@@ -4004,7 +4068,7 @@ document.querySelectorAll('.sb-item[data-sec]').forEach(b=>
 document.querySelectorAll('#sec-shortlist .segmented button').forEach(b=>
  b.addEventListener('click',()=>{
  /* Compare is the one view here that is only about saved work */
- if(b.dataset.sub==='compare'&&!requireAccount(KEEP.compare))return;
+ if(b.dataset.sub==='compare'&&!requireAccount('compare'))return;
  goSection('shortlist',b.dataset.sub);}));
 
 /* ========== Part D: tuned bar and live re-ranking ========== */
@@ -8377,8 +8441,8 @@ function renderSoc(){
  document.querySelectorAll('[data-track]').forEach(b=>b.addEventListener('click',e=>{
  const id=e.target.dataset.track, nm=e.target.dataset.name;
  const adding=!track[id];
- if(adding&&!requireAccount(KEEP.track))return;
- if(!adding&&!requireAccount(KEEP.track))return;
+ if(adding&&!requireAccount('track'))return;
+ if(!adding&&!requireAccount('track'))return;
  if(adding) track[id]={status:'',date:'',notes:'',scores:{}}; else delete track[id];
  saveTrack(false,id); logActivity((adding?'started tracking ':'stopped tracking ')+nm);}));
  const hi=rows.filter(s=>priBand(s.pscore)==='h').length;
@@ -8535,34 +8599,34 @@ function renderVisits(){
  const nameOf=i=>socById(i)?socById(i).n:i;
  el.querySelectorAll('[data-vs]').forEach(s=>s.addEventListener('change',e=>{
  const id=e.target.dataset.vs;
- if(!requireAccount(e.target.value==='short'?KEEP.short:KEEP.status)){renderVisits();return;}
+ if(!requireAccount(e.target.value==='short'?'short':'status')){renderVisits();return;}
  track[id].status=e.target.value;
  noteShortlisted(id,e.target.value);
  const lbl=(STATUSES.find(x=>x[0]===e.target.value)||['','Not visited yet'])[1];
  saveTrack(false,id); logActivity(`marked ${nameOf(id)} as ${lbl}`);}));
  el.querySelectorAll('[data-vt]').forEach(s=>s.addEventListener('change',e=>{
  const id=e.target.dataset.vt;
- if(!requireAccount(KEEP.target)){renderVisits();return;}
+ if(!requireAccount('target')){renderVisits();return;}
  setCustom(id,'target',e.target.value);
  saveTrack(false,id); renderPlan();
  logActivity(e.target.value?`set a target date for ${nameOf(id)}`:`cleared the target date for ${nameOf(id)}`);}));
  el.querySelectorAll('[data-vd]').forEach(s=>s.addEventListener('change',e=>{
  const id=e.target.dataset.vd;
- if(!requireAccount(KEEP.visit)){renderVisits();return;}
+ if(!requireAccount('visit')){renderVisits();return;}
  track[id].date=e.target.value; saveTrack(false,id);
  logActivity(`set the visit date for ${nameOf(id)}`);}));
  el.querySelectorAll('[data-vn]').forEach(s=>s.addEventListener('change',e=>{
  const id=e.target.dataset.vn;
- if(!requireAccount(KEEP.notes)){renderVisits();return;}
+ if(!requireAccount('notes')){renderVisits();return;}
  track[id].notes=e.target.value; saveTrack(true,id);
  logActivity(`wrote notes on ${nameOf(id)}`);}));
  el.querySelectorAll('.critRange').forEach(r=>r.addEventListener('change',e=>{
  const id=e.target.dataset.i;
- if(!requireAccount(KEEP.score)){renderVisits();return;}
+ if(!requireAccount('score')){renderVisits();return;}
  track[id].scores=track[id].scores||{}; track[id].scores[e.target.dataset.k]=+e.target.value; saveTrack(false,id);}));
  el.querySelectorAll('[data-untrack]').forEach(b=>b.addEventListener('click',e=>{
  const id=e.target.dataset.untrack; const nm=nameOf(id);
- if(!requireAccount(KEEP.track))return;
+ if(!requireAccount('track'))return;
  delete track[id]; saveTrack(false,id); logActivity(`removed ${nm} from the tracker`);}));
  updateProgress();
 }
@@ -8927,7 +8991,7 @@ function renderDD(){
     <label for="dd${i}"><strong>${d[0]}</strong><br><small>${d[1]}</small></label></div>`).join('');
  document.querySelectorAll('.dd input').forEach(c=>c.addEventListener('change',e=>{
  const i=+e.target.dataset.i, on=e.target.checked;
- if(!requireAccount(KEEP.checks)){renderDD();return;}
+ if(!requireAccount('checks')){renderDD();return;}
  checks[i]=on; local.set('checks',checks);
  if(MODE==='shared'){ sb.from('desk_checks').upsert({workspace:CFG.w,item:i,done:on,
  updated_by:CFG.n||'someone',updated_at:new Date().toISOString()},{onConflict:'workspace,item'})
@@ -9662,6 +9726,7 @@ function openIntake(step,opts){
  if(x)x.hidden=!hasProfile();
  document.getElementById('intake').classList.add('on');
  document.body.style.overflow='hidden';
+ if(!INTAKE.done)logEvent('intake started');
  renderIntake();
 }
 /* Closing the intake is the same decision as "skip": the answers are optional,
@@ -10388,6 +10453,7 @@ function floodLine(a){
  them are kept whichever way the person goes. */
 const NUMWORD=['no','one','two','three','four','five'];
 function placardLocked(nHidden,nTotal,noun){
+ logEvent('lock sheet shown',{lock:'placard '+noun});
  return '<div class="plockcard">'
  +'<span class="pli">'+uiIcon('lock','nav',false)+'</span>'
  +'<h4>'+(NUMWORD[nHidden]||nHidden)[0].toUpperCase()+(NUMWORD[nHidden]||nHidden).slice(1)
@@ -10491,6 +10557,7 @@ function scrResults(){
 }
 async function finishIntake(){
  INTAKE.done=true; INTAKE.skipped=false;
+ logEvent('intake finished');
  await saveIntake(); applyIntake();
  iStep=resultsStep(); renderIntake();
 }
@@ -10553,6 +10620,7 @@ function wireIntake(){
  if(g('iNext'))g('iNext').addEventListener('click',()=>{
  const key=iqAt(iStep), d=key?iqDef(key):null;
  if(d&&!d.done)return;
+ logEvent('question completed',{n:iStep+1});
   /* somebody who answered four things aloud is not walked through all seven */
  iStep=VCAUGHT?nextUnanswered(iStep+1):iStep+1;
  renderIntake();});
@@ -10775,14 +10843,14 @@ function openProperty(id,tab){
  const repaint=()=>{document.getElementById('barTrack').textContent=
  isTracked()?'Tracked ✓':'Track this';};
  bar.querySelector('#barTrack').addEventListener('click',()=>{
- if(!requireAccount(KEEP.track))return;
+ if(!requireAccount('track'))return;
  const pid=slug(s.n);
  if(isTracked())delete track[pid];
  else track[pid]={status:'',date:'',notes:'',scores:{}};
  saveTrack(false,pid); updateCount(); repaint();
    });
  bar.querySelector('#barShort').addEventListener('click',()=>{
- if(!requireAccount(KEEP.short))return;
+ if(!requireAccount('short'))return;
  const pid=slug(s.n);
  track[pid]=track[pid]||{status:'',date:'',notes:'',scores:{}};
  track[pid].status='short';
@@ -11191,6 +11259,7 @@ document.getElementById('exportBtn').addEventListener('click',()=>{
 document.getElementById('printBtn').addEventListener('click',()=>window.print());
 
 async function boot(){
+ startAnalytics();
  /* every data table is initialised by now, so the market tables can score */
  renderMarketTables();
  const connected=await initSupabase();

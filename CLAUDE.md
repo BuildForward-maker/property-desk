@@ -37,16 +37,52 @@ any other bundler or transpiler. The file must run by double-clicking it or
 opening it from a `file://` URL. Write plain browser-ready HTML, CSS, and
 JavaScript only.
 
-### 3. One external dependency
+### 3. Three external scripts, and no more
 
-The only external JS dependency is the Supabase client from jsdelivr:
+The Supabase client from jsdelivr:
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 ```
 
-(Google Fonts stylesheets are also loaded and are fine to keep.) Do not add other
-libraries, frameworks, or CDN scripts without being asked.
+Leaflet, by the exception in rule 4. And **one analytics tag**, injected by
+`startAnalytics()` rather than written into the head, so that empty constants
+mean no tag at all. (Google Fonts stylesheets are also loaded and are fine to
+keep.) Do not add other libraries, frameworks or CDN scripts without being
+asked.
+
+`ANALYTICS_SRC` and `ANALYTICS_SITE` sit beside `SB_URL`. Both empty is a
+supported state and is what ships until they are filled; a `file://` open
+never loads the tag whatever they say, because a page opened from the
+filesystem has no business calling anything.
+
+**`logEvent()` is the only caller of the vendor's function**, so there is
+exactly one place to read to know what leaves the page. It is not called
+`track`: `track` is the tracked-properties store, and naming the function that
+collided and took the whole script down with it, which is rule "grep before
+naming" doing its job the hard way. It cannot throw: no
+constants, a blocked script or an ad blocker all leave it a no-op. Props are
+filtered to strings and numbers, and **every value is written by hand at the
+call site**; nothing is ever read off a record, which is the mechanical
+reason no event can carry a name, an email or a flat.
+
+Eight events, and the list in the privacy article has to stay equal to the
+list in the code:
+
+    section view        {section}   which of the five
+    intake started
+    question completed  {n}         the number, never the answer
+    intake finished
+    lock sheet shown    {lock}      the kind of lock, never the flat
+    sign-in started
+    sign-in completed               only when a link was just followed,
+    sign-in failed                  read off the URL before Supabase
+                                    cleans it, so a stored session on an
+                                    ordinary load does not count as one
+
+**Adding an event means editing the privacy article in the same commit.** The
+article names the events and claims the list is complete; an event that is
+not in it makes that a lie.
 
 ### 4. Maps: Leaflet + a keyless basemap
 
