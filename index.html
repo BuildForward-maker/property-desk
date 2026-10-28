@@ -2249,10 +2249,14 @@ td,th{border-color:var(--line)}
  thing, and together with the Top-20 line they filled the column before a
  single area appeared. The loud one carries it here. */
   #sec-explore.on .tuneask{display:none}
-  /* the scatter gets the column, so 28 names have room to sit apart */
-  #sec-explore.on>#posPane{max-height:none;overflow:visible}
-  #sec-explore.on .poswrap{grid-template-rows:minmax(0,1fr) auto;
- height:calc(100vh - 250px);min-height:420px}
+  /* ---- one spatial thing at a time ----
+ Where the value is takes the whole width and the map does not render beside
+ it. Two spatial pictures competing for the same glance is what the scatter
+ was: the map is its own mode, and this one is four lists. */
+  #sec-explore.on[data-mode="position"]{grid-template-columns:minmax(0,1fr)}
+  #sec-explore.on[data-mode="position"]>#p-heat{display:none}
+  #sec-explore.on[data-mode="position"]>.exleft{grid-area:left/left/right/right;
+ max-height:none;overflow:visible;padding-right:0}
 
   /* ---- Listings: a sticky filter rail beside the table ---- */
   /* explicit rows, because the rail must span the body's rows rather than be
@@ -2621,35 +2625,88 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
  margin:4px 0 8px;font-family:var(--font);box-shadow:var(--shadow-primary)}
 .widercard b{display:block;font-size:16px;font-weight:800;margin-bottom:3px}
 .widercard span{display:block;font-size:13.5px;color:rgba(255,255,255,.88)}
-/* ---- Explore: Position ---- */
-.poswrap{display:grid;grid-template-columns:46px minmax(0,1fr);grid-template-rows:330px auto;
- gap:6px;margin-top:4px}
-.posplot{position:relative;background:var(--card);border-radius:var(--r-tile);overflow:hidden}
-.posplot .quad{position:absolute;background:var(--good-bg);opacity:.7}
-.posplot .gx,.posplot .gy{position:absolute;background:var(--line);display:block}
-.posplot .gx{top:0;bottom:0;width:1px}
-.posplot .gy{left:0;right:0;height:1px}
-.posplot .qlab{position:absolute;font-family:var(--label);font-size:9.5px;letter-spacing:.04em;
- text-transform:uppercase;color:var(--muted);padding:6px 8px;pointer-events:none}
-.pdot{position:absolute;transform:translate(-50%,50%);border-radius:50%;border:2px solid #fff;
- cursor:pointer;padding:0;box-shadow:0 1px 4px rgba(20,18,43,.2)}
-.pdot.best{background:var(--primary)}
-.pdot.look{background:var(--warn-fg)}
-.pdot.reason{background:#9B96BE}
-.pdot .plab{position:absolute;left:50%;top:100%;transform:translateX(-50%);
- font-size:9px;font-weight:700;color:var(--ink);white-space:nowrap;margin-top:2px;
- pointer-events:none;opacity:0;background:rgba(255,255,255,.9);border-radius:3px;
- padding:0 3px}
-.pdot.named .plab{opacity:1}
-.pdot.edgeL .plab{left:50%;transform:none}
-.pdot.edgeR .plab{left:auto;right:50%;transform:none}
-.pdot.yours{outline:2px solid var(--ink);outline-offset:1px}
-.pdot.yours .plab{font-weight:800;background:var(--ink);color:var(--bg)}
-.pdot:focus-visible .plab{opacity:1}
-.lens .toggle{min-width:0;flex:1 1 auto}
-.pdot:hover{z-index:5}
-.pdot:hover .plab{opacity:1}
-@media(min-width:761px){.pdot .plab{opacity:.75;font-size:9.5px}}
+/* ---- Explore: Where the value is ----
+ Four lists, not a scatter. The quadrant key is a 190px picture of the two
+ axes and carries no labels, because the header already states both medians
+ in words and the four boxes only have to say "there are four of these". */
+/* the key is "beside the header", and beside only exists on a wide screen.
+ On a phone it stacks under the text and costs 96px to repeat what the two
+ medians already say in words, so it does not render there. */
+/* the tab's own name is four words, and four words plus three other tabs do
+ not fit 339px: the control wrapped to two rows and cost every Explore mode
+ 44px. One form is hidden at each width, the same idiom as the two skips, and
+ aria-label carries the full name to a screen reader either way. */
+.tshort{display:inline}
+.tlong{display:none}
+@media(min-width:1024px){.tshort{display:none}.tlong{display:inline}}
+.vqkey{display:none}
+.vhead{display:flex;align-items:flex-start;gap:18px;margin:0 0 14px}
+.vhead h3{margin:0 0 4px;font-size:16px;font-weight:800;line-height:1.25}
+.vhead p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.5}
+.vhead p b{color:var(--ink);font-weight:700}
+.vqkey{flex:none;width:190px;height:96px;grid-template-columns:1fr 1fr;
+ grid-template-rows:1fr 1fr;gap:3px;background:var(--line-soft);padding:3px;
+ border-radius:var(--r-seg)}
+.vqk{display:flex;align-items:center;justify-content:center;background:var(--card);
+ border-radius:5px}
+.vqk i{display:block;width:9px;height:9px;border-radius:50%}
+.vqk.cc{background:var(--good-bg)} .vqk.cc i{background:var(--good-fg)}
+.vqk.dc i{background:var(--primary)}
+.vqk.cf i{background:var(--slate)}
+.vqk.df{background:var(--warn-bg)} .vqk.df i{background:var(--warn-fg)}
+.vgridq{display:flex;flex-direction:column;gap:12px}
+.vqcol{display:flex;flex-direction:column;gap:12px}
+.vquad{background:var(--card);border-radius:var(--r-card);padding:14px 15px 6px;
+ border:1.5px solid transparent}
+.vquad.good{border-color:var(--good-fg)}
+.vqhead{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.vqico{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;
+ flex:none;border-radius:10px;background:var(--tint);color:var(--primary)}
+.vqico svg{width:18px;height:18px}
+.vquad.good .vqico{background:var(--good-bg);color:var(--good-fg)}
+.vquad.warn .vqico{background:var(--warn-bg);color:var(--warn-fg)}
+.vquad.mute .vqico{background:var(--tile);color:var(--muted)}
+.vqt{flex:1;min-width:0}
+.vqt b{display:block;font-size:14.5px;font-weight:800;line-height:1.25}
+/* the panel's one-line gloss is desktop only: on a phone the title and the
+ colour carry it, and three of them cost 48px of a screen that is already
+ four lists instead of one plot */
+.vqt span{display:none;font-size:11.5px;color:var(--muted);margin-top:1px;line-height:1.35}
+.vqcount{flex:none;font-family:var(--label);font-size:11px;font-weight:700;
+ padding:4px 9px;border-radius:var(--r-chip);background:var(--tile);color:var(--muted)}
+.vquad.good .vqcount{background:var(--good-bg);color:var(--good-fg)}
+.vquad.warn .vqcount{background:var(--warn-bg);color:var(--warn-fg)}
+/* one grid for the header row and every row under it, so the columns line up */
+.vqcols,.vqrow{display:grid;grid-template-columns:minmax(0,1fr) 56px 40px;
+ align-items:center;gap:8px}
+.vqcols{font-family:var(--label);font-size:9.5px;font-weight:700;letter-spacing:.07em;
+ text-transform:uppercase;color:var(--muted);padding-bottom:5px;
+ border-bottom:1px solid var(--line-soft)}
+.vqcols span:nth-child(2),.vqcols span:nth-child(3){text-align:right}
+.vqrow{width:100%;background:none;border:0;border-bottom:1px solid var(--line-soft);
+ padding:9px 0;min-height:var(--tap);font:inherit;cursor:pointer;text-align:left;
+ color:var(--ink)}
+.vqrow:last-of-type{border-bottom:0}
+.vqrow:hover .vqname{color:var(--primary)}
+.vqname{min-width:0;font-size:13.5px;font-weight:600;overflow:hidden;
+ text-overflow:ellipsis;white-space:nowrap}
+.vqpsf{font-family:var(--label);font-size:12px;font-weight:600;text-align:right;
+ color:var(--ink);white-space:nowrap}
+.vqgro{font-family:var(--label);font-size:12px;font-weight:700;text-align:right;
+ color:var(--muted);white-space:nowrap}
+.vqgro.up{color:var(--good-fg)} .vqgro.dn{color:var(--risk-fg)}
+.vqmore{display:flex;align-items:center;min-height:var(--tap);width:100%;background:none;
+ border:0;padding:0;cursor:pointer;font:inherit;font-size:12.5px;font-weight:700;
+ color:var(--primary)}
+.vquad.sheet{background:none;padding:0;border:0}
+.vqlink{display:flex;align-items:center;min-height:var(--tap);width:100%;
+ background:var(--card);border:0;border-radius:var(--r-card);padding:0 15px;
+ cursor:pointer;font:inherit;font-size:13.5px;font-weight:700;color:var(--primary)}
+@media(min-width:1024px){
+  .vgridq{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:16px;align-items:start}
+  .vqkey{display:grid}
+  .vqt span{display:block}
+}
 
 .costrow{width:100%;text-align:left;border:0;background:var(--card);cursor:pointer;
  border-radius:var(--r-tile);padding:12px 14px;margin-bottom:8px;font-family:var(--font);
@@ -2732,7 +2789,7 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
     <div class="segmented" role="group" aria-label="Explore mode">
       <button data-mode="ranked" id="exRankedTab" aria-pressed="false" hidden>Ranked</button>
       <button data-mode="five" aria-pressed="true"><span id="exFiveLab">Your 5</span></button>
-      <button data-mode="position" aria-pressed="false">Position</button>
+      <button data-mode="position" aria-pressed="false" aria-label="Where the value is"><span class="tlong">Where the value is</span><span class="tshort">Value</span></button>
       <button data-mode="discover" aria-pressed="false">Map</button>
     </div>
   </div>
@@ -6334,7 +6391,7 @@ function renderGeneric20(){
 }
 /* ---- the Your 5 tab, locked ----
  The tab stays where it is with a lock on its label, because hiding it would
- hide what an account is for. Position, the map, Listings and the whole of
+ hide what an account is for. Where the value is, the map, Listings and all of
  Market stay open beside it, so this is a card in one column rather than a
  wall: the rest of Explore is still there. */
 function fiveLockCard(){
@@ -6393,60 +6450,107 @@ function renderYourFive(){
    +(f.dropped&&f.dropped.length?dropNote(f):'')+'</div>');
  });
 }
-/* ---- Explore: Position ----
- A ranked list cannot show the shape of a market. This can: where everything
- sits on price against growth, and which corner is cheap and climbing. */
+/* ---- Where the value is ----
+ This was a scatter: 86 dots and 86 labels in a 700px column beside a map,
+ two spatial pictures competing for the same glance, and the labels piled up
+ into unreadability. The question underneath it is which areas are cheap and
+ rising, and the answer to that is names, prices and growth rates in a
+ column. The quadrant key is the only part of the chart that survives,
+ because the four boxes are the one thing a picture said better than words.
+
+ Both thresholds are the live medians, computed here and printed in the
+ header, so the lists cannot drift from the line that defines them. */
+const VQUADS=[
+ {k:'cc',t:'Cheap and climbing',  tone:'good',ico:'growth',
+  sub:'Below the median price, above the median growth'},
+ {k:'dc',t:'Dear and climbing',   tone:'',    ico:'rupee',
+  sub:'Already expensive, still moving'},
+ {k:'cf',t:'Cheap and flat',      tone:'mute',ico:'clock',
+  sub:'Priced low, and not moving yet'},
+ {k:'df',t:'Dear and flat',       tone:'warn',ico:'caution',
+  sub:'Expensive and has stopped moving'}
+];
+function valueQuadrants(){
+ const xMed=cityMid(a=>basisVal(a)), yMed=cityMid(a=>growthOf(a));
+ const put=a=>{const cheap=basisVal(a)<=xMed, climbing=growthOf(a)>=yMed;
+ return cheap?(climbing?'cc':'cf'):(climbing?'dc':'df');};
+ const g={cc:[],dc:[],cf:[],df:[]};
+ AREAS.forEach(a=>g[put(a)].push(a));
+ /* cheapest first where the point is value, dearest first where the point
+  is that somebody is paying a lot for nothing */
+ g.cc.sort((a,b)=>growthOf(b)-growthOf(a)||basisVal(a)-basisVal(b));
+ g.dc.sort((a,b)=>growthOf(b)-growthOf(a));
+ g.cf.sort((a,b)=>basisVal(a)-basisVal(b));
+ g.df.sort((a,b)=>basisVal(b)-basisVal(a));
+ return {xMed:xMed,yMed:yMed,g:g};
+}
+function vqRow(a){
+ const gr=growthOf(a);
+ return '<button type="button" class="vqrow" data-openanl="'+esc(a.n)+'">'
+ +'<span class="vqname">'+esc(a.n)+'</span>'
+ +'<span class="vqpsf">\u20b9'+Math.round(basisVal(a)).toLocaleString('en-IN')+'</span>'
+ +'<span class="vqgro '+(gr>0?'up':gr<0?'dn':'')+'">'+(gr>0?'+':'')+gr+'%</span>'
+ +'</button>';
+}
+function vqPanel(def,list,n){
+ const rows=list.slice(0,n).map(vqRow).join('');
+ const more=list.length>n
+ ? '<button type="button" class="vqmore" data-vqall="'+def.k+'">See all '
+   +list.length+' \u203A</button>' : '';
+ return '<section class="vquad '+def.k+(def.tone?' '+def.tone:'')+'">'
+ +'<div class="vqhead"><span class="vqico">'+uiIcon(def.ico,'nav',false)+'</span>'
+ +'<span class="vqt"><b>'+esc(def.t)+'</b><span>'+esc(def.sub)+'</span></span>'
+ +'<span class="vqcount">'+list.length+'</span></div>'
+ +'<div class="vqcols"><span>Area</span><span>\u20b9/sqft</span><span>Year</span></div>'
+ +rows+more+'</section>';
+}
+/* the one width test in this file, and it decides how many rows fit, not
+ what the component is: both widths render the same four panels from the
+ same data. renderPosition is called on every mode change and on resize. */
+let VQNARROW=false;
 function renderPosition(){
  const host=document.getElementById('posPane'); if(!host)return;
  if(EXMODE!=='position'){host.innerHTML='';return;}
- const rows=AREAS.slice();
- const cap=budCap();
- const xs=rows.map(a=>basisVal(a)), ys=rows.map(a=>growthOf(a));
- const xMin=Math.min.apply(null,xs), xMax=Math.max.apply(null,xs);
- const yMin=Math.min.apply(null,ys), yMax=Math.max.apply(null,ys);
- const xSpan=(xMax-xMin)||1, ySpan=(yMax-yMin)||1;
- const xMed=cityMid(a=>basisVal(a)), yMed=cityMid(a=>growthOf(a));
- const px=v=>((v-xMin)/xSpan)*100, py=v=>((v-yMin)/ySpan)*100;
- /* Eighty-six labels on top of each other is not a chart. Only the five the
- desk is recommending and the cheap-and-climbing quadrant carry a standing
- label; the rest name themselves on hover and on tap. */
- const mine={}; (personalised()?topAreas(5):[]).forEach(a=>mine[a.n]=1);
- const dots=rows.map(a=>{
- const n=investScore(a), b=scoreBand(n);
- const fit=cap?Math.max(0,Math.min(1,(cap-basisVal(a)*1000)/cap)):0.5;
- const d=20+Math.round(fit*18);
- const inQuad=basisVal(a)<=xMed&&growthOf(a)>=yMed;
- const named=mine[a.n]||inQuad;
- /* the label is centred on its dot, so a dot near either edge had its name
- sliced by the plot's own overflow: 17 of them, up to 57px. Dots in the
- outer fifth anchor their label inwards instead. */
- const xp=px(basisVal(a));
- const edge=xp<20?' edgeL':xp>80?' edgeR':'';
- return '<button type="button" class="pdot '+b.k+(mine[a.n]?' yours':'')
-   +(named?' named':'')+edge+'" data-openanl="'+esc(a.n)+'" '
-   +'style="left:'+xp.toFixed(2)+'%;bottom:'+py(growthOf(a)).toFixed(2)+'%;'
-   +'width:'+d+'px;height:'+d+'px" title="'+esc(a.n)+', ₹'
-   +Math.round(basisVal(a)).toLocaleString('en-IN')+'/sqft, '+growthOf(a)+'%">'
-   +'<span class="plab">'+esc(a.n)+'</span></button>';
- }).join('');
- host.innerHTML='<p class="anlsub" style="margin-top:0">Every researched area on what it '
-  +'costs against how fast it has risen. The shaded corner is cheap and climbing'
-  +(cap?'; bigger circles fit your budget more easily':'')+'.</p>'
-  +'<div class="poswrap"><div class="scatY"><span>'+yMax+'%</span><span>'+yMin+'%</span></div>'
-  +'<div class="posplot">'
-   +'<div class="quad" style="left:0;bottom:'+py(yMed).toFixed(2)+'%;width:'
-   +px(xMed).toFixed(2)+'%;height:'+(100-py(yMed)).toFixed(2)+'%"></div>'
-   +'<i class="gx" style="left:'+px(xMed).toFixed(2)+'%"></i>'
-   +'<i class="gy" style="bottom:'+py(yMed).toFixed(2)+'%"></i>'
-   +'<span class="qlab tl">Cheap, climbing</span><span class="qlab tr">Dear, climbing</span>'
-   +'<span class="qlab bl">Cheap, flat</span><span class="qlab br">Dear, flat</span>'
-   +dots+'</div>'
-  +'<div class="scatX"><span>₹'+Math.round(xMin).toLocaleString('en-IN')+'</span>'
-  +'<span>price per sq ft →</span><span>₹'
-  +Math.round(xMax).toLocaleString('en-IN')+'</span></div></div>'
+ VQNARROW=window.innerWidth<1024;
+ const q=valueQuadrants(), g=q.g;
+ const d=k=>VQUADS.find(x=>x.k===k);
+ const key='<div class="vqkey" aria-hidden="true">'
+ +['cc','dc','cf','df'].map(k=>'<span class="vqk '+k+'"><i></i></span>').join('')
+ +'</div>';
+ host.innerHTML='<div class="vhead">'
+  +'<div><h3>Every area, by what it costs against how fast it is rising</h3>'
+  +'<p>Cheap is under <b>\u20b9'+Math.round(q.xMed).toLocaleString('en-IN')
+   +'</b> per sqft, climbing is over <b>'+q.yMed+'%</b> a year. Both are the median '
+   +'across all '+AREAS.length+' researched areas.</p></div>'+key+'</div>'
+  +'<div class="vgridq">'
+   /* a phone gets four, two and two, and cheap-and-flat as a link at the
+    foot: it is the quadrant with the least to say, so it is the one that
+    becomes a line rather than a list */
+   +vqPanel(d('cc'),g.cc,VQNARROW?4:6)
+   +vqPanel(d('dc'),g.dc,VQNARROW?2:5)
+   +'<div class="vqcol">'
+    +(VQNARROW?'':vqPanel(d('cf'),g.cf,3))
+    +vqPanel(d('df'),g.df,VQNARROW?2:3)
+    +(VQNARROW?'<button type="button" class="vqlink" data-vqall="cf">'
+      +'Cheap and flat \u00b7 '+g.cf.length+' areas \u203A</button>':'')
+   +'</div>'
+  +'</div>'
   +srcFooter('Knight Frank H1 2026 where tracked, portal-derived elsewhere','');
- host.querySelectorAll('[data-openanl],[data-openarea]').forEach(b=>
- b.addEventListener('click',()=>showArea(b.dataset.openanl||b.dataset.openarea)));
+ host.querySelectorAll('[data-openanl]').forEach(b=>
+ b.addEventListener('click',()=>showArea(b.dataset.openanl)));
+ host.querySelectorAll('[data-vqall]').forEach(b=>
+ b.addEventListener('click',()=>openVQuad(b.dataset.vqall)));
+}
+/* the full list of one quadrant, in the sheet the ranked 86 already uses */
+function openVQuad(k){
+ const q=valueQuadrants(), def=VQUADS.find(x=>x.k===k); if(!def)return;
+ const list=q.g[k];
+ openSlide(def.t,list.length+' of '+AREAS.length+' areas',
+  '<p class="anlsub" style="margin-top:0">'+esc(def.sub)+'. Cheap is below \u20b9'
+  +Math.round(q.xMed).toLocaleString('en-IN')+' per sqft, climbing is above '
+  +q.yMed+'% a year.</p>'
+  +'<div class="vquad sheet"><div class="vqcols"><span>Area</span><span>\u20b9/sqft</span>'
+  +'<span>Year</span></div>'+list.map(vqRow).join('')+'</div>');
 }
 
 /* ---- Explore: Discover | Momentum | Search ----
@@ -8424,6 +8528,11 @@ function mapKickSoon(){
  MAPKICK=setTimeout(()=>{MAPKICK=null;mapKick();},120);
 }
 window.addEventListener('resize',mapKickSoon);
+/* the quadrant lists show fewer rows on a phone, so a width change has to
+ re-render them. It is the same four panels either way; only the row counts
+ differ, which is why this is a re-render and not a second component. */
+window.addEventListener('resize',()=>{
+ if(SEC==='explore'&&EXMODE==='position'&&(window.innerWidth<1024)!==VQNARROW)renderPosition();});
 /* ---- the left column's "more below" cue ----
  The column scrolls on desktop and cut its last card at the fold with no sign
  that it did. A 34px fade sits at its foot and clears once there is nothing

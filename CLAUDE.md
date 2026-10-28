@@ -925,6 +925,34 @@ saying so instead.
   fall back to portal data there — a chart implies a measured series.
   `locAnalytics(name)` survives as `showArea(name,'score')` for the call sites
   that want the breakdown directly.
+- **Where the value is** — `renderPosition()`, four quadrant lists. It was a
+  scatter: 86 dots and 86 labels in a 700px column beside a map, two spatial
+  pictures competing for one glance. The tab is named for what you get rather
+  than for the chart, and the plot, its labels and the whole `.pdot` /
+  `.posplot` / `.poswrap` family are **deleted, not hidden**.
+
+  `valueQuadrants()` splits on the two live medians, `cityMid(basisVal)` and
+  `cityMid(growthOf)`, which the header prints, so the lists cannot drift
+  from the line that defines them. Cheap and climbing is widest and carries
+  a `--good` outline; dear and flat takes `--warn`, because an expensive area
+  that has stopped moving is the thing somebody should notice. Each sorts by
+  what its own quadrant is about: climbing by growth, cheap and flat by price
+  ascending, dear and flat by price descending.
+
+  **The map does not render in this mode.**
+  `#sec-explore.on[data-mode="position"]` drops to one column and hides
+  `#p-heat`. One spatial thing at a time; the map is its own mode.
+
+  The 190px quadrant key is all that survives of the chart, and only on
+  desktop: on a phone it stacks under the header and costs 96px to repeat
+  what the two medians already say in words. `VQNARROW` is the one width
+  test, and it decides how many rows fit (4/2/2 and a link), never what the
+  component is.
+
+  The tab's own name cost every Explore mode 44px until it was caught: four
+  words plus three other tabs do not fit 339px, so the control wrapped to two
+  rows. `.tlong` / `.tshort` hide one form at each width and `aria-label`
+  carries the full name either way.
 - `renderTerminal()` — a fourth Explore mode, desktop only. Its filters live in
   `TERMF` and touch no global state, so nothing in Explore or Listings moves
   when they change. On a phone it says it is built for a wide screen rather
