@@ -56,13 +56,39 @@ require an API key or billing account.
 
 Leaflet's CSS and JS may be loaded from a CDN as an exception to rule 3.
 
-### 5. Supabase config lives in the URL hash
+### 5. Two public constants, and the hash still works
 
-Config travels inside the link as `#cfg=<base64 json>` with `{u, k, w, n}`, read
-by `readCfg()` and written by `writeCfgLink()`. Never hardcode a Supabase URL,
-anon key, or workspace into the file. **Never commit API keys.** If you need to
-test against a real backend, put the config in the hash locally and keep it out
-of the commit.
+`SB_URL` and `SB_KEY` sit at the top of the script and name the backend this
+copy talks to. **The anon key belongs there.** It is designed to sit in a web
+page, it is not an admin key, and since rule 8 the policies behind it check
+membership rather than `using (true)` — publishing it was unsafe before that
+and is safe now. Filling them in is what makes the bare domain show a sign-in
+screen instead of dropping a visitor into local mode; leaving them empty
+restores the older behaviour exactly, which is why they ship empty.
+
+**The `service_role` key is the opposite and must never appear in this file.**
+It ignores every policy.
+
+Config still travels inside a link as `#cfg=<base64 json>` with `{u, k, w, n}`,
+and **a link beats the constants**, so every link already sent keeps working,
+including one pointing at a different project. `CFGSRC` records which won:
+
+    link   #cfg= in the hash or the query. writeCfgToUrl() keeps it in the
+           address bar, because that address is the credential-shaped thing
+           somebody was given.
+    baked  the constants. The address bar is left alone — somebody who typed
+           the bare domain keeps a bare domain, and the share link is built
+           on demand in settings instead.
+    none   neither, so there is no backend at all.
+
+A baked config carries **no workspace**. Which one a person belongs to is not
+knowable until they have signed in, so `CFG.w` is empty until
+`enterWorkspace()` adopts their first membership or creates one.
+
+**Opened as a file there is no gate**, whatever the constants say. A magic
+link has to come back to an address Supabase will redirect to and `file:///`
+is not one, so a sign-in screen there could never complete. That case says so
+and runs locally, which is rule 1 intact.
 
 ### 6. Local mode must keep working
 
@@ -104,6 +130,14 @@ Three things ride on this and must not be undone:
 - **Nobody is signed up on somebody else's behalf.** "Add by email" is a
   lookup. A miss says so and stops, because creating an account for a person
   who has not asked puts their address in a table they never agreed to.
+  The lookup is the `user_id_by_email` RPC, **not** a select on `profiles`:
+  a policy letting any signed-in person read profiles by email would hand
+  them every name and mobile in the table to find one uuid. The function is
+  security definer and returns a uuid or null and nothing else. PostgREST
+  calls a function by argument name and that name is not visible from the
+  client, so `userIdByEmail()` tries the likely ones once and remembers which
+  answered; it only walks the list on PGRST202, which is specifically "no
+  function with those arguments", and throws anything else.
 - **The magic link is implicit flow, deliberately.** PKCE keeps its verifier
   in the browser that asked, and people read email on their phone and work on
   a laptop. The cost is that the redirect comes back with `#access_token=` in

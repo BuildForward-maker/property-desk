@@ -3326,6 +3326,23 @@ alter publication supabase_realtime add table desk_prefs;</pre>
 
 
 <script>
+/* ========== the backend this copy talks to ==========
+ Two public strings. The anon key is designed to sit in a web page: it is not
+ an admin key, it cannot drop a table, and since accounts landed the policies
+ behind it check membership rather than `using (true)`. It was unsafe to
+ publish before that and it is safe now, which is the whole reason the last
+ round existed. The service_role key is the opposite and must never appear
+ here.
+
+ Filling these in is what makes the bare domain show a sign-in screen instead
+ of dropping a visitor into local mode. Leave them empty and the app behaves
+ exactly as it did before: no backend unless a #cfg link supplies one.
+
+ A link's #cfg still wins over them, so every link already in somebody's
+ inbox keeps working, including one pointing at a different project. */
+const SB_URL='';   /* https://<project-ref>.supabase.co */
+const SB_KEY='';   /* the anon public key, the long one starting eyJ */
+
 /* ========== storage + shared workspace ========== */
 const mem={};
 /* Persistence for everything that is not in a shared workspace, tried in order:
@@ -3356,6 +3373,7 @@ const local={
 
 /* config travels inside the link: #cfg=<base64 json> */
 let CFG=null, sb=null, MODE='local';
+let CFGSRC='none';   /* 'link' | 'baked' | 'none' — where CFG came from */
 function readCfg(){
  /* the hash is still where config lives. The query string is read too, and
  only because of the magic link: an implicit-flow redirect comes back with
@@ -3371,12 +3389,22 @@ function readCfg(){
   if(j&&j.u&&j.k&&j.w)return j;
  }catch(e){}
  return null;};
- return grab(location.hash)||grab(location.search);
+ const fromLink=grab(location.hash)||grab(location.search);
+ if(fromLink){ CFGSRC='link'; return fromLink; }
+ /* no link, but this copy was published with a backend of its own. The
+ workspace is left empty on purpose: which one this person belongs to is
+ not knowable until they have signed in, and enterWorkspace() decides it. */
+ if(SB_URL&&SB_KEY){ CFGSRC='baked'; return {u:SB_URL,k:SB_KEY,w:'',n:''}; }
+ CFGSRC='none';
+ return null;
 }
 /* rewrite the address bar so the link is always the hash form, and so a
- workspace created on first sign-in replaces whatever the link arrived with */
+ workspace created on first sign-in replaces whatever the link arrived with.
+ A copy running on its own constants does not do this: somebody who typed the
+ bare domain should keep a bare domain, and the share link is built on demand
+ in settings rather than left lying in their address bar. */
 function writeCfgToUrl(){
- if(!CFG)return;
+ if(!CFG||CFGSRC!=='link')return;
  const b64=encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(CFG)))));
  let h=(location.hash||'').replace(/^#/,'');
  h=h.split('&').filter(x=>x&&!/^(cfg|access_token|refresh_token|expires_in|expires_at|token_type|type|provider_token)=/.test(x)).join('&');
@@ -3422,10 +3450,13 @@ function signedIn(){ return !!(AUTH.user&&AUTH.user.id); }
 function myName(){ return (AUTH.profile&&AUTH.profile.name)||(CFG&&CFG.n)||''; }
 
 function cfgRedirect(){
- /* ?cfg= rather than #cfg=, so Supabase's own hash does not overwrite it */
- if(!CFG)return location.origin+location.pathname;
+ /* ?cfg= rather than #cfg=, so Supabase's own hash does not overwrite it.
+ A copy with its own constants needs none of that: the backend is in the
+ file, so the link comes back to a clean address. */
+ const bare=location.origin+location.pathname;
+ if(!CFG||CFGSRC!=='link')return bare;
  const b64=encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(CFG)))));
- return location.origin+location.pathname+'?cfg='+b64;
+ return bare+'?cfg='+b64;
 }
 async function sendMagicLink(email){
  if(!sb)throw new Error('No workspace is configured in this link.');
@@ -3480,16 +3511,36 @@ async function createWorkspace(){ return joinWorkspace(randomCode(),'owner'); }
 /* Adding somebody is a lookup, never a sign-up. Creating an account for a
  person who has not asked for one would put their email in a table they
  never agreed to, so a miss says so plainly and stops. */
+/* The lookup is a security definer function and not a select on profiles.
+ A policy letting any signed-in person read profiles by email would hand them
+ every name and mobile in the table to find one uuid; user_id_by_email returns
+ the uuid or null and nothing else.
+ PostgREST calls a function by argument name, and the name is not visible from
+ here, so the first call tries the likely ones and remembers which answered.
+ It only ever walks the list on PGRST202, which is specifically "no function
+ with those arguments"; any other error is a real error and is thrown. */
+let RPCARG=null;
+async function userIdByEmail(e){
+ const tries=RPCARG?[RPCARG]:['email','e','p_email','_email'];
+ let last=null;
+ for(const n of tries){
+ const r=await sb.rpc('user_id_by_email',{[n]:e});
+ if(!r.error){ RPCARG=n; return r.data||null; }
+ last=r.error;
+ const m=(r.error.message||'')+' '+(r.error.code||'')+' '+(r.error.hint||'');
+ if(!/PGRST202|could not find the function|schema cache/i.test(m))throw r.error;
+ }
+ throw last||new Error('user_id_by_email is not callable from here.');
+}
 async function addMemberByEmail(email){
  if(!sb||!signedIn())throw new Error('Not signed in.');
  const e=(email||'').trim().toLowerCase();
  if(!e)throw new Error('Enter an email address.');
  if(e===(AUTH.user.email||'').toLowerCase())return {ok:false,why:'self'};
- const {data,error}=await sb.from('profiles').select('id,email').ilike('email',e).limit(1);
- if(error)throw error;
- if(!data||!data.length)return {ok:false,why:'noaccount'};
+ const uid=await userIdByEmail(e);
+ if(!uid)return {ok:false,why:'noaccount'};
  const {error:e2}=await sb.from('workspace_members')
- .insert({workspace:CFG.w,user_id:data[0].id,role:'member'});
+ .insert({workspace:CFG.w,user_id:uid,role:'member'});
  if(e2&&!dupe(e2))throw e2;
  return {ok:true,already:!!e2};
 }
@@ -3501,6 +3552,15 @@ async function signOutNow(){
 async function initSupabase(){
  CFG=readCfg();
  if(!CFG){AUTH.state='off';setConn('local','Local mode. Nothing is shared yet');return false;}
+ /* Opened from the filesystem there is a backend but no way to use it: a
+ magic link has to come back to an address Supabase will redirect to, and
+ file:/// is not one. A sign-in screen that cannot work is worse than none,
+ so this copy says what it is and runs locally. */
+ if(location.protocol==='file:'){
+ CFG=null; AUTH.state='off';
+ setConn('local','Local mode. Opened as a file, so there is nothing to sign in to');
+ return false;
+ }
  if(typeof window.supabase==='undefined'){
  AUTH.state='off';
  setConn('err','Database library did not load, check your connection');return false;}
@@ -3530,6 +3590,10 @@ async function initSupabase(){
 }
 /* membership, not the link, is what grants access */
 async function enterWorkspace(){
+ /* A bare address carries no workspace, so a returning member lands in their
+ own rather than being told the one in the link is not theirs. A link that
+ named one keeps naming it, and is still checked against membership. */
+ if(!CFG.w&&AUTH.ws.length)CFG.w=AUTH.ws[0];
  if(!AUTH.ws.length){
  /* a new account with no rows anywhere gets its own workspace, generated */
  try{ CFG.w=await createWorkspace(); writeCfgToUrl(); }
@@ -10760,10 +10824,18 @@ function renderAccount(){
  const row=(l,v)=>'<div class="acctrow"><span>'+esc(l)+'</span><b>'+esc(v||'not set')+'</b></div>';
  if(AUTH.state==='off'){
  host.className='block';
- host.innerHTML=H+'<p style="font-size:13px;color:var(--muted)">This copy has no '
-  +'workspace in its link, so there is nothing to sign in to. Everything works '
-  +'and everything stays in this browser. Fill in the connection form below to '
-  +'turn sharing on.</p>';
+ /* two different reasons there is no account, and they are not the same
+ thing to a reader: no backend at all, or a backend that cannot complete a
+ sign-in because the page was opened as a file */
+ host.innerHTML=H+'<p style="font-size:13px;color:var(--muted)">'
+  +(location.protocol==='file:'
+   ?'This page was opened as a file rather than from a web address, and a '
+    +'sign-in link has nowhere to come back to. Everything works and '
+    +'everything stays in this browser. Open the published address to sign in.'
+   :'This copy has no workspace in its link, so there is nothing to sign in '
+    +'to. Everything works and everything stays in this browser. Fill in the '
+    +'connection form below to turn sharing on.')
+  +'</p>';
  return;
  }
  if(!signedIn()){
@@ -10938,6 +11010,10 @@ function prefillCfgForm(){
  const g=id=>document.getElementById(id);
  if(!g('cfWs'))return;
  if(CFG){g('cfUrl').value=CFG.u;g('cfKey').value=CFG.k;g('cfWs').value=CFG.w;g('cfName').value=CFG.n||'';}
+ /* a bare address carries no workspace, so the share link is built from the
+ one this person is actually in rather than from a fresh random code that
+ would point at nothing */
+ if(!g('cfWs').value&&AUTH.ws.length)g('cfWs').value=AUTH.ws[0];
  if(!g('cfWs').value)g('cfWs').value=randomCode();
  buildLink();
 }

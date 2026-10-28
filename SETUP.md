@@ -159,14 +159,23 @@ language sql security definer stable set search_path = public as $$
   select not exists (select 1 from workspace_members where workspace = w);
 $$;
 
--- profiles: your own row, in full. Everyone else's is readable only as the
--- id-and-email lookup that "Add by email" needs, and only to a signed-in user.
+-- profiles: your own row, and nobody else's. There is deliberately no
+-- select-by-email policy: one would hand every name and mobile in the table
+-- to anyone with an account, to find a single uuid.
 drop policy if exists profiles_self   on profiles;
 drop policy if exists profiles_lookup on profiles;
 create policy profiles_self on profiles for all
   using (id = auth.uid()) with check (id = auth.uid());
-create policy profiles_lookup on profiles for select
-  using (auth.uid() is not null);
+
+-- "Add by email" asks this instead. It returns a uuid or null and nothing
+-- else, so an address that is not here leaks nothing and an address that is
+-- leaks only that it exists.
+create or replace function user_id_by_email(email text) returns uuid
+language sql security definer stable set search_path = public as $$
+  select id from profiles where lower(profiles.email) = lower(user_id_by_email.email) limit 1;
+$$;
+revoke all on function user_id_by_email(text) from public;
+grant execute on function user_id_by_email(text) to authenticated;
 
 -- membership
 drop policy if exists wm_select on workspace_members;
@@ -219,6 +228,27 @@ If you were already using this before accounts, do this before anything else:
 If you skip it and sign in anyway, the app gives you a fresh empty workspace,
 and the old one sits unclaimed until you enter its code under
 **Settings → Claim another workspace**. Nothing is deleted either way.
+
+## 2c. Put the two values in the file
+
+Open `index.html`, find these two lines near the top of the script, and paste
+your Project URL and **anon** key in:
+
+```js
+const SB_URL='';   /* https://<project-ref>.supabase.co */
+const SB_KEY='';   /* the anon public key, the long one starting eyJ */
+```
+
+That is what makes the published address show a sign-in screen. Leave them
+empty and the app behaves as it did before accounts: local mode for anyone
+without a `#cfg` link.
+
+**The anon key belongs in the page.** It is not an admin key, it cannot drop a
+table, and the policies in 2b decide what it can reach. The `service_role` key
+is the opposite: it ignores every policy and must never go in this file.
+
+A `#cfg` link still wins over these constants, so links already sent keep
+working, including ones pointing at a different project.
 
 ## 3. Copy your two connection values
 
