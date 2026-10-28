@@ -708,12 +708,25 @@ footer{border-top:1.5px solid var(--ink);margin-top:60px;padding-top:18px;font-s
 #intake{position:fixed;inset:0;background:var(--bg);z-index:var(--z-modal);overflow-y:auto;display:none}
 #intake.on{display:block}
 #intake .pclose{position:absolute;top:16px;right:16px;z-index:2}
-/* survey registration marks: two corners only, desktop only, behind everything */
-.cmarks{display:none;position:absolute;pointer-events:none;z-index:-1;
- fill:none;stroke:var(--primary);stroke-width:1;stroke-linecap:round}
-.cmtl{top:0;left:0;opacity:.3}
-.cmbr{bottom:0;right:0;opacity:.26}
-@media(min-width:1024px){.cmarks{display:block}#sec-home{position:relative;z-index:0}}
+/* ---- grain, not corner marks ----
+ The registration marks did not earn their corner: on Home the top-left one
+ was 89% behind the header band and the hero, and two marks on an otherwise
+ clean page read as decoration looking for a reason. A single turbulence
+ layer over the gradient does the job they were for, which is to stop the
+ ground reading as flat, and it is the same everywhere rather than being
+ right in one corner and wrong in another.
+
+ One filter, one element, reused by every host through `background-image`.
+ At .3 it is visible on a 1280 screen and invisible as content: it carries
+ no information, so it is aria-hidden and never in the way of a pointer. */
+.grain{position:absolute;inset:0;pointer-events:none;z-index:-1;opacity:.3;
+ background-image:url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'>\
+<filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' \
+stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter>\
+<rect width='140' height='140' filter='url(%23g)' opacity='0.42'/></svg>");
+ background-size:140px 140px}
+#sec-home{position:relative;z-index:0}
 .iwrap{max-width:780px;margin:0 auto;padding:52px 22px 60px;min-height:100%;
  display:flex;flex-direction:column;box-sizing:border-box}
 @media(max-width:620px){.iwrap{padding:30px 16px 44px}}
@@ -869,6 +882,17 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
  font-size:11.5px}
 .vsplit::before,.vsplit::after{content:"";flex:1;height:1px;background:var(--line)}
 .vtap{width:100%}
+/* screen zero: answering is the primary, saying it out loud is one quiet
+ line underneath with the glyph that used to be a 92px circle */
+.vgo{width:100%;margin-top:4px}
+.vsay{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
+ min-height:var(--tap);margin-top:10px;background:none;border:0;cursor:pointer;
+ font:inherit;font-size:13px;color:var(--muted)}
+.vsay:hover{color:var(--primary)}
+.vsay .vsayi{display:inline-flex;width:18px;height:18px;opacity:.8}
+.vsay .vsayi svg{width:18px;height:18px}
+.vsay.on{color:var(--primary);font-weight:700}
+.vopen{margin-top:6px}
 .vunsup{margin:0 0 14px;font-size:12.5px;line-height:1.5;color:var(--muted);
  background:var(--tile);border-radius:var(--r-tile);padding:10px 12px}
 .vsaid{margin-top:18px;background:var(--tile);border-radius:var(--r-tile);padding:13px 14px}
@@ -1543,28 +1567,58 @@ td,th{border-color:var(--line)}
  font-size:22px;line-height:1;color:var(--ink);cursor:pointer;flex:0 0 auto}
 .iqnav.ghost{background:none;cursor:default}
 .iqspacer{flex:1}
-/* ---- the stepped funnel ----
- One component. The bars live in the header row at both widths; the count and
- the cause sit under them on desktop and under the options on a phone, where
- the header row has no room for two lines of text. */
+/* ---- the profile, building ----
+ One line above the button on a phone, a card in the right column on desktop.
+ The dots are the seven questions; a filled one is an answer given. */
 .iqfnlwrap{flex:1;min-width:0}
-.fnlbars{display:flex;align-items:flex-end;gap:4px;height:34px}
-.fstep{flex:1 1 0;display:flex;flex-direction:column;justify-content:flex-end;
- align-items:stretch;height:100%;position:relative}
-.fstep i{display:block;width:100%;border-radius:3px;background:var(--tint);
- transition:height .22s ease}
-.fstep.done i{background:var(--grad-primary)}
-.fstep.now i{box-shadow:0 0 0 2px var(--card),0 0 0 3px var(--primary)}
-.fstep em{position:absolute;left:0;right:0;top:calc(100% + 3px);text-align:center;
- font-style:normal;font-family:var(--label);font-size:9.5px;font-weight:600;color:var(--muted)}
-/* the step that actually narrowed the field takes the same amber as the
- waterfall's bite, so the question that cost you areas is findable at a
- glance. 6.1:1 on the intake ground. It is declared before .now so the
- question you are standing on still reads as the one you are standing on. */
-.fstep.cut em{color:var(--warn-fg);font-weight:800}
-.fstep.now em{color:var(--primary);font-weight:800}
-.fnlnum,.fnlwhy{display:none}
-.fnlsay{margin:6px 0 10px}
+.ipline{display:flex;align-items:center;gap:9px;height:42px;padding:0 12px;
+ margin:6px 0 8px;background:var(--card);border-radius:var(--r-seg);
+ box-shadow:0 1px 2px rgba(17,17,26,.05)}
+.ipdots{display:flex;gap:4px;flex:none}
+.ipdot{width:7px;height:7px;border-radius:50%;background:var(--line);display:block;
+ box-sizing:border-box}
+.ipdot.done{background:var(--primary)}
+.ipdot.now{background:var(--primary);opacity:.45}
+.ipdot.skipped{border:1.5px solid var(--line);background:none}
+.ipsaid{flex:1;min-width:0;font-size:12px;color:var(--ink);white-space:nowrap;
+ overflow:hidden;text-overflow:ellipsis}
+.ipn{flex:none;font-family:var(--label);font-size:10.5px;letter-spacing:.06em;
+ font-weight:700;color:var(--muted)}
+/* the desktop card. Hidden on a phone, where .ipline carries it. */
+.ipcard{display:none;background:var(--card);border-radius:var(--r-card);
+ padding:18px 18px 8px;box-shadow:0 1px 3px rgba(17,17,26,.06)}
+.iphead{display:flex;align-items:baseline;justify-content:space-between;
+ gap:10px;margin-bottom:12px}
+.ipk{font-family:var(--label);font-size:10.5px;letter-spacing:.09em;
+ text-transform:uppercase;color:var(--muted);font-weight:700}
+.iphead .ipn{font-size:13px;color:var(--primary);letter-spacing:.02em;font-weight:800}
+.iprows{display:flex;flex-direction:column}
+.iprow{display:flex;align-items:center;gap:10px;min-height:38px;
+ border-top:1px solid var(--line-soft);padding:7px 0}
+.iprow:first-child{border-top:0}
+.iprow .ipdot{width:8px;height:8px;flex:none;background:var(--line)}
+.iprow.done .ipdot{background:var(--primary)}
+.iprow.now .ipdot{background:var(--primary);opacity:.45}
+.iprow.next .ipdot,.iprow.skipped .ipdot{background:none;border:1.5px solid var(--line)}
+.ipt{flex:1;min-width:0;font-size:13.5px;font-weight:600;color:var(--ink);
+ line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.iprow.now .ipt{color:var(--primary);font-weight:800}
+.iprow.next .ipt,.iprow.skipped .ipt{opacity:.38;font-weight:600}
+.ipnow{flex:none;font-family:var(--label);font-size:10px;letter-spacing:.07em;
+ text-transform:uppercase;color:var(--primary);font-weight:700}
+/* ---- the keyboard layer ----
+ Keycaps are desktop only: a phone has no keys, and a square of chrome on
+ every option would cost 30px of the one width that cannot spare it. */
+/* no fourth family: a keycap is two characters at 11px and Space Grotesk,
+ already loaded for every caps label, sets them as well as a mono would. */
+.kcap{display:none;font-family:var(--label);font-size:11px;font-weight:700;
+ line-height:1;color:var(--muted);background:var(--tile);border-radius:6px;
+ width:22px;height:22px;align-items:center;justify-content:center;flex:none;
+ box-shadow:inset 0 -1px 0 rgba(17,17,26,.1)}
+.iqkeys{display:none}
+/* display:contents below the breakpoint, so the phone sees the fact footnote
+ exactly where it has always been and the wrapper costs it nothing */
+.iqside{display:contents}
 /* ---- the commute ceiling, question six ----
  A second control under the travel modes, not an eighth question: how you
  travel and how far you will go are one decision. Each band carries how many
@@ -1585,21 +1639,16 @@ td,th{border-color:var(--line)}
 .cmaxnote{margin:9px 0 0;font-size:11.5px;color:var(--muted);line-height:1.45}
 @media(min-width:1024px){.cmaxopts{grid-template-columns:1fr 1fr}}
 /* the 29px under the options existed to keep the last one clear of the
- sticky footer. The count and cause now stand in that gap, so the screen
- does not pay for the space twice. */
-.iqbody:has(.fnlsay){padding-bottom:0}
-/* the funnel numbers the seven steps and marks the one you are on, so
- "Question 2 of 7" one line below it is the same sentence twice. The
- phone drops the words and keeps the marks; the desktop column has the
- room for both and keeps them. It stays in the accessibility tree. */
+ sticky footer. The building line stands in that gap, so the screen does
+ not pay for the space twice. */
+.iqbody:has(.ipline){padding-bottom:0}
+/* the dots and the count say "4 of 7" in the same glance, so the words one
+ line below are the same sentence twice. The phone drops them and keeps the
+ marks; the desktop column has room for both. It stays in the a11y tree. */
 @media(max-width:1023px){
- .iqbody:has(.fnlsay) .iqn{position:absolute;width:1px;height:1px;overflow:hidden;
+ .iqbody:has(.ipline) .iqn{position:absolute;width:1px;height:1px;overflow:hidden;
  clip:rect(0 0 0 0);white-space:nowrap;margin:0}
 }
-.fnlsay .fnlnum,.fnlsay .fnlwhy{display:block}
-.fnlnum{font-size:13px;color:var(--ink);margin:0}
-.fnlnum b{font-weight:800}
-.fnlwhy{font-size:12px;color:var(--muted);margin:2px 0 0;line-height:1.45}
 .iqexit{display:flex;justify-content:center;margin-top:16px}
 .iqfoot .iqskip.wide{margin-top:10px}
 .iqskip.wide{width:100%;min-height:var(--tap);border:1px solid var(--line);
@@ -1790,30 +1839,40 @@ td,th{border-color:var(--line)}
   .iwrap{max-width:1120px;display:grid;grid-template-columns:1.12fr 1fr;
  grid-template-rows:auto 1fr auto;column-gap:52px;padding:40px 32px 48px;
  align-items:start;min-height:100%}
-  /* the funnel takes a row of its own so it starts on the heading's left
-   edge whether or not a Back button exists; a Back button on the same
-   row would move it 54px between question one and question two */
   .iqtop{grid-column:1;grid-row:1;position:relative;padding:0 0 18px;
- align-items:flex-start;flex-wrap:wrap;max-width:540px}
+ align-items:flex-start;flex-wrap:wrap;max-width:540px;min-height:0}
   .iqtop .iqnav.ghost{display:none}
-  /* Back sits in the overlay's own margin: in the row it would cost the
-   question screen 54px and move the funnel 54px between question one and
-   question two, which is the alignment this row exists to hold */
+  /* Back sits in the overlay's own margin rather than in the row, where it
+   cost the screen 54px and moved everything beside it between question one
+   and question two */
   .iqtop .iqnav{position:absolute;left:-58px;top:-2px}
   .iqtop .iqskip.top{order:1;margin-left:auto}
-  .iqfnlwrap{flex:1 0 100%;order:2;padding:0}
-  .fnlbars{height:46px}
-  .fnl .fnlnum,.fnl .fnlwhy{display:block}
-  .fnl .fnlnum{margin-top:14px;text-align:center}
-  .fnl .fnlwhy{text-align:center}
-  .fnlsay{display:none}
+  .iqfnlwrap{display:none}
+  /* the building line is the phone's; desktop gets the card instead */
+  .ipline{display:none}
   .iqbody{grid-column:1;grid-row:2;padding:0;max-width:540px}
   .iqfoot{grid-column:1;grid-row:3;position:static;background:none;box-shadow:none;
  border-radius:0;padding:20px 0 0;margin:0;max-width:540px;align-self:end}
-  .iqfact{grid-column:2;grid-row:1 / span 3;align-self:center;max-width:380px}
-  .iqfact .ifcard{display:block}
+  /* the right column holds two things, so it needs a wrapper of its own:
+   two items placed in one grid area overlap. */
+  .iqside{grid-column:2;grid-row:1 / span 3;align-self:center;max-width:380px;
+ display:flex;flex-direction:column;gap:18px}
+  .ipcard{display:block}
+  .iqfact{max-width:none}
+  .iqfact .ifcard{display:block;padding:18px}
+  .iqfact .ifnum{font-size:30px}
+  .iqfact .ifclaim{font-size:17px}
+  .iqfact .ifdetail{font-size:12px}
   .iqfact .ifdots{display:flex}
   .iffoot{display:none}
+  /* the keyboard layer */
+  .kcap{display:inline-flex}
+  .iopt{padding-left:12px}
+  .iqkeys{display:flex;align-items:center;gap:6px;margin:12px 0 0;
+ font-family:var(--label);font-size:10.5px;letter-spacing:.07em;
+ text-transform:uppercase;color:var(--muted);font-weight:700}
+  .act .kcap{margin-left:10px;background:rgba(255,255,255,.18);color:#fff;
+ box-shadow:none}
   .iqn{color:var(--primary)}
   /* .iwrap h2 is 0,1,1 and would otherwise keep its 34px Manrope */
   .iwrap h2.iqh{font-family:var(--serif);font-size:42px;font-weight:400;line-height:1.08;
@@ -2553,8 +2612,8 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
   <button type="button" class="act ghost" id="fbNo">Not now</button></div>
 </div></div>
 <div id="keep" role="dialog" aria-modal="true" aria-labelledby="keepTitle"><div class="kscrim"></div><div class="kcard"><h2 id="keepTitle">Sign in to keep this</h2><p id="keepLine"></p><div class="kbtns"><button type="button" class="act" id="keepGo">Email me a link</button><button type="button" class="act ghost" id="keepNo">Not now</button></div></div></div>
-<div id="gate" role="dialog" aria-modal="true" aria-label="Sign in to Property Desk"><div class="gwrap" id="gwrap"></div></div>
-<div id="intake" data-cmarks role="dialog" aria-modal="true" aria-label="Set up your search"><button class="pclose" id="intakeClose" aria-label="Close" title="Close" hidden>✕</button><div class="iwrap" id="iwrap"></div></div>
+<div id="gate" data-grain role="dialog" aria-modal="true" aria-label="Sign in to Property Desk"><div class="gwrap" id="gwrap"></div></div>
+<div id="intake" data-grain role="dialog" aria-modal="true" aria-label="Set up your search"><button class="pclose" id="intakeClose" aria-label="Close" title="Close" hidden>✕</button><div class="iwrap" id="iwrap"></div></div>
 
 <div class="shell">
 
@@ -2577,7 +2636,7 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
   </div>
 </aside>
 <main class="main">
-<section class="sec on" id="sec-home" data-cmarks>
+<section class="sec on" id="sec-home" data-grain>
   <div class="sechead">
     <div class="hprofile" id="hProfile"></div>
     <div class="headrow"><h1 id="homeGreeting">Your search<span class="hlive" id="hLive" hidden></span></h1><button type="button" class="hdrmic" data-askmic="1" aria-label="Ask a question out loud">MICICON</button></div>
@@ -4653,28 +4712,11 @@ let SEC='explore', SUB={explore:'discover',shortlist:'board',guide:'read'}, EXMO
  the guide articles still need their own key inside shortlist. */
 let MSUB='moving';
 
-/* Two corners, not a background. A full-page grid fights the content at 1280;
- these sit in the corners the layout leaves empty and nowhere else. */
-function cornerMarks(){
- return '<svg class="cmarks cmtl" viewBox="0 0 110 110" width="110" height="110" aria-hidden="true" focusable="false">'
- +'<circle cx="20" cy="20" r="7"/>'
- +'<path d="M20 9v22M9 20h22"/>'
- +'<path d="M20 29v81M29 20h81"/>'
- +'<path d="M16 46h8M16 70h8M16 94h8"/>'
- +'<path d="M46 16v8M70 16v8M94 16v8"/>'
- +'</svg>'
- +'<svg class="cmarks cmbr" viewBox="0 0 130 130" width="130" height="130" aria-hidden="true" focusable="false">'
- +'<circle cx="110" cy="110" r="8"/>'
- +'<path d="M110 98v24M98 110h24"/>'
- +'<path d="M110 20v81M20 110h81"/>'
- +'<path d="M106 30h8M106 52h8M106 74h8M106 96h8"/>'
- +'<path d="M30 106v8M52 106v8M74 106v8M96 106v8"/>'
- +'</svg>';
-}
-function mountCornerMarks(){
- document.querySelectorAll('[data-cmarks]').forEach(el=>{
- if(el.querySelector(':scope>.cmarks'))return;
- el.insertAdjacentHTML('afterbegin',cornerMarks());
+/* one grain layer per host, mounted once at boot and left alone */
+function mountGrain(){
+ document.querySelectorAll('[data-grain]').forEach(el=>{
+ if(el.querySelector(':scope>.grain'))return;
+ el.insertAdjacentHTML('afterbegin','<div class="grain" aria-hidden="true"></div>');
  });
 }
 
@@ -9963,16 +10005,40 @@ const IQ_TIME=[
  {k:'flex',lab:'Flexible', note:'No timing filter', months:null, seg:null}
 ];
 const ZONES5=['North','South','East','West','Central'];
+/* what a zone IS, counted off AREAS rather than written down, so the line
+ cannot drift from the data it describes. Three names and the true remainder:
+ a selective three presented as the whole zone would be the worse lie. */
+const ZONE_FACE={North:['Hebbal','Yelahanka'],
+ South:['HSR Layout','Jayanagar'],
+ East:['Whitefield','Hoodi'],
+ West:['Rajajinagar','Kengeri'],
+ Central:['Indiranagar','Chamrajpet']};
+/* Two names and the true remainder. Three names and the line wraps at 375,
+ which costs the zones screen 95px for a third example; the count is what
+ makes the two honest rather than a selective sample. */
+function zoneContents(z){
+ const all=AREAS.filter(a=>a.z===z);
+ const face=(ZONE_FACE[z]||[]).filter(n=>all.some(a=>a.n===n));
+ if(!face.length)return all.length+' researched areas';
+ const rest=all.length-face.length;
+ return face.join(', ')+(rest>0?' and '+rest+' more':'');
+}
 /* Q5-Q7. These exist because the desk already knows peak drive time to four
  hubs and the nearest metro for every locality, and without knowing which
  hub matters the scoring could not use any of it. */
 const IQ_WORK=[
- {k:'itpl', lab:'Whitefield / ITPL', hub:'itpl'},
- {k:'orr', lab:'Bellandur / ORR', hub:'orr'},
- {k:'ecity',lab:'Electronic City', hub:'ecity'},
- {k:'cbd', lab:'MG Road / CBD', hub:'cbd'},
- {k:'wfh', lab:'I work from home', hub:null},
- {k:'unsure',lab:'Not sure yet', hub:null}
+ {k:'itpl', lab:'Whitefield / ITPL', hub:'itpl',
+  note:'ITPL and the EPIP Zone'},
+ {k:'orr', lab:'Bellandur / ORR', hub:'orr',
+  note:'Ecoworld, Cessna, Embassy Tech'},
+ {k:'ecity',lab:'Electronic City', hub:'ecity',
+  note:'Phase 1 and 2'},
+ {k:'cbd', lab:'MG Road / CBD', hub:'cbd',
+  note:'MG Road, Residency, Infantry Road'},
+ {k:'wfh', lab:'I work from home', hub:null,
+  note:'Commute drops out of the scoring'},
+ {k:'unsure',lab:'Not sure yet', hub:null,
+  note:'Commute drops out until you pick'}
 ];
 const IQ_TRAVEL=[
  {k:'car', lab:'Mostly car', note:'Scored on peak drive time', metro:0.10, drive:1.0, mode:'car'},
@@ -9992,12 +10058,19 @@ const IQ_CMAX=[
   note:'No ceiling. The commute still counts, it just stops ruling anywhere out.'}
 ];
 const CMAX_DEFAULT='60';
+/* solo and couple are one branch in personalWeights(), so any line true of
+ one is true of the other, which is exactly the test for filler: a line that
+ sits under two options tells a reader nothing about either. Both are blank.
+ The other three move different factors and say which. */
 const IQ_HOUSE=[
- {k:'solo', lab:'Just me', note:'Proximity and easy resale'},
- {k:'couple',lab:'A couple', note:'Proximity and easy resale'},
- {k:'young', lab:'Family with young children', note:'Space and quiet'},
- {k:'school',lab:'Family with school-age children',note:'Established areas, real schools'},
- {k:'multi', lab:'Multi-generational', note:'Size and hospitals nearby'}
+ {k:'solo', lab:'Just me'},
+ {k:'couple',lab:'A couple'},
+ {k:'young', lab:'Family with young children',
+  note:'Floor area starts counting'},
+ {k:'school',lab:'Family with school-age children',
+  note:'A settled area becomes the heaviest'},
+ {k:'multi', lab:'Multi-generational',
+  note:'Floor area heaviest, commute lighter'}
 ];
 const HUBLABEL={itpl:'Whitefield / ITPL',orr:'Bellandur / ORR',ecity:'Electronic City',cbd:'MG Road / CBD'};
 /* HUBMETRO (which hubs a line reaches; Bellandur is on the unbuilt Blue Line)
@@ -10784,6 +10857,10 @@ let VCAUGHT=null;        /* what the patterns found */
 let VSEEN=false;         /* screen zero is offered once per session */
 let VSILENCE=null;       /* the 2-second stop */
 let VERR='';             /* why the mic is not running, said rather than swallowed */
+/* the mic is folded away behind one line now, so screen zero needs to know
+ whether it has been asked for. It stays open once opened, including across a
+ re-render while recording. */
+let VOPEN=false;
 
 /* ---- patterns only. Four things, and the screen names all four. ---- */
 const VHUBWORDS={
@@ -10856,27 +10933,41 @@ function vWave(){
  return '<span class="vwave" aria-hidden="true">'
   +[0,1,2,3,4,5,6].map(i=>'<i style="animation-delay:'+(i*90)+'ms"></i>').join('')+'</span>';
 }
+/* ---- screen zero ----
+ The microphone was the loud option and the questions the quiet one, which
+ put the experiment in front of the thing that works: voice needs Chrome,
+ catches three patterns, and most people will tap. The hierarchy is swapped.
+ Answering is the full-width primary; saying it out loud is one quiet line
+ under it, with a small glyph so it is still obviously there. The copy on
+ both is unchanged, and the mic itself is unchanged behind the line. */
 function scrVoice(){
- const live=!!VREC;
+ const live=!!VREC, open=VOPEN||live;
  return '<div class="iqtop"><span class="iqnav ghost"></span>'
   +'<div class="iqspacer"></div>'
   +'<span class="iqnav ghost"></span></div>'
   +'<div class="iqbody vbody">'
   +'<h2 class="iqh">Tell me what you’re looking for</h2>'
   +'<p class="iqhelp">Budget, where you work, what is worrying you. However it comes out.</p>'
-  +'<div class="vmic'+(live?' live':'')+'">'
-   +'<button type="button" id="vBtn" class="vbtn" aria-label="Hold to talk">'
-    +'<span class="vring r1"></span><span class="vring r2"></span>'
-    +(live?vWave():uiIcon('mic','nav',false))
-   +'</button>'
-   +'<span class="vlab">'+(live?'Listening… let go to stop':'Hold to talk')+'</span>'
-  +'</div>'
-  +'<p class="vheard'+(VERR?' verr':'')+'" id="vHeard">'
-   +(VERR?esc(VERR):(VINTERIM||VTEXT?esc((VTEXT+' '+VINTERIM).trim()):''))+'</p>'
-  +'<p class="vlimit">I am reading for budget, location and timing. '
-  +'The questions below cover the rest.</p>'
-  +'<div class="vsplit"><span>or</span></div>'
-  +'<button type="button" class="act ghost vtap" id="vTap">Rather tap? Answer 7 questions</button>'
+  +'<button type="button" class="act vgo" id="vTap">Answer 7 questions'
+   +'<span class="kcap kent" aria-hidden="true">\u21B5</span></button>'
+  +'<button type="button" class="vsay'+(open?' on':'')+'" id="vSay"'
+   +' aria-expanded="'+(!!open)+'">'
+   +'<span class="vsayi">'+uiIcon('mic','nav',false)+'</span>'
+   +'<span>Or say it out loud</span></button>'
+  +(open
+   ?'<div class="vopen">'
+    +'<div class="vmic'+(live?' live':'')+'">'
+     +'<button type="button" id="vBtn" class="vbtn" aria-label="Hold to talk">'
+      +'<span class="vring r1"></span><span class="vring r2"></span>'
+      +(live?vWave():uiIcon('mic','nav',false))
+     +'</button>'
+     +'<span class="vlab">'+(live?'Listening… let go to stop':'Hold to talk')+'</span>'
+    +'</div>'
+    +'<p class="vheard'+(VERR?' verr':'')+'" id="vHeard">'
+     +(VERR?esc(VERR):(VINTERIM||VTEXT?esc((VTEXT+' '+VINTERIM).trim()):''))+'</p>'
+    +'<p class="vlimit">I am reading for budget, location and timing. '
+    +'The questions above cover the rest.</p>'
+   +'</div>':'')
   +'<div class="iqexit">'+iqExit(0)+'</div>'
   +'</div>';
 }
@@ -10969,11 +11060,19 @@ function vStart(){
  the back button and the step count cannot drift from the questions actually
  asked. The invest path has six questions; household is a live-in question and
  asking an investor about it would collect something nothing reads. */
+/* ---- what every option costs, is, or does ----
+ A sub-line earns its place by being one of three things: what the option IS
+ (the hubs inside it, the phases it covers), what it DOES to the scoring
+ (named factor, named direction), or what it COSTS (what drops out, what a
+ number becomes). The test is whether the line could sit under a different
+ option and still read: if it could, it is filler and the option is better
+ with nothing. Two options that share a branch in personalWeights() share a
+ line, because that is the fact rather than a failure of the test. */
 const IQ_PURPOSE=[
  {k:'live', lab:'A home to live in',
- note:'Weighted towards your commute, what already runs here and what the place is like to live in.'},
+ note:'Commute carries 24%, more than any other factor'},
  {k:'invest',lab:'Somewhere to put money',
- note:'Weighted towards price growth, rent, and what is committed but not yet built.'}
+ note:'Growth, rent and what is committed weigh more than your journey'}
 ];
 const IQ_HOLD=[
  {k:'short',lab:'Under 3 years'},{k:'mid',lab:'3 to 7 years'},
@@ -10985,11 +11084,11 @@ const IQ_HOLD=[
  otherwise there is no point asking it. */
 const IQ_GOAL=[
  {k:'income',lab:'Rental income now',
- note:'Weighted towards yield, rent growth and how easily the place resells.'},
+ note:'Rent 19% → 24%, liquidity 9% → 13%, taken off price growth'},
  {k:'growth',lab:'Price growth later',
- note:'Weighted towards price growth and what is committed but not yet built.'},
+ note:'Growth 21% → 26%, pipeline 15% → 19%, taken off rent and liquidity'},
  {k:'both', lab:'Both, roughly evenly',
- note:'The desk’s standard investor weighting, with neither side favoured.'}
+ note:'The investor table untilted'}
 ];
 function iqList(){
  /* five for an investor, seven for somebody moving in. Work and travel are
@@ -11025,7 +11124,7 @@ function iqDef(key){
  note:'Pick as many as you like, or let the desk choose.',
  opts:[{k:'__any',lab:'Suggest for me',note:'No preference, rank the whole city',
  on:!INTAKE.zones.length}].concat(ZONES5.map(z=>({k:z,lab:z+' Bengaluru',
- on:INTAKE.zones.indexOf(z)>=0}))),
+ note:zoneContents(z), on:INTAKE.zones.indexOf(z)>=0}))),
  done:true};
  case 'time': return {t:inv?'How soon do you want to be holding?':'When do you want to move in?',
  h:'This decides which possession stages are worth showing you.',
@@ -11036,7 +11135,7 @@ function iqDef(key){
  h:'Pick up to two. The desk already knows the peak drive and the whole metro journey to each.',
  kind:'multi', attr:'work', max:2,
  note:'Picking two scores against <strong>the worse</strong> of the two commutes, not the average. The bad day is the one you live with.',
- opts:IQ_WORK.map(o=>({k:o.k,lab:o.lab,on:(INTAKE.workplace||[]).indexOf(o.k)>=0})),
+ opts:IQ_WORK.map(o=>({k:o.k,lab:o.lab,note:o.note,on:(INTAKE.workplace||[]).indexOf(o.k)>=0})),
  done:true};
  case 'travel': return {t:'How will you usually travel?',
  h:'This picks which journey is measured, not how heavily it counts.',
@@ -11147,83 +11246,70 @@ function areasPassing(i){
  const on=stagesOn(i);
  return AREAS.filter(a=>on.every(st=>st.ok(a)));
 }
-function funnelSteps(cur){
- const keys=iqList(), total=AREAS.length;
- const segNow=segList();
- let before=total;
- /* zones and work report done:true before anybody has seen them, and the
-  rest carry a default. A question nobody has reached yet is not answered,
-  whatever its definition says, or the funnel fills before the first tap.
-  Editing a stored profile is the other case: everything is answered. */
- return keys.map((k,i)=>{
- const d=iqDef(k), reached=INTAKE.done||i<=cur;
- const done=reached&&!!(d&&d.done);
- const n=done?areasPassing(i).length:before;
- const cut=before-n;
- let cause='';
- if(done){
-  if(cut>0){
-  /* the stage that newly came into play is the one that bit */
-  const was=stagesOn(i-1).map(x=>x.k);
-  const fresh=stagesOn(i).filter(x=>was.indexOf(x.k)<0);
-  const st=fresh[0]||stagesOn(i).slice(-1)[0];
-  cause=st?st.cut(cut):('This ruled out '+cut+' of them.');
-  }
-  else if(k==='budget')cause='Your budget reaches all '+total+'.';
-  else if(k==='work'||k==='travel')cause=commuteCause();
-  else if(k==='time'&&segNow){ const out=SOC.filter(x=>segNow.indexOf(x.seg)<0).length;
-  cause='This narrows the projects, not the areas: '+out+' of '+SOC.length
-   +' sit outside your timeline.'; }
-  else if(k==='zones')cause='A preference, not a filter. Nothing is ruled out.';
-  else cause='This changes the weighting, not the shortlist.';
+/* ---- the profile, building ----
+ The stepped funnel is gone. It counted the areas still in play, and for a
+ buyer with any realistic budget that was 86 of 86 on six of the seven
+ questions: a progress indicator that never moves reads as broken, and the
+ one question that did move it had already said so in words underneath.
+
+ What replaces it answers the question somebody actually has on question
+ four, which is what the desk now thinks it knows about them. One row per
+ question, their own answer where they have given one, the question's short
+ name where they have not. */
+const QSHORT={purpose:'Buying for',budget:'Budget',zones:'Areas',time:'Timing',
+ work:'Workplace',travel:'Travel',goal:'Holding for',house:'Household'};
+/* the answer as the person would say it, short enough for a 13.5px row */
+function iqAnswerOf(k){
+ switch(k){
+ case 'purpose': return INTAKE.purpose==='invest'?'To put money in':'To live in';
+ case 'budget': {const b=IQ_BUDGET.find(x=>x.k===INTAKE.budget);
+  return b?(b.cap?'Up to '+cr(b.cap):'No ceiling'):'';}
+ case 'zones': return INTAKE.zones.length?INTAKE.zones.join(', '):'Anywhere';
+ case 'time': {const t=IQ_TIME.find(x=>x.k===INTAKE.timeline); return t?t.lab:'';}
+ case 'work': {const w=(INTAKE.workplace||[]).map(x=>(IQ_WORK.find(o=>o.k===x)||{}).lab)
+   .filter(Boolean); return w.length?w.join(' + '):'';}
+ case 'travel': {const t=travelOpt(); if(!t)return '';
+  const o=commuteMaxOpt();
+  return t.lab+(selectedHubs().length&&o&&o.mins!=null?', under '+ceilPhrase(o):'');}
+ case 'goal': {const g=IQ_GOAL.find(x=>x.k===INTAKE.goal); return g?g.lab:'';}
+ case 'house': {const h=IQ_HOUSE.find(x=>x.k===INTAKE.household); return h?h.lab:'';}
  }
- before=n;
- return {k:k,i:i,n:n,total:total,done:done,cut:cut,cause:cause,
-  state:i<cur?'past':(i===cur?'now':'next')};
+ return '';
+}
+/* one row per question, in the order they are asked */
+function iqProfileRows(cur){
+ return iqList().map((k,i)=>{
+ const d=iqDef(k), reached=INTAKE.done||i<=cur;
+ const ans=reached&&d&&d.done?iqAnswerOf(k):'';
+ return {k:k,i:i,ans:ans,
+  state:i<cur?(ans?'done':'skipped'):(i===cur?'now':'next'),
+  lab:QSHORT[k]||k};
  });
 }
-/* the two commute questions when the ceiling took nothing. Three states, and
- they are not interchangeable: no workplace means there is nothing to be far
- from, no ceiling means they chose that, and a ceiling that reaches
- everywhere left is a fact worth stating rather than a zero worth printing. */
-function commuteCause(){
- if(!selectedHubs().length)
- return 'No workplace, so nothing is ruled out on distance.';
- const o=commuteMaxOpt();
- if(!o||o.mins==null)
- return 'No ceiling on the commute, so nothing is ruled out on distance.';
- return 'Everywhere still in play is inside your '+ceilWord(o)+'.';
+function iqAnswered(cur){ return iqProfileRows(cur).filter(r=>r.ans).length; }
+/* desktop: the right column. The count is answered-so-far, not the step
+ number, because a question reached and left blank is not an answer. */
+function iqProfileCard(cur){
+ const rows=iqProfileRows(cur), total=rows.length;
+ return '<div class="ipcard"><div class="iphead">'
+ +'<span class="ipk">Your search, building</span>'
+ +'<span class="ipn">'+iqAnswered(cur)+' of '+total+'</span></div>'
+ +'<div class="iprows">'+rows.map(r=>
+  '<div class="iprow '+r.state+'"><i class="ipdot"></i>'
+  +'<span class="ipt">'+esc(r.ans||r.lab)+'</span>'
+  +(r.state==='now'?'<span class="ipnow">now</span>':'')+'</div>').join('')
+ +'</div></div>';
 }
-function iqFunnel(i){
- const steps=funnelSteps(i), total=AREAS.length;
- const bars=steps.map(st=>{
- /* height is what the question did, not where it sits in the row, so
-  going back to question three does not shrink the four already answered */
- const pct=st.done?Math.max(26,Math.round((st.n/total)*100))
-  :(st.state==='now'?100:26);
- return '<span class="fstep '+st.state+(st.done?' done':'')+(st.cut>0?' cut':'')+'">'
-  +'<i style="height:'+pct+'%"></i>'
-  +'<em>'+(st.i+1)+'</em></span>';
- }).join('');
- return '<div class="fnl" role="img" aria-label="Question '+(i+1)+' of '+steps.length
- +', '+(steps[i]||steps[steps.length-1]).n+' of '+total+' areas still fit">'
- +'<div class="fnlbars">'+bars+'</div>'+funnelLines(i)+'</div>';
-}
-/* the same two lines wherever they are placed */
-function funnelLines(i){
- const steps=funnelSteps(i), total=AREAS.length;
- const now=steps[i]||steps[steps.length-1];
- /* the line describes what is on screen, so an answer given on this very
-  screen counts: walk back from here to the last question with a cause */
- let line='';
- /* question one rules nothing out whatever it is answered, so it says so
-  rather than printing a zero */
- if(i>0)for(let x=Math.min(i,steps.length-1);x>=0&&!line;x--){
- if(steps[x].done&&steps[x].cause)line=steps[x].cause;
- }
- if(!line)line='Nothing has been ruled out yet.';
- return '<p class="fnlnum"><b>'+now.n+' areas still fit</b>, of '+total+'</p>'
- +'<p class="fnlwhy">'+esc(line)+'</p>';
+/* mobile: one line above the button. Dots for what is answered, the answers
+ themselves joined and truncated by the line box rather than by a character
+ count, so a long answer shortens instead of disappearing. */
+function iqProfileLine(cur){
+ const rows=iqProfileRows(cur), total=rows.length;
+ const said=rows.filter(r=>r.ans).map(r=>r.ans);
+ return '<div class="ipline" aria-label="'+iqAnswered(cur)+' of '+total+' answered">'
+ +'<span class="ipdots">'+rows.map(r=>'<i class="ipdot '+r.state+'"></i>').join('')+'</span>'
+ +'<span class="ipsaid">'+esc(said.join(' \u00b7 '))+'</span>'
+ +'<span class="ipn">'+iqAnswered(cur)+' of '+total+'</span></div>';
 }
 function iqChrome(i){
  const total=iqTotal();
@@ -11234,7 +11320,7 @@ function iqChrome(i){
    :'<span class="iqnav ghost"></span>';
  return '<div class="iqtop">'
   +(i>0?'<button class="iqnav" id="iBack" aria-label="Back">‹</button>':'<span class="iqnav ghost"></span>')
-  +'<div class="iqfnlwrap">'+iqFunnel(i)+'</div>'
+  +'<div class="iqfnlwrap"></div>'
   +skip+'</div>';
 }
 /* ---- the facts ----
@@ -11300,9 +11386,14 @@ function iqFact(i){
   +'<span><b>'+esc(f.n)+'</b> '+esc(f.claim)+'<br>'+esc(f.src)+'</span></p>'
  +'</aside>';
 }
-function iqOption(d,o){
+/* n is 1-based; past nine there is no key, because a two-digit keycap is a
+ shortcut nobody reaches for. Hidden below 1024 along with the rest of the
+ keyboard layer: a phone has no keys to press. */
+function iqOption(d,o,n){
  return '<button type="button" class="iopt'+(o.on?' on':'')+'" data-'+d.attr+'="'+esc(o.k)+'"'
+  +(n&&n<10?' data-ikey="'+n+'"':'')
   +' aria-pressed="'+(!!o.on)+'">'
+  +(n&&n<10?'<span class="kcap" aria-hidden="true">'+n+'</span>':'')
   +'<span class="io-t">'+esc(o.lab)+(o.note?'<span class="io-n">'+o.note+'</span>':'')+'</span>'
   +'<span class="io-tick" aria-hidden="true">✓</span></button>';
 }
@@ -11317,14 +11408,26 @@ function scrQuestion(key){
   +'<h2 class="iqh">'+esc(d.t)+'</h2>'
   +'<p class="iqhelp">'+esc(d.h)+'</p>'
   +(d.note?'<p class="iqnote">'+d.note+'</p>':'')
-  +'<div class="iopts">'+d.opts.map(o=>iqOption(d,o)).join('')+'</div>'
+  +'<div class="iopts">'+d.opts.map((o,n)=>iqOption(d,o,n+1)).join('')+'</div>'
   +(d.after||'')
-  +'<div class="fnlsay">'+funnelLines(i)+'</div>'
+  +iqProfileLine(i)
   +'</div>'
   +'<div class="iqfoot"><button class="act" id="iNext"'+(d.done?'':' disabled')+'>'
-  +(i+1===iqTotal()?'Review my answers':'Continue')+'</button>'
+  +(i+1===iqTotal()?'Review my answers':'Continue')
+  +'<span class="kcap kent" aria-hidden="true">\u21B5</span></button>'
+  +iqKeyLegend(d)
   +(i===0?iqExit(i):'')+'</div>'
-  +iqFact(i);
+  /* one wrapper so the right column can hold two things; display:contents
+   below the breakpoint, so the phone sees the fact exactly where it was */
+  +'<div class="iqside">'+iqProfileCard(i)+iqFact(i)+'</div>';
+}
+/* the keys that work, named at the foot. Only drawn where there are keys. */
+function iqKeyLegend(d){
+ const n=Math.min(9,(d.opts||[]).length);
+ if(n<2)return '';
+ let caps='';
+ for(let x=1;x<=Math.min(4,n);x++)caps+='<span class="kcap">'+x+'</span>';
+ return '<p class="iqkeys" aria-hidden="true">'+caps+' to pick</p>';
 }
 
 /* the travel row carries both halves of one answer */
@@ -11897,6 +12000,32 @@ async function finishIntake(){
  await saveIntake(); applyIntake();
  iStep=resultsStep(); renderIntake();
 }
+/* ---- the keyboard layer ----
+ One listener on the document, attached once, which reads the screen rather
+ than remembering it: the number keys hit whatever [data-ikey] is rendered
+ now, and Enter is the Continue button itself, so nothing here can drift from
+ what the screen is showing. It is inert on a phone because nothing rendered
+ carries the attribute above a tap, and inert in a text field either way. */
+let IKEYSON=false;
+function wireIntakeKeys(){
+ if(IKEYSON)return; IKEYSON=true;
+ document.addEventListener('keydown',e=>{
+ const iv=document.getElementById('intake');
+ if(!iv||!iv.classList.contains('on'))return;
+ if(e.metaKey||e.ctrlKey||e.altKey)return;
+ const t=e.target;
+ if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.isContentEditable))return;
+ if(e.key>='1'&&e.key<='9'){
+  const b=document.querySelector('#iwrap [data-ikey="'+e.key+'"]');
+  if(b){e.preventDefault(); b.click();}
+  return;
+ }
+ if(e.key==='Enter'){
+  const n=document.getElementById('iNext')||document.getElementById('iConfirm');
+  if(n&&!n.disabled){e.preventDefault(); n.click();}
+ }
+ });
+}
 function wireIntake(){
  const g=id=>document.getElementById(id);
  const save=()=>{try{saveIntake();}catch(e){}};
@@ -11948,6 +12077,9 @@ function wireIntake(){
  b.addEventListener('click',e=>{e.preventDefault(); if(!VREC)vStart();});
  }
  if(g('vTap'))g('vTap').addEventListener('click',()=>{vStop(); IPHASE='q'; iStep=0; renderIntake();});
+ /* opening the mic is a render, not a permission prompt: the microphone is
+  still only asked for on the tap of the button inside */
+ if(g('vSay'))g('vSay').addEventListener('click',()=>{VOPEN=!VOPEN; renderIntake();});
  if(g('vGo'))g('vGo').addEventListener('click',()=>{
  IPHASE='q'; iStep=nextUnanswered(0); renderIntake();});
 
@@ -11964,6 +12096,7 @@ function wireIntake(){
  iStep=VCAUGHT?nextUnanswered(iStep+1):iStep+1;
  renderIntake();});
  if(g('iConfirm'))g('iConfirm').addEventListener('click',()=>{finishIntake();});
+ wireIntakeKeys();
  /* a row on the review screen jumps straight back to its own question */
  document.querySelectorAll('#iwrap [data-edit]').forEach(b=>b.addEventListener('click',()=>{
  const i=iqIndex(b.dataset.edit);
@@ -12643,7 +12776,7 @@ async function boot(){
  const c=await local.get('checks'); if(c&&typeof c==='object')checks=c;
  }
  movePanels();
- mountCornerMarks();
+ mountGrain();
  applyIntake();
  renderSoc(); renderMicro(); renderVisits(); renderRoute(); renderDD();
  fillPropSelects(); calcCost(); calcYield(); calcNeg();

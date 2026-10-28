@@ -986,53 +986,124 @@ SpeechRecognition is missing.
 An option tap writes the answer and re-renders in place. **Advancing is the
 Continue button's job** — a mis-tap must never jump someone forward a screen.
 
-### The funnel is the progress indicator, and the count is real
+### Every option says what it is, does, or costs
 
-The dot row is **gone, not hidden** — `grep iqdots` returns nothing. In its
-place, `iqFunnel(i)` draws seven blocks, one per question, each the height of
-how much of the field is still in play. `funnelSteps(cur)` computes them, and
-`funnelLines(i)` writes the two lines beneath: the count, then why it moved.
+A sub-line under an option is one of three things: **what it IS** (the hubs
+inside a workplace, the phases of Electronic City, the areas inside a zone),
+**what it DOES** to the scoring (a named factor and a named direction), or
+**what it COSTS** (what drops out, what a number becomes). The test is whether
+the line could sit under a different option and still read. If it could, it is
+filler and the option is better bare: a vague line under thirty options is
+worse than no line at all, and nothing may say "helps us rank better".
 
-Four rules the component carries, each of which cost a pass to find:
+**34 written, 2 blank.** The blanks are "Just me" and "A couple", which are
+one branch in `personalWeights()`: any line true of one is true of the other,
+which is the test failing out loud. They used to share "Proximity and easy
+resale", which is exactly the filler this rule exists to remove.
 
-- **Height follows the answer, not the position.** `st.done`, never
-  `state==='past'`. Going back to question three must not shrink the four
-  already answered behind it.
+The zone lines are **counted off `AREAS`** by `zoneContents()` rather than
+written down, so they cannot drift from the data. Two names and the true
+remainder: three wraps to a second line at 375 and costs that screen 95px for
+one more example, and the count is what keeps two honest rather than a
+selective sample.
+
+`iqDef` has to pass `note` through for the line to appear. The workplace
+question dropped it for six options and nobody noticed, because the options
+had never had one.
+
+### The profile builds; the funnel is gone
+
+The stepped funnel counted the areas still in play, and for any realistic
+budget that was 86 of 86 on six of the seven questions. A progress indicator
+that never moves reads as broken, and the one question that did move it had
+already said so in words underneath. It is deleted, not hidden.
+
+What replaces it answers the question somebody actually has on question four,
+which is what the desk thinks it knows about them so far. One data source,
+`iqProfileRows()`, two renderers:
+
+- `iqProfileCard(i)` — desktop, the right column above the fact card. One row
+  per question: a filled dot and the answer where there is one, a hollow dot
+  and the question's short name at 38% where there is not, "now" on the
+  current row. The count is **answers given**, not the step number, because a
+  question reached and left blank is not an answer.
+- `iqProfileLine(i)` — the phone, one 42px line above the button. The same
+  dots, the answers joined by middots and truncated by the line box rather
+  than by a character count, so a long answer shortens instead of vanishing.
+
+`.iqside` wraps the card and the fact so the right column can hold two things;
+it is `display:contents` below the breakpoint, so the phone sees the fact
+footnote exactly where it always was. **Two items placed in one grid area
+overlap** — that is why the wrapper exists.
+
+### The keyboard layer is desktop only
+
+Number keycaps 1–9 on the options, Enter in the Continue button, `1 2 3 4 to
+pick` at the foot. All of it `display:none` below 1024: a phone has no keys,
+and a 22px square on every option would cost 30px of the one width that
+cannot spare it.
+
+`wireIntakeKeys()` attaches **one listener to the document, once**, and reads
+the screen rather than remembering it: a number key hits whatever
+`[data-ikey]` is rendered now, Enter clicks the real Continue button. Nothing
+in it can drift from what the screen is showing. It returns early inside an
+input, under a modifier, and when the intake is closed.
+
+No fourth font. A keycap is two characters at 11px, and Space Grotesk, already
+loaded for every caps label, sets them as well as a mono would.
+
+### Grain, not corner marks
+
+The survey registration marks are gone. They did not earn their corner: on
+Home the top-left one was 89% behind the header band and the hero, and two
+marks on an otherwise clean page read as decoration looking for a reason. One
+`feTurbulence` layer at .3 over the gradient does what they were for, which is
+to stop the ground reading as flat, and it is the same everywhere rather than
+right in one corner and wrong in another.
+
+`mountGrain()` puts one `.grain` into every `[data-grain]` host at boot: the
+sign-in gate, the intake overlay (which carries the review and the placard
+with it) and Home. `z-index:-1`, `pointer-events:none`, `aria-hidden`. It is
+a `background-image` data URI, so it costs no request and no library.
+
+### Screen zero leads with the questions
+
+The microphone was the loud option and the questions the quiet one, which put
+the experiment in front of the thing that works: voice needs Chrome, catches
+three patterns, and most people will tap. **Answer 7 questions** is the
+full-width primary; **Or say it out loud** is one quiet line under it with a
+small mic glyph, and `VOPEN` unfolds the microphone in place. The copy on both
+is unchanged and the mic still asks for permission on its own tap, never on
+render. The header mic on the five sections is untouched.
+
+### What the funnel left behind
+
+The stepped funnel is deleted (see above), but two of its rules outlived it
+and the replacement keeps them:
+
 - **A question nobody has reached is not answered**, whatever `iqDef` says.
   `zones` and `work` report `done:true` before anybody has seen them and the
-  rest carry a default, so an ungated funnel is full before the first tap.
+  rest carry a default, so an ungated indicator is full before the first tap.
   `reached = INTAKE.done || i<=cur` is the gate; editing a stored profile is
   the other case, and there everything is answered.
-- **The lines read the current screen's answer**, not the previous screen's.
-  They walk back from `i` to the last question with a cause, so picking a
-  budget updates the count under it rather than one screen later.
-- **Question one says nothing has been ruled out yet**, whatever it is
-  answered, because it rules nothing out and a zero there reads as a finding.
-
-`.fstep.cut` is the step that actually narrowed the field; its number takes
-`--warn-fg`, the same amber as the waterfall's bite, and is declared **before**
-`.fstep.now` so the question you are standing on still reads as the one you
-are standing on.
+- **It reads the current screen's answer**, not the previous screen's, so
+  picking a budget fills its own row rather than the next one.
 
 **Two things reduce the area count: budget, and the commute ceiling.** Zones
 are a preference by `ZONE_PENALTY`, the timeline narrows projects rather than
-areas, and the rest move weights, so those say what the question *did* ("This
-changes the weighting, not the shortlist") rather than printing a cut of zero.
-Every count comes off `areaStages()`, which is the predicate the five are
-filtered by, so a funnel line cannot claim a filter the shortlist does not
-run.
+areas, and the rest move weights. Every count still comes off `areaStages()`,
+which is the predicate the five are filtered by, so nothing on screen can
+claim a filter the shortlist does not run.
 
-**The funnel is what "Question 2 of 7" used to say.** On a phone the words are
-visually hidden and the numbered blocks carry it, which is where the screen
-pays for the two lines beneath the options; the desktop column has room for
-both and keeps them. `.iqbody:has(.fnlsay){padding-bottom:0}` for the same
-reason: the 29px under the options existed to clear the sticky footer, and the
-count now stands in that gap rather than the screen paying for it twice.
+`.iqbody:has(.ipline){padding-bottom:0}`: the 29px under the options existed
+to clear the sticky footer, and the building line stands in that gap rather
+than the screen paying for the space twice. On a phone "Question 2 of 7" is
+visually hidden, because the dots and the count say it in the same glance one
+line below.
 
-On desktop the funnel takes **a row of its own** and Back is absolutely
-positioned in the overlay's margin. In the row, Back cost the screen 54px and
-moved the funnel 54px between question one and question two, which is the
-alignment the row exists to hold.
+On desktop Back is absolutely positioned in the overlay's own margin. In the
+row it cost the screen 54px and moved everything beside it between question
+one and question two.
 
 ### The waterfall on the review screen
 
@@ -1044,92 +1115,6 @@ bar tells a buyer that filter ran.
 
 `.wrow` sets `line-height:1.3`. At body's 1.55 the three stages cost the
 review screen 15px it does not have.
-
-### Corner marks, not a background
-
-`cornerMarks()` returns two inline SVGs, mounted by `mountCornerMarks()` into
-every `[data-cmarks]` host at boot — the intake overlay and Home. A crosshair
-circle at the corner, two rules running in and three or four ticks along them;
-110px top-left, 130px bottom-right, 1px `--primary` at .3 and .26,
-`aria-hidden`, `pointer-events:none`, `z-index:-1`, and **nothing below
-1024px**: a phone has no empty corners to decorate.
-
-`z-index:-1` paints them above the host's own background and below everything
-in flow, which is the point. `#sec-home` therefore takes `position:relative`
-and `z-index:0` in the same media query, so the negative layer stays inside it
-rather than escaping to the page. Nothing fixed lives inside `#sec-home`, which
-is what makes that stacking context safe.
-
-**On Home the top-left mark is mostly covered, and that is the layout, not a
-bug.** The header band and the hero card reach that corner: 84 of 784 sampled
-points are clear, in a 14px strip between them. The bottom-right one reads.
-Lifting it above the band would put decoration over content, and moving it
-would not be a corner. The intake, which is where the empty space actually is,
-shows both.
-
-### The commute ceiling is a filter, and the buyer sets it
-
-Question six asks two things, because how you travel and how far you will go
-are one decision and an eighth question would have made the flow longer to say
-less. `IQ_CMAX` holds the four bands, `INTAKE.commuteMax` holds the answer and
-`CMAX_DEFAULT` is `'60'`: a profile written before this round has no answer and
-reads as an hour, which the review row labels **as a default** so nobody is
-held to a number they never chose. `cmaxBlock()` renders it and **hides itself
-where no workplace is set**, because a ceiling with nothing to measure from is
-a control that does nothing. Each band carries how many areas survive it, so
-the choice is made against the consequence.
-
-**It is a filter, not a weight, and it does not touch the score.** This is the
-same shape as budget, and the reason matters: `areaFit` answers how well a
-place suits this person, and the ceiling answers whether they would make the
-journey. Zeroing the score would conflate the two and would tell a buyer that
-Devanahalli is a bad area rather than a far one. The digests prove it: across
-all four states `areaFit` and `socFit` are **byte-identical** to before, while
-the personal area and project *rankings* both move.
-
-    commuteCeiling()   null for an investor, null with no workplace, else the
-                       chosen minutes. Those two nulls are not the same as 'any'
-                       and must stay separate in the copy.
-    commuteMinsOf(x)   peak minutes on the chosen journey, worse of two hubs,
-                       which is exactly how commute is already scored
-    overCeiling(x)     minutes past it, 0 inside it, 0 when unknown
-
-**An unknown journey is never excluded.** Absence of a drive time is absence of
-evidence, which is the rule the flood layer keeps.
-
-Four places filter on it and all four read the same predicate: `topAreas`,
-`socGroups` (a project is scored from its own coordinate, so it takes the
-ceiling directly rather than inheriting its area's verdict), `rankedAreas`
-**only when `RANKMODE` is `you`**, and `areaStages()` for the funnel and the
-waterfall. **`investScore`, `investFull`, `priScore` and `sweetScore` must
-never see it** — they are the comparable numbers every buyer reads on every
-panel, and Ranked overall is their list.
-
-**What the ceiling removes is shown, not swallowed.** `commuteMisses()` returns
-the areas that pass everything else and fail only the commute, nearest first;
-`commuteMissHTML()` is the collapsed line under the five ("7 more fit
-everything except the commute. The closest is Sahakar Nagar at 63 minutes, 3
-over your hour") with the gap per area and the next band one tap away through
-`raiseCeiling()`. It shows **through the placard's lock**, because those are
-areas the desk is not recommending and rule 9 is that browsing reads
-everything. `ceilingVerdict(a)` says the same thing on an excluded area's
-Overview, next to the minutes it is about and nowhere else.
-
-**Under three survivors is not a shortlist.** `ceilingThinHTML()` replaces the
-ranking with the three closest misses and the next band up, which is CLAUDE.md's
-"a ranking is only meaningful if the top result is actually good" applied to a
-filter the buyer can undo. `topAreas` still backfills to five, and every
-backfilled card names the filter it broke through `fcardWhyIn()` — the budget
-backfill had been silent about it, and a second silent reason would have made
-the five unreadable.
-
-**At the hour it rarely reaches the five, and that is the honest reading.**
-Across 96 hub/budget/travel combinations the 1-hour default changes the top five
-areas in **none** of them and the top five projects in 6; 45 minutes changes 6
-and 19; 30 minutes changes 56 and 66. The commute penalty already pushes a
-74-minute area to 82nd of 86, so what the default buys is a ranked list that
-cannot contain it and a line that names what went, not a different top five.
-Do not "fix" that by tightening the default.
 
 ### One way out, and somewhere to land
 
@@ -1670,13 +1655,14 @@ about 230px each) and its generic twin at ~2.81, **Listings** (the full director
 **guide articles**, and **Home** at ~1.36. Screen zero fits one screen with no
 scroll, and must stay that way.
 
-The intake's own measurements at 375x812: screen zero 812, Q1 812, Q2 1000,
-Q3 846, Q4 812, Q5 897, Q6 **967**, Q7 812, review **1304**. The funnel round
-held every one of these flat; the commute ceiling then bought Q6 155px for its
-own control and the review 88px for the third waterfall stage and the longer
-travel row. Both are new content rather than a second copy of something, and
-both stay inside the two-screen rule at 1.19 and 1.61. Measure against these,
-not against a remembered number.
+The intake's own measurements at 375x812: screen zero 812, Q1 812, Q2 1001,
+Q3 **934**, Q4 812, Q5 **1003**, Q6 968, Q7 812, review 1286. Q3 and Q5 are
+the two questions whose options had no sub-line at all before they got one, so
+six lines each is what they cost; everything else is within a pixel of what it
+was, and the review came down 18px. At 1280 the same screens are 800, 800,
+860, 909, 800, 929, 870, 800, 800: four of them got **shorter**, because the
+funnel's bar row and two lines of text were costing about 64px. Measure
+against these, not against a remembered number.
 
 Market's head is the sub-tabs and the microphone on one row, with the heading
 visually hidden and the section's top padding cut to 18px. Adding anything to
