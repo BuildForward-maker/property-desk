@@ -1574,6 +1574,61 @@ loud one carries it on desktop and the quiet one is hidden there; a phone
 keeps both, which is why the rule is scoped to the breakpoint rather than
 deleted from `renderTuned()`.
 
+### `[hidden]` is not display:none unless you say so
+
+`[hidden]{display:none}` lives in the UA stylesheet, and **any author rule
+that sets display beats it**. `.pclose{display:inline-flex}` did exactly
+that: the intake's X carried `hidden=true`, reported `hidden === true` to a
+script, and rendered at 1220,16 all the same. There is a global
+`[hidden]{display:none!important}` now, because the next component to set
+display on a hideable element would do the same thing.
+
+**And the audit that passed it is the more important lesson.** The exit-rule
+check asked `!x.hidden && x.offsetParent !== null`, short-circuited on the
+attribute, and reported "no X" for an X that was on screen — it asked the DOM
+what it intended rather than what it painted. **Measure the rendered box.**
+A visibility check is `width > 0 && height > 0 && visibility !== 'hidden' &&
+display !== 'none' && opacity > 0.05`, never the `hidden` property.
+
+Reproducing a no-storage state also has to be done from **outside the app**:
+clear localStorage, sessionStorage and IndexedDB from a different page on the
+origin, then navigate in. Clearing from inside a tab that has already booted
+leaves the app's own in-memory state behind.
+
+### The lens row has no scroller
+
+Seven chips and a Filters button do not fit the map column, and three rounds
+of styling the overflow — height, radius, gap, fade — never changed that.
+There is no scroller in the row now and no mask: `renderLensRow()` shows as
+many chips as it has **measured** room for, puts the rest behind "N more",
+and keeps Filters in its own slot behind a `flex:1` spacer. Nothing scrolls,
+so nothing can be cut.
+
+`lensFit()` measures in a hidden probe that renders a real chip per lens, a
+real overflow control and a real Filters button, and subtracts all three
+plus the 12px gap before placing a single chip. Guessing that reserve is how
+the row kept ending one chip short. Three chips is the floor; below that the
+narrow shape is the honest one.
+
+**The row is rendered by a `ResizeObserver` on itself**, not once at boot:
+the grid settles after boot, and a row measured too early showed three chips
+where four fit.
+
+`LENSMRU` is most-recently-used order, so choosing from the overflow swaps
+the new lens in for the chip used longest ago and what somebody just picked
+is always visible.
+
+Below 1024 the arithmetic stops working at all — 354px of usable width
+against a 110px Filters button and an 86px chip — so the phone gets a
+different shape for the same state: a "Colour by" dropdown taking the
+remaining width, Filters as a 42px square with its count on the corner, and
+all seven lenses with **full names** in a bottom sheet. It is the only place
+"Asking vs registered" has ever been readable. One handler, two
+presentations.
+
+Chips keep the 999px pill; Filters takes 13px, because it is a control and
+not a lens.
+
 ### The chip row: the cut, not the layout
 
 The scroller and Filters are two flex siblings that divide the row. Neither is

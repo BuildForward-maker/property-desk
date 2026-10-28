@@ -873,6 +873,12 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 .so-head .sub{font-size:12px;color:var(--muted);margin-top:3px}
 /* one close control for every panel, modal and overlay. 44x44 is the minimum
  comfortable tap target; anything smaller is a trap on a phone. */
+/* [hidden] is only display:none in the UA sheet, and any author rule that
+ sets display beats it. .pclose{display:inline-flex} did exactly that: the
+ intake's X carried hidden=true, reported hidden===true to a script, and
+ rendered anyway at 1220,16. One global guard, because the next component to
+ set display on a hideable element would do the same thing. */
+[hidden]{display:none!important}
 .pclose{appearance:none;background:var(--tile);border:1px solid var(--line);font:inherit;
  font-size:17px;line-height:1;cursor:pointer;color:var(--muted);
  min-width:44px;min-height:44px;width:44px;height:44px;display:inline-flex;
@@ -1305,33 +1311,71 @@ td,th{border-color:var(--line)}
  scrollbar-width:none;-ms-overflow-style:none}
 .chiprow::-webkit-scrollbar{display:none}
 
-/* ---- the lens toggles become chips ---- */
-.lens{margin:0 0 var(--s-cards);gap:8px}
-.lens>span:first-child{width:100%;font-family:var(--label);font-size:11px;font-weight:600;
- letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-/* ---- the chip scroller ----
- The scroller and Filters are two flex siblings that divide the row: neither
- is positioned, neither overlaps the other, and the gap between their border
- boxes is 12px at every width. What read as a chip running under the button
- was not an overlap at all, it was the cut: 34px of fade is not enough to
- kill a 13.5px glyph, so a half-letter sat legibly twelve pixels from the
- button and the eye joined them up. 56px removes the letter.
-
- The fade belongs here rather than in the desktop block because the phone is
- where the row is tightest — 311px of scrollport for 744px of chips — and it
- had no fade at all. `.atend` clears it when there is nothing left to scroll,
- driven by exleftFade() on scroll and on resize. */
-.lens .toggle{display:flex;gap:8px;border:0;overflow-x:auto;max-width:100%;
- scrollbar-width:none;padding:1px;
- -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 56px),transparent);
- mask-image:linear-gradient(to right,#000 calc(100% - 56px),transparent)}
-.lens .toggle.atend{-webkit-mask-image:none;mask-image:none}
-.lens .toggle::-webkit-scrollbar{display:none}
-.lens .toggle button{min-height:var(--tap);padding:9px 15px;border-radius:var(--r-chip);
+/* ---- the lens row ----
+ One row, three parts, and no scroller anywhere in it: chips that have been
+ measured to fit, an overflow control, a flex spacer, and Filters in its own
+ slot. Nothing scrolls, so nothing can be cut, which is what three rounds of
+ styling a scroller never achieved. */
+.lens{position:relative;display:flex;align-items:center;flex-wrap:nowrap;
+ gap:0;margin:0 0 var(--s-cards)}
+.lenschips{display:flex;align-items:center;gap:8px;min-width:0;flex:0 0 auto}
+.lspacer{flex:1 1 auto;min-width:12px}
+.lchip{min-height:var(--tap);padding:9px 15px;border-radius:var(--r-chip);
  border:1px solid var(--line);background:var(--tile);color:var(--muted);
- font-family:var(--font);font-size:13.5px;font-weight:600;white-space:nowrap}
-.lens .toggle button[aria-pressed="true"]{background:var(--primary);border-color:var(--primary);
- color:#fff}
+ font-family:var(--font);font-size:13.5px;font-weight:600;white-space:nowrap;
+ cursor:pointer;flex:0 0 auto}
+.lchip.on{background:var(--grad-primary);border-color:transparent;color:#fff}
+.lensmore{display:inline-flex;align-items:center;gap:5px;min-height:var(--tap);
+ padding:9px 13px;border-radius:var(--r-chip);border:1px dashed var(--line);
+ background:none;color:var(--muted);font:inherit;font-size:13px;font-weight:700;
+ white-space:nowrap;cursor:pointer;flex:0 0 auto}
+.lensmore:hover{border-color:var(--primary);color:var(--primary)}
+/* Filters is a control, not a lens, so it takes the square-ish radius and
+ never the 999px pill the chips use */
+.lensfilt{display:inline-flex;align-items:center;gap:7px;min-height:var(--tap);
+ height:var(--tap);padding:0 15px;border-radius:13px;border:1px solid var(--line);
+ background:var(--card);color:var(--ink);font:inherit;font-size:13.5px;
+ font-weight:700;white-space:nowrap;cursor:pointer;flex:0 0 auto;position:relative}
+.lensfilt:hover{border-color:var(--primary)}
+.lensfilt svg{width:17px;height:17px}
+.lcount{display:inline-flex;align-items:center;justify-content:center;min-width:19px;
+ height:19px;padding:0 5px;border-radius:999px;background:var(--grad-primary);
+ color:#fff;font-family:var(--label);font-size:11px;font-weight:700}
+.lensfilt.sq{width:42px;height:42px;min-height:42px;padding:0;justify-content:center}
+.lensfilt.sq .lcount{position:absolute;top:-6px;right:-6px}
+/* the overflow panel, under the control that opened it */
+.lensmenu{position:absolute;top:calc(100% + 6px);left:0;z-index:30;min-width:208px;
+ background:var(--card);border:1px solid var(--line);border-radius:var(--r-tile);
+ padding:5px;box-shadow:0 10px 28px rgba(20,18,43,.16);display:flex;
+ flex-direction:column;gap:2px}
+.lmrow{display:block;width:100%;text-align:left;min-height:var(--tap);padding:0 11px;
+ border:0;border-radius:9px;background:none;font:inherit;font-size:13px;
+ font-weight:600;color:var(--ink);cursor:pointer}
+.lmrow:hover{background:var(--tile)}
+.lmrow.on{background:var(--tile);color:var(--primary)}
+/* ---- the phone's shape ----
+ 354px of usable width against a 110px Filters button and an 86px chip is not
+ a chip row, it is a dropdown pretending to be one. So below 1024 it is a
+ dropdown and a 42px square, and the full names live in a sheet. */
+.lens.narrow{gap:10px}
+.ldd{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;align-items:flex-start;
+ justify-content:center;gap:1px;min-height:52px;padding:7px 13px;border-radius:13px;
+ border:1px solid var(--line);background:var(--card);cursor:pointer;font:inherit;
+ text-align:left;position:relative}
+.ldl{font-family:var(--label);font-size:9.5px;font-weight:700;letter-spacing:.08em;
+ text-transform:uppercase;color:var(--muted);line-height:1}
+.ldv{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.2;max-width:100%;
+ overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ldc{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:19px;
+ color:var(--muted);line-height:1}
+.lens.narrow .lensfilt{height:52px;min-height:52px}
+.lenssheet{display:flex;flex-direction:column;gap:4px}
+.lsrow{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;
+ min-height:var(--tap);padding:0 14px;border:1px solid var(--line);border-radius:var(--r-seg);
+ background:var(--card);font:inherit;font-size:14px;font-weight:600;color:var(--ink);
+ cursor:pointer;text-align:left}
+.lsrow.on{background:var(--tint);border-color:var(--primary);color:var(--primary)}
+.lsrow i{font-style:normal;font-weight:800;color:var(--primary)}
 
 /* ---- map card ---- */
 .mapcard{background:var(--card);border-radius:20px;padding:10px;margin-bottom:var(--s-cards)}
@@ -2155,7 +2199,7 @@ td,th{border-color:var(--line)}
   .main{padding:0 var(--s-screen) 70px}
 }
 
-.exfilt{display:none;margin-left:auto}
+/* .exfilt is gone: the lens row renders its own Filters button now */
 /* the bottom-of-column cue belongs to the desktop split only */
 .exfade,.exbar{display:none}
 .workpin{background:none;border:0}
@@ -2236,10 +2280,11 @@ td,th{border-color:var(--line)}
   #p-heat>.mapnote{margin-top:8px;font-size:11.5px;line-height:1.45}
   /* the Map button has nothing to switch to when the map is always there */
   #sec-explore .segmented button[data-mode="discover"]{display:none}
-  /* the filters sit with the chips rather than floating over the map */
-  #p-heat>.lens{display:flex;align-items:center;gap:8px;flex-wrap:nowrap}
-  #p-heat>.lens>span:first-child{display:none}
-  .exfilt{display:inline-flex;flex:0 0 auto;margin:0}
+  /* this hid the old "Score by" label, which was the row's first span. The
+   chips container is that span now, so the rule has to name the label by
+   class rather than by position — it hid every chip in the row. */
+  #p-heat>.lens{display:flex;align-items:center;gap:0;flex-wrap:nowrap}
+
   /* and the panel runs to the edge */
   #sec-explore.on{gap:0 20px}
   #sec-explore.on>#p-heat{padding:0;margin-right:0}
@@ -2263,11 +2308,6 @@ td,th{border-color:var(--line)}
  before it. The fade itself lives on the base rule, below, because the phone
  needs it more than the desktop does and never had one. */
   #sec-explore.on>#p-heat>.lens{align-items:center}
-  /* 4px of margin on top of the row's own 8px gap is the 12px gap, measured
-   between the scroller's border box and the button's, not guessed */
-  #sec-explore.on>#p-heat>.lens .toggle{margin-right:4px}
-  #sec-explore.on>#p-heat>.lens .exfilt{min-height:var(--tap);height:var(--tap);
- border-radius:11px;padding:0 16px;align-self:center}
   /* --- the left column scrolls, and says so ---
  It had overflow-y:auto and an overlay scrollbar that never showed, so a card
  cut off at the fold read as a rendering fault. A thin permanent scrollbar and
@@ -2427,8 +2467,7 @@ body{background:var(--grad-bg);background-attachment:fixed}
 .ui-score.look{background:var(--warn-bg);color:var(--warn-fg)}
 .ui-score.reason{background:var(--tile);color:var(--muted)}
 .ui-fb .fbt i,.zbar .zt i,.vsrow .vt i{background:var(--grad-primary)}
-.ui-chip.on,.lens .toggle button[aria-pressed="true"],
-.filtercard .toggle button[aria-pressed="true"],
+.ui-chip.on,.filtercard .toggle button[aria-pressed="true"],
 #pipeFirm[aria-pressed="true"],#floodHide[aria-pressed="true"]{
  background:var(--grad-primary);border-color:transparent;color:#fff}
 .iopt.on{background:var(--grad-primary);border-color:transparent}
@@ -3897,19 +3936,9 @@ alter publication supabase_realtime add table desk_prefs;</pre>
 
   <div class="banner"><strong>Read the confidence marks.</strong> Sources disagree hard on Bengaluru area rates, I found Hennur Road quoted at ₹5,800 and ₹8,500 in the same month, and HSR Layout quoted anywhere from ₹7,454 to ₹17,638 depending on whether you look at registered deeds or asking prices. So this shows <em>ranges</em>, not single numbers, and marks how confident each one is. Anything you act on should be re-checked against Kaveri registered transactions for the specific society.</div>
 
-  <div class="lens">
-    <span>Score by</span>
-    <span class="toggle">
-      <button data-lens="sweet" aria-pressed="true">Overall</button>
-      <button data-lens="price" aria-pressed="false">Price growth</button>
-      <button data-lens="rent" aria-pressed="false">Rental</button>
-      <button data-lens="pipe" aria-pressed="false">Pipeline</button>
-      <button data-lens="flood" aria-pressed="false">Flood</button>
-      <button data-lens="stage" aria-pressed="false">Market stage</button>
-      <button data-lens="froth" aria-pressed="false">Asking vs registered</button>
-    </span>
-    <button type="button" class="act ghost small exfilt" id="exFilt">Filters</button>
-  </div>
+  <!-- the lens row renders itself: how many chips fit is measured, never
+       written down. renderLensRow() fills this. -->
+  <div class="lens" id="lensRow"></div>
   <div class="filtercard">
     <div class="fhead"><h3>Filter</h3>
       <button class="clearall" id="exClear" type="button">Clear all</button></div>
@@ -8609,16 +8638,11 @@ function exleftFade(){
   }
  }
  }
- const tog=document.querySelector('#p-heat>.lens .toggle');
- if(tog){const r=tog.scrollWidth-tog.clientWidth;
- tog.classList.toggle('atend',r<=2||tog.scrollLeft>=r-2);}
 }
 function exleftFadeSoon(){ setTimeout(exleftFade,140); }
 (function(){
  const el=document.querySelector('#sec-explore>.exleft');
  if(el)el.addEventListener('scroll',exleftFade,{passive:true});
- const tog=document.querySelector('#p-heat>.lens .toggle');
- if(tog)tog.addEventListener('scroll',exleftFade,{passive:true});
  window.addEventListener('resize',exleftFadeSoon);
 })();
 function renderHeatMap(){
@@ -9461,10 +9485,186 @@ function renderSupply(){
  renderHeat(); renderHeatMap();
  });
 })();
-document.querySelectorAll('[data-lens]').forEach(b=>b.addEventListener('click',()=>{
- LENS=b.dataset.lens;
- document.querySelectorAll('[data-lens]').forEach(x=>x.setAttribute('aria-pressed',x===b));
- renderHeat();}));
+/* ---- the lens row ----
+ Seven chips and a Filters button do not fit the map column, and three
+ rounds of styling the overflow did not change that. There is no scroller
+ here now and no fade: the row shows as many chips as it has measured room
+ for, puts the rest behind "N more", and keeps Filters in its own slot at the
+ right. Nothing scrolls, so nothing can be cut.
+
+ Below 1024 the arithmetic stops working at all — 354px of usable width
+ against a 110px Filters button and an 86px chip — so the phone gets a
+ different shape for the same state: a dropdown naming the current lens, and
+ Filters as a 42px square. One handler, two presentations.
+
+ `LENSMRU` is most-recently-used order. Choosing from the overflow swaps the
+ new lens in for the chip used longest ago, so what somebody just picked is
+ always the one they can see. */
+const LENSES=[
+ {k:'sweet',lab:'Overall'},{k:'price',lab:'Price growth'},{k:'rent',lab:'Rental'},
+ {k:'pipe',lab:'Pipeline'},{k:'flood',lab:'Flood'},{k:'stage',lab:'Market stage'},
+ {k:'froth',lab:'Asking vs registered'}
+];
+let LENSMRU=LENSES.map(l=>l.k);
+function lensLab(k){const l=LENSES.find(x=>x.k===k);return l?l.lab:k;}
+function lensFilterCount(){
+ let n=0; if(ZF)n++; if(FLOODHIDE)n++; if(PIPEFIRM)n++; return n;
+}
+function lensNarrow(){ return window.innerWidth<1024; }
+/* ---- how many chips fit ----
+ Measured, never written down, and the two things that are not chips are
+ measured too: a hidden probe renders a real chip for every lens, a real
+ "N more" and a real Filters button, so the arithmetic is done in the same
+ type and padding the row will use. Guessing the reserve is how the old row
+ ended up one chip short and overflowing. */
+function lensFit(rowW){
+ const probe=document.createElement('div');
+ probe.className='lens';
+ probe.style.cssText='position:absolute;visibility:hidden;left:-9999px;top:0;width:'
+  +Math.max(320,rowW)+'px';
+ probe.innerHTML='<span class="lenschips">'
+ +LENSMRU.map(k=>'<button class="lchip">'+esc(lensLab(k))+'</button>').join('')
+ +'<button class="lensmore">0 more<span>\u203A</span></button></span>'
+ +'<span class="lspacer"></span>'
+ +'<button class="lensfilt"><span>Filters</span><span class="lcount">9</span></button>';
+ document.body.appendChild(probe);
+ const chips=[...probe.querySelectorAll('.lchip')].map(e=>e.getBoundingClientRect().width);
+ const moreW=probe.querySelector('.lensmore').getBoundingClientRect().width;
+ const filtW=probe.querySelector('.lensfilt').getBoundingClientRect().width;
+ probe.remove();
+ /* Filters, the 12px that must stay clear beside it, and the overflow
+  control are all taken off the top before a single chip is placed */
+ const avail=rowW-filtW-12-moreW-8;
+ let used=0,n=0;
+ for(let i=0;i<chips.length;i++){
+ const w=chips[i]+(n?8:0);
+ if(used+w>avail)break;
+ used+=w; n++;
+ }
+ /* if every lens fits there is no overflow control, so the room it was
+  holding goes back to the chips */
+ if(n>=chips.length)return chips.length;
+ /* three is the floor: fewer than that is a dropdown wearing chips, and at
+  that point the narrow shape is the honest one */
+ return Math.max(3,n);
+}
+function renderLensRow(){
+ const row=document.getElementById('lensRow'); if(!row)return;
+ const n=lensFilterCount();
+ const pill=n?'<span class="lcount">'+n+'</span>':'';
+ if(lensNarrow()){
+ row.className='lens narrow';
+ row.innerHTML='<button type="button" class="ldd" id="lensDD" aria-haspopup="dialog">'
+  +'<span class="ldl">Colour by</span><span class="ldv">'+esc(lensLab(LENS))+'</span>'
+  +'<span class="ldc" aria-hidden="true">\u203A</span></button>'
+  +'<button type="button" class="lensfilt sq" id="exFilt" aria-label="Filters">'
+  +uiIcon('filter','nav',false)+pill+'</button>';
+ }else{
+ row.className='lens';
+ const w=row.getBoundingClientRect().width;
+ /* Filters and the overflow control are both accounted for before a single
+  chip is placed, which is the step the scroller version skipped */
+ const fit=lensFit(w);
+ const shown=LENSMRU.slice(0,fit), rest=LENSMRU.slice(fit);
+ row.innerHTML='<span class="lenschips">'
+  +shown.map(k=>'<button type="button" class="lchip'+(k===LENS?' on':'')+'" data-lens="'
+    +esc(k)+'" aria-pressed="'+(k===LENS)+'">'+esc(lensLab(k))+'</button>').join('')
+  +(rest.length?'<button type="button" class="lensmore" id="lensMore" aria-expanded="false">'
+    +rest.length+' more<span aria-hidden="true">\u203A</span></button>':'')
+  +'</span>'
+  +'<span class="lspacer"></span>'
+  +'<button type="button" class="lensfilt" id="exFilt">'+uiIcon('filter','nav',false)
+  +'<span>Filters</span>'+pill+'</button>';
+ }
+ wireLensRow();
+}
+function wireLensRow(){
+ const row=document.getElementById('lensRow'); if(!row)return;
+ row.querySelectorAll('[data-lens]').forEach(b=>
+ b.addEventListener('click',()=>pickLens(b.dataset.lens)));
+ const more=document.getElementById('lensMore');
+ if(more)more.addEventListener('click',e=>{e.stopPropagation();toggleLensMenu();});
+ const dd=document.getElementById('lensDD');
+ if(dd)dd.addEventListener('click',openLensSheet);
+ const f=document.getElementById('exFilt');
+ if(f)f.addEventListener('click',openFilterSheet);
+}
+function pickLens(k){
+ LENS=k;
+ /* straight to the front, so the overflow never swallows the current one */
+ LENSMRU=[k].concat(LENSMRU.filter(x=>x!==k));
+ closeLensMenu();
+ renderLensRow(); renderHeat(); renderHeatMap();
+}
+function lensMenuHTML(rest){
+ return '<div class="lensmenu" id="lensMenu" role="menu">'
+ +rest.map(k=>'<button type="button" role="menuitem" class="lmrow'+(k===LENS?' on':'')
+   +'" data-lens="'+esc(k)+'">'+esc(lensLab(k))+'</button>').join('')
+ +'</div>';
+}
+function closeLensMenu(){
+ const m=document.getElementById('lensMenu'); if(m)m.remove();
+ const b=document.getElementById('lensMore');
+ if(b)b.setAttribute('aria-expanded','false');
+ document.removeEventListener('click',lensOutside,true);
+ document.removeEventListener('keydown',lensEsc,true);
+}
+function lensOutside(e){
+ const m=document.getElementById('lensMenu'), b=document.getElementById('lensMore');
+ if(!m)return;
+ if(m.contains(e.target)||(b&&b.contains(e.target)))return;
+ closeLensMenu();
+}
+function lensEsc(e){ if(e.key==='Escape'){e.stopPropagation();closeLensMenu();} }
+function toggleLensMenu(){
+ if(document.getElementById('lensMenu')){closeLensMenu();return;}
+ const row=document.getElementById('lensRow');
+ const shown=[...row.querySelectorAll('[data-lens]')].map(b=>b.dataset.lens);
+ const rest=LENSMRU.filter(k=>shown.indexOf(k)<0);
+ row.insertAdjacentHTML('beforeend',lensMenuHTML(rest));
+ const b=document.getElementById('lensMore'); if(b)b.setAttribute('aria-expanded','true');
+ /* the panel opens beneath the control that opened it, not at the row's left
+  edge, and is pulled back inside the row if that would overhang it */
+ const m=document.getElementById('lensMenu');
+ if(m&&b){const rw=row.getBoundingClientRect().width;
+ const mw=m.getBoundingClientRect().width;
+ m.style.left=Math.max(0,Math.min(b.offsetLeft,rw-mw))+'px';}
+ document.getElementById('lensMenu').querySelectorAll('[data-lens]').forEach(x=>
+ x.addEventListener('click',()=>pickLens(x.dataset.lens)));
+ document.addEventListener('click',lensOutside,true);
+ document.addEventListener('keydown',lensEsc,true);
+}
+/* the phone's sheet: all seven, full names, the current one ticked. This is
+ the only place "Asking vs registered" has ever been fully readable. */
+function openLensSheet(){
+ openSlide('Colour by','What the map and the tiles are scored on',
+ '<div class="lenssheet">'+LENSES.map(l=>
+  '<button type="button" class="lsrow'+(l.k===LENS?' on':'')+'" data-lenspick="'
+  +esc(l.k)+'"><span>'+esc(l.lab)+'</span>'
+  +(l.k===LENS?'<i aria-hidden="true">\u2713</i>':'')+'</button>').join('')+'</div>');
+ document.querySelectorAll('#soBody [data-lenspick]').forEach(b=>
+ b.addEventListener('click',()=>{pickLens(b.dataset.lenspick);closeSlide();}));
+}
+/* The row is laid out by a grid that settles after boot, so rendering it once
+ and trusting the width measured at that moment showed three chips where four
+ fit. A ResizeObserver re-renders whenever the row's own width changes, which
+ covers boot, the breakpoint, the nav collapsing and the window. Guarded on
+ the integer width so re-rendering cannot feed itself. */
+let LENSWAS=null, LENSW=0;
+function lensWatch(){
+ const row=document.getElementById('lensRow'); if(!row)return;
+ if(typeof ResizeObserver!=='function')return;
+ new ResizeObserver(()=>{
+ const w=Math.round(row.getBoundingClientRect().width);
+ const narrow=lensNarrow();
+ if(w===LENSW&&narrow===LENSWAS)return;
+ LENSW=w; LENSWAS=narrow; closeLensMenu(); renderLensRow();
+ }).observe(row);
+}
+window.addEventListener('resize',()=>{
+ const want=lensNarrow();
+ if(want!==LENSWAS){LENSWAS=want;closeLensMenu();renderLensRow();}
+});
 document.querySelectorAll('[data-zf]').forEach(b=>b.addEventListener('click',()=>{
  ZF=b.dataset.zf;
  document.querySelectorAll('[data-zf]').forEach(x=>x.setAttribute('aria-pressed',x===b));
@@ -12841,8 +13041,9 @@ const fnb=document.getElementById('fullNote');
 if(fnb)fnb.addEventListener('click',openFullNote);
 const nmb=document.getElementById('navMini');
 if(nmb)nmb.addEventListener('click',()=>setNavMini(!NAVMINI));
-const exf=document.getElementById('exFilt');
-if(exf)exf.addEventListener('click',openFilterSheet);
+/* the lens row renders its own Filters button, so the wiring lives in
+ wireLensRow() rather than here */
+LENSWAS=lensNarrow(); renderLensRow(); lensWatch();
 const pi=document.getElementById('palInput');
 if(pi)pi.addEventListener('input',()=>{PALSEL=0;paintPalette();});
 
