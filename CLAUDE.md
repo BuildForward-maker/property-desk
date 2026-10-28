@@ -107,6 +107,44 @@ Signing out is not a downgrade to a broken app, it is local mode. So is
 declining to sign in at all. The sign-in screen's own exit says so in words:
 "Browse without an account".
 
+### 9. Browsing reads everything and saves nothing
+
+Somebody should be able to judge the product before handing over an email, so
+without an account the whole of Explore, Market, Listings, every detail panel,
+the guide, all seven questions and the placard work fully. What an account
+buys is the work surviving the tab, so the things that save are the things
+that ask: tracking, the status and visit fields, notes, scores, target dates,
+the legal checklist and Compare.
+
+`requireAccount(line)` is the only gate, and `KEEP` holds one line per action
+saying what would be kept. The control **stays visible and enabled-looking**:
+a greyed-out button teaches nothing, and a wall in front of the product
+teaches less. The tap is what explains the cost, once, in `#keep`, which is
+registered `top:true` so it sits above a detail panel it was opened from and
+Escape reaches it first.
+
+**`canSave()` is `signedIn() || AUTH.state === 'off'`.** Where there is no
+backend at all there is nothing to sign in to, and saving locally is the whole
+product, so nothing is gated there. Gating it would be asking for an account
+that cannot exist, against rule 6.
+
+Every handler that writes returns **before mutating**, and the ones bound to a
+form control re-render so the control snaps back. A guard placed after the
+mutation would gate the save and keep the change on screen, which is the worst
+of both.
+
+The badge says "Browsing. Nothing is saved." with a Sign in link, because the
+state is a choice rather than a failure and should carry its own way out.
+
+### 10. The mobile number is asked after the shortlist, not at the gate
+
+Optional at sign-up, and deliberately not promoted later to required. An
+unverified field in a sign-up form is where people stop, and there is no SMS
+provider yet, so asking at the gate would cost sign-ups to collect something
+nothing can use. `renderMobAsk()` puts one line at the top of Your activity
+once `shortlistCount() > 0`, there is no mobile on the profile, and it has not
+already been asked. Dismissing it sets `mobasked` for good.
+
 ### 8. Membership, not the link
 
 The anon key is still public in the hash, and that is now safe, because the
@@ -992,6 +1030,15 @@ covered every size. Listings has no size filter and never did; the dataset is
 **The foot of the page is one line.** Eleven px, muted, with an asterisk that
 opens the full note as a sheet. The long version lives in `FULLNOTE`.
 
+**A caveat names what is uncertain. A disclaimer covers the writer.** The foot
+used to end "Nothing here is advice", which spends trust rather than building
+it, and `FULLNOTE` opened by listing what its author is not qualified to be.
+Both now say what the figures are, when they were captured, which ones are
+estimates and which two sources disagreed, and then that a lawyer does the
+title and a CA does the tax. If a line ever has to hedge, it names the thing
+that is uncertain: "drive times are modelled, not measured" earns its place,
+"this is not advice" does not.
+
 ### The map's box keeps changing under it
 
 Leaflet measures its container once, and a container with height 0 renders
@@ -1081,12 +1128,25 @@ and read as sitting half outside the card. The desktop rule gives that band
 and the band's border box, not against the content box, which is zero by
 definition.
 
-### "Your search" lives in one place
+### The greeting, and the one rule the sub-line has to keep
 
-The Home heading. The sub-line under it used to end "...and this becomes your
-search", which put the phrase on screen twice, one line apart, and said the
-same thing as the profile pill above it and the hero below it. There is no
-`#homeSub` any more.
+`homeGreeting()` returns `{h, sub}` and is the only thing that writes either.
+
+    signed out, or no name on the profile   "Your search", no sub-line
+    a name, first session                   "Welcome, Arun"
+    a name, since then                      "Welcome back, Arun"
+
+    sub-line, before the questions          "Let's find where you should buy."
+    sub-line, after them                    "Your search, day 12"
+
+`GREETED` is read once at boot and written immediately, so the word is the
+same for a whole session rather than changing the second time Home is opened.
+The day count comes from the profile's own `created_at` and is **dropped
+entirely when that is missing** — an invented day one is worse than no day.
+
+`#homeSub` exists again after being deleted, and the rule that deleted it
+still stands: it must not repeat the heading. "...and this becomes your
+search" under a heading reading "Your search" is what that rule was about.
 
 ### Not done, and why
 

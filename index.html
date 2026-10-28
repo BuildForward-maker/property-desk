@@ -1407,6 +1407,35 @@ td,th{border-color:var(--line)}
 .glink{font:inherit;font-size:13px;background:none;border:0;padding:10px 0;color:var(--accent);
  text-decoration:underline;cursor:pointer;min-height:var(--tap)}
 .gfoot{text-align:center;margin-top:18px}
+/* ---- "sign in to keep this" ----
+ Browsing without an account reads everything and saves nothing. The controls
+ that save stay where they are and look live, because a greyed-out row teaches
+ nothing and a wall in front of the product teaches less. The tap is what
+ explains the cost, once, in a sheet that sits above whatever is open. */
+#keep{position:fixed;inset:0;z-index:var(--z-gate);display:none}
+#keep.on{display:block}
+#keep .kscrim{position:absolute;inset:0;background:rgba(20,18,43,.34)}
+#keep .kcard{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+ width:min(400px,calc(100vw - 36px));background:var(--card);border-radius:var(--r-card);
+ padding:24px 22px 20px;box-shadow:var(--shadow-primary)}
+@media(max-width:620px){
+  #keep .kcard{left:0;right:0;top:auto;bottom:0;width:auto;transform:none;
+ border-radius:24px 24px 0 0;padding:20px 18px calc(18px + env(safe-area-inset-bottom))}
+}
+#keep h2{font-family:var(--font);font-size:21px;font-weight:800;letter-spacing:-.01em;
+ margin:0 0 8px;line-height:1.15}
+#keep p{font-size:13.5px;color:var(--muted);line-height:1.55;margin:0 0 18px}
+#keep .kbtns{display:flex;flex-direction:column;gap:9px}
+#keep .kbtns .act{width:100%;justify-content:center}
+/* asked once, after there is something worth being reached about */
+.mobask{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--primary);
+ border-radius:var(--r-tile);padding:12px 14px;margin-bottom:var(--s-cards);
+ display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.mobask p{margin:0;font-size:13px;color:var(--ink);flex:1 1 220px;line-height:1.45}
+.mobask input{font:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--line);
+ border-radius:var(--r-seg);background:var(--card);color:var(--ink);width:170px;max-width:100%}
+.mobask .mobx{appearance:none;border:0;background:none;color:var(--muted);cursor:pointer;
+ font-size:18px;line-height:1;width:var(--tap);height:var(--tap);flex:0 0 auto}
 .acct{background:var(--tile);border-radius:var(--r-tile);padding:4px 12px;margin-bottom:14px}
 .acctrow{display:flex;justify-content:space-between;gap:12px;padding:8px 0;font-size:13px;
  border-bottom:1px solid var(--line-soft)}
@@ -2144,6 +2173,7 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
   <div class="sheet-grab" aria-hidden="true"></div>
   <div class="sheet-body"></div>
 </div>
+<div id="keep" role="dialog" aria-modal="true" aria-labelledby="keepTitle"><div class="kscrim"></div><div class="kcard"><h2 id="keepTitle">Sign in to keep this</h2><p id="keepLine"></p><div class="kbtns"><button type="button" class="act" id="keepGo">Email me a link</button><button type="button" class="act ghost" id="keepNo">Not now</button></div></div></div>
 <div id="gate" role="dialog" aria-modal="true" aria-label="Sign in to Property Desk"><div class="gwrap" id="gwrap"></div></div>
 <div id="intake" role="dialog" aria-modal="true" aria-label="Set up your search"><button class="pclose" id="intakeClose" aria-label="Close" title="Close" hidden>✕</button><div class="iwrap" id="iwrap"></div></div>
 
@@ -2171,6 +2201,7 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
   <div class="sechead">
     <div class="hprofile" id="hProfile"></div>
     <div class="headrow"><h1 id="homeGreeting">Your search<span class="hlive" id="hLive" hidden></span></h1><button type="button" class="hdrmic" data-askmic="1" aria-label="Ask a question out loud">MICICON</button></div>
+    <p id="homeSub" hidden></p>
   </div>
   <div class="homewrap" id="homeBlocks"></div>
   <div class="hshare">
@@ -2495,6 +2526,7 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
 
 <!-- ===== VISIT TRACKER ===== -->
 <section class="panel" id="p-visits" data-sec="shortlist" data-sub="board">
+  <div id="mobAsk"></div>
   <p class="lede">Everything you tracked, with a status, a date, a score and somewhere to write what you actually thought. Fill this in the same evening, by Sunday they blur.</p>
 
   <div class="filters calc">
@@ -3284,7 +3316,7 @@ alter publication supabase_realtime add table desk_prefs;</pre>
 </section>
 
 <footer>
-  <p class="fnote"><button type="button" class="fstar" id="fullNote" aria-label="Read the full note">*</button> Verify every price, area, age, khata and RERA number before acting. Nothing here is advice.</p>
+  <p class="fnote"><button type="button" class="fstar" id="fullNote" aria-label="Read the full note">*</button> Prices and dates come from public sources and can be wrong. Check anything you act on.</p>
 </footer>
 </div>
 </main>
@@ -3417,7 +3449,12 @@ function writeCfgLink(c,base){
 }
 function setConn(state,text){
  const el=document.getElementById('connState');
- if(el)el.innerHTML=`<span class="dot ${state}"></span>${text}`;
+ /* browsing is a state, not a failure, and it carries its own way out */
+ const browsing=(AUTH&&AUTH.state==='out');
+ if(el)el.innerHTML=`<span class="dot ${state}"></span>`
+ +(browsing?'Browsing. Nothing is saved. <button type="button" class="ilink" id="connSignIn">Sign in</button>':text);
+ const si=document.getElementById('connSignIn');
+ if(si)si.addEventListener('click',()=>openGate('signin'));
  const who=document.getElementById('connWho');
  const nm=(AUTH&&AUTH.profile&&AUTH.profile.name)||(CFG&&CFG.n)||'';
  if(who)who.innerHTML=nm?`<span class="who">Signed in as ${nm}</span>`:'';
@@ -3469,7 +3506,7 @@ async function loadProfile(){
  AUTH.profile=null;
  if(!sb||!signedIn())return null;
  try{
- const {data,error}=await sb.from('profiles').select('id,email,name,mobile')
+ const {data,error}=await sb.from('profiles').select('id,email,name,mobile,created_at')
    .eq('id',AUTH.user.id).maybeSingle();
  if(error)throw error;
  AUTH.profile=data||null;
@@ -3797,6 +3834,45 @@ function openPrivacyNote(){
  goSection('shortlist','guide');
  if(typeof renderArticles==='function')renderArticles();
 }
+
+/* ---- what browsing without an account costs ----
+ Reading is free and complete: Explore, Market, Listings, every detail panel,
+ the guide, the questions and the placard. What an account buys is the work
+ surviving the tab, so the things that save are the things that ask.
+
+ It asks only where there is something to sign in to. Opened as a file, or
+ from a link with no backend, AUTH.state is 'off' and saving locally is the
+ whole product: blocking it there would be asking for an account that cannot
+ exist, and rule 6 says local mode stays fully usable. */
+function canSave(){ return signedIn()||AUTH.state==='off'; }
+function requireAccount(line){
+ if(canSave())return true;
+ const el=document.getElementById('keep'); if(!el)return false;
+ document.getElementById('keepLine').textContent=line||'This saves with your account.';
+ el.classList.add('on');
+ const go=document.getElementById('keepGo');
+ if(go)go.focus();
+ return false;
+}
+function closeKeep(){ document.getElementById('keep').classList.remove('on'); }
+(function(){
+ const el=document.getElementById('keep'); if(!el)return;
+ const no=document.getElementById('keepNo'); if(no)no.addEventListener('click',closeKeep);
+ const sc=el.querySelector('.kscrim'); if(sc)sc.addEventListener('click',closeKeep);
+ const go=document.getElementById('keepGo');
+ if(go)go.addEventListener('click',()=>{closeKeep();closeSlide();openGate('signin');});
+})();
+const KEEP={
+ track:'Tracked flats stay on your desk, and follow you to any device you sign in on.',
+ short:'A shortlist is the thing you come back to. Signed in, it is still here next week.',
+ status:'Where you have got to with each flat saves with your account.',
+ visit:'Visit dates and notes are the part nobody remembers a fortnight later.',
+ notes:'Notes on a flat are the part nobody remembers a fortnight later.',
+ score:'Your own scores on a flat save with your account.',
+ target:'Target dates drive the route plan, and both save with your account.',
+ checks:'The legal checklist remembers what you have already cleared.',
+ compare:'Compare works on the flats you have tracked, and tracking needs an account.'
+};
 async function logActivity(what){
  if(MODE!=='shared')return;
  try{await sb.from('desk_activity').insert({workspace:CFG.w,who:CFG.n||'someone',what});
@@ -3906,7 +3982,10 @@ function goSection(sec,sub,opts){
 document.querySelectorAll('.sb-item[data-sec]').forEach(b=>
  b.addEventListener('click',()=>goSection(b.dataset.sec)));
 document.querySelectorAll('#sec-shortlist .segmented button').forEach(b=>
- b.addEventListener('click',()=>goSection('shortlist',b.dataset.sub)));
+ b.addEventListener('click',()=>{
+ /* Compare is the one view here that is only about saved work */
+ if(b.dataset.sub==='compare'&&!requireAccount(KEEP.compare))return;
+ goSection('shortlist',b.dataset.sub);}));
 
 /* ========== Part D: tuned bar and live re-ranking ========== */
 let RANKMODE='you';          /* 'you' | 'overall' */
@@ -5547,7 +5626,7 @@ function mktExport(){
 /* ---- first paint: the numbers arrive, the sparklines draw ----
  Once per session, 400ms, and not at all where the reader has asked for less
  motion. The DOM already holds the real value; this only animates towards it. */
-const FULLNOTE="Prices, rents, ages and possession dates were gathered from public sources on 10 September 2026 and reflect mid-2026 market data. Several sources contradicted each other, particularly on possession dates. Where they did, I have said so rather than picking one. Entries marked as estimates are derived from locality rates and typical unit sizes, not from a live listing, and exist to give you somewhere to start looking. Verify every price, area, age, khata status and RERA number before acting. Nothing here is legal, tax or financial advice; I'm not a lawyer, a chartered accountant or a financial adviser. Retain a property lawyer for title work and a chartered accountant for the TDS, and check the Karnataka RERA and Kaveri portals directly rather than trusting any listing site, including the ones linked here.";
+const FULLNOTE="Here is what these numbers are. Prices, rents, ages and possession dates were gathered from public sources on 10 September 2026 and describe the mid-2026 market. Knight Frank figures are transacted prices for the 17 locations they track; everywhere else is a blend of registered deeds and asking prices, which are two different things and the panel says which one it used. Anything marked as an estimate was worked out from locality rates and typical unit sizes rather than read off a listing, so treat it as a place to start looking rather than a price. Where two sources disagreed, particularly on possession dates, both are shown rather than one picked. Drive times are modelled, not measured, and peak times are an estimate on top of that.\n\nThe parts that need somebody qualified: a property lawyer does the title work, and a chartered accountant does the TDS and the tax. Nothing here replaces either, and the legal checklist is a list of what to ask them, not a substitute for asking. Check the Karnataka RERA and Kaveri portals yourself rather than trusting any listing site, this one included.";
 let MKTANIM=false;
 function mktReduced(){
  return !!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches);
@@ -6194,11 +6273,41 @@ function blockFindings(){
   +f.map(t=>'<p class="hfind">'+t+'</p>').join('')+'</details>';
 }
 
+/* ---- the greeting ----
+ "Your search" is what the app says to somebody it does not know, and it is
+ still the right thing to say to them. Once there is a name on the profile it
+ is a person's desk and should sound like it. The day count is counted from
+ the profile's own created_at and is dropped entirely when that is missing,
+ because an invented day one is worse than no day at all. */
+let GREETED=false;
+function firstName(){
+ const nm=((AUTH.profile&&AUTH.profile.name)||'').trim();
+ return nm?nm.split(/\s+/)[0]:'';
+}
+function dayNumber(){
+ const iso=(AUTH.profile&&AUTH.profile.created_at)||null;
+ if(!iso)return 0;
+ const t=Date.parse(iso); if(!t||t>Date.now())return 0;
+ return Math.floor((Date.now()-t)/86400000)+1;
+}
+function homeGreeting(){
+ const nm=signedIn()?firstName():'';
+ if(!nm)return {h:'Your search',sub:''};
+ const d=dayNumber();
+ return {h:(GREETED?'Welcome back, ':'Welcome, ')+nm,
+ sub:INTAKE.done?(d?'Your search, day '+d:'Your search'):'Let\u2019s find where you should buy.'};
+}
 function renderHome(){
  const host=document.getElementById('homeBlocks'); if(!host)return;
  checks_=(typeof checks==='object'&&checks)||{};
  const prof=document.getElementById('hProfile');
  if(prof)prof.innerHTML=homeProfile();
+ const g=homeGreeting();
+ const head=document.getElementById('homeGreeting');
+ if(head){const live=document.getElementById('hLive');
+ head.textContent=g.h; if(live)head.appendChild(live);}
+ const sub=document.getElementById('homeSub');
+ if(sub){sub.hidden=!g.sub; sub.textContent=g.sub;}
  /* live sharing reads as a green dot up here; amber and red stay at the foot,
  where the detail that explains them is */
  const live=document.getElementById('hLive');
@@ -8247,6 +8356,8 @@ function renderSoc(){
  document.querySelectorAll('[data-track]').forEach(b=>b.addEventListener('click',e=>{
  const id=e.target.dataset.track, nm=e.target.dataset.name;
  const adding=!track[id];
+ if(adding&&!requireAccount(KEEP.track))return;
+ if(!adding&&!requireAccount(KEEP.track))return;
  if(adding) track[id]={status:'',date:'',notes:'',scores:{}}; else delete track[id];
  saveTrack(false,id); logActivity((adding?'started tracking ':'stopped tracking ')+nm);}));
  const hi=rows.filter(s=>priBand(s.pscore)==='h').length;
@@ -8314,7 +8425,38 @@ function renderActivityNav(){
  host.querySelectorAll('[data-anav]').forEach(b=>
  b.addEventListener('click',()=>goSection('shortlist',b.dataset.anav)));
 }
+/* ---- the mobile number, asked at the right moment ----
+ Not at the gate. An unverified field in a sign-up form is where people stop,
+ and there is no SMS provider yet, so asking there would cost sign-ups to
+ collect something nothing can use. Once a flat is shortlisted there is
+ something concrete to be reached about, and the ask is one line that goes
+ away for good either way. */
+let MOBASKED=false;
+function shortlistCount(){
+ return Object.keys(track).filter(k=>track[k]&&track[k].status==='short').length;
+}
+function renderMobAsk(){
+ const host=document.getElementById('mobAsk'); if(!host)return;
+ const show=signedIn()&&AUTH.profile&&!AUTH.profile.mobile&&!MOBASKED&&shortlistCount()>0;
+ if(!show){host.innerHTML='';return;}
+ host.innerHTML='<div class="mobask"><p>Add a mobile number so we can reach you about '
+ +'your shortlist.</p><input id="mobNum" type="tel" inputmode="tel" autocomplete="tel" '
+ +'placeholder="Mobile" aria-label="Mobile number">'
+ +'<button class="act small" id="mobSave">Save</button>'
+ +'<button class="mobx" id="mobNo" aria-label="Not now" title="Not now">\u2715</button></div>';
+ const dismiss=async()=>{MOBASKED=true;try{await local.set('mobasked',1);}catch(e){}renderMobAsk();};
+ const no=document.getElementById('mobNo'); if(no)no.addEventListener('click',dismiss);
+ const sv=document.getElementById('mobSave');
+ if(sv)sv.addEventListener('click',async()=>{
+ const v=(document.getElementById('mobNum').value||'').trim();
+ if(!v){document.getElementById('mobNum').focus();return;}
+ try{ await saveProfile(AUTH.profile.name,v); toast('Saved'); }
+ catch(e){ toast((e&&e.message)||'Could not save that','warn'); }
+ await dismiss();
+  });
+}
 function renderVisits(){
+ renderMobAsk();
  const f=document.getElementById('vFilter').value, so=document.getElementById('vSort').value;
  let list=trackedList();
  if(f==='todo')list=list.filter(x=>!x.t_.status);
@@ -8371,24 +8513,35 @@ function renderVisits(){
  }
  const nameOf=i=>socById(i)?socById(i).n:i;
  el.querySelectorAll('[data-vs]').forEach(s=>s.addEventListener('change',e=>{
- const id=e.target.dataset.vs; track[id].status=e.target.value;
+ const id=e.target.dataset.vs;
+ if(!requireAccount(e.target.value==='short'?KEEP.short:KEEP.status)){renderVisits();return;}
+ track[id].status=e.target.value;
  noteShortlisted(id,e.target.value);
  const lbl=(STATUSES.find(x=>x[0]===e.target.value)||['','Not visited yet'])[1];
  saveTrack(false,id); logActivity(`marked ${nameOf(id)} as ${lbl}`);}));
  el.querySelectorAll('[data-vt]').forEach(s=>s.addEventListener('change',e=>{
- const id=e.target.dataset.vt; setCustom(id,'target',e.target.value);
+ const id=e.target.dataset.vt;
+ if(!requireAccount(KEEP.target)){renderVisits();return;}
+ setCustom(id,'target',e.target.value);
  saveTrack(false,id); renderPlan();
  logActivity(e.target.value?`set a target date for ${nameOf(id)}`:`cleared the target date for ${nameOf(id)}`);}));
  el.querySelectorAll('[data-vd]').forEach(s=>s.addEventListener('change',e=>{
- const id=e.target.dataset.vd; track[id].date=e.target.value; saveTrack(false,id);
+ const id=e.target.dataset.vd;
+ if(!requireAccount(KEEP.visit)){renderVisits();return;}
+ track[id].date=e.target.value; saveTrack(false,id);
  logActivity(`set the visit date for ${nameOf(id)}`);}));
  el.querySelectorAll('[data-vn]').forEach(s=>s.addEventListener('change',e=>{
- const id=e.target.dataset.vn; track[id].notes=e.target.value; saveTrack(true,id);
+ const id=e.target.dataset.vn;
+ if(!requireAccount(KEEP.notes)){renderVisits();return;}
+ track[id].notes=e.target.value; saveTrack(true,id);
  logActivity(`wrote notes on ${nameOf(id)}`);}));
  el.querySelectorAll('.critRange').forEach(r=>r.addEventListener('change',e=>{
- const id=e.target.dataset.i; track[id].scores=track[id].scores||{}; track[id].scores[e.target.dataset.k]=+e.target.value; saveTrack(false,id);}));
+ const id=e.target.dataset.i;
+ if(!requireAccount(KEEP.score)){renderVisits();return;}
+ track[id].scores=track[id].scores||{}; track[id].scores[e.target.dataset.k]=+e.target.value; saveTrack(false,id);}));
  el.querySelectorAll('[data-untrack]').forEach(b=>b.addEventListener('click',e=>{
  const id=e.target.dataset.untrack; const nm=nameOf(id);
+ if(!requireAccount(KEEP.track))return;
  delete track[id]; saveTrack(false,id); logActivity(`removed ${nm} from the tracker`);}));
  updateProgress();
 }
@@ -8753,6 +8906,7 @@ function renderDD(){
     <label for="dd${i}"><strong>${d[0]}</strong><br><small>${d[1]}</small></label></div>`).join('');
  document.querySelectorAll('.dd input').forEach(c=>c.addEventListener('change',e=>{
  const i=+e.target.dataset.i, on=e.target.checked;
+ if(!requireAccount(KEEP.checks)){renderDD();return;}
  checks[i]=on; local.set('checks',checks);
  if(MODE==='shared'){ sb.from('desk_checks').upsert({workspace:CFG.w,item:i,done:on,
  updated_by:CFG.n||'someone',updated_at:new Date().toISOString()},{onConflict:'workspace,item'})
@@ -9509,8 +9663,9 @@ function closeIntake(){
  than opening something that cannot answer, and it offers the search that can. */
 /* the long note lives behind the asterisk, not across the foot of every screen */
 function openFullNote(){
- openSlide('Before you act on any of this','Sources, dates and what is estimated',
-  '<p style="font-size:14.5px;line-height:1.65">'+FULLNOTE+'</p>');
+ openSlide('Where these numbers come from','Sources, dates, and which figures are estimates',
+  FULLNOTE.split('\n\n').map(t=>
+   '<p style="font-size:14.5px;line-height:1.65;margin:0 0 14px">'+t+'</p>').join(''));
 }
 function openMicSheet(){
  const host=document.getElementById('sheet'); if(!host)return;
@@ -10555,12 +10710,14 @@ function openProperty(id,tab){
  const repaint=()=>{document.getElementById('barTrack').textContent=
  isTracked()?'Tracked ✓':'Track this';};
  bar.querySelector('#barTrack').addEventListener('click',()=>{
+ if(!requireAccount(KEEP.track))return;
  const pid=slug(s.n);
  if(isTracked())delete track[pid];
  else track[pid]={status:'',date:'',notes:'',scores:{}};
  saveTrack(false,pid); updateCount(); repaint();
    });
  bar.querySelector('#barShort').addEventListener('click',()=>{
+ if(!requireAccount(KEEP.short))return;
  const pid=slug(s.n);
  track[pid]=track[pid]||{status:'',date:'',notes:'',scores:{}};
  track[pid].status='short';
@@ -10900,6 +11057,11 @@ registerOverlay({el:'palette', close:closeModals, swipe:false,
  isOpen:()=>document.getElementById('palette').classList.contains('on')});
 registerOverlay({el:'intake', close:skipIntake, backdrop:false, swipe:false,
  isOpen:()=>document.getElementById('intake').classList.contains('on')});
+/* top:true, so Escape reaches it above a detail panel it was opened from.
+ Registered here rather than beside closeKeep, because DISMISS is declared
+ further down and a const does not hoist. */
+registerOverlay({el:'keep', close:closeKeep, top:true, backdrop:false, swipe:false,
+ isOpen:()=>document.getElementById('keep').classList.contains('on')});
 
 /* ========== persistence ========== */
 let saveTimer;
@@ -10984,6 +11146,10 @@ async function boot(){
  prefillCfgForm();
  updateCount();
  try{const lv=await local.get('lastview'); if(lv&&lv.name)LASTVIEW=lv;}catch(e){}
+ /* read once and mark seen immediately, so the greeting is one word for the
+ whole session rather than changing the second time Home is opened */
+ try{GREETED=!!(await local.get('greeted')); await local.set('greeted',1);}catch(e){}
+ try{MOBASKED=!!(await local.get('mobasked'));}catch(e){}
  if(!readHash())goSection('home',null,{silent:true});
  /* first run only: no answers and never skipped. The gate comes first where
  there is one: the intake opens when it closes, from afterGate(). */
