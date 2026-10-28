@@ -114,6 +114,14 @@ small{font-size:12.5px;color:var(--muted);line-height:1.5}
 /* ---- shared workspace ---- */
 .connbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;font-size:12.5px;color:var(--muted);margin-top:14px}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--line);display:inline-block;margin-right:6px;vertical-align:0}
+/* the badge is a pill with two states and then nothing. A permanent "you are
+ signed in" is noise, so the confirmation shows for eight seconds and goes. */
+.connpill{display:inline-flex;align-items:center;gap:6px;border-radius:var(--r-chip);
+ padding:4px 11px;font-size:12px;font-weight:600;line-height:1.3}
+.connpill.warn{background:var(--warn-bg);color:var(--warn-fg)}
+.connpill.good{background:var(--good-bg);color:var(--good-fg)}
+.connpill.risk{background:var(--risk-bg);color:var(--risk-fg)}
+.connpill .ilink{font-size:12px;color:inherit;text-decoration:underline}
 .dot.live{background:var(--primary)}
 .dot.local{background:var(--warn-fg)}
 .dot.err{background:var(--risk-fg)}
@@ -1456,6 +1464,19 @@ td,th{border-color:var(--line)}
  border-radius:var(--r-seg);background:var(--card);color:var(--ink);width:170px;max-width:100%}
 .mobask .mobx{appearance:none;border:0;background:none;color:var(--muted);cursor:pointer;
  font-size:18px;line-height:1;width:var(--tap);height:var(--tap);flex:0 0 auto}
+/* small, and sized so the control does not grow: a 20px glyph in a 13.5px
+ button made every Explore mode one to two pixels taller */
+#exFiveLab{display:inline-flex;align-items:center;gap:5px}
+#exFiveLab .ico-g{display:inline-flex}
+#exFiveLab .ico-g svg{width:13px;height:13px}
+.fivelock{background:var(--tint);border-radius:var(--r-card);padding:22px 20px;text-align:center}
+.fivelock .pli{width:44px;height:44px;border-radius:var(--r-tile);background:var(--card);
+ display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:var(--primary)}
+.fivelock .pli svg{width:22px;height:22px}
+.fivelock h3{font-family:var(--font);font-size:17px;font-weight:800;letter-spacing:-.01em;
+ margin:0 0 14px;line-height:1.25}
+.fivelock .act{width:100%;justify-content:center}
+.fivelock small{display:block;margin-top:10px;font-size:12px;color:var(--muted)}
 .acct{background:var(--tile);border-radius:var(--r-tile);padding:4px 12px;margin-bottom:14px}
 .acctrow{display:flex;justify-content:space-between;gap:12px;padding:8px 0;font-size:13px;
  border-bottom:1px solid var(--line-soft)}
@@ -3490,14 +3511,28 @@ function writeCfgLink(c,base){
  const root=(base||location.origin+location.pathname).replace(/#.*$/,'');
  return root+'#cfg='+encodeURIComponent(b64);
 }
+/* three shapes, and the third is empty. Browsing says so and carries its own
+ way out; signing in is confirmed once and then the badge stops talking;
+ a real failure keeps saying so, because that one needs acting on. */
+let CONNTIMER=null;
 function setConn(state,text){
  const el=document.getElementById('connState');
- /* browsing is a state, not a failure, and it carries its own way out */
- const browsing=(AUTH&&AUTH.state==='out');
- if(el)el.innerHTML=`<span class="dot ${state}"></span>`
- +(browsing?'Browsing. Nothing is saved. <button type="button" class="ilink" id="connSignIn">Sign in</button>':text);
+ if(!el)return;
+ if(CONNTIMER){clearTimeout(CONNTIMER);CONNTIMER=null;}
+ if(AUTH&&AUTH.state==='out'){
+ el.innerHTML='<span class="connpill warn">Browsing. Nothing is saved. '
+  +'<button type="button" class="ilink" id="connSignIn">Sign in</button></span>';
  const si=document.getElementById('connSignIn');
  if(si)si.addEventListener('click',()=>openGate('signin'));
+ return;
+ }
+ if(state==='live'){
+ el.innerHTML='<span class="connpill good">Saved to your account.</span>';
+ CONNTIMER=setTimeout(()=>{CONNTIMER=null;el.innerHTML='';},8000);
+ return;
+ }
+ if(state==='err'){ el.innerHTML='<span class="connpill risk">'+gEsc(text)+'</span>'; return; }
+ el.innerHTML='<span class="connpill warn"><span class="dot '+state+'"></span>'+gEsc(text)+'</span>';
  const who=document.getElementById('connWho');
  const nm=(AUTH&&AUTH.profile&&AUTH.profile.name)||(CFG&&CFG.n)||'';
  if(who)who.innerHTML=nm?`<span class="who">Signed in as ${nm}</span>`:'';
@@ -3954,7 +3989,9 @@ const KEEP={
  score:'Your own scores on a flat save with your account.',
  target:'Target dates drive the route plan, and both save with your account.',
  checks:'The legal checklist remembers what you have already cleared.',
- compare:'Compare works on the flats you have tracked, and tracking needs an account.'
+ compare:'Compare works on the flats you have tracked, and tracking needs an account.',
+ export:'The export is your whole desk as a file. Signed in there is something in it.',
+ five:'Five areas, ranked for your commute and budget.'
 };
 async function logActivity(what){
  if(MODE!=='shared')return;
@@ -5389,9 +5426,33 @@ function genericRow(a,i){
   +esc(b.lab)+' \u00b7 \u20b9'+Math.round(basisVal(a)).toLocaleString('en-IN')+'/sqft</span></span>'
   +'</button>';
 }
+/* ---- the Your 5 tab, locked ----
+ The tab stays where it is with a lock on its label, because hiding it would
+ hide what an account is for. Position, the map, Listings and the whole of
+ Market stay open beside it, so this is a card in one column rather than a
+ wall: the rest of Explore is still there. */
+function fiveLockCard(){
+ const answered=personalised();
+ return '<div class="fivelock">'
+ +'<span class="pli">'+uiIcon('lock','nav',false)+'</span>'
+ +'<h3>Five areas, ranked for your commute and budget</h3>'
+ +'<button type="button" class="act" id="fiveLockGo">'
+ +(answered?'Sign in to see your five':'Answer 7 questions')+'</button>'
+ +'<small>'+(answered?'Your answers are kept either way':'Takes four minutes')
+ +'</small></div>';
+}
 function renderYourFive(){
  const host=document.getElementById('fivePane'); if(!host)return;
  if(EXMODE!=='five'){host.innerHTML='';return;}
+ if(!canSave()){
+ logEvent('lock sheet shown',{lock:'five'});
+ host.innerHTML=fiveLockCard();
+ const b=document.getElementById('fiveLockGo');
+ if(b)b.addEventListener('click',()=>{
+  if(personalised())openGate('signin'); else openIntake(0);
+ });
+ return;
+ }
  if(!personalised()){
   /* twenty, not eighty-six. Somebody who skipped the questions has no frame
  for what they are reading, and a list that long is the thing the whole
@@ -5508,8 +5569,13 @@ function setExploreMode(m){
  b.setAttribute('aria-pressed',String(b.dataset.mode===m)));
  /* the label has to say what the list is, not what it would be if they had
  answered: calling 86 generic rows "Your 5" is a lie on the control */
+ /* the label has to say what the list is. Locked it is always "Your 5",
+ because that is what is behind it; open it says what is actually there. */
  const lab=document.getElementById('exFiveLab');
- if(lab)lab.textContent=personalised()?'Your 5':'Ranked for everyone';
+ if(lab){
+ if(!canSave())lab.innerHTML='Your 5 '+uiIcon('lock','nav',false);
+ else lab.textContent=personalised()?'Your 5':'Ranked for everyone';
+ }
  document.getElementById('searchPane').style.display = m==='search'?'':'none';
  /* the map panel is shown or hidden by CSS off this flag, not by an inline
  style, so the desktop split can keep the map up in every mode */
@@ -11253,6 +11319,9 @@ function subscribeRealtime(){
  }catch(e){}
 }
 document.getElementById('exportBtn').addEventListener('click',()=>{
+ /* the one locked thing in this whole half of the app: a file somebody takes
+ away. Everything they could read on the way to it stays open. */
+ if(!requireAccount('export'))return;
  const b=new Blob([JSON.stringify({track,checks},null,2)],{type:'application/json'});
  const a=document.createElement('a');a.href=URL.createObjectURL(b);
  a.download='bengaluru-property-desk.json';a.click();});

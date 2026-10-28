@@ -169,8 +169,43 @@ form control re-render so the control snaps back. A guard placed after the
 mutation would gate the save and keep the change on screen, which is the worst
 of both.
 
-The badge says "Browsing. Nothing is saved." with a Sign in link, because the
-state is a choice rather than a failure and should carry its own way out.
+**What is locked, in full.** Eleven call sites and three surfaces:
+
+    track short status visit notes score target   the board and the panels
+    checks                                        the legal checklist
+    compare                                       Your activity > Compare
+    export                                        the only lock in settings
+    five                                          Explore's Your 5 tab
+    placard areas|projects|locations              the four behind the first
+
+**What is deliberately not locked, and why.** The whole of Market: three
+sub-tabs, all ten metric sheets, the ranked 86 and Coming. That openness is
+the evidence the product knows something, and taking it away takes away the
+reason to sign up. Listings, Explore's Position and map, every detail panel,
+the guide and all seven questions are open for the same reason. Export is the
+one locked thing on that side, because it is a file somebody takes away.
+
+**Explore's Your 5 keeps its tab**, with a small lock on the label, because
+hiding it would hide what an account is for. `fiveLockCard()` fills the left
+column; Position, the map and the rest of Explore sit beside it, so it is a
+card in one column and not a wall. The button reads "Answer 7 questions"
+before the questions and "Sign in to see your five" after, and the line under
+it changes with it: "Takes four minutes" is true of the questions and not of
+signing in. **A consequence worth knowing:** the generic top-20 list is not
+reachable signed out any more, because that list lived in this tab.
+
+The glyph is sized to 13px in the tab. At its native 20px it made every
+Explore mode one to two pixels taller, which the height sweep caught.
+
+### The badge has three shapes and the third is empty
+
+    browsing   --warn pill, "Browsing. Nothing is saved." + Sign in
+    signed in  --good pill, "Saved to your account.", for eight seconds
+    after      nothing at all
+    failure    --risk pill, and it stays, because that one needs acting on
+
+A permanent "you are signed in" is noise. `CONNTIMER` is cleared on every
+`setConn` so two calls in quick succession cannot leave a stale pill behind.
 
 ### 11. The placard gives the first result and locks the rest
 
