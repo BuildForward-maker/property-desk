@@ -1582,7 +1582,7 @@ td,th{border-color:var(--line)}
  glyph, 11.5px, and nothing else of the card renders. It must never compete
  with the question, so everything that would make it a card is display:none
  until there is a second column to put it in. */
-.iqfact .ifcard,.iqfact .ifnext,.iqfact .ifdots{display:none}
+.iqfact .ifcard,.iqfact .ifdots{display:none}
 .iqskip.top{display:none}
 .iffoot{display:flex;gap:7px;align-items:flex-start;font-size:11.5px;line-height:1.45;
  color:var(--muted);margin:10px 0 0;padding-bottom:4px}
@@ -1597,9 +1597,6 @@ td,th{border-color:var(--line)}
  margin:10px 0 14px;letter-spacing:0}
 .ifdetail{font-size:13.5px;line-height:1.6;opacity:.92;margin:0 0 14px}
 .ifsrc{font-size:11.5px;opacity:.74;margin:0;line-height:1.45}
-.ifnext{background:var(--card);border-radius:var(--r-tile);padding:14px 16px;margin-top:12px}
-.ifnext .ifkick{color:var(--muted);opacity:1;margin-bottom:6px}
-.ifnext p{margin:0;font-size:13px;color:var(--ink);line-height:1.45}
 .ifdots{display:flex;gap:6px;justify-content:center;margin-top:14px}
 .ifdots i{width:6px;height:6px;border-radius:50%;background:var(--line);display:block}
 .ifdots i.on{background:var(--primary)}
@@ -1613,6 +1610,53 @@ td,th{border-color:var(--line)}
  padding:1px 5px;border-radius:3px;pointer-events:none;
  box-shadow:0 1px 3px rgba(20,18,43,.18)}
 .plcap{font-size:12.5px;color:var(--muted);margin:8px 0 0;line-height:1.5}
+
+/* ---- the review card ----
+ One card, hairline rows, the same component at both widths. The only thing
+ the breakpoint changes is whether the consequence line may wrap: a phone has
+ vertical room and scrolls, and the desktop card does not. */
+.rvgrid{display:contents}
+.rvcard{background:var(--card);border-radius:24px;box-shadow:0 6px 28px rgba(20,18,43,.09);
+ overflow:hidden;margin-top:16px}
+.rvhead{display:flex;align-items:center;gap:11px;background:var(--tint);padding:13px 16px}
+.rvmark{width:32px;height:32px;flex:0 0 auto;border-radius:9px;background:var(--grad-primary);
+ color:#fff;display:flex;align-items:center;justify-content:center}
+.rvmark svg{width:17px;height:17px}
+.rvht{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.rvht b{font-family:var(--label);font-size:10.5px;font-weight:700;letter-spacing:.09em;
+ text-transform:uppercase;color:var(--muted)}
+.rvht span{font-size:12.5px;color:var(--ink);font-weight:600;overflow:hidden;
+ text-overflow:ellipsis;white-space:nowrap}
+.rvpill{flex:0 0 auto;font-family:var(--label);font-size:10px;font-weight:700;letter-spacing:.07em;
+ text-transform:uppercase;color:var(--primary);background:var(--card);
+ border-radius:var(--r-chip);padding:4px 9px}
+.rvrow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;appearance:none;
+ border:0;background:none;font:inherit;cursor:pointer;padding:13px 16px;
+ border-top:1px solid var(--line-soft)}
+.rvrow:first-child{border-top:0}
+.rvrow:hover{background:var(--tile)}
+.rvico{width:36px;height:36px;flex:0 0 auto;border-radius:10px;background:var(--tint);
+ color:var(--primary);display:flex;align-items:center;justify-content:center}
+.rvico svg{width:18px;height:18px}
+.rvtxt{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.rvlab{font-family:var(--label);font-size:10px;font-weight:700;letter-spacing:.08em;
+ text-transform:uppercase;color:var(--muted)}
+.rvval{font-size:16.5px;font-weight:800;letter-spacing:-.01em;color:var(--ink);line-height:1.2}
+.rvwhy{font-size:12px;color:var(--muted);line-height:1.4}
+.rvchip{flex:0 0 auto;font-size:12px;font-weight:700;color:var(--primary);
+ border:1px solid var(--line);border-radius:var(--r-chip);padding:7px 13px;min-height:34px;
+ display:flex;align-items:center}
+.rvrow:hover .rvchip{border-color:var(--primary)}
+.rvstats{display:flex;flex-direction:column;gap:0}
+.rvstat{display:flex;align-items:baseline;gap:11px;padding:10px 0;
+ border-top:1px solid rgba(255,255,255,.18)}
+.rvstat:first-child{border-top:0;padding-top:2px}
+.rvstat b{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.rvstat span{font-size:12.5px;line-height:1.45;opacity:.9}
+.rvstat em{display:block;font-style:normal;font-weight:700;opacity:.78;font-size:11px;
+ letter-spacing:.04em;text-transform:uppercase}
+.rvnote{font-size:12px;line-height:1.5;opacity:.82;margin:10px 0 0}
+.rvlater{font-size:11.5px;color:var(--muted);text-align:center;margin:9px 0 0}
 .plgrid{display:contents}
 
 /* ---- the placard, two columns ----
@@ -1634,6 +1678,34 @@ td,th{border-color:var(--line)}
   #intake .iwrap:has(.plgrid) .iqbody{max-width:none;padding:0}
 }
 
+/* ---- the review, two columns ----
+ 0.78 / 1.42: the card is the subject of the screen, so it gets the wider
+ half. The rules-out card sits above the confirm button in the left column,
+ and the rows share the height evenly so the seventh cannot clip. */
+@media(min-width:1024px){
+  /* the rows keep their 13px, so the screen is bought back from the chrome
+ around them rather than from the thing being read */
+  #intake .iwrap:has(.rvgrid){max-width:1120px;padding:18px 32px 20px}
+  #intake .iwrap:has(.rvgrid) .iqtop{padding:0 0 10px}
+  #intake .iwrap:has(.rvgrid) .iqfoot{padding-top:14px}
+  #intake .iwrap:has(.rvgrid) .iqbody{max-width:none;padding:0}
+  .rvgrid{display:grid;grid-template-columns:.78fr 1.42fr;column-gap:40px;align-items:stretch}
+  .rvleft{display:flex;flex-direction:column}
+  /* .iwrap h2.iqh is (0,2,1) and sets 42px for a question; this is the
+ review's own heading and needs to outrank it */
+  #intake .rvleft h2.iqh{font-family:var(--serif);font-size:39px;font-weight:400;
+ line-height:1.08;letter-spacing:-.01em;margin:0 0 10px}
+  .rvout{margin-top:auto}
+  /* the rows share the space, but never below the height they need: seven
+ flex items rounding down cost three pixels and clipped the last one. */
+  .rvcard{margin-top:0;min-height:100%;display:flex;flex-direction:column}
+  .rvrows{flex:1;display:flex;flex-direction:column}
+  .rvrow{flex:1 0 auto}
+  /* one line, and an ellipsis rather than a wrap that would cost a row */
+  .rvwhy{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #intake .iwrap:has(.rvgrid) .iqfoot{max-width:none}
+}
+
 /* ---- the intake, two columns ----
  Above 1024 the question stops being a phone screen centred in a window. The
  left column is the question at a readable 540px; the right is a fact that
@@ -1648,7 +1720,7 @@ td,th{border-color:var(--line)}
   .iqfoot{grid-column:1;grid-row:3;position:static;background:none;box-shadow:none;
  border-radius:0;padding:20px 0 0;margin:0;max-width:540px;align-self:end}
   .iqfact{grid-column:2;grid-row:1 / span 3;align-self:center;max-width:380px}
-  .iqfact .ifcard,.iqfact .ifnext{display:block}
+  .iqfact .ifcard{display:block}
   .iqfact .ifdots{display:flex}
   .iffoot{display:none}
   .iqn{color:var(--primary)}
@@ -4826,6 +4898,9 @@ function kfChartHTML(a){
  good verified good bg, good stroke */
 const ICONS={
  rail:'<rect x="3" y="4" width="14" height="12" rx="1.6"/><path d="M8 4v12"/><path d="M12.4 8.4 10.8 10l1.6 1.6"/>',
+ rupee:'<path d="M6.2 4.2h7.6M6.2 7.4h7.6M12.6 4.2c0 2.6-1.9 4.3-4.6 4.3h-1.8l6.6 7.3"/>',
+ clock:'<circle cx="10" cy="10" r="6.8"/><path d="M10 5.8V10l2.9 1.8"/>',
+ people:'<circle cx="7.6" cy="7.4" r="2.6"/><path d="M3.2 16.4a4.4 4.4 0 0 1 8.8 0"/><path d="M13.4 5.2a2.6 2.6 0 0 1 0 4.8"/><path d="M14.4 12.4a4.4 4.4 0 0 1 2.4 4"/>',
  lock:'<rect x="4.2" y="8.6" width="11.6" height="8" rx="1.8"/><path d="M7.2 8.6V6.4a2.8 2.8 0 0 1 5.6 0v2.2"/>',
  mic:'<rect x="7.6" y="2.6" width="4.8" height="9" rx="2.4"/><path d="M4.8 9.4a5.2 5.2 0 0 0 10.4 0"/><path d="M10 14.6V17.4M7.4 17.4h5.2"/>',
  home:'<path d="M3.2 8.4 10 3l6.8 5.4"/><path d="M5 7.9V16a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V7.9"/><path d="M8.2 17v-4.4h3.6V17"/>',
@@ -10679,7 +10754,8 @@ const FACTS=[
 ];
 function factAt(i){ return FACTS[((i%FACTS.length)+FACTS.length)%FACTS.length]; }
 function iqFact(i){
- const f=factAt(i), nx=factAt(i+1);
+ /* no teaser: a fact somebody cannot read yet is worse than one they can */
+ const f=factAt(i);
  const dots=FACTS.map((_,n)=>'<i class="'+(n===(((i%FACTS.length)+FACTS.length)%FACTS.length)?'on':'')+'"></i>').join('');
  return '<aside class="iqfact" aria-label="Did you know">'
  +'<div class="ifcard">'
@@ -10689,8 +10765,6 @@ function iqFact(i){
   +'<p class="ifdetail">'+esc(f.detail)+'</p>'
   +'<p class="ifsrc">'+esc(f.src)+'</p>'
  +'</div>'
- +'<div class="ifnext"><span class="ifkick">Next</span>'
-  +'<p>'+esc(nx.n)+' '+esc(nx.claim)+'</p></div>'
  +'<div class="ifdots" aria-hidden="true">'+dots+'</div>'
  +'<p class="iffoot"><span class="ico-g">'+uiIcon('info','nav',false)+'</span>'
   +'<span><b>'+esc(f.n)+'</b> '+esc(f.claim)+'<br>'+esc(f.src)+'</span></p>'
@@ -10733,23 +10807,26 @@ function profileRows(){
  const hh=IQ_HOUSE.find(x=>x.k===INTAKE.household);
  const work=(INTAKE.workplace||[]).map(k=>(IQ_WORK.find(w=>w.k===k)||{}).lab).filter(Boolean);
  const gl=IQ_GOAL.find(x=>x.k===INTAKE.goal);
+ /* the fifth item is the icon. One line each for the consequence, because
+ the desktop card gives every row the same height and a second line would
+ be the thing that clips the seventh. */
  const rows=[
   ['purpose','Buying for', inv?'Somewhere to put money':'A home to live in',
- inv?'Scored on growth, rent and what is committed.':'Scored on your commute, what runs here and liveability.'],
+ inv?'Scored on growth, rent and what is committed.':'Scored on your commute, what runs here and liveability.','home'],
   ['budget','All-in ceiling', b?b.lab:'not set',
- b&&b.cap?(cr(b.cap)+' all in means a ticket price near <strong>'+cr(Math.round(b.cap/1.076))
-     +'</strong> once stamp duty, registration and costs are in'):'nothing is filtered on price'],
+ b&&b.cap?('A ticket price near <strong>'+cr(Math.round(b.cap/1.076))+'</strong> once costs are in')
+    :'Nothing is filtered on price','rupee'],
   ['zones','Preferred areas', INTAKE.zones.length?INTAKE.zones.join(', '):'Suggest for me',
- INTAKE.zones.length?'A preference, not a filter \u2014 a better fit elsewhere still ranks, marked as outside your zones.'
-    :'The whole city is in scope.'],
-  ['time', inv?'Holding from':'Moving in', t?t.lab:'not set', t?t.note:'']
+ INTAKE.zones.length?'A preference, not a filter. A better fit elsewhere still ranks.'
+    :'The whole city is in scope.','location'],
+  ['time', inv?'Holding from':'Moving in', t?t.lab:'not set', t?t.note:'','clock']
  ];
- if(inv)rows.push(['goal','Buying it for', gl?gl.lab:'not set', gl?gl.note:'']);
+ if(inv)rows.push(['goal','Buying it for', gl?gl.lab:'not set', gl?gl.note:'','growth']);
  else rows.push(
   ['work','Weekday destination', work.length?work.join(' and '):'not set',
- work.length>1?'Scored against <strong>the worse</strong> of the two commutes, not the average.':''],
-  ['travel','Travel mode', tr?tr.lab:'not set', tr?tr.note:'']);
- if(!inv)rows.push(['house','Household', hh?hh.lab:'not set', hh?hh.note:'']);
+ work.length>1?'Scored against <strong>the worse</strong> of the two commutes.':'','techpark'],
+  ['travel','Travel mode', tr?tr.lab:'not set', tr?tr.note:'','car']);
+ if(!inv)rows.push(['house','Household', hh?hh.lab:'not set', hh?hh.note:'','people']);
  return rows;
 }
 /* what the budget and timeline actually exclude, counted off the same
@@ -10771,30 +10848,75 @@ function rulesOut(){
  }
  return out;
 }
+/* the same three filters as two figures rather than one sentence, because a
+ count is read and a sentence is skimmed. Every number is counted off the
+ filter the shortlist itself uses; nothing here is written down. */
+function rulesStats(){
+ const cap=budCap(), seg=segList(), st=[];
+ if(cap){
+ const n=AREAS.filter(a=>basisVal(a)*1000>cap*1.05).length;
+ st.push({n:n,of:AREAS.length,what:n===1?'area':'areas',
+  why:'where a 1,000 sqft flat lands above your ceiling'});
+ }
+ if(seg){
+ const n=SOC.filter(s=>seg.indexOf(s.seg)<0).length;
+ st.push({n:n,of:SOC.length,what:n===1?'project':'projects',
+  why:'at a possession stage outside your timeline'});
+ }
+ if(FLOODHIDE){
+ const n=AREAS.filter(a=>floodOf(a).tier==='high').length;
+ st.push({n:n,of:AREAS.length,what:n===1?'area':'areas',
+  why:'on BBMP’s high flood-risk list, which you chose to hide'});
+ }
+ return st;
+}
+/* ---- the review, one card ----
+ Seven floating boxes read as a form somebody has to check. One card with
+ hairline rows reads as a document about them, which is what it is. The same
+ component at both widths: only the consequence line's wrapping changes,
+ because a phone has vertical room and the card on desktop does not. */
+function searchLine(){
+ const rows=profileRows();
+ return rows.slice(0,4).map(r=>r[2]).filter(v=>v&&v!=='not set').join(' \u00b7 ');
+}
 function scrProfile(){
- const rows=profileRows(), out=rulesOut();
- const cards=rows.map(r=>'<button type="button" class="pcard" data-edit="'+r[0]+'">'
-  +'<span class="pl">'+esc(r[1])+'</span>'
-  +'<span class="pv">'+esc(r[2])+'</span>'
-  +(r[3]?'<span class="pc">'+r[3]+'</span>':'')
-  +'<span class="pe">Change</span></button>').join('');
- const body=out.length
-  ? '<p style="margin:0 0 8px">Your answers exclude:</p><ul class="rulelist">'
-    +out.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>'
-    +'<p style="margin:8px 0 0">Nothing is deleted, excluded places still appear, '
-    +'marked, so you can see what you are turning down.</p>'
-  : '<p style="margin:0">Nothing is excluded. Every researched area and project is in scope.</p>';
+ const rows=profileRows(), st=rulesStats();
+ const card='<div class="rvcard">'
+ +'<div class="rvhead">'
+  +'<span class="rvmark">'+uiIcon('shortlist','nav',false)+'</span>'
+  +'<span class="rvht"><b>Your search</b><span>'+esc(searchLine())+'</span></span>'
+  +'<span class="rvpill">'+rows.length+' answers</span>'
+ +'</div>'
+ +'<div class="rvrows">'
+ +rows.map(r=>'<button type="button" class="rvrow" data-edit="'+r[0]+'">'
+   +'<span class="rvico">'+uiIcon(r[4]||'info','nav',false)+'</span>'
+   +'<span class="rvtxt"><span class="rvlab">'+esc(r[1])+'</span>'
+   +'<span class="rvval">'+esc(r[2])+'</span>'
+   +(r[3]?'<span class="rvwhy">'+r[3]+'</span>':'')+'</span>'
+   +'<span class="rvchip">Change</span></button>').join('')
+ +'</div></div>';
+ const ruled=st.length
+  ? '<div class="rvstats">'+st.map(x=>'<div class="rvstat">'
+    +'<b>'+x.n+'</b><span><em>of '+x.of+' '+x.what+'</em>'+esc(x.why)+'</span></div>').join('')+'</div>'
+    +'<p class="rvnote">Nothing is deleted. Excluded places still appear, marked, '
+    +'so you can see what you are turning down.</p>'
+  : '<p class="rvnote">Nothing is excluded. Every researched area and project is in scope.</p>';
  return '<div class="iqtop">'
   +'<button class="iqnav" id="iBack" aria-label="Back">‹</button>'
   +'<div class="iqdots" aria-label="Review"></div>'
   +'<span class="iqnav ghost"></span></div>'
-  +'<div class="iqbody">'
-  +'<h2 class="iqh">Here’s what we understood</h2>'
-  +'<p class="iqhelp">Tap anything to change it. Nothing is recommended until you confirm.</p>'
-  +'<div class="pcards">'+cards+'</div>'
-  +'<div class="darkcall"><h4>What this rules out</h4>'+body+'</div>'
+  +'<div class="iqbody rvbody">'
+  +'<div class="rvgrid">'
+  +'<div class="rvleft">'
+   +'<h2 class="iqh">Here’s what we understood</h2>'
+   +'<p class="iqhelp">Tap anything to change it. Nothing is recommended until you confirm.</p>'
+   +'<div class="darkcall rvout"><h4>What this rules out</h4>'+ruled+'</div>'
   +'</div>'
-  +'<div class="iqfoot"><button class="act" id="iConfirm">That’s right, show me where to look</button></div>';
+  +'<div class="rvright">'+card+'</div>'
+  +'</div>'
+  +'</div>'
+  +'<div class="iqfoot"><button class="act" id="iConfirm">That’s right, show me where to look</button>'
+  +'<p class="rvlater">You can change any of this later.</p></div>';
 }
 
 function renderIntake(){

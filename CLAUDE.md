@@ -1321,6 +1321,39 @@ Two specificity traps, both hit while building this:
   placard is also an `.iqbody`. It is undone by
   `#intake .iwrap:has(.plgrid) .iqbody{max-width:none}`.
 
+### The review is one card, not seven boxes
+
+Seven floating `.pcard` boxes read as a form somebody has to check. One
+`.rvcard` with hairline rows reads as a document about them, which is what it
+is. Above 1024 the screen splits 0.78 / 1.42: the heading, the rules-out card
+and the confirm button on the left, the card on the right, because the card
+is the subject of the screen and gets the wider half.
+
+**All seven rows must render whole.** A half-row at the bottom is worse than
+no row, so measure `.rvrows` content against container rather than looking:
+`flex:1 1 0` across seven rows rounded down and cost three pixels, which
+clipped the last one invisibly. It is `flex:1 0 auto` now, and the screen is
+bought back from the chrome around the rows rather than from the rows.
+
+One component, one relaxed rule: `.rvwhy` is `nowrap` with an ellipsis on
+desktop and wraps on a phone, where there is vertical room and the page
+scrolls. Do not fork it.
+
+Two more specificity traps, both from sharing `.iqbody` and `.iqh` with the
+question screens, which is the same mistake the placard made:
+
+- `#intake .iwrap:has(.rvgrid) .iqbody{max-width:none}` undoes the question's
+  540px cap.
+- `#intake .rvleft h2.iqh` is needed to beat `.iwrap h2.iqh`, which is
+  (0,2,1) and sets the question's 42px.
+
+**The rules-out card carries figures, not a sentence.** `rulesStats()`
+returns a count, a denominator and a reason per filter, counted off the same
+filters the shortlist uses. Nothing in it is written down.
+
+**There is no "next fact" teaser.** Teasing a fact is worse than showing one.
+The rotation dots stay.
+
 ### The placard is a grid, and the map always names all five
 
 Four children of `.plgrid`, **placed** rather than reordered: map and the
