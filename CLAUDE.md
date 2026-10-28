@@ -79,6 +79,7 @@ list in the code:
     sign-in failed                  read off the URL before Supabase
                                     cleans it, so a stored session on an
                                     ordinary load does not count as one
+    feedback sent       {rating,section}   never the body
 
 **Adding an event means editing the privacy article in the same commit.** The
 article names the events and claims the list is complete; an event that is
@@ -142,6 +143,51 @@ wrapped so a failure degrades quietly instead of throwing.
 Signing out is not a downgrade to a broken app, it is local mode. So is
 declining to sign in at all. The sign-in screen's own exit says so in words:
 "Browse without an account".
+
+### 12. Admin is a condition, not a portal
+
+One section in the same file, `AUTH.isAdmin`, read from `profiles.role` on
+sign-in. A second portal means two codebases drifting apart, or a routing
+split in a 780KB file.
+
+**Be honest about what the hiding achieves: nothing.** This code ships to
+every user and is readable in view-source. `AUTH.isAdmin` decides whether a
+nav item is drawn and whether `goSection('admin')` is allowed through, and
+that is all it decides. The protection is RLS: `is_admin()` and
+`profiles_admin_read` run in the database, so a non-admin reading `profiles`
+from the console gets their own row whatever they do in the UI. **Never build
+anything here that depends on the UI being hidden.**
+
+**There is no control that grants or revokes the role.** A button that makes
+somebody an admin is a button that can be found and misused. Promotion is a
+deliberate SQL statement. The People tab displays the role, it does not edit
+it, and `saveProfile()` carries the existing role through its upsert so a
+profile save cannot quietly demote anybody.
+
+Three sub-tabs, built from the existing table, card, badge and callout
+components. There is no admin design language and there must not be one.
+Health says "Nothing looks wrong" in a sentence rather than showing four
+zeros, because four zeros make a reader count them.
+
+**Two things the schema does not have yet**, both rendered honestly rather
+than faked:
+
+- `feedback` has no read column, so "mark as read" is a list of ids in
+  `desk_prefs` under `fb_read`. That is per workspace, not per row, and the
+  one line that fixes it is in SETUP.md.
+- `profiles` has no last-seen column, so that cell is a dash and the table
+  says why underneath it. A derived "last seen" from the activity feed would
+  have been a guess wearing a timestamp.
+
+### 13. How a feature ships live but hidden
+
+`AUTH.isAdmin` is the mechanism. One condition around the thing, deleted when
+it goes public. **No flag system, no cohorts, no user-facing beta toggle.**
+
+A toggle invites somebody to opt in, and somebody who opts in is braced for
+roughness and forgives it. We want the confusion of a user meeting a rough
+feature cold, because that confusion is the signal we are after, and a beta
+label spends it. Ship it to admins, watch, fix, then delete the condition.
 
 ### 9. Browsing reads everything and saves nothing
 

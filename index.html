@@ -1469,6 +1469,46 @@ td,th{border-color:var(--line)}
 #exFiveLab{display:inline-flex;align-items:center;gap:5px}
 #exFiveLab .ico-g{display:inline-flex}
 #exFiveLab .ico-g svg{width:13px;height:13px}
+/* ---- feedback, for everyone ----
+ Bottom right on desktop where it is out of the way, in the header row on a
+ phone where there is no bottom right that is not the nav bar. */
+#fbDock{position:fixed;right:20px;bottom:20px;z-index:var(--z-sticky);
+ width:48px;height:48px;border-radius:50%;border:0;cursor:pointer;
+ background:var(--grad-primary);color:#fff;box-shadow:var(--shadow-primary);
+ display:flex;align-items:center;justify-content:center}
+#fbDock:hover{filter:brightness(1.06)}
+@media(max-width:900px){
+  #fbDock{right:14px;bottom:auto;top:10px;width:38px;height:38px;
+ background:var(--card);color:var(--primary);box-shadow:none;border:1px solid var(--line)}
+  #fbDock svg{width:17px;height:17px}
+}
+#fbSheet{position:fixed;inset:0;z-index:var(--z-gate);display:none}
+#fbSheet.on{display:block}
+#fbSheet textarea{width:100%;box-sizing:border-box;font:inherit;font-size:15px;
+ padding:11px 12px;border:1px solid var(--line);border-radius:var(--r-seg);
+ background:var(--card);color:var(--ink);resize:vertical;min-height:92px}
+.fbrate{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.fbrate button{flex:1 1 auto;min-height:var(--tap);padding:9px 12px;cursor:pointer;
+ border-radius:var(--r-chip);border:1px solid var(--line);background:var(--tile);
+ color:var(--muted);font-family:var(--font);font-size:13px;font-weight:600;white-space:nowrap}
+.fbrate button[aria-pressed="true"]{background:var(--primary);border-color:var(--primary);color:#fff}
+.fbwhere{font-size:12px;color:var(--muted);margin:10px 0 14px}
+/* ---- admin ----
+ No admin design language. The same table, the same cards, the same badges. */
+.admcount{font-size:13px;color:var(--muted);margin:0 0 12px}
+.admdot{display:inline-block;min-width:17px;height:17px;line-height:17px;margin-left:6px;
+ border-radius:999px;background:var(--risk-fg);color:#fff;font-size:10.5px;font-weight:700;
+ text-align:center;padding:0 4px;vertical-align:1px}
+.admscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+@media(max-width:1023px){.admscroll table{min-width:720px}}
+.admmuted{color:var(--muted)}
+.fbitem{background:var(--card);border:1px solid var(--line);border-radius:var(--r-tile);
+ padding:13px 15px;margin-bottom:10px}
+.fbitem.unread{border-left:3px solid var(--primary)}
+.fbmeta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;
+ color:var(--muted);margin-bottom:7px}
+.fbitem p{margin:0;font-size:14px;line-height:1.55;white-space:pre-wrap}
+.fbitem .act{margin-top:10px}
 .fivelock{background:var(--tint);border-radius:var(--r-card);padding:22px 20px;text-align:center}
 .fivelock .pli{width:44px;height:44px;border-radius:var(--r-tile);background:var(--card);
  display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:var(--primary)}
@@ -2214,6 +2254,19 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
   <div class="sheet-grab" aria-hidden="true"></div>
   <div class="sheet-body"></div>
 </div>
+<button type="button" id="fbDock" aria-label="Send feedback" title="What is working, and what is not?"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.4 5.2a1.6 1.6 0 0 1 1.6-1.6h10a1.6 1.6 0 0 1 1.6 1.6v6.4a1.6 1.6 0 0 1-1.6 1.6H8.2L4.6 16.4v-3.2a1.6 1.6 0 0 1-1.2-1.6z"/></svg></span></button>
+<div id="fbSheet" role="dialog" aria-modal="true" aria-labelledby="fbTitle"><div class="kscrim"></div><div class="kcard">
+  <h2 id="fbTitle">What is working, and what is not?</h2>
+  <div class="fbrate" role="group" aria-label="What kind of feedback">
+    <button type="button" data-rate="confusing">Confusing</button>
+    <button type="button" data-rate="wrong">Wrong</button>
+    <button type="button" data-rate="missing">Missing something</button>
+  </div>
+  <textarea id="fbBody" rows="4" placeholder="Tell us what happened." aria-label="Your feedback"></textarea>
+  <p class="fbwhere" id="fbWhere"></p>
+  <div class="kbtns"><button type="button" class="act" id="fbSend">Send</button>
+  <button type="button" class="act ghost" id="fbNo">Not now</button></div>
+</div></div>
 <div id="keep" role="dialog" aria-modal="true" aria-labelledby="keepTitle"><div class="kscrim"></div><div class="kcard"><h2 id="keepTitle">Sign in to keep this</h2><p id="keepLine"></p><div class="kbtns"><button type="button" class="act" id="keepGo">Email me a link</button><button type="button" class="act ghost" id="keepNo">Not now</button></div></div></div>
 <div id="gate" role="dialog" aria-modal="true" aria-label="Sign in to Property Desk"><div class="gwrap" id="gwrap"></div></div>
 <div id="intake" role="dialog" aria-modal="true" aria-label="Set up your search"><button class="pclose" id="intakeClose" aria-label="Close" title="Close" hidden>✕</button><div class="iwrap" id="iwrap"></div></div>
@@ -2229,6 +2282,7 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
   <button class="sb-item" data-sec="market" aria-current="false"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14.6 7.6 10l3 3 5.4-6"/><path d="M12.6 7h3.4v3.4"/></svg></span></span><span class="sb-lab">Market</span></button>
 <button class="sb-item" data-sec="listings" aria-current="false"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3.6" width="14" height="12.8" rx="1.6"/><path d="M3 8h14M7.6 8v8.4"/></svg></span></span><span class="sb-lab">Listings</span></button>
   <button class="sb-item" data-sec="shortlist" aria-current="false"><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m10 3.4 2.1 4.3 4.7.7-3.4 3.3.8 4.7-4.2-2.2-4.2 2.2.8-4.7L3.2 8.4l4.7-.7z"/></svg></span></span><span class="sb-lab">Your activity</span><span class="sb-count" id="sbCount" hidden>0</span></button>
+  <button class="sb-item" data-sec="admin" id="sbAdmin" aria-current="false" hidden><span class="sb-ico"><span class="ico-g"><svg viewBox="0 0 20 20" width="20" height="20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2.6 16.2 5v4.3c0 3.5-2.4 6.6-6.2 8.1-3.8-1.5-6.2-4.6-6.2-8.1V5z"/><path d="M7.6 10.1 9.3 11.8l3.1-3.4"/></svg></span></span><span class="sb-lab">Admin</span></button>
     <div class="sb-spacer"></div>
   <div class="sb-kbd"><kbd>⌘K</kbd> search anything</div>
   <div class="sb-foot">
@@ -2290,6 +2344,19 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
   </div>
   <div class="exfade" aria-hidden="true"></div>
   </div>
+</section>
+
+<section class="sec" id="sec-admin">
+  <div class="sechead">
+    <div class="headrow"><h1>Admin</h1></div>
+    <p>Who is using this, what they said about it, and whether the data underneath is in one piece.</p>
+    <div class="segmented" role="group" aria-label="Admin view">
+      <button data-adm="people" aria-pressed="true">People</button>
+      <button data-adm="feedback" aria-pressed="false">Feedback<span class="admdot" id="admUnread" hidden></span></button>
+      <button data-adm="health" aria-pressed="false">Health</button>
+    </div>
+  </div>
+  <div id="admPane"></div>
 </section>
 
 <section class="sec" id="sec-listings">
@@ -2953,6 +3020,7 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
       <tr><td><b>Name</b></td><td>It is what the activity feed puts against a change, so two people sharing a workspace can tell who did what.</td></tr>
       <tr><td><b>Mobile</b></td><td>Optional, and only so we can reach you if something in your saved work breaks. It is not verified, no code is sent to it, and nothing else uses it.</td></tr>
       <tr><td><b>Your workspace</b></td><td>The flats you track, your visit notes and scores, your answers to the seven questions, and the legal checklist. Keyed to your workspace, readable only by its members.</td></tr>
+      <tr><td><b>Feedback you send</b></td><td>What you wrote, the kind you picked, and which section you were on. Signed in it carries your account so we can write back; signed out it carries no name and no address at all.</td></tr>
     </table>
   </div>
   <div class="block">
@@ -2968,7 +3036,7 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
     <h2>What we count</h2>
     <p>We count which sections get opened and where people stop in the questions. No event carries your name, your email or which flat you looked at. Our analytics sets no cookie and cannot follow you to other sites. We look at this to see which parts are worth building on, and that is all it is for.</p>
     <p><b>What that means we can and cannot see.</b> We can see that somebody stopped at question five, and not who they were. We can see that the sign-in screen was reached and not finished, and not whose address it was. There is no way back from any of it to a person.</p>
-    <p>The events are: a section being opened and which one; the questions being started, each one completed by its number, and finished; a locked panel being shown and which kind; and sign-in being started, completed or failed. That is the whole list.</p>
+    <p>The events are: a section being opened and which one; the questions being started, each one completed by its number, and finished; a locked panel being shown and which kind; sign-in being started, completed or failed; and feedback being sent, with the rating and the section it came from. <b>Never the words you wrote</b> — the message itself goes into the database for us to read and is not part of any event.</p>
   </div>
   <div class="block">
     <h2>Who can see it</h2>
@@ -3557,7 +3625,7 @@ function setConn(state,text){
  would lose them the moment the policies tightened. claimWorkspace() is the
  one-time door back in, and it is on the profile screen rather than buried
  in settings, because that is the first screen they will see. */
-let AUTH={user:null,profile:null,ws:[],state:'off'};
+let AUTH={user:null,profile:null,ws:[],state:'off',isAdmin:false};
 /* 'off'    no backend in the link: local mode, no gate
    'out'    there is a backend and nobody is signed in
    'new'    signed in, profile not written yet
@@ -3586,11 +3654,15 @@ async function loadProfile(){
  AUTH.profile=null;
  if(!sb||!signedIn())return null;
  try{
- const {data,error}=await sb.from('profiles').select('id,email,name,mobile,created_at')
+ const {data,error}=await sb.from('profiles').select('id,email,name,mobile,role,created_at')
    .eq('id',AUTH.user.id).maybeSingle();
  if(error)throw error;
  AUTH.profile=data||null;
  }catch(e){ AUTH.profile=null; }
+ /* the role decides one thing: whether a nav item is drawn. Everything that
+ matters is decided by RLS in the database, not here. */
+ AUTH.isAdmin=!!(AUTH.profile&&AUTH.profile.role==='admin');
+ if(typeof paintAdminNav==='function')paintAdminNav();
  return AUTH.profile;
 }
 async function loadMemberships(){
@@ -3606,8 +3678,11 @@ async function loadMemberships(){
 }
 async function saveProfile(name,mobile){
  if(!sb||!signedIn())throw new Error('Not signed in.');
+ /* role is never written from here. There is no control that grants it and
+ an upsert that omitted it would quietly reset somebody to 'user'. */
  const row={id:AUTH.user.id,email:AUTH.user.email||'',
  name:(name||'').trim(),mobile:((mobile||'').trim()||null)};
+ if(AUTH.profile&&AUTH.profile.role)row.role=AUTH.profile.role;
  const {error}=await sb.from('profiles').upsert(row,{onConflict:'id'});
  if(error)throw error;
  AUTH.profile=row;
@@ -3914,6 +3989,258 @@ async function afterSignIn(){
  renderVisits(); renderSoc(); updateCount();
  }catch(e){}
 }
+/* ========== admin ==========
+ One conditional section in the same file, not a second portal: two codebases
+ drift, and a routing split in a 780KB file is worse than a condition.
+
+ **The hiding is tidiness, not security.** This code ships to every user and
+ is readable in view-source; `AUTH.isAdmin` only decides whether a nav item
+ is drawn. The protection is RLS, which runs in the database: is_admin() and
+ the profiles_admin_read policy mean a non-admin reading profiles from the
+ console gets their own row and nothing else, whatever the UI says. Never
+ build anything here that depends on the UI being hidden.
+
+ There is no control that grants or revokes the role. A button that makes
+ somebody an admin is a button that can be found and misused; promotion is a
+ deliberate SQL statement. The People tab shows the role, it does not edit
+ it. */
+let ADMSUB='people', ADMDATA=null, ADMREAD={};
+function adminAllowed(){ return !!(AUTH&&AUTH.isAdmin); }
+function paintAdminNav(){
+ const b=document.getElementById('sbAdmin');
+ if(b)b.hidden=!adminAllowed();
+}
+const admEsc=gEsc;
+const admDash=v=>(v===null||v===undefined||v==='')
+ ? '<span class="admmuted">\u2014</span>' : admEsc(v);
+const admDate=v=>{ if(!v)return '<span class="admmuted">\u2014</span>';
+ const d=new Date(v); if(isNaN(d))return '<span class="admmuted">\u2014</span>';
+ return admEsc(d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})); };
+
+/* read state lives in desk_prefs rather than on the row, because the feedback
+ table has no read column yet. The SQL to add one is in SETUP.md; until it is
+ run this is per-workspace rather than per-row, and it is marked as such. */
+async function loadAdminRead(){
+ ADMREAD={};
+ if(MODE!=='shared')return;
+ try{
+ const {data}=await sb.from('desk_prefs').select('v').eq('workspace',CFG.w).eq('k','fb_read').limit(1);
+ if(data&&data[0]&&data[0].v&&data[0].v.ids)(data[0].v.ids||[]).forEach(id=>{ADMREAD[id]=1;});
+ }catch(e){}
+}
+async function saveAdminRead(){
+ if(MODE!=='shared')return;
+ try{ await sb.from('desk_prefs').upsert({workspace:CFG.w,k:'fb_read',
+ v:{ids:Object.keys(ADMREAD)},updated_by:myName()||'admin',
+ updated_at:new Date().toISOString()},{onConflict:'workspace,k'}); }catch(e){}
+}
+async function loadAdmin(){
+ if(!adminAllowed()||!sb)return null;
+ const grab=async(t,sel,order)=>{
+ try{ let q=sb.from(t).select(sel); if(order)q=q.order(order,{ascending:false});
+  const {data,error}=await q; if(error)throw error; return data||[]; }
+ catch(e){ return {err:(e&&e.message)||'could not read '+t}; }};
+ const [people,fb,members,tracking,checks,prefs,activity]=await Promise.all([
+ grab('profiles','id,email,name,mobile,role,created_at'),
+ grab('feedback','id,user_id,email,rating,section,body,created_at','created_at'),
+ grab('workspace_members','workspace,user_id,role,created_at'),
+ grab('desk_tracking','workspace,prop_id'),
+ grab('desk_checks','workspace,item'),
+ grab('desk_prefs','workspace,k,v'),
+ grab('desk_activity','workspace,who,created_at')
+ ]);
+ ADMDATA={people,fb,members,tracking,checks,prefs,activity};
+ return ADMDATA;
+}
+function admUnreadCount(){
+ if(!ADMDATA||!Array.isArray(ADMDATA.fb))return 0;
+ return ADMDATA.fb.filter(r=>!ADMREAD[r.id]).length;
+}
+function paintAdmUnread(){
+ const d=document.getElementById('admUnread'); if(!d)return;
+ const n=admUnreadCount();
+ d.hidden=!n; d.textContent=n>99?'99+':String(n);
+}
+/* ---- People ---- */
+function admPeople(){
+ const d=ADMDATA||{};
+ if(d.people&&d.people.err)return calloutCard('warn','Could not read profiles',admEsc(d.people.err));
+ const people=d.people||[];
+ const members=Array.isArray(d.members)?d.members:[];
+ const tracking=Array.isArray(d.tracking)?d.tracking:[];
+ const prefs=Array.isArray(d.prefs)?d.prefs:[];
+ const wsOf={}; members.forEach(m=>{(wsOf[m.user_id]=wsOf[m.user_id]||[]).push(m.workspace);});
+ const trackCount={}; tracking.forEach(t=>{trackCount[t.workspace]=(trackCount[t.workspace]||0)+1;});
+ const doneWs={}; prefs.forEach(p=>{ if(p.k==='intake'&&p.v&&p.v.done)doneWs[p.workspace]=1; });
+ const finished=p=>(wsOf[p.id]||[]).some(w=>doneWs[w]);
+ const flats=p=>(wsOf[p.id]||[]).reduce((n,w)=>n+(trackCount[w]||0),0);
+ const nDone=people.filter(finished).length;
+ const rows=people.slice().sort((a,b)=>String(b.created_at||'').localeCompare(String(a.created_at||'')))
+ .map(p=>'<tr><td>'+admDash(p.name)+'</td><td>'+admDash(p.email)+'</td>'
+  +'<td>'+admDash(p.mobile)+'</td>'
+  +'<td>'+badge(p.role==='admin'?'admin':'user',p.role==='admin'?'ok':'neutral')+'</td>'
+  +'<td>'+admDate(p.created_at)+'</td>'
+  +'<td><span class="admmuted">\u2014</span></td>'
+  +'<td>'+(finished(p)?badge('yes','ok'):badge('no','neutral'))+'</td>'
+  +'<td class="num">'+flats(p)+'</td></tr>').join('');
+ return '<p class="admcount"><b>'+people.length+'</b> '+(people.length===1?'person':'people')
+ +', <b>'+nDone+'</b> finished the questions</p>'
+ +'<div class="admscroll"><table><tr><th>Name</th><th>Email</th><th>Mobile</th><th>Role</th>'
+ +'<th>Signed up</th><th>Last seen</th><th>Finished</th><th class="num">Flats</th></tr>'
+ +(rows||'<tr><td colspan="8">Nobody yet.</td></tr>')+'</table></div>'
+ +'<p class="admcount" style="margin-top:10px">Last seen is blank because '
+ +'<code>profiles</code> has no column for it yet. The two lines that add one '
+ +'are in SETUP.md; until then this shows a dash rather than a guess.</p>';
+}
+/* ---- Feedback ---- */
+const FBRATELAB={confusing:'Confusing',wrong:'Wrong',missing:'Missing something'};
+function admFeedback(){
+ const d=ADMDATA||{};
+ if(d.fb&&d.fb.err)return calloutCard('warn','Could not read feedback',admEsc(d.fb.err));
+ const fb=d.fb||[];
+ if(!fb.length)return '<div class="empty"><strong>No feedback yet.</strong></div>';
+ const names={}; (Array.isArray(d.people)?d.people:[]).forEach(p=>{names[p.id]=p.name||p.email;});
+ return fb.map(r=>{
+ const who=r.user_id?(names[r.user_id]||r.email||'someone signed in'):'signed out';
+ const unread=!ADMREAD[r.id];
+ return '<div class="fbitem'+(unread?' unread':'')+'">'
+  +'<div class="fbmeta"><b>'+admEsc(who)+'</b>'
+  +(r.rating?badge(FBRATELAB[r.rating]||r.rating,r.rating==='wrong'?'risk':'warn'):'')
+  +(r.section?'<span>on '+admEsc(SECLABEL[r.section]||r.section)+'</span>':'')
+  +'<span>'+admDate(r.created_at)+'</span></div>'
+  +'<p>'+admEsc(r.body||'')+'</p>'
+  +(unread?'<button class="act ghost small" data-fbread="'+admEsc(r.id)+'">Mark as read</button>'
+   :'<span class="admmuted" style="font-size:12px">Read</span>')
+  +'</div>';
+ }).join('');
+}
+/* ---- Health ---- */
+function admHealth(){
+ const d=ADMDATA||{};
+ const bad=[];
+ const num=x=>Array.isArray(x)?x.length:null;
+ const counts=[['People',num(d.people)],['Feedback',num(d.fb)],['Memberships',num(d.members)],
+ ['Tracked flats',num(d.tracking)],['Legal checks',num(d.checks)],['Preferences',num(d.prefs)],
+ ['Activity',num(d.activity)]];
+ const members=Array.isArray(d.members)?d.members:[];
+ const ws={}; members.forEach(m=>{(ws[m.workspace]=ws[m.workspace]||[]).push(m.user_id);});
+ const wsList=Object.keys(ws);
+ const shared=wsList.filter(w=>ws[w].length>1).length;
+ if(Array.isArray(d.people)){
+ const withWs={}; members.forEach(m=>{withWs[m.user_id]=1;});
+ const orphans=d.people.filter(p=>!withWs[p.id]);
+ if(orphans.length)bad.push(['Profiles with no workspace',orphans.length,
+  'They signed in and never got a membership row, so they can read nothing of their own.']);
+ }
+ if(Array.isArray(d.tracking)){
+ const homeless=d.tracking.filter(t=>!ws[t.workspace]);
+ const wsSet={}; homeless.forEach(t=>{wsSet[t.workspace]=1;});
+ if(homeless.length)bad.push(['Tracked flats in a workspace nobody belongs to',homeless.length,
+  'Rows in '+Object.keys(wsSet).length+' workspace'+(Object.keys(wsSet).length===1?'':'s')
+  +' with no members. The claim flow on the profile screen is what recovers these.']);
+ }
+ const emptyWs=wsList.filter(w=>!ws[w].length);
+ if(emptyWs.length)bad.push(['Workspaces with no members',emptyWs.length,
+ 'Nothing in them can be read by anybody until somebody claims the code.']);
+ const rows=counts.map(c=>'<tr><td>'+c[0]+'</td><td class="num">'
+ +(c[1]===null?'<span class="admmuted">could not read</span>':c[1])+'</td></tr>').join('');
+ return '<div class="block"><h2 style="font-size:15px">Rows</h2>'
+ +'<table>'+rows
+ +'<tr><td>Workspaces</td><td class="num">'+wsList.length+'</td></tr>'
+ +'<tr><td>Shared with more than one person</td><td class="num">'+shared+'</td></tr>'
+ +'</table></div>'
+ +'<div class="block"><h2 style="font-size:15px">Anything wrong</h2>'
+ +(bad.length
+  ? bad.map(b=>calloutCard('warn',b[0]+': '+b[1],b[2])).join('')
+  : calloutCard('ok','Nothing looks wrong',
+   'Every profile has a workspace, every workspace has a member, and every '
+   +'tracked flat sits in a workspace somebody belongs to.'))
+ +'</div>';
+}
+function setAdmSub(k){
+ ADMSUB=k;
+ document.querySelectorAll('#sec-admin .segmented button').forEach(b=>
+ b.setAttribute('aria-pressed',String(b.dataset.adm===k)));
+ renderAdmin();
+}
+function renderAdmin(){
+ const host=document.getElementById('admPane'); if(!host)return;
+ if(!adminAllowed()){host.innerHTML='';return;}
+ if(!ADMDATA){host.innerHTML='<div class="empty">Loading.</div>';return;}
+ host.innerHTML = ADMSUB==='people' ? admPeople()
+   : ADMSUB==='feedback' ? admFeedback()
+   : admHealth();
+ paintAdmUnread();
+ host.querySelectorAll('[data-fbread]').forEach(b=>b.addEventListener('click',async()=>{
+ ADMREAD[b.dataset.fbread]=1; await saveAdminRead(); renderAdmin();}));
+}
+async function enterAdmin(){
+ if(!adminAllowed())return;
+ const host=document.getElementById('admPane');
+ if(host&&!ADMDATA)host.innerHTML='<div class="empty">Loading.</div>';
+ await loadAdminRead();
+ await loadAdmin();
+ renderAdmin();
+}
+document.querySelectorAll('#sec-admin .segmented button').forEach(b=>
+ b.addEventListener('click',()=>setAdmSub(b.dataset.adm)));
+
+/* ========== feedback ==========
+ It works signed out, writing a null user_id and no email, because the people
+ most worth hearing from are the ones who have not signed up yet. The section
+ goes with it automatically; the body never goes to analytics. */
+let FBRATE='';
+function openFeedback(){
+ FBRATE='';
+ const el=document.getElementById('fbSheet'); if(!el)return;
+ document.getElementById('fbBody').value='';
+ document.querySelectorAll('#fbSheet .fbrate button').forEach(b=>b.setAttribute('aria-pressed','false'));
+ const w=document.getElementById('fbWhere');
+ if(w)w.textContent='Sent with this: you are on '+(SECLABEL[SEC]||SEC)+'.'
+  +(signedIn()?' Your account is on it too.':' You are signed out, so there is no name on it.');
+ const k=document.getElementById('fbSend');
+ if(k){k.disabled=false;k.textContent='Send';}
+ el.classList.add('on');
+ setTimeout(()=>{const t=document.getElementById('fbBody'); if(t)t.focus();},40);
+}
+function closeFeedback(){ document.getElementById('fbSheet').classList.remove('on'); }
+async function sendFeedback(){
+ const body=(document.getElementById('fbBody').value||'').trim();
+ const btn=document.getElementById('fbSend');
+ if(!body){document.getElementById('fbBody').focus();return;}
+ if(!sb){toast('No workspace is configured, so there is nowhere to send it','warn');return;}
+ btn.disabled=true; btn.textContent='Sending';
+ try{
+ const row={user_id:signedIn()?AUTH.user.id:null,
+ email:signedIn()?(AUTH.user.email||null):null,
+ rating:FBRATE||null, section:SEC, body:body};
+ const {error}=await sb.from('feedback').insert(row);
+ if(error)throw error;
+ logEvent('feedback sent',{rating:FBRATE||'none',section:SEC});
+ const card=document.querySelector('#fbSheet .kcard');
+ if(card)card.innerHTML='<h2>Thank you. We read every one of these.</h2>';
+ setTimeout(closeFeedback,2000);
+ }catch(e){
+ btn.disabled=false; btn.textContent='Send';
+ toast(gateMsg(e),'warn');
+ }
+}
+(function(){
+ const d=document.getElementById('fbDock');
+ if(d)d.addEventListener('click',openFeedback);
+ const n=document.getElementById('fbNo');
+ if(n)n.addEventListener('click',closeFeedback);
+ const sc=document.querySelector('#fbSheet .kscrim');
+ if(sc)sc.addEventListener('click',closeFeedback);
+ const go=document.getElementById('fbSend');
+ if(go)go.addEventListener('click',sendFeedback);
+ document.querySelectorAll('#fbSheet .fbrate button').forEach(b=>
+ b.addEventListener('click',()=>{
+  FBRATE=b.dataset.rate;
+  document.querySelectorAll('#fbSheet .fbrate button').forEach(x=>
+   x.setAttribute('aria-pressed',String(x===b)));
+ }));
+})();
 function openPrivacyNote(){
  SUB.guide='privacy';
  goSection('shortlist','guide');
@@ -4021,7 +4348,10 @@ const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').sl
  one carries data-sec (and data-sub where a section has more than one view), and
  is moved once at boot into the section that now owns it. Nothing is duplicated
  and nothing is rewritten, so every word of the original content survives. */
-const SECTIONS=['home','explore','market','listings','shortlist'];
+const SECTIONS=['home','explore','market','listings','shortlist','admin'];
+/* what a section is called in a sentence, for the feedback note */
+const SECLABEL={home:'Home',explore:'Explore',market:'Market',listings:'Listings',
+ shortlist:'Your activity',admin:'Admin'};
 /* Legal and Negotiation left this list and became Shortlist sub-tabs of their
  own: they are things you do once something is tracked, not background
  reading. What remains is genuinely background. */
@@ -4076,6 +4406,7 @@ function paintPanels(){
 function goSection(sec,sub,opts){
  opts=opts||{};
  if(SECTIONS.indexOf(sec)<0)sec='home';
+ if(sec==='admin'&&!adminAllowed())sec='home';
  SEC=sec;
  if(sub)SUB[sec]=sub;
  document.querySelectorAll('.sb-item[data-sec]').forEach(b=>
@@ -4088,6 +4419,7 @@ function goSection(sec,sub,opts){
  if(sec==='market')renderMarket();
  if(sec==='explore'){renderTuned(); setExploreMode(defaultExploreMode()); mapKickSoon();}
  if(sec==='listings'){renderSoc();}
+ if(sec==='admin'){enterAdmin();}
  if(sec==='shortlist'){
  renderActivityNav();
  fillPropSelects();
@@ -11161,10 +11493,13 @@ function openSettings(){
  const acct=document.createElement('div');
  acct.id='setAcct';
  keep.appendChild(acct);
+ /* the connection form is a project URL, an anon key and a workspace code.
+ It configured the app before the constants did, and to a normal user it
+ reads as a settings page that has gone wrong. Admin keeps it. */
  const form=SETTINGSSRC.querySelector('#cfUrl') ? SETTINGSSRC.querySelector('#cfUrl').closest('.step') : null;
- if(form)keep.appendChild(form);
+ if(form){ form.id='cfStep'; keep.appendChild(form); }
  const feed=SETTINGSSRC.querySelector('#feed');
- if(feed){const w=document.createElement('div');w.className='block';
+ if(feed){const w=document.createElement('div');w.className='block';w.id='feedBlock';
  w.innerHTML='<h2 style="font-size:15px">Recent activity</h2>';w.appendChild(feed);keep.appendChild(w);}
  const tools=document.createElement('div');
  tools.className='block';
@@ -11189,6 +11524,10 @@ function openSettings(){
  location.reload();
   });
  }
+ /* ours, not theirs: the connection form and the activity feed are
+ diagnostics, and they are only drawn for an admin */
+ const cf=document.getElementById('cfStep'); if(cf)cf.hidden=!adminAllowed();
+ const fbk=document.getElementById('feedBlock'); if(fbk)fbk.hidden=!adminAllowed();
  try{renderAccount();prefillCfgForm();renderFeed();}catch(e){}
  document.getElementById('settingsModal').classList.add('on');
  document.getElementById('scrim').classList.add('on');
@@ -11242,21 +11581,27 @@ function renderAccount(){
  +'<button class="act small" id="acSave">Save profile</button>'
  +'<button class="act ghost small" id="acOut">Sign out</button></div>'
  +'<p id="acMsg" style="font-size:12.5px;color:var(--muted);margin:10px 0 0"></p>'
- +'<div class="gsep" style="margin-top:18px"><h2 style="font-size:15px">Your workspace</h2>'
- +'<p style="font-size:13px;color:var(--muted);margin:0 0 8px">Whoever has this code '
- +'<b>and</b> an account here can be added to it. The code on its own is no longer '
- +'enough to get in.</p>'
- +'<div class="gread" style="word-break:break-all;margin-bottom:12px">'+esc(CFG&&CFG.w||'')+'</div>'
+ /* sharing is a real need and stays for everyone. The raw workspace code and
+ the claim box are ours: a string of random letters and a recovery hatch for
+ a migration most people never lived through read as something broken, so
+ they sit under Admin. */
+ +'<div class="gsep" style="margin-top:18px"><h2 style="font-size:15px">Share with somebody</h2>'
+ +'<p style="font-size:13px;color:var(--muted);margin:0 0 8px">They need an account here '
+ +'first. Nothing is created for them, and a link on its own does not let anybody in.</p>'
  +'<div class="field"><label for="acAdd">Add somebody by email</label>'
  +'<input id="acAdd" type="email" inputmode="email" spellcheck="false" placeholder="partner@example.com"></div>'
  +'<button class="act ghost small" id="acAddGo">Add to this workspace</button>'
  +'<p id="acAddMsg" style="font-size:12.5px;color:var(--muted);margin:10px 0 0"></p>'
- +'<div class="field" style="margin-top:16px"><label for="acClaim">Claim another workspace</label>'
- +'<input id="acClaim" type="text" spellcheck="false" placeholder="a workspace code you already use">'
- +'<span class="hint">If you were using Property Desk before accounts existed, this is how '
- +'that work comes with you.</span></div>'
- +'<button class="act ghost small" id="acClaimGo">Claim it</button>'
- +'<p id="acClaimMsg" style="font-size:12.5px;color:var(--muted);margin:10px 0 0"></p></div>';
+ +(adminAllowed()
+  ?'<div class="field" style="margin-top:16px"><label>Workspace code</label>'
+   +'<div class="gread" style="word-break:break-all">'+esc(CFG&&CFG.w||'')+'</div></div>'
+   +'<div class="field"><label for="acClaim">Claim another workspace</label>'
+   +'<input id="acClaim" type="text" spellcheck="false" placeholder="a workspace code you already use">'
+   +'<span class="hint">For a workspace that predates accounts. Admin only.</span></div>'
+   +'<button class="act ghost small" id="acClaimGo">Claim it</button>'
+   +'<p id="acClaimMsg" style="font-size:12.5px;color:var(--muted);margin:10px 0 0"></p>'
+  :'')
+ +'</div>';
  const g=id=>document.getElementById(id);
  const say=(id,t,bad)=>{const el=g(id);if(el){el.textContent=t;el.style.color=bad?'var(--risk-fg)':'var(--muted)';}};
  if(g('acSave'))g('acSave').addEventListener('click',async()=>{
@@ -11295,6 +11640,8 @@ registerOverlay({el:'intake', close:skipIntake, backdrop:false, swipe:false,
  further down and a const does not hoist. */
 registerOverlay({el:'keep', close:closeKeep, top:true, backdrop:false, swipe:false,
  isOpen:()=>document.getElementById('keep').classList.contains('on')});
+registerOverlay({el:'fbSheet', close:closeFeedback, top:true, backdrop:false, swipe:false,
+ isOpen:()=>document.getElementById('fbSheet').classList.contains('on')});
 
 /* ========== persistence ========== */
 let saveTimer;

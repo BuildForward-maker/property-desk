@@ -229,6 +229,26 @@ If you skip it and sign in anyway, the app gives you a fresh empty workspace,
 and the old one sits unclaimed until you enter its code under
 **Settings → Claim another workspace**. Nothing is deleted either way.
 
+## 2d. What the admin view still wants
+
+Two columns the app renders around rather than inventing. Both are optional;
+without them the People table shows a dash and "mark as read" is kept per
+workspace instead of per row.
+
+```sql
+-- so "last seen" is a date rather than a dash
+alter table profiles add column if not exists last_seen timestamptz;
+
+-- so a read flag belongs to the row rather than to a preferences blob
+alter table feedback add column if not exists read boolean default false;
+```
+
+Promotion is deliberate and has no button anywhere in the app:
+
+```sql
+update profiles set role = 'admin' where email = 'you@example.com';
+```
+
 ## 2c. The two values in the file
 
 Near the top of the script, `SB_URL` and `SB_KEY` name the backend this copy
