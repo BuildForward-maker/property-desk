@@ -191,8 +191,21 @@ column; Position, the map and the rest of Explore sit beside it, so it is a
 card in one column and not a wall. The button reads "Answer 7 questions"
 before the questions and "Sign in to see your five" after, and the line under
 it changes with it: "Takes four minutes" is true of the questions and not of
-signing in. **A consequence worth knowing:** the generic top-20 list is not
-reachable signed out any more, because that list lived in this tab.
+signing in.
+
+**The top 20 is a tab of its own where Your 5 is locked**, and that is not
+decoration. "Browse without answering" exists to hand somebody a working
+product without the intake, so it cannot land them on a card asking them to
+answer the questions they just declined. Signed out with no answers,
+`skipIntake()` and `goSection('explore')` both land on `ranked`: the top 20
+of 86 with `genericCard()` above it, and Your 5 one tap away with its lock.
+
+One implementation, two homes. `fillGeneric20(host)` is called by
+`renderGeneric20()` into `#gen20Pane` for the Ranked tab, and by
+`renderYourFive()` into `#fivePane` for the signed-in-without-answers case,
+where the Your 5 tab relabels itself "Ranked for everyone" and there is no
+second tab beside it. Two controls for one column would be the duplication
+the restructure exists to remove.
 
 The glyph is sized to 13px in the tab. At its native 20px it made every
 Explore mode one to two pixels taller, which the height sweep caught.
@@ -922,9 +935,13 @@ most likely to trip you up:
 
 - `SUB` is keyed by section — `SUB.explore`, `SUB.shortlist`, and `SUB.guide`.
   `SUB.guide` is the open article, not a section of its own.
-- `EXMODE` is Explore's mode: `five` | `position` | `discover`. `search`,
-  `momentum` and `terminal` are still accepted by `setExploreMode()` and
-  reachable, but are not on the three-button control.
+- `EXMODE` is Explore's mode: `five` | `ranked` | `position` | `discover`.
+  `search`, `momentum` and `terminal` are still accepted by
+  `setExploreMode()` and reachable, but are not on the control.
+  **`ranked` is a tab only where `five` is locked**, which `paintExploreTabs()`
+  decides and `setExploreMode` enforces by rewriting `ranked` to `five` when
+  `canSave()`. `defaultExploreMode()` is what somebody lands on rather than
+  what they left behind.
 - `MSUB` is Market's sub-tab: `moving` | `compare` | `coming`. It is outside
   `SUB` because `SUB` is keyed by section and the guide already owns a key
   inside Shortlist.

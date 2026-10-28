@@ -2262,6 +2262,7 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
       <button class="sgo" id="exQuickGo" aria-label="Search">&#9906;</button>
     </div>
     <div class="segmented" role="group" aria-label="Explore mode">
+      <button data-mode="ranked" id="exRankedTab" aria-pressed="false" hidden>Ranked</button>
       <button data-mode="five" aria-pressed="true"><span id="exFiveLab">Your 5</span></button>
       <button data-mode="position" aria-pressed="false">Position</button>
       <button data-mode="discover" aria-pressed="false">Map</button>
@@ -2271,6 +2272,7 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
   <div class="exbar" aria-hidden="true"></div>
   <div id="tunedBar"></div>
   <div id="rankedPane"></div>
+  <div id="gen20Pane" style="display:none"></div>
   <div id="fivePane"></div>
   <div id="posPane" style="display:none"></div>
   <div id="momentumPane" style="display:none"></div>
@@ -4084,7 +4086,7 @@ function goSection(sec,sub,opts){
  paintPanels();
  if(sec==='home')renderHome();
  if(sec==='market')renderMarket();
- if(sec==='explore'){renderTuned(); setExploreMode(EXMODE); mapKickSoon();}
+ if(sec==='explore'){renderTuned(); setExploreMode(defaultExploreMode()); mapKickSoon();}
  if(sec==='listings'){renderSoc();}
  if(sec==='shortlist'){
  renderActivityNav();
@@ -5426,6 +5428,37 @@ function genericRow(a,i){
   +esc(b.lab)+' \u00b7 \u20b9'+Math.round(basisVal(a)).toLocaleString('en-IN')+'/sqft</span></span>'
   +'</button>';
 }
+/* ---- the whole city, ranked for everybody ----
+ Twenty, not eighty-six. Somebody who skipped the questions has no frame for
+ what they are reading, and a list that long is the thing the whole
+ restructure exists to prevent. The rest is one tap away.
+
+ It has two homes and one implementation. Signed in without answers it fills
+ the Your 5 tab, which relabels itself. Signed out it is its own tab, because
+ Your 5 is locked there and "Browse without answering" has to land on a
+ working product rather than on a card asking them to answer questions. */
+function fillGeneric20(host){
+ if(!host)return;
+ const all=AREAS.slice().sort((a,b)=>investScore(b)-investScore(a));
+ const show=all.slice(0,20);
+ host.innerHTML=genericCard()
+ +'<div class="fintro"><span>Top '+show.length+' of '+all.length
+ +', ranked on the investment score</span></div>'
+ +'<div class="genrows">'+show.map(genericRow).join('')+'</div>'
+ +'<button class="ilink mmore" data-genall="1">See all '+mktAreas().length
+ +' ranked \u2192</button>';
+ const b=host.querySelector('#genAsk');
+ if(b)b.addEventListener('click',()=>openIntake(0));
+ host.querySelectorAll('[data-openanl]').forEach(x=>
+ x.addEventListener('click',()=>showArea(x.dataset.openanl)));
+ host.querySelectorAll('[data-genall]').forEach(x=>
+ x.addEventListener('click',()=>openMetricSheet('rank')));
+}
+function renderGeneric20(){
+ const host=document.getElementById('gen20Pane'); if(!host)return;
+ if(EXMODE!=='ranked'){host.innerHTML='';return;}
+ fillGeneric20(host);
+}
 /* ---- the Your 5 tab, locked ----
  The tab stays where it is with a lock on its label, because hiding it would
  hide what an account is for. Position, the map, Listings and the whole of
@@ -5453,26 +5486,7 @@ function renderYourFive(){
  });
  return;
  }
- if(!personalised()){
-  /* twenty, not eighty-six. Somebody who skipped the questions has no frame
- for what they are reading, and a list that long is the thing the whole
- restructure exists to prevent. The rest is one tap away. */
- const all=AREAS.slice().sort((a,b)=>investScore(b)-investScore(a));
- const show=all.slice(0,20);
- host.innerHTML=genericCard()
-   +'<div class="fintro"><span>Top '+show.length+' of '+all.length
-   +', ranked on the investment score</span></div>'
-   +'<div class="genrows">'+show.map(genericRow).join('')+'</div>'
-   +'<button class="ilink mmore" data-genall="1">See all '+mktAreas().length
-   +' ranked \u2192</button>';
- const b=document.getElementById('genAsk');
- if(b)b.addEventListener('click',()=>openIntake(0));
- host.querySelectorAll('[data-openanl]').forEach(x=>
- x.addEventListener('click',()=>showArea(x.dataset.openanl)));
- host.querySelectorAll('[data-genall]').forEach(x=>
- x.addEventListener('click',()=>openMetricSheet('rank')));
- return;
- }
+ if(!personalised()){ fillGeneric20(host); return; }
  const five=topAreas(5);
  host.innerHTML='<div class="fintro"><span>Five of '+AREAS.length
   +', chosen from your answers</span>'
@@ -5560,15 +5574,16 @@ function renderPosition(){
  view and deliberately shows a smaller set, so it hides everything that would
  imply city-wide coverage. */
 function setExploreMode(m){
- if(['five','position','discover','momentum','search','terminal'].indexOf(m)<0)m='five';
+ if(['five','ranked','position','discover','momentum','search','terminal'].indexOf(m)<0)m='five';
+ /* Ranked only exists where Your 5 is locked; signed in it falls back */
+ if(m==='ranked'&&canSave())m='five';
  /* the map is the right panel on desktop, so there is nothing for a Map mode
  to switch to. A phone still has all three. */
  if(m==='discover'&&window.matchMedia&&window.matchMedia('(min-width:1024px)').matches)m='five';
  EXMODE=m;
  document.querySelectorAll('#sec-explore .segmented button').forEach(b=>
  b.setAttribute('aria-pressed',String(b.dataset.mode===m)));
- /* the label has to say what the list is, not what it would be if they had
- answered: calling 86 generic rows "Your 5" is a lie on the control */
+ paintExploreTabs();
  /* the label has to say what the list is. Locked it is always "Your 5",
  because that is what is behind it; open it says what is actually there. */
  const lab=document.getElementById('exFiveLab');
@@ -5598,6 +5613,8 @@ function setExploreMode(m){
  if(tp)tp.style.display = m==='terminal'?'':'none';
  const fp=document.getElementById('fivePane');
  if(fp)fp.style.display = m==='five'?'':'none';
+ const g20=document.getElementById('gen20Pane');
+ if(g20)g20.style.display = m==='ranked'?'':'none';
  const pp=document.getElementById('posPane');
  if(pp)pp.style.display = m==='position'?'':'none';
  mapKickSoon();
@@ -5606,8 +5623,24 @@ function setExploreMode(m){
  else if(m==='momentum'){renderMomentum();}
  else if(m==='terminal'){renderTerminal();}
  else if(m==='five'){renderYourFive();}
+ else if(m==='ranked'){renderGeneric20();}
  else if(m==='position'){renderPosition();}
  else {renderHeatMap(); renderRanked(false);}
+}
+/* ---- which modes the control offers ----
+ Ranked is a tab only where Your 5 is locked. Signed in, the Your 5 tab is
+ the generic list when there are no answers and relabels itself to say so,
+ which is one tab doing one job; a second one beside it would be two controls
+ for the same column. */
+function paintExploreTabs(){
+ const t=document.getElementById('exRankedTab');
+ if(t)t.hidden=canSave();
+}
+/* the mode somebody lands on, rather than the one they left behind */
+function defaultExploreMode(){
+ if(!canSave()&&!personalised())return 'ranked';
+ if(EXMODE==='ranked'&&canSave())return 'five';
+ return EXMODE;
 }
 document.querySelectorAll('#sec-explore .segmented button').forEach(b=>
  b.addEventListener('click',()=>{setExploreMode(b.dataset.mode);writeHash();}));
@@ -9803,8 +9836,9 @@ async function skipIntake(){
  try{await saveIntake();}catch(e){}
  applyIntake(); closeIntake();
  /* with no answers there is no "your five", so land on the whole city ranked
- for everybody rather than on an empty state */
- if(first){goSection('explore'); setExploreMode('five');}
+ for everybody rather than on a card asking them to answer the questions
+ they have just declined */
+ if(first){goSection('explore'); setExploreMode(defaultExploreMode());}
 }
 function closeIntake(){
  document.getElementById('intake').classList.remove('on');
