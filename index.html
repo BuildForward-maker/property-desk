@@ -940,6 +940,130 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
  letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
 .vsaid p{margin:0;font-size:14px;line-height:1.55}
 .vsaid small{display:block;margin-top:8px;font-size:11.5px;line-height:1.5;color:var(--muted)}
+/* ---- screen zero: the entry screen ----
+ It asks a stranger for four minutes, so it spends thirty seconds earning
+ them first: three findings, each with the source and the date that make it
+ checkable, and then the ask. A claim without a date is marketing.
+
+ Every figure is READ OFF THE DATA by ezFacts() at render time. Typing them
+ in would leave the first screen anybody sees quoting a market that has
+ since been re-merged, and the entry screen is the worst place in the app
+ to be a stale copy. A card whose sample has fallen below FROTH_FLOOR is
+ dropped rather than printed.
+
+ No count of researched areas or projects appears here. Those numbers are a
+ record of where research effort went, they move every round, and a promise
+ built on one ages badly. */
+.ezwrap{position:relative;display:flex;flex-direction:column;flex:1;width:100%;
+ padding:14px 0 18px;box-sizing:border-box}
+/* two soft orbs under the grain. z-index -2 against the grain's -1, both
+ inside #intake's own stacking context, so they sit above its background and
+ below every word on the screen. */
+.ezorbs{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden}
+.ezorb{position:absolute;border-radius:50%}
+.ezorb.o1{width:360px;height:360px;left:-110px;bottom:-120px;
+ background:radial-gradient(circle,rgba(67,56,202,.20),rgba(67,56,202,0) 70%)}
+.ezorb.o2{width:420px;height:420px;right:-150px;top:-160px;
+ background:radial-gradient(circle,rgba(165,180,252,.36),rgba(165,180,252,0) 70%)}
+.ezbrand{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.ezmark{width:32px;height:32px;border-radius:9px;background:var(--grad-primary);
+ color:#fff;display:inline-flex;align-items:center;justify-content:center;flex:none;
+ box-shadow:var(--shadow-primary)}
+.ezmark .ico-g svg{width:18px;height:18px}
+.ezid{display:flex;flex-direction:column;min-width:0}
+.ezname{font-family:var(--serif);font-size:18px;font-weight:400;line-height:1.05;
+ color:var(--ink)}
+.ezcity{font-family:var(--label);font-size:9.5px;font-weight:700;letter-spacing:.1em;
+ text-transform:uppercase;color:var(--muted);margin-top:3px;line-height:1}
+.ezin{margin-left:auto;background:none;border:0;cursor:pointer;font-family:var(--font);
+ font-size:13px;font-weight:600;color:var(--muted);min-height:var(--tap);padding:0 4px}
+.ezin:hover{color:var(--primary)}
+#intake .ezwrap h2.ezh{font-family:var(--serif);font-weight:400;font-size:36px;
+ line-height:1.02;letter-spacing:-.01em;color:var(--ink);text-align:center;
+ margin:16px 0 0}
+.ezlede{margin:10px auto 0;max-width:580px;font-size:13.5px;line-height:1.5;
+ color:var(--muted);text-align:center}
+.ezcards{display:grid;gap:9px;margin-top:16px;align-items:stretch}
+/* the figure sits in a fixed column so all three line up down the phone,
+ and the label and the line share the column beside it. Placed, not
+ auto-placed: a grid cell is not a stack. */
+.ezcard{background:var(--card);border-radius:20px;padding:13px 14px;
+ box-shadow:0 2px 10px rgba(20,18,43,.06);
+ display:grid;grid-template-columns:74px 1fr;column-gap:12px;align-items:start}
+/* body's tabular-nums is for columns of figures; a display number is not a
+ column, and at 24px/800 it set "11" with a visible gap down the middle */
+.ezfig{grid-column:1;grid-row:1 / span 2;font-size:24px;font-weight:800;
+ line-height:1.05;letter-spacing:-.02em;font-variant-numeric:lining-nums}
+/* five characters will not fit 74px at 24 */
+.ezfig.ezsm{font-size:19px}
+.ezlab{grid-column:2;grid-row:1;font-family:var(--label);font-size:9.5px;
+ font-weight:700;letter-spacing:.07em;text-transform:uppercase;line-height:1.3}
+.ezsay{grid-column:2;grid-row:2;margin:4px 0 0;font-size:12.5px;line-height:1.45;
+ color:var(--muted)}
+.ezsrc{display:none}
+.ezpri{color:var(--primary)}
+.ezwrn{color:var(--warn-fg)}
+.ezrsk{color:var(--risk-fg)}
+/* three source lines cost the phone three rows for one idea */
+.ezsrcline{margin:9px 0 0;font-size:10px;line-height:1.4;color:var(--muted);
+ text-align:center}
+.ezask{margin-top:auto;padding-top:16px;flex:0 0 auto}
+.ezsub{margin:0 auto 12px;max-width:560px;font-size:13px;line-height:1.5;
+ color:var(--ink);text-align:center}
+/* `button.act` at the top of the file (the pre-redesign layer: flat --ink,
+ 2px radius, 14px/600) is (0,1,1) and beats both `.act` and `.ezgo`, so a
+ primary button does not currently get the gradient pill the tokens
+ describe. That is an app-wide bug and not this screen's to fix, so the
+ entry screen states what its own button is at a specificity that wins and
+ touches nothing else. */
+#intake button.ezgo{display:flex;align-items:center;justify-content:center;
+ width:100%;min-height:52px;padding:0 22px;border:0;border-radius:var(--r-chip);
+ background:var(--grad-primary);color:#fff;font-family:var(--font);
+ font-size:15.5px;font-weight:700;box-shadow:var(--shadow-primary);cursor:pointer}
+#intake button.ezgo:hover{filter:brightness(1.06);opacity:1}
+.ezalt{display:flex;align-items:center;justify-content:center;margin-top:8px}
+.ezlink{display:inline-flex;align-items:center;justify-content:center;gap:7px;
+ background:none;border:0;cursor:pointer;font-family:var(--font);font-size:13px;
+ font-weight:600;color:var(--muted);min-height:var(--tap);padding:0 14px}
+.ezlink:hover{color:var(--primary)}
+.ezlink.on{color:var(--primary)}
+.ezalt .ezlink + .ezlink{border-left:1px solid var(--line)}
+.ezmicg{display:inline-flex;width:16px;height:16px;opacity:.85}
+/* .ico-g svg is (0,1,1) and declared later, so the glyph needs the same
+ shape as every other sized icon in the file to win */
+.ezmicg .ico-g svg{width:16px;height:16px}
+.ezmins{margin:7px 0 0;font-size:11.5px;line-height:1.4;color:var(--muted);
+ text-align:center}
+/* one markup, two wordings: the phone gets the shorter of each pair */
+.ezlong{display:none}
+.ezshort{display:inline}
+@media(min-width:1024px){
+  #intake .iwrap:has(.ezwrap){display:flex;flex-direction:column;justify-content:center;
+ max-width:1000px;padding:28px 32px;min-height:100%}
+  .ezwrap{flex:0 0 auto;padding:0}
+  .ezbrand{margin-bottom:26px}
+  #intake .ezwrap h2.ezh{font-size:54px;margin:0}
+  .ezlede{font-size:15px;margin-top:14px}
+  .ezcards{grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}
+  /* sideways on a phone, a column on desktop, so the children's grid
+   placement simply stops applying rather than needing to be undone */
+  .ezcard{display:flex;flex-direction:column;padding:20px;
+ box-shadow:0 4px 18px rgba(20,18,43,.07)}
+  .ezfig,.ezfig.ezsm{font-size:30px}
+  .ezlab{font-size:10px;margin-top:7px}
+  .ezsay{font-size:13px;margin-top:8px}
+  .ezsrc{display:block;margin-top:auto;padding-top:14px;font-size:10px;
+ line-height:1.4;color:var(--muted)}
+  .ezsrcline{display:none}
+  .ezask{margin-top:30px}
+  .ezsub{font-size:15px;margin-bottom:16px}
+  #intake button.ezgo{width:fit-content;margin:0 auto;padding:0 34px;
+ min-height:58px;font-size:17px}
+  .ezalt{margin-top:14px}
+  .ezmins{margin-top:12px}
+  .ezlong{display:inline}
+  .ezshort{display:none}
+}
 /* ---- the header microphone. The affordance now, the asking later. ---- */
 .hdrmic{appearance:none;border:0;cursor:pointer;width:38px;height:38px;min-width:38px;
  border-radius:50%;background:var(--tint);color:var(--primary);display:inline-flex;
@@ -11295,10 +11419,14 @@ function iDots(step){
 function openIntake(step,opts){
  iStep=step||0;
  /* screen zero is offered once, at the start, to somebody who has not already
- answered. Editing an answer must not put the microphone in the way, and a
- browser without SpeechRecognition never sees a mic it cannot use — it gets
- the questions, with one line saying why. */
- IPHASE=(SPEECHOK && !step && !INTAKE.done && !VSEEN && !(opts&&opts.skipVoice))
+ answered. Editing an answer must not put the entry screen in the way.
+
+ It is NOT gated on SpeechRecognition any more. It was, back when the screen
+ was a microphone and nothing else; it is now the three findings that are
+ the only argument for answering seven questions, and withholding those
+ from every browser that is not Chrome would be withholding the argument.
+ The "say it out loud" line is what hides where the API is missing. */
+ IPHASE=(!step && !INTAKE.done && !VSEEN && !(opts&&opts.skipVoice))
    ? 'voice' : 'q';
  VSEEN=true;
  const x=document.getElementById('intakeClose');
@@ -11467,43 +11595,131 @@ function vWave(){
  return '<span class="vwave" aria-hidden="true">'
   +[0,1,2,3,4,5,6].map(i=>'<i style="animation-delay:'+(i*90)+'ms"></i>').join('')+'</span>';
 }
-/* ---- screen zero ----
- The microphone was the loud option and the questions the quiet one, which
- put the experiment in front of the thing that works: voice needs Chrome,
- catches three patterns, and most people will tap. The hierarchy is swapped.
- Answering is the full-width primary; saying it out loud is one quiet line
- under it, with a small glyph so it is still obviously there. The copy on
- both is unchanged, and the mic itself is unchanged behind the line. */
+/* ---- screen zero: the entry screen ----
+ It used to open "Tell me what you're looking for" over a microphone, which
+ asks a stranger for four minutes and hands back nothing. It spends thirty
+ seconds earning them instead: three findings this desk holds and a listing
+ site does not, each carrying the source and the date that make it
+ checkable, and then the ask. A claim without a date is marketing; with one
+ it is something a stranger can go and verify.
+
+ Every figure comes from ezFacts(), which reads AREAS. Nothing on this
+ screen is typed in, so a re-merge cannot leave the first screen anybody
+ sees quoting a market that has since moved. It is the worst place in the
+ app to keep a stale copy.
+
+ No count of researched areas or projects appears anywhere on it. Those are
+ a record of where research effort went rather than a property of the city,
+ they move every round, and a promise built on one ages badly.
+
+ It is no longer gated on SpeechRecognition. Screen zero WAS the microphone
+ when that rule was written; the microphone is now one quiet line on it, and
+ gating the whole screen would hide the only argument for answering from
+ every browser that is not Chrome. The line itself still disappears where
+ SpeechRecognition is missing, exactly as the header mic does. */
+function ezFacts(){
+ const out=[];
+ const med=frothMedian();
+ /* below FROTH_FLOOR there is no median to show, so the card goes rather
+  than printing a figure nobody could defend. The other two stand alone. */
+ if(med!==null){
+ const bg=AREAS.find(a=>/^Begur/.test(a.n));
+ const bgv=bg?frothPct(bg):null;
+ out.push({tone:'ezpri', big:'+'+med+'%', small:'+'+med+'%',
+ lab:'Asking over deeds',
+ say:'The median gap between what sellers advertise and what the sub-registrar '
+   +'records.'+(bgv!==null?' In Begur it is '+bgv+'%.':''),
+ src:'Karnataka registry · Sept 2026'});
+ }
+ const sr=AREAS.find(a=>a.n==='Sarjapur Road');
+ if(sr&&sr.growth25!=null&&sr.growth26!=null){
+ out.push({tone:'ezwrn', sm:true,
+ big:sr.growth25+'% → '+sr.growth26+'%',
+ small:sr.growth25+'→'+sr.growth26+'%',
+ lab:'Sarjapur Road, in one year',
+ say:'Its price growth collapsed'
+   +(sr.growthPortal!=null
+     ?' while the portal figure still read '+sr.growthPortal+'%':'')
+   +'. A listing carries a price, never a direction.',
+ src:'Knight Frank · H1 2025 and H1 2026'});
+ }
+ const tierOf=a=>floodOf(a).tier;
+ const hi=AREAS.filter(a=>tierOf(a)==='high').length;
+ const rest=AREAS.filter(a=>tierOf(a)==='medium'||tierOf(a)==='low').length;
+ if(hi){
+ out.push({tone:'ezrsk', big:String(hi), small:String(hi),
+ lab:'At high flood risk',
+  /* the figure is the high tier, not the whole list, so the line says what
+   sits under it. 11 read as "the flood list" would be the quiet "low"
+   that the unknown-tier rule exists to prevent, one level up. */
+ say:'Named repeatedly across BBMP’s lists and the 2022, 2024 and May 2026 '
+   +'events.'+(rest?' '+rest+' more sit at lower tiers.':''),
+ src:'BBMP and KSNDMC · '+FLOOD.asOf});
+ }
+ return out;
+}
+function ezCard(f){
+ return '<div class="ezcard">'
+  +'<div class="ezfig '+f.tone+(f.sm?' ezsm':'')+'">'
+   +'<span class="ezlong">'+esc(f.big)+'</span>'
+   +'<span class="ezshort">'+esc(f.small)+'</span></div>'
+  +'<div class="ezlab '+f.tone+'">'+esc(f.lab)+'</div>'
+  +'<p class="ezsay">'+esc(f.say)+'</p>'
+  +'<div class="ezsrc">'+esc(f.src)+'</div>'
+ +'</div>';
+}
 function scrVoice(){
  const live=!!VREC, open=VOPEN||live;
- return '<div class="iqtop"><span class="iqnav ghost"></span>'
-  +'<div class="iqspacer"></div>'
-  +'<span class="iqnav ghost"></span></div>'
-  +'<div class="iqbody vbody">'
-  +'<h2 class="iqh">Tell me what you’re looking for</h2>'
-  +'<p class="iqhelp">Budget, where you work, what is worrying you. However it comes out.</p>'
-  +'<button type="button" class="act vgo" id="vTap">Answer 7 questions'
-   +'<span class="kcap kent" aria-hidden="true">\u21B5</span></button>'
-  +'<button type="button" class="vsay'+(open?' on':'')+'" id="vSay"'
-   +' aria-expanded="'+(!!open)+'">'
-   +'<span class="vsayi">'+uiIcon('mic','nav',false)+'</span>'
-   +'<span>Or say it out loud</span></button>'
-  +(open
-   ?'<div class="vopen">'
-    +'<div class="vmic'+(live?' live':'')+'">'
-     +'<button type="button" id="vBtn" class="vbtn" aria-label="Hold to talk">'
-      +'<span class="vring r1"></span><span class="vring r2"></span>'
-      +(live?vWave():uiIcon('mic','nav',false))
-     +'</button>'
-     +'<span class="vlab">'+(live?'Listening… let go to stop':'Hold to talk')+'</span>'
-    +'</div>'
-    +'<p class="vheard'+(VERR?' verr':'')+'" id="vHeard">'
-     +(VERR?esc(VERR):(VINTERIM||VTEXT?esc((VTEXT+' '+VINTERIM).trim()):''))+'</p>'
-    +'<p class="vlimit">I am reading for budget, location and timing. '
-    +'The questions above cover the rest.</p>'
-   +'</div>':'')
-  +'<div class="iqexit">'+iqExit(0)+'</div>'
-  +'</div>';
+ return '<div class="ezwrap">'
+  +'<div class="ezorbs" aria-hidden="true">'
+   +'<span class="ezorb o1"></span><span class="ezorb o2"></span></div>'
+  +'<div class="ezbrand">'
+   +'<span class="ezmark">'+uiIcon('home','nav',false)+'</span>'
+   +'<span class="ezid"><span class="ezname">Property Desk</span>'
+    +'<span class="ezcity">Bengaluru</span></span>'
+   +(AUTH.state==='out'
+     ?'<button type="button" class="ezin" id="ezSignin">Sign in</button>':'')
+  +'</div>'
+  +'<h2 class="ezh">The things nobody tells you<br>before you buy</h2>'
+  +'<p class="ezlede">Portals show you what sellers are asking. We show you what '
+   +'deeds record, what the market is actually doing, and which areas flood.</p>'
+  +'<div class="ezcards">'+ezFacts().map(ezCard).join('')+'</div>'
+  +'<p class="ezsrcline">Knight Frank, the Karnataka registry and BBMP · 2026</p>'
+  +'<div class="ezask">'
+   +'<p class="ezsub">'
+    +'<span class="ezlong">Answer seven questions and we will score every researched '
+     +'area against your commute, your budget and your timing.</span>'
+    +'<span class="ezshort">Seven questions, then every researched area scored '
+     +'against your commute, budget and timing.</span></p>'
+   +'<button type="button" class="act ezgo" id="vTap">Answer 7 questions'
+    +'<span class="kcap kent" aria-hidden="true">↵</span></button>'
+   +'<div class="ezalt">'
+    +(SPEECHOK
+      ?'<button type="button" class="ezlink'+(open?' on':'')+'" id="vSay"'
+       +' aria-expanded="'+(!!open)+'">'
+       +'<span class="ezmicg">'+uiIcon('mic','nav',false)+'</span>'
+       +'<span>Say it out loud</span></button>':'')
+    +'<button type="button" class="ezlink" id="iSkip">'
+     +'<span class="ezlong">Look around first</span>'
+     +'<span class="ezshort">Look around</span></button>'
+   +'</div>'
+   +(open
+    ?'<div class="vopen">'
+     +'<div class="vmic'+(live?' live':'')+'">'
+      +'<button type="button" id="vBtn" class="vbtn" aria-label="Hold to talk">'
+       +'<span class="vring r1"></span><span class="vring r2"></span>'
+       +(live?vWave():uiIcon('mic','nav',false))
+      +'</button>'
+      +'<span class="vlab">'+(live?'Listening… let go to stop':'Hold to talk')+'</span>'
+     +'</div>'
+     +'<p class="vheard'+(VERR?' verr':'')+'" id="vHeard">'
+      +(VERR?esc(VERR):(VINTERIM||VTEXT?esc((VTEXT+' '+VINTERIM).trim()):''))+'</p>'
+     +'<p class="vlimit">I am reading for budget, location and timing. '
+     +'The questions above cover the rest.</p>'
+    +'</div>':'')
+   +'<p class="ezmins">Takes about four minutes</p>'
+  +'</div>'
+ +'</div>';
 }
 /* ---- what was caught, as editable rows ---- */
 function scrVoiceCaught(){
@@ -12541,7 +12757,10 @@ function wireIntakeKeys(){
   return;
  }
  if(e.key==='Enter'){
-  const n=document.getElementById('iNext')||document.getElementById('iConfirm');
+  /* screen zero's primary is #vTap, and it draws the same keycap. A keycap
+   on a button Enter does not reach is worse than no keycap. */
+  const n=document.getElementById('iNext')||document.getElementById('iConfirm')
+    ||document.getElementById('vTap');
   if(n&&!n.disabled){e.preventDefault(); n.click();}
  }
  });
@@ -12600,6 +12819,10 @@ function wireIntake(){
  /* opening the mic is a render, not a permission prompt: the microphone is
   still only asked for on the tap of the button inside */
  if(g('vSay'))g('vSay').addEventListener('click',()=>{VOPEN=!VOPEN; renderIntake();});
+ /* the entry screen's one way to an account. Nothing is saved yet, so there
+  is nothing to carry across: close and hand over to the gate. */
+ if(g('ezSignin'))g('ezSignin').addEventListener('click',()=>{
+ vStop(); closeIntake(); openGate('signin');});
  if(g('vGo'))g('vGo').addEventListener('click',()=>{
  IPHASE='q'; iStep=nextUnanswered(0); renderIntake();});
 

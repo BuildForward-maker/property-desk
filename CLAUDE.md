@@ -687,10 +687,16 @@ is only its fallback. Primary buttons, score badges and bar fills all carry
 
 Three fonts. **Manrope** carries every readable word, **Space Grotesk**
 (`--label`) is for caps labels and badges only and never for body text, and
-**Instrument Serif** (`--serif`) carries exactly two things: the intake
-question at 42px on desktop, and the fact card's claim line at 23px. It is
-not a UI face and must not spread; if a third place wants it, the question is
-why that place is trying to sound like the question.
+**Instrument Serif** (`--serif`) carries four things and no more: the intake
+question at 42px on desktop, the fact card's claim line at 23px, the entry
+screen's headline at 54px (36 on a phone) and the wordmark beside the brand
+mark at 18px. It is not a UI face and must not spread; if a fifth place wants
+it, the question is why that place is trying to sound like the question.
+
+The two new ones are the two exceptions a display face has: the entry
+headline is the same role as the intake question, which is the screen's one
+large statement, and a wordmark is a wordmark. Neither is a label, a value or
+a line of prose, and nothing on either screen beside them is serif.
 Nothing interactive goes under `--tap`.
 
 Every foreground/background pair in use clears 4.5:1. The tightest is the
@@ -1016,14 +1022,67 @@ the tilted table with a callout naming the change; the personal-fit line on a
 location's Score tab passes it. A sheet showing 21% beside a score computed on
 26% is the stale copy the "reads the live table" rule exists to prevent.
 
-### Screen zero: say it instead of filling a form
+### Screen zero is the entry screen
 
-Before question 1 sits a screen that lets somebody describe their situation.
-`IPHASE` is `'voice' | 'caught' | 'q'` and sits in front of `iStep` in
-`renderIntake()`. It is offered once per session, never to somebody editing an
-answer, and **never in a browser without SpeechRecognition** — that browser
-gets the questions with one line saying voice needs Chrome, not a mic that
-does nothing.
+Before question 1 sits the screen that has to earn the four minutes the
+questions are about to cost. `IPHASE` is `'voice' | 'caught' | 'q'` and sits
+in front of `iStep` in `renderIntake()`; it is offered once per session and
+never to somebody editing an answer.
+
+**It is no longer gated on SpeechRecognition**, and the old rule saying it
+must be is gone with the reason it existed. Screen zero WAS the microphone;
+it is now the three findings that are the only argument for answering seven
+questions, and withholding those from every browser that is not Chrome would
+be withholding the argument. The **"Say it out loud" line** is what hides
+where the API is missing, exactly as the header mic's own button does. The
+"speaking needs Chrome" line on question 1 is unchanged.
+
+**Three proof cards, and every figure is read off the data.** `ezFacts()`
+returns them from `AREAS`; nothing on the screen is typed in. The first
+screen anybody sees is the worst place in the app to keep a stale copy, and
+a re-merge that moves the median has to move this screen with it.
+
+    +43%        asking over deeds    frothMedian(), with Begur's own gap
+    16% -> 3%   Sarjapur Road        growth25 and growth26, against the
+                                     growthPortal figure the merge replaced
+    11          at high flood risk   the high tier of FLOOD, with the count
+                                     at lower tiers stated beside it
+
+**Each carries its source and its date, and that is not decoration.** A claim
+without a date is marketing; with one it is a finding a stranger can go and
+check. On a phone the three source lines collapse to one shared line, because
+three rows for one idea is not a trade a 812px screen can make.
+
+Two things the figures taught, both now enforced in `ezFacts()` rather than
+written down: **the froth card disappears below `FROTH_FLOOR`** rather than
+printing a median of two, and **11 is the high tier, not the flood list** —
+24 areas are on the published lists, so the card says what sits under the
+figure. A bare "11 areas on the flood list" is the quiet "low" that the
+unknown-tier rule exists to prevent, one level up.
+
+**No count of researched areas or projects appears anywhere on it.** Not 86,
+not 106. Those are a record of where research effort went rather than a
+property of the city, they move every round, and a promise built on one ages
+badly. The copy says "every researched area".
+
+**Measured, and these are the numbers to measure against.** 375x812: total
+**812**, no scroll, the ask group on `margin-top:auto` and 18px of wrap
+padding under the last line, which is the padding and not an empty band.
+390x844: total **844**, no scroll. 1280x800: 686px of content centred in
+800, no scroll. Adding anything to this screen has to come out of something
+else.
+
+One markup, two shapes, breaking at 1024. The cards are a column on desktop
+with the source pinned to the bottom by `margin-top:auto`; on a phone they
+turn sideways with the figure in a **fixed 74px column** so all three line up
+down the page, placed explicitly by row because a grid cell is not a stack.
+`16->3%` drops to 19px there: five characters do not fit 74px at 24.
+`.ezlong` and `.ezshort` carry the two wordings of the sub-line, the exit and
+that figure, so there is one template and not two.
+
+Two soft radial orbs sit at `z-index:-2` against the grain's `-1`, both
+inside `#intake`'s own stacking context, so they paint above its background
+and below every word. The ground on this screen is not flat.
 
 The microphone asks for permission **on the tap and never on load**. Handlers
 are attached before `start()` so a `start()` that throws is still reported:
@@ -1166,15 +1225,40 @@ had been harmless for months became visible; before adding a flat `--bg` fill
 anywhere inside `#intake`, `#gate` or `#sec-home`, check it against the
 ground it is sitting on.
 
-### Screen zero leads with the questions
+### The ask, and the one way out
 
-The microphone was the loud option and the questions the quiet one, which put
-the experiment in front of the thing that works: voice needs Chrome, catches
-three patterns, and most people will tap. **Answer 7 questions** is the
-full-width primary; **Or say it out loud** is one quiet line under it with a
-small mic glyph, and `VOPEN` unfolds the microphone in place. The copy on both
-is unchanged and the mic still asks for permission on its own tap, never on
-render. The header mic on the five sections is untouched.
+**Answer 7 questions** is the gradient pill and carries the Enter keycap.
+Under it sit two quiet plain-text options divided by a 1px rule: **Say it out
+loud**, which `VOPEN` unfolds in place, and **Look around first**, which is
+the intake's one named exit and is still `#iSkip`. The mic still asks for
+permission on its own tap and never on render. The header mic on the five
+sections is untouched.
+
+The keycap used to be a lie. `wireIntakeKeys` looked for `#iNext` or
+`#iConfirm` on Enter and screen zero's primary is `#vTap`, so the glyph was
+drawn on a button the key could not reach. It falls through to `#vTap` now.
+A keycap on a button Enter does not reach is worse than no keycap.
+
+**Sign in is not a second exit.** The one-way-out rule is about Skip against
+X, and this screen has the named exit and no X, which is what `hasProfile()`
+decides. Sign in is the account door, and the gate it opens carries its own
+"Browse without an account".
+
+### `button.act` beats everything, and every primary button in the app is wrong
+
+Near the top of the file, in the surviving pre-redesign layer, sits
+`button.act{...background:var(--ink);border-radius:2px;font-size:14px}`. It is
+**(0,1,1)**, and both `.act` and every modifier written since are (0,1,0), so
+the rule that was meant to replace it never has. Every `<button class="act">`
+in the app renders as a flat `--ink` rectangle at 2px rather than the
+`--grad-primary` pill the tokens describe, which is the one thing the design
+token section says must never happen.
+
+This is a bug, it is app-wide, and it is **not fixed**. The entry screen
+states its own button at `#intake button.ezgo`, which wins, and nothing else
+is touched, because repainting every primary button in the app is a round of
+its own with its own screenshots. Fixing it means deleting the old rule and
+checking all sixteen screens, not adding specificity in sixteen places.
 
 ### What the funnel left behind
 
@@ -1848,8 +1932,8 @@ behind a fold. **Market > Moving has the hardest budget of all: 1.0.**
 Known and accepted exceptions: **Explore > Your 5** (~2.65 — five cards at
 about 230px each) and its generic twin at ~2.81, **Listings** (the full
 directory of 106), the long-form **guide articles**, **Home** at ~1.36, and
-**Explore > Map** at ~2.79. Screen zero fits one screen with no scroll, and
-must stay that way.
+**Explore > Map** at ~2.79. The entry screen fits one screen with no scroll
+at 375x812 and at 390x844, and must stay that way.
 
 Map is on that list for a reason worth stating: at 375 it is 2,268px, of
 which the map itself is 420. The other 1,006 is the filter card, the band
