@@ -806,6 +806,35 @@ strings, hold no state.
 | `srcFooter(src, asOf)` | **not** `sourceFooter` — see below |
 | `explainButton(topic, mode, label)` | the "i", 44px reach around a 22px circle |
 
+### Two attribute names, one action, and every host must bind both
+
+`data-openanl` and `data-openarea` both mean "open this area's panel". Seventeen
+places write one or the other; fifteen bind them. **A host that binds only one
+name silently kills every card written with the other** — no error, no console
+line, the card simply does nothing.
+
+It has happened once, on the screen where it cost most. `placardLive()` renders
+its top card through `fiveCard()`, borrowed from Explore, while the four under
+it go through its own `areaCard()`. `fiveCard` carries Explore's attribute, the
+placard's wiring knew only its own, and so the **one card the lock gives away
+for free** was the single dead card in the app. Every other card on that screen
+worked, which is what made it look like a problem with one area rather than
+with one binding.
+
+Two rules follow:
+
+- **Bind both names together**, `[data-openanl],[data-openarea]`, in every host
+  where a card can land, and read the value as `dataset.openanl||dataset.openarea`.
+- **Never narrow a card binding to a class list.** `.fcard[data-openanl],
+  .loccard[data-openanl]` was written in the ceiling round to avoid
+  double-binding the near-miss rows; it is the same trap one step away.
+  `[data-openanl]:not(.cmrow)` says what is meant and survives the next card.
+
+Verifying this is a click, not a read: a listener cannot be inspected, so the
+only proof is to click every card on every surface and assert the panel that
+opened. 337 clicks across fourteen surfaces, all 86 areas twice over, is about
+four minutes of harness time and is worth running whenever a render path moves.
+
 ### One escaping rule, and it is the call site's job
 
 **A builder escapes nothing a call site composes. The call site escapes its own
@@ -1360,6 +1389,15 @@ says why: `AREAS.rent` and `SOC.sz` are 2BHK-only, so they read "2BHK rent,
 the only size we hold rent data for". Never relabel a 2BHK number as if it
 covered every size. Listings has no size filter and never did; the dataset is
 2BHK-based, which is a data limit to state, not a filter to remove.
+
+**An empty state says what is missing and why, and never implies fault.** The
+sub-registrar publishing no figure for an area is a fact about the record, not
+about the area, the seller or the buyer. "not published / none published here"
+said the same thing twice and read as an accusation; it is now "Not available"
+over "The sub-registrar does not publish a figure for this area". The same goes
+for "not quoted" on a project. Where the gap is the tool's, the copy says so:
+the voice screen's no-match state names the three patterns the matcher catches
+rather than telling somebody that nothing they said counted.
 
 **The foot of the page is one line.** Eleven px, muted, with an asterisk that
 opens the full note as a sheet. The long version lives in `FULLNOTE`.

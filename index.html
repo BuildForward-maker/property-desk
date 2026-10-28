@@ -4912,8 +4912,8 @@ function renderRanked(animate){
   +'<small>'+(personal?'your answers drive the weights'
     :'the generic sweet-spot score \u2014 answer the questions to re-rank this')+'</small></div>'
   +'<div class="ranklist">'+rows+'</div>';
- host.querySelectorAll('[data-openarea]').forEach(b=>b.addEventListener('click',e=>{
- e.stopPropagation(); showArea(b.dataset.openarea);}));
+ host.querySelectorAll('[data-openarea],[data-openanl]').forEach(b=>b.addEventListener('click',e=>{
+ e.stopPropagation(); showArea(b.dataset.openarea||b.dataset.openanl);}));
  LASTRANK=list.map(x=>x.a.n);
 }
 
@@ -4988,8 +4988,8 @@ function renderMomentum(){
     +'Marathahalli has compounded at 15% two years running, while the central streets have not '
     +'moved at all either year.</p>':'')
   +cityContextHTML();
- host.querySelectorAll('[data-openarea]').forEach(b=>
- b.addEventListener('click',()=>showArea(b.dataset.openarea)));
+ host.querySelectorAll('[data-openarea],[data-openanl]').forEach(b=>
+ b.addEventListener('click',()=>showArea(b.dataset.openarea||b.dataset.openanl)));
 }
 
 /* ---- the three-year price chart on an area ----
@@ -5404,7 +5404,7 @@ function termFacts(key,a){
  if(key==='invest-score')v=String(investScore(a));
  else if(key==='fit-score')v=personalised()?String(areaFit(a)):'answer the questions';
  else if(key==='qts')v=a.qts+' quarters';
- else if(key==='registered-deeds')v=a.reg?'\u20b9'+a.reg.toLocaleString('en-IN'):'not published';
+ else if(key==='registered-deeds')v=a.reg?'\u20b9'+a.reg.toLocaleString('en-IN'):'Not available';
  else if(key==='flood-tier')v=floodOf(a).meta.lab;
  else if(key==='data-tier')v=a.dataTier==='verified'?'Transaction-tracked':'Portal-derived';
  else if(key==='basis-tier')v='\u20b9'+Math.round(basisVal(a)).toLocaleString('en-IN')+'/sqft';
@@ -6194,8 +6194,8 @@ function fillGeneric20(host){
  +' ranked \u2192</button>';
  const b=host.querySelector('#genAsk');
  if(b)b.addEventListener('click',()=>openIntake(0));
- host.querySelectorAll('[data-openanl]').forEach(x=>
- x.addEventListener('click',()=>showArea(x.dataset.openanl)));
+ host.querySelectorAll('[data-openanl],[data-openarea]').forEach(x=>
+ x.addEventListener('click',()=>showArea(x.dataset.openanl||x.dataset.openarea)));
  host.querySelectorAll('[data-genall]').forEach(x=>
  x.addEventListener('click',()=>openMetricSheet('rank')));
 }
@@ -6242,8 +6242,10 @@ function renderYourFive(){
   +'<button type="button" class="widercard" data-gomarket="1">'
   +'<b>Looking wider?</b><span>See what is moving across Bengaluru</span></button>';
  wireCeiling(host);
- host.querySelectorAll('.fcard[data-openanl],.loccard[data-openanl]').forEach(b=>
- b.addEventListener('click',()=>showArea(b.dataset.openanl)));
+ /* every card, by either name, minus the near-miss rows wireCeiling already
+  took. Naming the two classes instead was how the placard's top card died. */
+ host.querySelectorAll('[data-openanl]:not(.cmrow),[data-openarea]').forEach(b=>
+ b.addEventListener('click',()=>showArea(b.dataset.openanl||b.dataset.openarea)));
  host.querySelectorAll('[data-gomarket]').forEach(b=>
  b.addEventListener('click',()=>goSection('market')));
  const w=document.getElementById('fiveWhy');
@@ -6315,8 +6317,8 @@ function renderPosition(){
   +'<span>price per sq ft →</span><span>₹'
   +Math.round(xMax).toLocaleString('en-IN')+'</span></div></div>'
   +srcFooter('Knight Frank H1 2026 where tracked, portal-derived elsewhere','');
- host.querySelectorAll('[data-openanl]').forEach(b=>
- b.addEventListener('click',()=>showArea(b.dataset.openanl)));
+ host.querySelectorAll('[data-openanl],[data-openarea]').forEach(b=>
+ b.addEventListener('click',()=>showArea(b.dataset.openanl||b.dataset.openarea)));
 }
 
 /* ---- Explore: Discover | Momentum | Search ----
@@ -6832,8 +6834,8 @@ function openMetricSheet(key){
  openSlide(esc(meta.t),esc(meta.s),body);
  wireSlideLinks();
  const host=document.getElementById('soBody');
- host.querySelectorAll('[data-openanl]').forEach(b=>
- b.addEventListener('click',()=>showArea(b.dataset.openanl)));
+ host.querySelectorAll('[data-openanl],[data-openarea]').forEach(b=>
+ b.addEventListener('click',()=>showArea(b.dataset.openanl||b.dataset.openarea)));
  host.querySelectorAll('[data-ts]').forEach(b=>b.addEventListener('click',()=>{
  const k=b.dataset.ts;
  if(TERMSORT.k===k)TERMSORT.dir=-TERMSORT.dir;
@@ -6845,7 +6847,7 @@ function openMetricSheet(key){
 let PICK3=[];
 const PICKROWS=[
  ['Asking ₹/sqft', a=>'₹'+a.ask.toLocaleString('en-IN')],
- ['Registered deeds', a=>a.reg?'₹'+a.reg.toLocaleString('en-IN'):'none published'],
+ ['Registered deeds', a=>a.reg?'₹'+a.reg.toLocaleString('en-IN'):'Not available'],
  ['Price growth', a=>growthOf(a)+'% a year'],
  ['2BHK rent', a=>'₹'+a.rent.toLocaleString('en-IN')],
  ['Gross yield', a=>yieldOf(a).toFixed(1)+'%'],
@@ -6927,8 +6929,8 @@ function renderMarket(){
  host.innerHTML = MSUB==='coming'? marketComing()
    : MSUB==='compare'? comparePick() : marketDash();
  if(MSUB==='moving')mktFirstPaint(host);
- host.querySelectorAll('[data-openanl]').forEach(b=>
- b.addEventListener('click',()=>showArea(b.dataset.openanl)));
+ host.querySelectorAll('[data-openanl],[data-openarea]').forEach(b=>
+ b.addEventListener('click',()=>showArea(b.dataset.openanl||b.dataset.openarea)));
  host.querySelectorAll('[data-msubgo]').forEach(b=>
  b.addEventListener('click',()=>{setMarketSub(b.dataset.msubgo);writeHash();}));
  /* every tile and panel on the dashboard opens its own sheet */
@@ -8558,6 +8560,7 @@ function setPanelTab(k){
  wireSlideLinks();
  body.querySelectorAll('[data-openanl]').forEach(x=>
  x.addEventListener('click',()=>showArea(x.dataset.openanl)));
+ /* [data-openarea] inside the body is bound by wireSlideLinks above */
  if(o.wire)o.wire(body,k);
  if(o.hash){HASHLOCK=true;
  try{history.replaceState(null,'',o.hash+'/'+k);}catch(e){}
@@ -8782,9 +8785,13 @@ function areaPanelTabs(a){
    +'<div class="tile3" style="margin-top:12px">'
    +metricTile('Asking ₹/sqft','₹'+a.ask.toLocaleString('en-IN'),
       'portal range ₹'+a.lo.toLocaleString('en-IN')+'–'+a.hi.toLocaleString('en-IN'))
+   /* "not published / none published here" said the same thing twice and read
+    as an accusation. The sub-registrar publishing nothing for an area is a
+    fact about the record, not about the area or anybody in it. */
    +metricTile('Registered deeds'+infoDot('registered-deeds'),
- a.reg?'₹'+a.reg.toLocaleString('en-IN'):'not published',
- gap!==null?('asking is '+gap+'% above'):'none published here')
+ a.reg?'₹'+a.reg.toLocaleString('en-IN'):'Not available',
+ gap!==null?('asking is '+gap+'% above')
+   :'The sub-registrar does not publish a figure for this area')
    +metricTile('Price growth', growthOf(a)+'% a year',
  kfVerified(a)?'Knight Frank H1 2026 · was '+a.growth25+'%':'portal-derived')
    +'</div>'
@@ -10895,8 +10902,9 @@ function scrVoiceCaught(){
        +r[0]+'"><span class="pl">'+esc(r[1])+'</span><span class="pv">'+r[2]+'</span>'
        +'<span class="pe">Change</span></button>').join('')+'</div>'
     : panelEmpty('Nothing matched a pattern',
-       'Nothing in what you said matched a budget, a hub the desk measures, or a '
-       +'timing word. The transcript is kept either way.'))
+       'The desk only catches a budget, one of the four workplaces it measures and a '
+       +'timing word, and none of those three turned up here. That is the limit of the '
+       +'matching, not of what you said. The transcript is kept either way.'))
   +'<div class="vsaid"><b>What you said</b><p>'+esc(VTEXT||'—')+'</p>'
   +'<small>Kept as written. There is no model reading this yet, so only budget, '
   +'location and timing were taken from it.</small></div>'
@@ -11960,13 +11968,18 @@ function wireIntake(){
  document.querySelectorAll('#iwrap [data-edit]').forEach(b=>b.addEventListener('click',()=>{
  const i=iqIndex(b.dataset.edit);
  if(i>=0){IPHASE='q'; iStep=i; renderIntake();}}));
- document.querySelectorAll('#iwrap [data-openarea]').forEach(b=>b.addEventListener('click',()=>{
- closeIntake(); showArea(b.dataset.openarea);}));
- /* the near-miss list and its one-tap way out, on the placard as in Explore */
+ /* data-openanl and data-openarea are one action under two names, and a host
+  that binds only one silently kills every card written with the other. The
+  locked placard's top card is a fiveCard borrowed from Explore, so it comes
+  with Explore's attribute while the four under it are the placard's own: one
+  bound name meant the one card the lock gives away for free did nothing.
+  Bind both together here, and anywhere else a card can land. */
+ document.querySelectorAll('#iwrap [data-openarea],#iwrap [data-openanl]')
+ .forEach(b=>b.addEventListener('click',()=>{
+ closeIntake(); showArea(b.dataset.openarea||b.dataset.openanl);}));
+ /* the near-miss list's one-tap way out */
  document.querySelectorAll('#iwrap [data-raise]').forEach(b=>b.addEventListener('click',e=>{
  e.preventDefault(); e.stopPropagation(); raiseCeiling(b.dataset.raise);}));
- document.querySelectorAll('#iwrap .cmrow[data-openanl]').forEach(b=>b.addEventListener('click',()=>{
- closeIntake(); showArea(b.dataset.openanl);}));
  document.querySelectorAll('#iwrap [data-opensoc]').forEach(b=>b.addEventListener('click',()=>{
  closeIntake(); openProperty(b.dataset.opensoc);}));
  /* the placard's lock. The answers are already saved, and the flag is what
@@ -12044,10 +12057,12 @@ function socPanelTabs(s){
    '<div class="tile3">'
    +metricTile('Indicative price'+srcTag(s.src==='rera'?'registry':'portal'),
  cr(s.lo)+'–'+cr(s.hi), s.sz?esc(String(s.sz))+(sq.known?' sqft':''):'')
-   +metricTile('Rate', s.psf?'₹'+s.psf.toLocaleString('en-IN'):'not quoted','per sqft')
+   +metricTile('Rate', s.psf?'₹'+s.psf.toLocaleString('en-IN'):'Not available',
+ s.psf?'per sqft':'No per-sqft rate has been published for this project')
    +metricTile('Rent · gross yield'+srcTag('derived'),
- s.rent?'₹'+s.rent.toLocaleString('en-IN'):'not quoted',
- y!==null?y.toFixed(1)+'% on the midpoint':'no rent quoted')
+ s.rent?'₹'+s.rent.toLocaleString('en-IN'):'Not available',
+ y!==null?y.toFixed(1)+'% on the midpoint'
+   :'No letting figure has been published, so the yield cannot be worked out')
    +'</div>'
    +'<div class="sospecs">'
    +[['Builder',esc(s.b)+' · tier '+s.t],['Vintage',s.age===0?'New build':s.age+' years'],
@@ -12084,7 +12099,8 @@ function socPanelTabs(s){
  const cityPsf=cityMid(x=>basisVal(x));
  const head=document.createElement('div');
  head.innerHTML='<div class="tile3">'
-    +metricTile('This project',s.psf?'₹'+s.psf.toLocaleString('en-IN'):'not quoted','per sqft')
+    +metricTile('This project',s.psf?'₹'+s.psf.toLocaleString('en-IN'):'Not available',
+        s.psf?'per sqft':'No per-sqft rate has been published for this project')
     +(ar?metricTile(esc(ar.n),'₹'+Math.round(basisVal(ar)).toLocaleString('en-IN'),
         'per sqft, '+esc(priceBasis(ar).lab.toLowerCase())):'')
     +metricTile('City median','₹'+Math.round(cityPsf).toLocaleString('en-IN'),
