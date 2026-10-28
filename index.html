@@ -255,12 +255,20 @@ details.bd[open] summary:before{transform:rotate(90deg)}
  The CSS half of the nine builders. Nothing here is referenced by hand-written
  markup; it exists only to render what those functions emit. */
 .mtile{background:var(--tile);border-radius:var(--r-tile);padding:12px 13px;
- display:flex;flex-direction:column;gap:3px;min-width:0}
-.mtile .ml{font-family:var(--label);font-size:11px;font-weight:600;letter-spacing:.06em;
- text-transform:uppercase;color:var(--muted)}
-.mtile .mv{font-size:20px;font-weight:800;color:var(--ink);line-height:1.15;
- overflow-wrap:anywhere}
-.mtile .ms{font-size:12px;color:var(--muted);line-height:1.35}
+ display:flex;flex-direction:column;gap:3px;min-width:0;height:100%;
+ box-sizing:border-box}
+.mtile .ml{display:flex;align-items:center;gap:4px;font-family:var(--label);
+ font-size:10px;font-weight:600;letter-spacing:.07em;
+ text-transform:uppercase;color:var(--muted);line-height:1.3}
+.mtile .mvrow{display:flex;align-items:baseline;gap:5px;flex-wrap:wrap;min-width:0}
+.mtile .mv{font-size:23px;font-weight:800;color:var(--ink);line-height:1.12;
+ letter-spacing:-.025em;overflow-wrap:anywhere}
+.mtile .mv.none{color:var(--muted)}
+.mtile .mu{font-size:12px;font-weight:600;color:var(--muted);line-height:1.2}
+/* pinned to the foot, so a row of tiles lines its notes up without anybody
+ typing a min-height */
+.mtile .ms{font-size:11.5px;color:var(--muted);line-height:1.35;margin-top:auto;
+ padding-top:6px}
 .ui-badge{display:inline-flex;align-items:center;font-family:var(--label);font-size:11px;
  font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;
  border-radius:var(--r-chip);white-space:nowrap}
@@ -910,8 +918,8 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 .sechead .headrow{display:flex;align-items:center;gap:10px;margin-bottom:6px}
 .sechead .headrow h1{margin:0;flex:1;min-width:0}
 /* ---- the showpiece: motion that says "live", not "decorated" ---- */
-.mtile{transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease}
-.mtile:hover{transform:translateY(-2px);border-color:var(--primary);
+.mktile{transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease}
+.mktile:hover{transform:translateY(-2px);border-color:var(--primary);
  box-shadow:0 6px 18px rgba(20,18,43,.10)}
 .mhero{position:relative;transition:box-shadow .24s ease}
 .mhero::after{content:"";position:absolute;inset:-6px;border-radius:calc(var(--r-card) + 6px);
@@ -921,7 +929,7 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 .spark i{transform-origin:bottom;transition:transform .5s cubic-bezier(.2,.7,.3,1)}
 .spark.draw i{transform:scaleY(0)}
 @media (prefers-reduced-motion:reduce){
-  .mtile:hover{transform:none}
+  .mktile:hover{transform:none}
   .spark i,.spark.draw i{transition:none;transform:none}
 }
 /* ---- Market: a dashboard, not a page. One markup, two grids. ---- */
@@ -954,18 +962,18 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 .rbars.flat .rbar{min-height:0;padding:4px 2px}
 .rbars.flat .rbar .rn{font-size:11.5px}
 .rbars.flat .rbar .rv{font-size:11px}
-.mtile,.mpanel{appearance:none;font:inherit;cursor:pointer;text-align:left;display:block;
+.mktile,.mpanel{appearance:none;font:inherit;cursor:pointer;text-align:left;display:block;
  background:var(--card);border:1px solid var(--line);border-radius:var(--r-tile);
  padding:14px;min-height:64px;width:100%}
 .mpanel.mdesk{display:none}
-.mtile:hover,.mpanel:hover{border-color:var(--primary)}
-.mtile:focus-visible,.mpanel:focus-visible,.mhero:focus-visible{outline:2px solid var(--accent);
+.mktile:hover,.mpanel:hover{border-color:var(--primary)}
+.mktile:focus-visible,.mpanel:focus-visible,.mhero:focus-visible{outline:2px solid var(--accent);
  outline-offset:2px}
-.mtile .ml{display:block;font-family:var(--label);font-size:9.5px;font-weight:700;
+.mktile .mkl{display:block;font-family:var(--label);font-size:9.5px;font-weight:700;
  letter-spacing:.07em;text-transform:uppercase;color:var(--muted);line-height:1.3}
-.mtile .mnum{display:block;font-family:var(--font);font-size:19px;font-weight:600;
+.mktile .mnum{display:block;font-family:var(--font);font-size:19px;font-weight:600;
  line-height:1.15;margin-top:2px}
-.mtile .mfoot{display:flex;align-items:flex-end;justify-content:space-between;gap:6px;
+.mktile .mfoot{display:flex;align-items:flex-end;justify-content:space-between;gap:6px;
  margin-top:4px}
 .mdelta{font-family:var(--label);font-size:10.5px;font-weight:700;white-space:nowrap}
 .mdelta.up{color:var(--good-fg)}
@@ -1121,7 +1129,7 @@ button.qdot:hover{outline:2px solid var(--ink);outline-offset:1px}
   .mhero{display:block;padding:14px 16px}
   .mhero .hv{font-size:23px;margin-top:2px}
   .mhero .hs{margin-top:2px}
-  .mtile .mnum{font-size:23px}
+  .mktile .mnum{font-size:23px}
   .quad{height:270px}
   .donut svg{width:84px;height:84px}
   .donut .dnl{font-size:12px}
@@ -1349,8 +1357,10 @@ td,th{border-color:var(--line)}
 .scorestack .sline>span{font-size:12px;color:var(--muted);line-height:1.3;display:flex;
  flex-direction:column}
 .scorestack .sline b{font-size:13px;color:var(--ink);font-weight:700}
+/* equal heights come from the grid: say nothing about the card's height and
+ stretch does it, which is why .mtile takes height:100% and not a min-height */
 .tile3{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:10px;
- margin-top:14px}
+ margin-top:14px;align-items:stretch}
 .bdhead2{display:grid;grid-template-columns:minmax(0,1fr) 88px 42px;gap:10px;
  font-family:var(--label);font-size:10.5px;font-weight:600;letter-spacing:.05em;
  text-transform:uppercase;color:var(--muted);padding-bottom:6px;
@@ -2205,12 +2215,20 @@ td,th{border-color:var(--line)}
  right, and strand Filters beyond the cut. The chips scroll inside the padded
  box; Filters sits beside them, inside it. */
   #sec-explore.on>#p-heat>.lens{padding-left:14px;padding-right:14px}
-  /* the cut at the right edge is a fade rather than a chip sliced in half, and
- it clears once there is nothing further to scroll */
-  #sec-explore.on>#p-heat>.lens .toggle{
- -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 22px),transparent);
- mask-image:linear-gradient(to right,#000 calc(100% - 22px),transparent)}
+  /* --- Filters sits outside the scroller, and has to look like it ---
+ It was 38px against the chips' 44, 3px off their vertical centre, and a 2px
+ radius inherited from .toggle's own border, so the row read as a chip sliced
+ in half with a button stranded beyond the cut. The scroller now ends 12px
+ before it, and the cut is a 34px fade rather than a sliced chip. */
+  #sec-explore.on>#p-heat>.lens{align-items:center}
+  /* 4px of margin on top of the row's own 8px gap is the 12px gap, measured
+   between the scroller's border box and the button's, not guessed */
+  #sec-explore.on>#p-heat>.lens .toggle{margin-right:4px;
+ -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 34px),transparent);
+ mask-image:linear-gradient(to right,#000 calc(100% - 34px),transparent)}
   #sec-explore.on>#p-heat>.lens .toggle.atend{-webkit-mask-image:none;mask-image:none}
+  #sec-explore.on>#p-heat>.lens .exfilt{min-height:var(--tap);height:var(--tap);
+ border-radius:11px;padding:0 16px;align-self:center}
   /* --- the left column scrolls, and says so ---
  It had overflow-y:auto and an overlay scrollbar that never showed, so a card
  cut off at the fold read as a rendering fault. A thin permanent scrollbar and
@@ -2439,8 +2457,9 @@ body{background:var(--grad-bg);background-attachment:fixed}
  color:var(--primary);border-radius:var(--r-chip);padding:5px 11px;font-size:12px;
  font-weight:700;margin-bottom:12px}
 .zonepill .ico-g svg{width:15px;height:15px}
-.sheet-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:9px}
-.sheet-tiles .mv{font-size:16px}
+.sheet-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:9px;
+ align-items:stretch}
+.sheet-tiles .mv{font-size:17px}
 .sheet-src{font-size:11.5px;color:var(--muted);margin-top:14px;display:flex;
  flex-wrap:wrap;gap:8px;align-items:center}
 .sheet-src .ilink{font-size:12px;font-weight:700;color:var(--primary)}
@@ -2476,6 +2495,52 @@ body{background:var(--grad-bg);background-attachment:fixed}
 .crow .cn{min-width:0}
 .crow .cn b{display:block;font-size:13.5px;font-weight:700}
 .crow .cn span{display:block;font-size:12px;color:var(--muted);margin-top:1px}
+/* ---- Market > Coming: two panels, a list in each ----
+ Dated on the left under year headings, undated on the right. The status chip
+ is one column so the eye can scan "is this real" down the page without
+ reading a word, and approved never shares a colour with funded. */
+.cmgwrap{display:flex;flex-direction:column;gap:14px}
+.cmgpanel{background:var(--card);border-radius:var(--r-card);padding:16px 16px 6px}
+.cmghead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+ margin-bottom:4px}
+.cmghead h3{margin:0;font-family:var(--label);font-size:11px;font-weight:700;
+ letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cmghead small{font-family:var(--label);font-size:11px;font-weight:700;color:var(--muted)}
+.cmgnote{margin:0 0 6px;font-size:12px;color:var(--muted);line-height:1.45}
+/* a year heading with a hairline running out to the right edge */
+.cmgyear{display:flex;align-items:center;gap:10px;margin:12px 0 2px}
+.cmgyear span{font-family:var(--label);font-size:11.5px;font-weight:700;
+ letter-spacing:.06em;color:var(--ink);flex:none}
+.cmgyear::after{content:"";flex:1;height:1px;background:var(--line-soft)}
+.cmgrow{display:flex;align-items:center;gap:11px;padding:9px 0;
+ border-top:1px solid var(--line-soft)}
+.cmgyear + .cmgrow{border-top:0}
+.cmgico{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;
+ flex:none;border-radius:10px;background:var(--tint);color:var(--primary)}
+.cmgico svg{width:18px;height:18px}
+.cmgn{flex:1;min-width:0}
+.cmgn b{display:block;font-size:14.5px;font-weight:700;line-height:1.25}
+.cmgs{display:block;font-size:12px;color:var(--muted);margin-top:2px;line-height:1.4}
+.cmgwarn{display:block;font-style:normal;color:var(--warn-fg);font-weight:600}
+.cmgchip{flex:none;font-family:var(--label);font-size:10px;font-weight:700;
+ letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:var(--r-chip);
+ white-space:nowrap;border:1px solid transparent}
+.cmgchip.bld{background:var(--grad-primary);color:#fff}
+.cmgchip.fnd{background:var(--card);border-color:var(--primary);color:var(--primary)}
+.cmgchip.apr{background:var(--warn-bg);color:var(--warn-fg)}
+.cmgchip.ann{background:var(--tile);color:var(--muted)}
+.cmgextra{display:none}
+.cmgpanel.open .cmgextra{display:block}
+.cmgmore{display:flex;align-items:center;min-height:var(--tap);width:100%;
+ background:none;border:0;padding:0;cursor:pointer;font:inherit;font-size:12.5px;
+ color:var(--primary);font-weight:700}
+.cmgpanel.open .cmgmore{display:none}
+@media(min-width:1024px){
+  .cmgwrap{display:grid;grid-template-columns:1.3fr 1fr;gap:18px;align-items:start}
+  /* a wide screen has room for all six: no fold, no button */
+  .cmgextra{display:block}
+  .cmgmore{display:none}
+}
 .sheet-extra{font-size:13px;line-height:1.55;color:var(--muted);margin-top:12px}
 .sheet-extra p{margin:0 0 7px}
 .sheet-extra strong{color:var(--ink)}
@@ -5161,10 +5226,26 @@ function uiIcon(name,tone,box){
  does carry data it is escaped at the call site, which also stops those two
  sites being escaped twice. */
 /* a metric: caps label, big value, optional sub-line. label takes markup. */
-function metricTile(label,value,sub){
+/* ---- the metric tile, four slots ----
+ LABEL the caps line, and the only place an info dot belongs
+ VALUE the figure alone, 23px/800. Greyed when there is none, never absent.
+ UNIT  "per sq ft", "a year", "quarters" — inline after the value, never a
+       sentence, and never concatenated into the value
+ NOTE  the source or the caveat, on its own line, pinned to the foot of the
+       tile so a row of them lines up
+
+ `note` keeps the third position it has always had, so no call site shifts;
+ `unit` is added fourth. A tile with a unit welded onto the figure reads as
+ one string and sets at 23px, which is how "Not availableThe sub-registrar
+ does not publish a figure for this area" happened. */
+function metricTile(label,value,note,unit){
+ const none=(value===null||value===undefined||value===''||value==='—'
+   ||String(value).indexOf('Not available')===0);
  return '<div class="mtile"><span class="ml">'+label+'</span>'
-  +'<span class="mv">'+value+'</span>'
-  +(sub?'<span class="ms">'+sub+'</span>':'')+'</div>';
+  +'<span class="mvrow"><span class="mv'+(none?' none':'')+'">'
+   +(value===null||value===undefined||value===''?'—':value)+'</span>'
+   +(unit?'<span class="mu">'+unit+'</span>':'')+'</span>'
+  +(note?'<span class="ms">'+note+'</span>':'')+'</div>';
 }
 /* tone: ok | neutral | warn | risk */
 function badge(text,tone){
@@ -5945,10 +6026,10 @@ function termStats(rows){
  const med=termMedian(rows,a=>basisVal(a)*1000);
  const g=termAvg(rows,a=>growthOf(a)), y=termAvg(rows,a=>yieldOf(a));
  return '<div class="termstats">'
-  +metricTile('Matching', String(rows.length), 'of '+AREAS.length+' researched')
-  +metricTile('Median entry', med!==null?cr(med):'—', 'a 1,000 sqft flat, all in')
-  +metricTile('Average growth', g!==null?g.toFixed(1)+'%':'—', 'twelve months')
-  +metricTile('Average yield', y!==null?y.toFixed(1)+'%':'—', 'gross, on the basis')
+  +metricTile('Matching', String(rows.length), 'Of '+AREAS.length+' researched','areas')
+  +metricTile('Median entry', med!==null?cr(med):'—', 'A 1,000 sqft flat, all in')
+  +metricTile('Average growth', g!==null?g.toFixed(1)+'%':'—', 'Over twelve months','a year')
+  +metricTile('Average yield', y!==null?y.toFixed(1)+'%':'—', 'Gross, on the basis')
   +'</div>';
 }
 /* ---- scatter: growth against entry price, positioned divs ---- */
@@ -6498,9 +6579,13 @@ function mktDelta(now,prev,suffix,invert){
   +'<span class="arw">'+(d>0?'↑':d<0?'↓':'·')+'</span>'
   +(suffix==='pt'?(d>0?'+':'')+d.toFixed(1)+' pts':(pct>0?'+':'')+pct+'%')+'</span>';
 }
+/* NOT .mtile: that is the component library's metric tile, and Market's
+ later rules were overriding it everywhere in the app — an area panel's tiles
+ were rendering with this one's white card, 1px border, 64px floor and
+ cursor:pointer. Same hazard as .pl / .mpl, same fix. */
 function mktTile(key,label,value,delta,spark){
- return '<button type="button" class="mtile" data-mkt="'+key+'">'
-  +'<span class="ml">'+label+'</span>'
+ return '<button type="button" class="mktile" data-mkt="'+key+'">'
+  +'<span class="mkl">'+label+'</span>'
   +'<span class="mnum">'+value+'</span>'
   +'<span class="mfoot">'+(delta||'')+(spark||'')+'</span></button>';
 }
@@ -6770,7 +6855,7 @@ function openMetricSheet(key){
       +'A median needs at least '+FROTH_FLOOR+', so the gap is shown per location '
       +'below and not summarised.')
    : '<div class="tile3">'
-      +metricTile('Median gap','+'+med+'%','across '+list.length+' locations')
+      +metricTile('Median gap','+'+med+'%','Across '+list.length+' locations with deeds')
       +metricTile('Widest','+'+list[0].v+'%',esc(list[0].a.n))
       +metricTile('Narrowest','+'+list[list.length-1].v+'%',esc(list[list.length-1].a.n))
       +'</div>';
@@ -6791,7 +6876,7 @@ function openMetricSheet(key){
  body=mktHistory(meta.t,vals,spec[1])
    +'<div class="tile3" style="margin-top:14px">'
    +metricTile('Now',spec[1](p[spec[0]]),spec[2])
-   +(prev?metricTile('A year before',spec[1](prev[spec[0]]),'same half, one year earlier'):'')
+   +(prev?metricTile('A year before',spec[1](prev[spec[0]]),'The same half, one year earlier'):'')
    +metricTile('Two years before',spec[1](KFCITY.y2024[spec[0]]),'H1 2024')
    +'</div>'
    +(key==='price'
@@ -6945,27 +7030,93 @@ function paintPickResults(){
  }));
 }
 
+/* ---- Coming: a list, grouped by whether anybody has named a date ----
+ It was five status blocks of near-identical rows, which answered "how
+ certain is this" five times and "when" never. The split that matters to a
+ buyer is dated against undated, because a project without a published date
+ is the one that can slip for ever: the Business Corridor was first notified
+ in 2007. Within the dated panel the year is the heading, and four suburban
+ corridors that all land between 2028 and 2030 are one row rather than four
+ near-identical ones.
+
+ A project without a published date never gets an implied one. That rule
+ lives in the PROJECTS table and this renderer obeys it by grouping on
+ `p.o` being present, never by guessing. */
+const CMGSTATUS={building:['Building','bld'],funded:['Funded','fnd'],
+ approved:['Approved','apr'],planned:['Announced','ann'],announced:['Announced','ann']};
+function cmgChip(st){
+ const m=CMGSTATUS[st]||CMGSTATUS.announced;
+ return '<span class="cmgchip '+m[1]+'">'+m[0]+'</span>';
+}
+/* the caveats bite, so they sit in the sub-line in --warn-fg */
+function cmgCaveat(k,p){
+ if(k==='red-phase3a')return 'Awaiting the Centre';
+ if(k==='business-corridor')return 'First notified 2007, never built';
+ return '';
+}
+function cmgServes(n){ return 'Serves '+n+' area'+(n===1?'':'s'); }
+function cmgRow(name,sub,st,icon,caveat){
+ return '<div class="cmgrow">'
+ +(icon?'<span class="cmgico">'+uiIcon(icon,'nav',false)+'</span>':'')
+ +'<span class="cmgn"><b>'+name+'</b>'
+  +'<span class="cmgs">'+sub
+  +(caveat?'<em class="cmgwarn">'+esc(caveat)+'</em>':'')+'</span></span>'
+ +cmgChip(st)+'</div>';
+}
 function marketComing(){
- const byStatus={};
- Object.keys(KFPIPE).forEach(k=>{const p=KFPIPE[k];(byStatus[p.s]=byStatus[p.s]||[]).push([k,p]);});
- const order=['building','funded','approved','planned','announced'];
- const total=Object.keys(KFPIPE).length;
- const blocks=order.filter(st=>byStatus[st]).map(st=>{
- const rows=byStatus[st].map(([k,p])=>{
- const when=p.o?pipeWhen(p.o):null;
- const serves=AREAS.filter(a=>(a.pipeList||[]).indexOf(k)>=0).length;
- return '<div class="crow"><span class="cdot '+esc(st)+'"></span>'
-    +'<span class="cn"><b>'+esc(p.l.replace(/^the /,''))+'</b>'
-    +'<span>'+esc(p.says)+(when?' · '+when:'')+' · serves '+serves
-    +' area'+(serves===1?'':'s')+'</span></span></div>';
-  }).join('');
- return '<div class="block"><div class="resh"><h3>'+st.charAt(0).toUpperCase()+st.slice(1)
-   +'</h3><small>'+byStatus[st].length+' of '+total+'</small></div>'+rows+'</div>';
- }).join('');
- return '<p class="anlsub" style="margin-top:0">Every committed project the desk holds, '
-  +'grouped by how certain it is. A filled dot is being built; an outline is funded but '
-  +'not started; amber is approved and unfunded; grey is planned only.</p>'
-  +blocks+srcFooter('Published project status and dates','2026');
+ const keys=Object.keys(KFPIPE);
+ const serves=k=>AREAS.filter(a=>(a.pipeList||[]).indexOf(k)>=0).length;
+ const name=p=>esc(p.l.replace(/^the /,''));
+ const dated=keys.filter(k=>KFPIPE[k].o).sort((a,b)=>KFPIPE[a].o<KFPIPE[b].o?-1:1);
+ const undated=keys.filter(k=>!KFPIPE[k].o);
+ /* the four suburban corridors with dates collapse into one row */
+ const sub=dated.filter(k=>k.indexOf('sub-')===0);
+ const solo=dated.filter(k=>k.indexOf('sub-')!==0);
+ const yearOf=k=>KFPIPE[k].o.slice(0,4);
+ const groups=[];
+ solo.forEach(k=>{const y=yearOf(k);
+ let g=groups.find(x=>x.y===y); if(!g){g={y:y,rows:[]};groups.push(g);}
+ g.rows.push(cmgRow(name(KFPIPE[k]),
+   pipeWhen(KFPIPE[k].o)+' · '+cmgServes(serves(k)),KFPIPE[k].s,
+   KFPIPE[k].kind==='road'?'car':'rail',cmgCaveat(k,KFPIPE[k])));});
+ if(sub.length){
+ const ys=sub.map(yearOf).sort();
+ const span=ys[0]===ys[ys.length-1]?ys[0]:ys[0]+'\u2013'+ys[ys.length-1];
+ const allServe=[...new Set([].concat.apply([],sub.map(k=>
+   AREAS.filter(a=>(a.pipeList||[]).indexOf(k)>=0).map(a=>a.n))))].length;
+ /* the group takes its WEAKEST status: four corridors are only as delivered
+  as the least delivered of them, and the sub-line states the split rather
+  than letting one chip hide it */
+ const rank={building:3,funded:2,approved:1,planned:0,announced:0};
+ const st=sub.map(k=>KFPIPE[k].s).sort((a,b)=>rank[a]-rank[b])[0];
+ const tally={};sub.forEach(k=>{tally[KFPIPE[k].s]=(tally[KFPIPE[k].s]||0)+1;});
+ const split=Object.keys(tally).sort((a,b)=>rank[b]-rank[a])
+   .map(x=>tally[x]+' '+x).join(', ');
+ groups.push({y:span,rows:[cmgRow('Suburban rail',
+   sub.length+' corridors, '+split+' · '+cmgServes(allServe),st,'rail','')]});
+ }
+ groups.sort((a,b)=>a.y<b.y?-1:1);
+ const left='<div class="cmgpanel"><div class="cmghead"><h3>With a published date</h3>'
+ +'<small>'+dated.length+' of '+keys.length+'</small></div>'
+ +groups.map(g=>'<div class="cmgyear"><span>'+esc(g.y)+'</span></div>'+g.rows.join('')).join('')
+ +'</div>';
+ const cap=t=>t.charAt(0).toUpperCase()+t.slice(1);
+ const urows=undated.map(k=>cmgRow(name(KFPIPE[k]),
+ esc(cap(KFPIPE[k].says.replace(/,.*$/,'')))+' · '+cmgServes(serves(k)),
+ KFPIPE[k].s,null,cmgCaveat(k,KFPIPE[k])));
+ const right='<div class="cmgpanel"><div class="cmghead"><h3>No published date</h3>'
+ +'<small>'+undated.length+' project'+(undated.length===1?'':'s')+'</small></div>'
+ +'<p class="cmgnote">Approved does not mean funded. Funded does not mean dated.</p>'
+ +urows.slice(0,urows.length-2).join('')
+ /* a <details> cannot be forced open by CSS, so the fold is a class the
+  button toggles. Desktop shows the rows and hides the button outright, so
+  no matchMedia is needed to decide which width is looking. */
+ +'<div class="cmgextra">'+urows.slice(-2).join('')+'</div>'
+ +'<button type="button" class="cmgmore" data-cmgmore="1">Show '
+ +Math.min(2,urows.length)+' more</button>'
+ +'</div>';
+ return '<div class="cmgwrap">'+left+right+'</div>'
+  +srcFooter('Published project status and dates','2026');
 }
 function renderMarket(){
  const host=document.getElementById('marketPane'); if(!host)return;
@@ -6980,6 +7131,8 @@ function renderMarket(){
  b.addEventListener('click',()=>showArea(b.dataset.openanl||b.dataset.openarea)));
  host.querySelectorAll('[data-msubgo]').forEach(b=>
  b.addEventListener('click',()=>{setMarketSub(b.dataset.msubgo);writeHash();}));
+ host.querySelectorAll('[data-cmgmore]').forEach(b=>b.addEventListener('click',()=>{
+ const p=b.closest('.cmgpanel'); if(p)p.classList.add('open');}));
  /* every tile and panel on the dashboard opens its own sheet */
  host.querySelectorAll('[data-mkt]').forEach(b=>b.addEventListener('click',e=>{
   /* a dot inside a panel opens its location, not the panel's sheet */
@@ -7065,9 +7218,9 @@ function renderCosts(){
   +'costs that leave your account on the same day. Tap one for the full breakdown.</p>'
   +rows
   +'<div class="block"><div class="tile3">'
-  +metricTile('Stamp duty',(one.rate*100).toFixed(0)+'%','on the whole consideration')
-  +metricTile('Cess and surcharge','12%','of the duty, urban')
-  +metricTile('Registration','2%','of consideration')
+  +metricTile('Stamp duty',(one.rate*100).toFixed(0)+'%','On the whole consideration')
+  +metricTile('Cess and surcharge','12%','Of the duty, urban rate')
+  +metricTile('Registration','2%','Of the consideration')
   +'</div>'+srcFooter('Karnataka stamp duty and registration rates','2026')+'</div>';
  host.querySelectorAll('[data-opensoc]').forEach(b=>
  b.addEventListener('click',()=>openProperty(b.dataset.opensoc)));
@@ -8645,9 +8798,12 @@ function zoneSupplyHTML(a){
   +' zone, not for '+esc(a.n)+' itself.</p>'
   +'<div class="tile3">'
   +metricTile('Quarters to sell',a.qts.toFixed(1),
- dir===null?'current stock':(dir>0?'slower than '+a.qtsPrev.toFixed(1)+' a year ago'
-      :dir<0?'faster than '+a.qtsPrev.toFixed(1)+' a year ago':'unchanged on a year ago'))
-  +metricTile('Unsold stock',(a.zoneUnsold||0).toLocaleString('en-IN'),'units in the zone')
+ dir===null?'At the current rate of sale'
+   :(dir>0?'Slower than '+a.qtsPrev.toFixed(1)+' a year ago'
+      :dir<0?'Faster than '+a.qtsPrev.toFixed(1)+' a year ago':'Unchanged on a year ago'),
+ 'quarters')
+  +metricTile('Unsold stock',(a.zoneUnsold||0).toLocaleString('en-IN'),
+ 'Across the whole zone','homes')
   +'</div>'
   +(a.qtsThin?calloutCard('warn','Too small a sample to read',
      'This zone’s transaction sample is too small for the quarters-to-sell figure to '
@@ -8830,17 +8986,20 @@ function areaPanelTabs(a){
     +badge(a.c===2?'well corroborated':a.c===1?'sources give a range':'thin data','neutral')
    +'</div>'
    +'<div class="tile3" style="margin-top:12px">'
-   +metricTile('Asking ₹/sqft','₹'+a.ask.toLocaleString('en-IN'),
-      'portal range ₹'+a.lo.toLocaleString('en-IN')+'–'+a.hi.toLocaleString('en-IN'))
+   +metricTile('Asking','₹'+a.ask.toLocaleString('en-IN'),
+      'Portal range ₹'+a.lo.toLocaleString('en-IN')+'–'+a.hi.toLocaleString('en-IN'),
+      'per sq ft')
    /* "not published / none published here" said the same thing twice and read
     as an accusation. The sub-registrar publishing nothing for an area is a
     fact about the record, not about the area or anybody in it. */
    +metricTile('Registered deeds'+infoDot('registered-deeds'),
  a.reg?'₹'+a.reg.toLocaleString('en-IN'):'Not available',
- gap!==null?('asking is '+gap+'% above')
-   :'The sub-registrar does not publish a figure for this area')
-   +metricTile('Price growth', growthOf(a)+'% a year',
- kfVerified(a)?'Knight Frank H1 2026 · was '+a.growth25+'%':'portal-derived')
+ gap!==null?('Asking sits '+gap+'% above')
+   :'No sub-registrar figure published here',
+ a.reg?'per sq ft':'')
+   +metricTile('Price growth', growthOf(a)+'%',
+ kfVerified(a)?'Knight Frank H1 2026 · was '+a.growth25+'%':'Portal-derived',
+ 'a year')
    +'</div>'
    +ceilingVerdict(a)
    +commuteHTML(a,true)
@@ -8892,9 +9051,10 @@ function areaPanelTabs(a){
        +'</div>')
    +'<div class="tile3" style="margin-top:12px">'
    +(a.kfRange?metricTile('Transacted range','₹'+a.kfRange[0].toLocaleString('en-IN')
-      +'–'+a.kfRange[1].toLocaleString('en-IN'),'Knight Frank, H1 2026'):'')
-   +metricTile('2BHK rent · growth','₹'+a.rent.toLocaleString('en-IN'),'the only size we hold rent data for, '+a.ry+'% a year')
-   +metricTile('Yield on ~1,000 sqft',y.toFixed(1)+'%','on the basis above')
+      +'–'+a.kfRange[1].toLocaleString('en-IN'),'Knight Frank, H1 2026','per sq ft'):'')
+   +metricTile('2BHK rent','₹'+a.rent.toLocaleString('en-IN'),
+ 'The only size we hold rent for · '+a.ry+'% a year','a month')
+   +metricTile('Yield',y.toFixed(1)+'%','On a ~1,000 sqft flat, at the basis above')
    +'</div>'
    +'<div class="block"><h2 style="font-size:15px">Against the city</h2>'
     +'<p class="anlsub">The line marks the median across all '+AREAS.length+' researched areas.</p>'
@@ -10813,8 +10973,8 @@ function openMicSheet(){
   +'<p class="sheet-one">Describing what you want in a sentence arrives with the next '
   +'release. The desk can record what you say today but has nothing to answer with yet.</p>'
   +'<div class="sheet-tiles">'
-  +metricTile('Works today','Setting up','speak your answers to the questions')
-  +metricTile('Coming','Asking anything','a question about any area or project')+'</div>'
+  +metricTile('Works today','Setting up','Speak your answers to the questions')
+  +metricTile('Coming','Asking anything','A question about any area or project')+'</div>'
   +calloutCard('warn','Until then',
      'Search finds any area, project or locality by name, from data already on the '
      +'device. Nothing is looked up live.')
@@ -12180,13 +12340,13 @@ function socPanelTabs(s){
  overview:
    '<div class="tile3">'
    +metricTile('Indicative price'+srcTag(s.src==='rera'?'registry':'portal'),
- cr(s.lo)+'–'+cr(s.hi), s.sz?esc(String(s.sz))+(sq.known?' sqft':''):'')
+ cr(s.lo)+'–'+cr(s.hi), s.sz?esc(String(s.sz))+(sq.known?' sq ft':''):'')
    +metricTile('Rate', s.psf?'₹'+s.psf.toLocaleString('en-IN'):'Not available',
- s.psf?'per sqft':'No per-sqft rate has been published for this project')
-   +metricTile('Rent · gross yield'+srcTag('derived'),
+ s.psf?'':'No rate published for this project', s.psf?'per sq ft':'')
+   +metricTile('Rent'+srcTag('derived'),
  s.rent?'₹'+s.rent.toLocaleString('en-IN'):'Not available',
- y!==null?y.toFixed(1)+'% on the midpoint'
-   :'No letting figure has been published, so the yield cannot be worked out')
+ y!==null?'A '+y.toFixed(1)+'% gross yield on the midpoint'
+   :'No letting figure published, so no yield', s.rent?'a month':'')
    +'</div>'
    +'<div class="sospecs">'
    +[['Builder',esc(s.b)+' · tier '+s.t],['Vintage',s.age===0?'New build':s.age+' years'],
@@ -12224,9 +12384,9 @@ function socPanelTabs(s){
  const head=document.createElement('div');
  head.innerHTML='<div class="tile3">'
     +metricTile('This project',s.psf?'₹'+s.psf.toLocaleString('en-IN'):'Not available',
-        s.psf?'per sqft':'No per-sqft rate has been published for this project')
+        s.psf?'':'No rate published for this project', s.psf?'per sq ft':'')
     +(ar?metricTile(esc(ar.n),'₹'+Math.round(basisVal(ar)).toLocaleString('en-IN'),
-        'per sqft, '+esc(priceBasis(ar).lab.toLowerCase())):'')
+        esc(priceBasis(ar).lab),'per sq ft'):'')
     +metricTile('City median','₹'+Math.round(cityPsf).toLocaleString('en-IN'),
         'across all '+AREAS.length+' areas')
     +'</div>'

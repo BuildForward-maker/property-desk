@@ -796,7 +796,7 @@ strings, hold no state.
 
 | Builder | Notes |
 |---|---|
-| `metricTile(label, value, sub)` | tile background, caps label, 20px/800 value. label takes markup |
+| `metricTile(label, value, note, unit)` | four slots, below. label takes markup |
 | `badge(text, tone)` | `ok` \| `neutral` \| `warn` \| `risk` |
 | `segmented(options, active, attr)` | active is a white pill on a tile track |
 | `chip(text, active, icon, attr)` | active is `--primary` |
@@ -859,6 +859,33 @@ name does, which is why the project panel's `esc(ar.n)` never showed it.
 Before adding an argument to a builder, decide which side escapes it and keep
 the whole library on one answer. A scanner over every call site is four lines
 of Python and would have caught all four.
+
+### The metric tile has four slots and they do not run together
+
+    LABEL  10px Space Grotesk 600 .07em caps --muted. The info dot lives here
+           and nowhere else.
+    VALUE  23px/800 at -.025em. The figure alone, --muted when there is none,
+           and never absent: the tile keeps its shape.
+    UNIT   12px/600 --muted, inline after the value. "per sq ft", "a year",
+           "quarters". Never a sentence.
+    NOTE   11.5px --muted on its own line, `margin-top:auto` so a row of
+           tiles lines its notes up without anybody typing a min-height.
+
+`note` kept the third argument it always had and `unit` was added fourth, so
+no call site shifted. **Nothing is ever concatenated into the value**: a unit
+welded onto the figure sets at 23px and reads as one string, which is how
+"Not availableThe sub-registrar does not publish a figure for this area"
+happened. Equal heights come from the grid (`align-items:stretch` plus
+`height:100%` on the tile), never a min-height.
+
+### Market's dashboard tile was called .mtile too
+
+The component library's metric tile and Market's dashboard tile shared the
+class, and Market's rules are declared later, so **every `metricTile()` in the
+app was rendering with Market's white card, 1px border, 14px padding, 64px
+floor, 9.5px label and `cursor:pointer`** — on area panels, project panels and
+sheets alike. The dashboard one is `.mktile` / `.mkl` now. Third time this
+exact hazard has cost a round, after `.pl` / `.mpl` and `sourceFooter`.
 
 Two naming hazards, both live:
 
@@ -1051,6 +1078,34 @@ input, under a modifier, and when the intake is closed.
 
 No fourth font. A keycap is two characters at 11px, and Space Grotesk, already
 loaded for every caps label, sets them as well as a mono would.
+
+### Market > Coming is a list, split on whether a date exists
+
+Five status blocks of near-identical rows answered "how certain is this" five
+times and "when" never. The split that matters is **dated against undated**,
+because a project with no published date is the one that can slip for ever:
+the Business Corridor was first notified in 2007. `marketComing()` groups on
+`p.o` being present and never guesses, which is the PROJECTS rule about never
+displaying an implied date, enforced in the renderer.
+
+Left panel, year headings with a hairline running right; four suburban
+corridors that all land 2028–2030 are **one row**, and that row takes the
+**weakest** status of the four with the split stated in its sub-line, because
+a group is only as delivered as its least delivered part. Right panel, the six
+with no date, under "Approved does not mean funded. Funded does not mean
+dated." The caveats sit in the sub-line in `--warn-fg`: the Red Line is
+"Awaiting the Centre", the Business Corridor "First notified 2007, never
+built".
+
+The status chip is one column so the eye can scan "is this real" without
+reading: building is a filled gradient, funded is white with a `--primary`
+border, approved is `--warn`, announced is `--tile`. **Approved and funded
+never share a colour** — the same rule the pipeline scorer keeps.
+
+The last two undated rows fold behind "Show 2 more" on a phone. It is a button
+toggling a class, not a `<details>`, because a `<details>` cannot be forced
+open by CSS and the desktop panel shows all six — that would have needed a
+second `matchMedia`.
 
 ### Grain, not corner marks
 
