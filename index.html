@@ -708,6 +708,12 @@ footer{border-top:1.5px solid var(--ink);margin-top:60px;padding-top:18px;font-s
 #intake{position:fixed;inset:0;background:var(--bg);z-index:var(--z-modal);overflow-y:auto;display:none}
 #intake.on{display:block}
 #intake .pclose{position:absolute;top:16px;right:16px;z-index:2}
+/* survey registration marks: two corners only, desktop only, behind everything */
+.cmarks{display:none;position:absolute;pointer-events:none;z-index:-1;
+ fill:none;stroke:var(--primary);stroke-width:1;stroke-linecap:round}
+.cmtl{top:0;left:0;opacity:.3}
+.cmbr{bottom:0;right:0;opacity:.26}
+@media(min-width:1024px){.cmarks{display:block}#sec-home{position:relative;z-index:0}}
 .iwrap{max-width:780px;margin:0 auto;padding:52px 22px 60px;min-height:100%;
  display:flex;flex-direction:column;box-sizing:border-box}
 @media(max-width:620px){.iwrap{padding:30px 16px 44px}}
@@ -1536,10 +1542,45 @@ td,th{border-color:var(--line)}
 .iqnav{width:var(--tap);height:var(--tap);border:0;background:var(--card);border-radius:50%;
  font-size:22px;line-height:1;color:var(--ink);cursor:pointer;flex:0 0 auto}
 .iqnav.ghost{background:none;cursor:default}
-.iqdots{flex:1;display:flex;gap:6px;justify-content:center;align-items:center}
-.iqdots i{width:7px;height:7px;border-radius:50%;background:var(--line);display:block}
-.iqdots i.past{background:var(--tint)}
-.iqdots i.on{background:var(--primary);width:22px;border-radius:999px}
+.iqspacer{flex:1}
+/* ---- the stepped funnel ----
+ One component. The bars live in the header row at both widths; the count and
+ the cause sit under them on desktop and under the options on a phone, where
+ the header row has no room for two lines of text. */
+.iqfnlwrap{flex:1;min-width:0}
+.fnlbars{display:flex;align-items:flex-end;gap:4px;height:34px}
+.fstep{flex:1 1 0;display:flex;flex-direction:column;justify-content:flex-end;
+ align-items:stretch;height:100%;position:relative}
+.fstep i{display:block;width:100%;border-radius:3px;background:var(--tint);
+ transition:height .22s ease}
+.fstep.done i{background:var(--grad-primary)}
+.fstep.now i{box-shadow:0 0 0 2px var(--card),0 0 0 3px var(--primary)}
+.fstep em{position:absolute;left:0;right:0;top:calc(100% + 3px);text-align:center;
+ font-style:normal;font-family:var(--label);font-size:9.5px;font-weight:600;color:var(--muted)}
+/* the step that actually narrowed the field takes the same amber as the
+ waterfall's bite, so the question that cost you areas is findable at a
+ glance. 6.1:1 on the intake ground. It is declared before .now so the
+ question you are standing on still reads as the one you are standing on. */
+.fstep.cut em{color:var(--warn-fg);font-weight:800}
+.fstep.now em{color:var(--primary);font-weight:800}
+.fnlnum,.fnlwhy{display:none}
+.fnlsay{margin:6px 0 10px}
+/* the 29px under the options existed to keep the last one clear of the
+ sticky footer. The count and cause now stand in that gap, so the screen
+ does not pay for the space twice. */
+.iqbody:has(.fnlsay){padding-bottom:0}
+/* the funnel numbers the seven steps and marks the one you are on, so
+ "Question 2 of 7" one line below it is the same sentence twice. The
+ phone drops the words and keeps the marks; the desktop column has the
+ room for both and keeps them. It stays in the accessibility tree. */
+@media(max-width:1023px){
+ .iqbody:has(.fnlsay) .iqn{position:absolute;width:1px;height:1px;overflow:hidden;
+ clip:rect(0 0 0 0);white-space:nowrap;margin:0}
+}
+.fnlsay .fnlnum,.fnlsay .fnlwhy{display:block}
+.fnlnum{font-size:13px;color:var(--ink);margin:0}
+.fnlnum b{font-weight:800}
+.fnlwhy{font-size:12px;color:var(--muted);margin:2px 0 0;line-height:1.45}
 .iqexit{display:flex;justify-content:center;margin-top:16px}
 .iqfoot .iqskip.wide{margin-top:10px}
 .iqskip.wide{width:100%;min-height:var(--tap);border:1px solid var(--line);
@@ -1658,6 +1699,19 @@ td,th{border-color:var(--line)}
 .rvstat em{display:block;font-style:normal;font-weight:700;opacity:.78;font-size:11px;
  letter-spacing:.04em;text-transform:uppercase}
 .rvnote{font-size:12px;line-height:1.5;opacity:.82;margin:10px 0 0}
+.wfall{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+/* a stage is one dense two-part block, so it takes the tight line rather
+ than body's 1.55: three stages at 1.55 cost the review screen 15px */
+.wrow{display:grid;grid-template-columns:1fr 34px 30px;grid-template-areas:"l n c" "b b b";
+ gap:2px 8px;align-items:center;line-height:1.3}
+.wlab{grid-area:l;font-size:12px;opacity:.9;white-space:nowrap;overflow:hidden;
+ text-overflow:ellipsis}
+.wn{grid-area:n;font-size:15px;font-weight:800;text-align:right;letter-spacing:-.01em}
+.wcut{grid-area:c;font-size:11.5px;font-weight:700;text-align:right;color:#FDE68A}
+.wcut.none{opacity:.5;color:inherit;font-weight:400}
+.wbar{grid-area:b;height:6px;border-radius:999px;background:rgba(255,255,255,.2);
+ display:block;overflow:hidden}
+.wbar i{display:block;height:100%;border-radius:999px;background:rgba(255,255,255,.92)}
 .rvlater{font-size:11.5px;color:var(--muted);text-align:center;margin:9px 0 0}
 .plgrid{display:contents}
 
@@ -1717,7 +1771,23 @@ td,th{border-color:var(--line)}
   .iwrap{max-width:1120px;display:grid;grid-template-columns:1.12fr 1fr;
  grid-template-rows:auto 1fr auto;column-gap:52px;padding:40px 32px 48px;
  align-items:start;min-height:100%}
-  .iqtop{grid-column:1;grid-row:1;position:static;padding:0 0 18px}
+  /* the funnel takes a row of its own so it starts on the heading's left
+   edge whether or not a Back button exists; a Back button on the same
+   row would move it 54px between question one and question two */
+  .iqtop{grid-column:1;grid-row:1;position:relative;padding:0 0 18px;
+ align-items:flex-start;flex-wrap:wrap;max-width:540px}
+  .iqtop .iqnav.ghost{display:none}
+  /* Back sits in the overlay's own margin: in the row it would cost the
+   question screen 54px and move the funnel 54px between question one and
+   question two, which is the alignment this row exists to hold */
+  .iqtop .iqnav{position:absolute;left:-58px;top:-2px}
+  .iqtop .iqskip.top{order:1;margin-left:auto}
+  .iqfnlwrap{flex:1 0 100%;order:2;padding:0}
+  .fnlbars{height:46px}
+  .fnl .fnlnum,.fnl .fnlwhy{display:block}
+  .fnl .fnlnum{margin-top:14px;text-align:center}
+  .fnl .fnlwhy{text-align:center}
+  .fnlsay{display:none}
   .iqbody{grid-column:1;grid-row:2;padding:0;max-width:540px}
   .iqfoot{grid-column:1;grid-row:3;position:static;background:none;box-shadow:none;
  border-radius:0;padding:20px 0 0;margin:0;max-width:540px;align-self:end}
@@ -2436,7 +2506,7 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
 </div></div>
 <div id="keep" role="dialog" aria-modal="true" aria-labelledby="keepTitle"><div class="kscrim"></div><div class="kcard"><h2 id="keepTitle">Sign in to keep this</h2><p id="keepLine"></p><div class="kbtns"><button type="button" class="act" id="keepGo">Email me a link</button><button type="button" class="act ghost" id="keepNo">Not now</button></div></div></div>
 <div id="gate" role="dialog" aria-modal="true" aria-label="Sign in to Property Desk"><div class="gwrap" id="gwrap"></div></div>
-<div id="intake" role="dialog" aria-modal="true" aria-label="Set up your search"><button class="pclose" id="intakeClose" aria-label="Close" title="Close" hidden>✕</button><div class="iwrap" id="iwrap"></div></div>
+<div id="intake" data-cmarks role="dialog" aria-modal="true" aria-label="Set up your search"><button class="pclose" id="intakeClose" aria-label="Close" title="Close" hidden>✕</button><div class="iwrap" id="iwrap"></div></div>
 
 <div class="shell">
 
@@ -2459,7 +2529,7 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
   </div>
 </aside>
 <main class="main">
-<section class="sec on" id="sec-home">
+<section class="sec on" id="sec-home" data-cmarks>
   <div class="sechead">
     <div class="hprofile" id="hProfile"></div>
     <div class="headrow"><h1 id="homeGreeting">Your search<span class="hlive" id="hLive" hidden></span></h1><button type="button" class="hdrmic" data-askmic="1" aria-label="Ask a question out loud">MICICON</button></div>
@@ -4534,6 +4604,31 @@ let SEC='explore', SUB={explore:'discover',shortlist:'board',guide:'read'}, EXMO
 /* Market's own sub-tab, kept out of SUB because SUB is keyed by section and
  the guide articles still need their own key inside shortlist. */
 let MSUB='moving';
+
+/* Two corners, not a background. A full-page grid fights the content at 1280;
+ these sit in the corners the layout leaves empty and nowhere else. */
+function cornerMarks(){
+ return '<svg class="cmarks cmtl" viewBox="0 0 110 110" width="110" height="110" aria-hidden="true" focusable="false">'
+ +'<circle cx="20" cy="20" r="7"/>'
+ +'<path d="M20 9v22M9 20h22"/>'
+ +'<path d="M20 29v81M29 20h81"/>'
+ +'<path d="M16 46h8M16 70h8M16 94h8"/>'
+ +'<path d="M46 16v8M70 16v8M94 16v8"/>'
+ +'</svg>'
+ +'<svg class="cmarks cmbr" viewBox="0 0 130 130" width="130" height="130" aria-hidden="true" focusable="false">'
+ +'<circle cx="110" cy="110" r="8"/>'
+ +'<path d="M110 98v24M98 110h24"/>'
+ +'<path d="M110 20v81M20 110h81"/>'
+ +'<path d="M106 30h8M106 52h8M106 74h8M106 96h8"/>'
+ +'<path d="M30 106v8M52 106v8M74 106v8M96 106v8"/>'
+ +'</svg>';
+}
+function mountCornerMarks(){
+ document.querySelectorAll('[data-cmarks]').forEach(el=>{
+ if(el.querySelector(':scope>.cmarks'))return;
+ el.insertAdjacentHTML('afterbegin',cornerMarks());
+ });
+}
 
 function movePanels(){
  const put=(sel,host)=>{const h=document.getElementById(host); if(!h)return;
@@ -10486,7 +10581,7 @@ function vWave(){
 function scrVoice(){
  const live=!!VREC;
  return '<div class="iqtop"><span class="iqnav ghost"></span>'
-  +'<div class="iqdots" aria-hidden="true"></div>'
+  +'<div class="iqspacer"></div>'
   +'<span class="iqnav ghost"></span></div>'
   +'<div class="iqbody vbody">'
   +'<h2 class="iqh">Tell me what you’re looking for</h2>'
@@ -10519,7 +10614,7 @@ function scrVoiceCaught(){
  const left=iqList().filter(k=>{const d=iqDef(k); return d&&!d.done;}).length;
  return '<div class="iqtop">'
   +'<button class="iqnav" id="iBack" aria-label="Back">‹</button>'
-  +'<div class="iqdots" aria-hidden="true"></div>'
+  +'<div class="iqspacer"></div>'
   +'<span class="iqnav ghost"></span></div>'
   +'<div class="iqbody">'
   +'<h2 class="iqh">I caught these: check them</h2>'
@@ -10695,10 +10790,89 @@ function iqExit(i){
  if(i>0)return '';                          /* started: Back covers it */
  return '<button class="iqskip wide" id="iSkip">Browse without answering</button>';
 }
+/* ---- the stepped funnel ----
+ One component at both widths. Each block is how much of the field is still
+ in play after that question has been answered, so the shape is the search
+ narrowing rather than a progress bar pretending to be one.
+
+ **Only one of the seven actually narrows the areas, and the funnel says so.**
+ The filters that cut the field are the ones rulesStats() uses, which is the
+ budget against area prices and the timeline against possession stages. Zones
+ is a preference by design, and there is no commute cut-off anywhere in this
+ app: a question that does not reduce keeps its block at full height and says
+ what it changed instead. Inventing a reachability filter to make the picture
+ livelier would make the funnel disagree with the shortlist, which is the one
+ thing it must never do. */
+function areasUnder(cap){
+ if(!cap)return AREAS.length;
+ return AREAS.filter(a=>basisVal(a)*1000<=cap*1.05).length;
+}
+function funnelSteps(cur){
+ const keys=iqList(), total=AREAS.length;
+ const segNow=segList();
+ let n=total;
+ /* zones and work report done:true before anybody has seen them, and the
+  rest carry a default. A question nobody has reached yet is not answered,
+  whatever its definition says, or the funnel fills before the first tap.
+  Editing a stored profile is the other case: everything is answered. */
+ return keys.map((k,i)=>{
+ const d=iqDef(k), reached=INTAKE.done||i<=cur;
+ const done=reached&&!!(d&&d.done);
+ const before=n;
+ let cause='';
+ if(k==='budget'){
+  if(done){ n=areasUnder(budCap());
+  const cut=before-n;
+  cause=cut?('Your budget just ruled out '+cut+' of them.')
+   :('Your budget reaches all '+total+'.'); }
+ }else if(k==='time'){
+  if(done&&segNow){ const out=SOC.filter(x=>segNow.indexOf(x.seg)<0).length;
+  cause='This narrows the projects, not the areas: '+out+' of '+SOC.length
+   +' sit outside your timeline.'; }
+ }else if(k==='zones'){
+  if(done)cause='A preference, not a filter. Nothing is ruled out.';
+ }else if(k==='travel'){
+  if(done)cause='This changes which journey is measured, not the shortlist.';
+ }else if(done){
+  cause='This changes the weighting, not the shortlist.';
+ }
+ return {k:k,i:i,n:n,total:total,done:done,cut:before-n,cause:cause,
+  state:i<cur?'past':(i===cur?'now':'next')};
+ });
+}
+function iqFunnel(i){
+ const steps=funnelSteps(i), total=AREAS.length;
+ const bars=steps.map(st=>{
+ /* height is what the question did, not where it sits in the row, so
+  going back to question three does not shrink the four already answered */
+ const pct=st.done?Math.max(26,Math.round((st.n/total)*100))
+  :(st.state==='now'?100:26);
+ return '<span class="fstep '+st.state+(st.done?' done':'')+(st.cut>0?' cut':'')+'">'
+  +'<i style="height:'+pct+'%"></i>'
+  +'<em>'+(st.i+1)+'</em></span>';
+ }).join('');
+ return '<div class="fnl" role="img" aria-label="Question '+(i+1)+' of '+steps.length
+ +', '+(steps[i]||steps[steps.length-1]).n+' of '+total+' areas still fit">'
+ +'<div class="fnlbars">'+bars+'</div>'+funnelLines(i)+'</div>';
+}
+/* the same two lines wherever they are placed */
+function funnelLines(i){
+ const steps=funnelSteps(i), total=AREAS.length;
+ const now=steps[i]||steps[steps.length-1];
+ /* the line describes what is on screen, so an answer given on this very
+  screen counts: walk back from here to the last question with a cause */
+ let line='';
+ /* question one rules nothing out whatever it is answered, so it says so
+  rather than printing a zero */
+ if(i>0)for(let x=Math.min(i,steps.length-1);x>=0&&!line;x--){
+ if(steps[x].done&&steps[x].cause)line=steps[x].cause;
+ }
+ if(!line)line='Nothing has been ruled out yet.';
+ return '<p class="fnlnum"><b>'+now.n+' areas still fit</b>, of '+total+'</p>'
+ +'<p class="fnlwhy">'+esc(line)+'</p>';
+}
 function iqChrome(i){
  const total=iqTotal();
- const dots=Array.from({length:total},(_,n)=>
-   '<i class="'+(n===i?'on':(n<i?'past':''))+'"></i>').join('');
  /* the desktop row carries Skip as well. It is a second element rather than
  the footer one moved, because moving it would change the phone, where the
  named exit belongs under Continue. One is hidden at each width. */
@@ -10706,7 +10880,7 @@ function iqChrome(i){
    :'<span class="iqnav ghost"></span>';
  return '<div class="iqtop">'
   +(i>0?'<button class="iqnav" id="iBack" aria-label="Back">‹</button>':'<span class="iqnav ghost"></span>')
-  +'<div class="iqdots" aria-label="Question '+(i+1)+' of '+total+'">'+dots+'</div>'
+  +'<div class="iqfnlwrap">'+iqFunnel(i)+'</div>'
   +skip+'</div>';
 }
 /* ---- the facts ----
@@ -10790,6 +10964,7 @@ function scrQuestion(key){
   +'<p class="iqhelp">'+esc(d.h)+'</p>'
   +(d.note?'<p class="iqnote">'+d.note+'</p>':'')
   +'<div class="iopts">'+d.opts.map(o=>iqOption(d,o)).join('')+'</div>'
+  +'<div class="fnlsay">'+funnelLines(i)+'</div>'
   +'</div>'
   +'<div class="iqfoot"><button class="act" id="iNext"'+(d.done?'':' disabled')+'>'
   +(i+1===iqTotal()?'Review my answers':'Continue')+'</button>'
@@ -10880,6 +11055,26 @@ function rulesStats(){
  }
  return st;
 }
+/* ---- the area waterfall ----
+ The stages are the filters that exist, and only those. There is no
+ "reachable from work" row because there is no commute cut-off anywhere in
+ this app, and a stage drawn at full width with a dash would still tell a
+ buyer that such a filter ran and found nothing, which is not true. A stage
+ that exists and removed nothing is shown at full width with a dash; a stage
+ that does not exist is not drawn. */
+function areaWaterfall(){
+ const total=AREAS.length, out=[{lab:'All of Bengaluru',n:total,cut:0,pct:100}];
+ let n=total;
+ const cap=budCap();
+ if(cap){ const after=areasUnder(cap);
+ out.push({lab:'Within your budget',n:after,cut:n-after,pct:Math.round((after/total)*100)});
+ n=after; }
+ if(FLOODHIDE){ const after=AREAS.filter(a=>floodOf(a).tier!=='high'
+  &&basisVal(a)*1000<=(cap||Infinity)*1.05).length;
+ out.push({lab:'Off the flood list',n:after,cut:n-after,pct:Math.round((after/total)*100)});
+ n=after; }
+ return out;
+}
 /* ---- the review, one card ----
  Seven floating boxes read as a form somebody has to check. One card with
  hairline rows reads as a document about them, which is what it is. The same
@@ -10905,15 +11100,20 @@ function scrProfile(){
    +(r[3]?'<span class="rvwhy">'+r[3]+'</span>':'')+'</span>'
    +'<span class="rvchip">Change</span></button>').join('')
  +'</div></div>';
- const ruled=st.length
-  ? '<div class="rvstats">'+st.map(x=>'<div class="rvstat'+(x.good?' good':'')+'">'
-    +'<b>'+esc(String(x.n))+'</b><span><em>'+esc(x.unit)+'</em>'+esc(x.why)+'</span></div>').join('')+'</div>'
-    +'<p class="rvnote">Nothing is deleted. Excluded places still appear, marked, '
-    +'so you can see what you are turning down.</p>'
-  : '<p class="rvnote">Nothing is excluded. Every researched area and project is in scope.</p>';
+ const proj=st.filter(x=>/project/.test(x.unit||''));
+ const ruled='<div class="wfall">'+areaWaterfall().map(w=>
+   '<div class="wrow"><span class="wlab">'+esc(w.lab)+'</span>'
+   +'<span class="wbar"><i style="width:'+w.pct+'%"></i></span>'
+   +'<span class="wn">'+w.n+'</span>'
+   +'<span class="wcut'+(w.cut?'':' none')+'">'+(w.cut?'\u2212'+w.cut:'\u2014')+'</span>'
+   +'</div>').join('')+'</div>'
+  +proj.map(x=>'<div class="rvstat"><b>'+esc(String(x.n))+'</b>'
+    +'<span><em>'+esc(x.unit)+'</em>'+esc(x.why)+'</span></div>').join('')
+  +'<p class="rvnote">Nothing is deleted. Excluded places still appear, marked, '
+  +'so you can see what you are turning down.</p>';
  return '<div class="iqtop">'
   +'<button class="iqnav" id="iBack" aria-label="Back">‹</button>'
-  +'<div class="iqdots" aria-label="Review"></div>'
+  +'<div class="iqspacer"></div>'
   +'<span class="iqnav ghost"></span></div>'
   +'<div class="iqbody rvbody">'
   +'<div class="rvgrid">'
@@ -11107,7 +11307,7 @@ function placardHead(){
  const inv=INTAKE.purpose==='invest';
  return '<div class="iqtop">'
   +'<button class="iqnav" id="iBack" aria-label="Back">‹</button>'
-  +'<div class="iqdots"></div>'
+  +'<div class="iqspacer"></div>'
   +'<span class="iqnav ghost"></span></div>'
   +'<div class="iqbody"><div class="iqn">'+(inv?'Investment':'Best fit for you')+'</div>'
   +'<h2 class="iqh">'+(inv?'Where money grows':'Best fit for you')
@@ -12031,6 +12231,7 @@ async function boot(){
  const c=await local.get('checks'); if(c&&typeof c==='object')checks=c;
  }
  movePanels();
+ mountCornerMarks();
  applyIntake();
  renderSoc(); renderMicro(); renderVisits(); renderRoute(); renderDD();
  fillPropSelects(); calcCost(); calcYield(); calcNeg();

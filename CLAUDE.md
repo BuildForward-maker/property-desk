@@ -932,6 +932,86 @@ SpeechRecognition is missing.
 An option tap writes the answer and re-renders in place. **Advancing is the
 Continue button's job** — a mis-tap must never jump someone forward a screen.
 
+### The funnel is the progress indicator, and the count is real
+
+The dot row is **gone, not hidden** — `grep iqdots` returns nothing. In its
+place, `iqFunnel(i)` draws seven blocks, one per question, each the height of
+how much of the field is still in play. `funnelSteps(cur)` computes them, and
+`funnelLines(i)` writes the two lines beneath: the count, then why it moved.
+
+Four rules the component carries, each of which cost a pass to find:
+
+- **Height follows the answer, not the position.** `st.done`, never
+  `state==='past'`. Going back to question three must not shrink the four
+  already answered behind it.
+- **A question nobody has reached is not answered**, whatever `iqDef` says.
+  `zones` and `work` report `done:true` before anybody has seen them and the
+  rest carry a default, so an ungated funnel is full before the first tap.
+  `reached = INTAKE.done || i<=cur` is the gate; editing a stored profile is
+  the other case, and there everything is answered.
+- **The lines read the current screen's answer**, not the previous screen's.
+  They walk back from `i` to the last question with a cause, so picking a
+  budget updates the count under it rather than one screen later.
+- **Question one says nothing has been ruled out yet**, whatever it is
+  answered, because it rules nothing out and a zero there reads as a finding.
+
+`.fstep.cut` is the step that actually narrowed the field; its number takes
+`--warn-fg`, the same amber as the waterfall's bite, and is declared **before**
+`.fstep.now` so the question you are standing on still reads as the one you
+are standing on.
+
+**Only budget reduces the area count.** There is no commute filter and no
+zone filter in this app — zones are a preference by `ZONE_PENALTY`, timeline
+narrows projects rather than areas, and the rest move weights. A funnel line
+that claims otherwise is inventing a filter. `funnelSteps` therefore says what
+each question *did* ("This changes the weighting, not the shortlist") rather
+than printing a cut of zero.
+
+**The funnel is what "Question 2 of 7" used to say.** On a phone the words are
+visually hidden and the numbered blocks carry it, which is where the screen
+pays for the two lines beneath the options; the desktop column has room for
+both and keeps them. `.iqbody:has(.fnlsay){padding-bottom:0}` for the same
+reason: the 29px under the options existed to clear the sticky footer, and the
+count now stands in that gap rather than the screen paying for it twice.
+
+On desktop the funnel takes **a row of its own** and Back is absolutely
+positioned in the overlay's margin. In the row, Back cost the screen 54px and
+moved the funnel 54px between question one and question two, which is the
+alignment the row exists to hold.
+
+### The waterfall on the review screen
+
+`areaWaterfall()` draws the stages in the gradient card, and it draws **only
+filters that exist**: all of Bengaluru, within your budget, and off the flood
+list where `FLOODHIDE` is set. A stage that removed nothing is shown at full
+width with a dash; a stage that is not a filter is not shown at all, because a
+labelled bar tells a buyer that filter ran.
+
+`.wrow` sets `line-height:1.3`. At body's 1.55 the three stages cost the
+review screen 15px it does not have.
+
+### Corner marks, not a background
+
+`cornerMarks()` returns two inline SVGs, mounted by `mountCornerMarks()` into
+every `[data-cmarks]` host at boot — the intake overlay and Home. A crosshair
+circle at the corner, two rules running in and three or four ticks along them;
+110px top-left, 130px bottom-right, 1px `--primary` at .3 and .26,
+`aria-hidden`, `pointer-events:none`, `z-index:-1`, and **nothing below
+1024px**: a phone has no empty corners to decorate.
+
+`z-index:-1` paints them above the host's own background and below everything
+in flow, which is the point. `#sec-home` therefore takes `position:relative`
+and `z-index:0` in the same media query, so the negative layer stays inside it
+rather than escaping to the page. Nothing fixed lives inside `#sec-home`, which
+is what makes that stacking context safe.
+
+**On Home the top-left mark is mostly covered, and that is the layout, not a
+bug.** The header band and the hero card reach that corner: 84 of 784 sampled
+points are clear, in a 14px strip between them. The bottom-right one reads.
+Lifting it above the band would put decoration over content, and moving it
+would not be a corner. The intake, which is where the empty space actually is,
+shows both.
+
 ### One way out, and somewhere to land
 
 There is never both a Skip and an X on the same screen. `hasProfile()` decides
@@ -1461,6 +1541,13 @@ Known and accepted exceptions: **Explore > Your 5** (~2.65 — five cards at
 about 230px each) and its generic twin at ~2.81, **Listings** (the full directory of 106), the long-form
 **guide articles**, and **Home** at ~1.36. Screen zero fits one screen with no
 scroll, and must stay that way.
+
+The intake's own measurements at 375x812, which the funnel round held flat:
+screen zero 812, Q1 812, Q2 1000, Q3 846, Q4 812, Q5 897, Q6 812, Q7 812,
+review 1216. Every one is at or under what it was before the funnel, because
+the two lines it adds were paid for out of the hidden "Question N of 7" and
+the padding under the options. Measure against these, not against a
+remembered number.
 
 Market's head is the sub-tabs and the microphone on one row, with the heading
 visually hidden and the section's top padding cut to 18px. Adding anything to
