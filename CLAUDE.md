@@ -735,6 +735,13 @@ body height is identical and only the rounding changed.
 
 ### Class names collide the same way function names do
 
+Four now, and the fourth cost a visible bug: `.pbar` is the 5px track inside
+`.pbars`, with `overflow:hidden`, **and** it was the id-`pbar` row of six
+progress segments in Your activity. The phone rendered 36px of segments
+inside a 5px box and clipped 31 of them; the desktop rail's own
+`.arail .pbar{display:flex}` made it a row and hid the bug at the one width
+anybody had looked at. The segment row is `.psteps`.
+
 `.pl` was already the pipeline chip, with a dashed border and 5px of padding.
 A new panel label reusing the name inherited both and came out 42px tall
 instead of 13, on four panels at once. **Grep for a class before you style
@@ -1744,9 +1751,27 @@ A detail-panel tab has its own budget: **about 1.2 screens**, measured as
 behind a fold. **Market > Moving has the hardest budget of all: 1.0.**
 
 Known and accepted exceptions: **Explore > Your 5** (~2.65 — five cards at
-about 230px each) and its generic twin at ~2.81, **Listings** (the full directory of 106), the long-form
-**guide articles**, and **Home** at ~1.36. Screen zero fits one screen with no
-scroll, and must stay that way.
+about 230px each) and its generic twin at ~2.81, **Listings** (the full
+directory of 106), the long-form **guide articles**, **Home** at ~1.36, and
+**Explore > Map** at ~2.79. Screen zero fits one screen with no scroll, and
+must stay that way.
+
+Map is on that list for a reason worth stating: at 375 it is 2,268px, of
+which the map itself is 420. The other 1,006 is the filter card, the band
+key, the heat key, the lede, the banner and the modelled-times caveat.
+Desktop hides every one of those (`#p-heat>.lede,.banner,.filtercard,
+.tilesfold,#heatDetail,.hk{display:none}`) because beside a list they are
+noise — which is exactly why the phone keeps them, as it is the only place
+those controls exist. Bringing it under would mean removing the filters or
+the caveat, not shrinking type, so it is documented rather than trimmed.
+
+**Your activity came off that list rather than onto it.** It was 2,750px at
+375 with nothing tracked, and 1,442 of that was one static block, "Timing,
+and what to ask" — when to visit and what to ask when you do. CLAUDE.md
+allows folding method and checklists and this is both, so it is a
+`<details class="block foldnote vfold">` whose summary keeps the
+load-bearing line ("A Sunday afternoon visit tells you nothing"). 2,750 →
+1,420, and the content is one tap away.
 
 The intake's own measurements at 375x812: screen zero 812, Q1 812, Q2 1001,
 Q3 **934**, Q4 812, Q5 **1003**, Q6 968, Q7 812, review 1286. Q3 and Q5 are

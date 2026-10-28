@@ -265,6 +265,9 @@ details.bd[open] summary:before{transform:rotate(90deg)}
  letter-spacing:-.025em;overflow-wrap:anywhere}
 .mtile .mv.none{color:var(--muted)}
 .mtile .mu{font-size:12px;font-weight:600;color:var(--muted);line-height:1.2}
+/* the one declared size variant: a narrow tile in a sheet, 17px not 23px */
+.mtile.sm .mv{font-size:17px;letter-spacing:-.015em}
+.mtile.sm .mu{font-size:11px}
 /* pinned to the foot, so a row of tiles lines its notes up without anybody
  typing a min-height */
 .mtile .ms{font-size:11.5px;color:var(--muted);line-height:1.35;margin-top:auto;
@@ -573,7 +576,30 @@ details.bd[open] summary:before{transform:rotate(90deg)}
 .segbar .toggle button small{font-size:11px;opacity:.7;margin-left:3px;font-weight:400}
 @media(max-width:620px){.segbar .toggle{border:0;gap:5px}
  .segbar .toggle button{border:1px solid var(--line)}}
-.pseg{height:6px;background:var(--line-soft)}
+/* NOT .pbar: that is the 5px track inside .pbars, with overflow:hidden, and
+ this is a row of six segments. Sharing the name meant the phone rendered
+ 36px of segments inside a 5px box and clipped 31 of them, while the desktop
+ rail's own .pbar rule made it a flex row and hid the bug. */
+.psteps{display:flex;gap:4px;margin:9px 0 4px}
+/* a folded block is still a block: the summary carries the heading and the
+ one line that has to be read whether or not anybody opens it */
+.vfold{cursor:pointer}
+.vfold>summary{list-style:none;display:block;padding:0}
+/* list-style:none is not enough on a display:block summary: the modern
+ engines draw ::marker, which left a second stray chevron under the line */
+.vfold>summary::-webkit-details-marker{display:none}
+.vfold>summary::marker{content:""}
+/* .foldnote draws its own chevron after the summary text; this one puts it
+ beside the heading instead, so the inherited one is switched off rather
+ than left to render a second time */
+.vfold.foldnote>summary::after{content:none}
+.vfold>summary h2{display:inline-flex;align-items:center;gap:8px}
+.vfold>summary h2::after{content:"\203A";font-size:20px;color:var(--muted);
+ transform:rotate(90deg);transition:transform .18s ease;line-height:1}
+.vfold[open]>summary h2::after{transform:rotate(-90deg)}
+.vfold>summary span{display:block;font-size:13px;color:var(--muted);line-height:1.5;
+ margin-top:-4px;max-width:62ch}
+.pseg{flex:1;height:6px;border-radius:3px;background:var(--line-soft)}
 .pseg.on{background:var(--primary)}
 .pstats{display:flex;flex-wrap:wrap;gap:20px;font-size:13px;color:var(--muted);align-items:center}
 .pstats b{color:var(--ink)}
@@ -2294,7 +2320,7 @@ td,th{border-color:var(--line)}
  border-radius:var(--r-tile);padding:10px 11px;font-size:11px;line-height:1.3}
   .arail .pstats b{display:block;font-family:var(--font);font-size:19px;font-weight:600;
  color:var(--ink)}
-  .arail .pbar{display:flex;gap:4px;margin:12px 0 4px}
+  .arail .psteps{margin:12px 0 4px}
   .anav{display:grid;gap:2px;margin-top:14px}
   .anav button{appearance:none;font:inherit;font-size:13.5px;text-align:left;cursor:pointer;
  background:none;border:0;border-radius:var(--r-seg);padding:0 12px;min-height:var(--tap);
@@ -2463,7 +2489,6 @@ body{background:var(--grad-bg);background-attachment:fixed}
 .zonepill .ico-g svg{width:15px;height:15px}
 .sheet-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:9px;
  align-items:stretch}
-.sheet-tiles .mv{font-size:17px}
 .sheet-src{font-size:11.5px;color:var(--muted);margin-top:14px;display:flex;
  flex-wrap:wrap;gap:8px;align-items:center}
 .sheet-src .ilink{font-size:12px;font-weight:700;color:var(--primary)}
@@ -2843,7 +2868,7 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
   </div>
   <aside class="arail" id="aRail">
     <div class="progress">
-      <div class="pbar" id="pbar"></div>
+      <div class="psteps" id="pbar"></div>
       <div class="pstats" id="pstats"></div>
     </div>
     <div class="segmented" role="group" aria-label="Shortlist view">
@@ -3131,8 +3156,15 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
 
   <div class="block"><h2>Your properties</h2><div id="visitList"></div></div>
 
-  <div class="block">
-    <h2>Timing, and what to ask</h2>
+  <!-- CLAUDE.md: folding is the tool of last resort, and only for method and
+       checklists, never a finding. This is both: when to turn up and what to
+       ask when you do. It is 1,442px of the Board's 2,750 at 375, which is
+       what put the section past the two-screen rule, and the summary keeps
+       the load-bearing words so the warning is never behind the fold. -->
+  <details class="block foldnote vfold">
+    <summary><h2>Timing, and what to ask</h2>
+      <span>A Sunday afternoon visit tells you nothing. Three times to go, and
+      the questions for each.</span></summary>
     <div class="grid3">
       <div><h4>Weekday, 9–10am</h4><p style="font-size:14px">The truth about the commute, the approach road, the lift queue, the parking crush. A Sunday afternoon visit tells you nothing.</p></div>
       <div><h4>After dark</h4><p style="font-size:14px">Street lighting, security staffing, how the approach feels, and whether the community is occupied, count lit windows.</p></div>
@@ -3163,7 +3195,7 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
       </ul></div>
     </div>
     <div class="note" style="margin-top:16px">Carry a torch, a phone spirit level and a plug tester. Check every socket, run every tap two minutes, flush every toilet twice, open and close every window. Ten minutes of this catches things a ₹40,000 legal opinion never will.</div>
-  </div>
+  </details>
 
 </section>
 
@@ -5295,10 +5327,10 @@ function uiIcon(name,tone,box){
  `unit` is added fourth. A tile with a unit welded onto the figure reads as
  one string and sets at 23px, which is how "Not availableThe sub-registrar
  does not publish a figure for this area" happened. */
-function metricTile(label,value,note,unit){
+function metricTile(label,value,note,unit,mod){
  const none=(value===null||value===undefined||value===''||value==='—'
    ||String(value).indexOf('Not available')===0);
- return '<div class="mtile"><span class="ml">'+label+'</span>'
+ return '<div class="mtile'+(mod?' '+mod:'')+'"><span class="ml">'+label+'</span>'
   +'<span class="mvrow"><span class="mv'+(none?' none':'')+'">'
    +(value===null||value===undefined||value===''?'—':value)+'</span>'
    +(unit?'<span class="mu">'+unit+'</span>':'')+'</span>'
@@ -5613,7 +5645,10 @@ function termSheetHTML(key,a){
   +'<p class="sheet-one">'+esc(T.one)+'</p>'
   +(T.level==='zone'?'<span class="zonepill">'+uiIcon('info',null,false)
     +'Zone level, not this street</span>':'')
-  +'<div class="sheet-tiles">'+facts.map(f=>metricTile(f[0],f[1])).join('')+'</div>'
+  /* `sm` is a declared modifier on the component, not a selector reaching in
+   from the sheet: the tiles here sit in a 118px grid and carry values like
+   "24% fit · 8% invest", which sets badly at 23px */
+  +'<div class="sheet-tiles">'+facts.map(f=>metricTile(f[0],f[1],'','','sm')).join('')+'</div>'
   +(T.extra?'<div class="sheet-extra">'+T.extra+'</div>':'')
   +(not?calloutCard('warn','Does not cover',esc(not)):'')
   +'<div class="sheet-src">'+esc(T.src)+(T.as?' · '+esc(T.as):'')
@@ -7170,7 +7205,11 @@ function cmgRow(name,sub,st,icon,caveat){
 function marketComing(){
  const keys=Object.keys(KFPIPE);
  const serves=k=>AREAS.filter(a=>(a.pipeList||[]).indexOf(k)>=0).length;
- const name=p=>esc(p.l.replace(/^the /,''));
+ /* two of the eleven are four words plus a parenthetical and wrap to two
+  lines at 375 in a slot built for one. The short forms carry the same
+  meaning: where the line goes is what a buyer is reading for. */
+ const SHORTNAME={'blue-2b':'Blue Line to the airport','red-phase3a':'Red Line to Sarjapur'};
+ const name=(p,k)=>esc(SHORTNAME[k]||p.l.replace(/^the /,''));
  const dated=keys.filter(k=>KFPIPE[k].o).sort((a,b)=>KFPIPE[a].o<KFPIPE[b].o?-1:1);
  const undated=keys.filter(k=>!KFPIPE[k].o);
  /* the four suburban corridors with dates collapse into one row */
@@ -7180,7 +7219,7 @@ function marketComing(){
  const groups=[];
  solo.forEach(k=>{const y=yearOf(k);
  let g=groups.find(x=>x.y===y); if(!g){g={y:y,rows:[]};groups.push(g);}
- g.rows.push(cmgRow(name(KFPIPE[k]),
+ g.rows.push(cmgRow(name(KFPIPE[k],k),
    pipeWhen(KFPIPE[k].o)+' · '+cmgServes(serves(k)),KFPIPE[k].s,
    KFPIPE[k].kind==='road'?'car':'rail',cmgCaveat(k,KFPIPE[k])));});
  if(sub.length){
@@ -7205,7 +7244,7 @@ function marketComing(){
  +groups.map(g=>'<div class="cmgyear"><span>'+esc(g.y)+'</span></div>'+g.rows.join('')).join('')
  +'</div>';
  const cap=t=>t.charAt(0).toUpperCase()+t.slice(1);
- const urows=undated.map(k=>cmgRow(name(KFPIPE[k]),
+ const urows=undated.map(k=>cmgRow(name(KFPIPE[k],k),
  esc(cap(KFPIPE[k].says.replace(/,.*$/,'')))+' · '+cmgServes(serves(k)),
  KFPIPE[k].s,null,cmgCaveat(k,KFPIPE[k])));
  const right='<div class="cmgpanel"><div class="cmghead"><h3>No published date</h3>'
