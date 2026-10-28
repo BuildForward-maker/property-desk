@@ -1348,8 +1348,16 @@ question screens, which is the same mistake the placard made:
   (0,2,1) and sets the question's 42px.
 
 **The rules-out card carries figures, not a sentence.** `rulesStats()`
-returns a count, a denominator and a reason per filter, counted off the same
+returns a figure, a unit and a reason per filter, counted off the same
 filters the shortlist uses. Nothing in it is written down.
+
+**A zero is turned round rather than printed.** "0 of 86 areas excluded" is
+the arithmetic; "All 86 areas reached" is the fact it produced, and it is the
+same information read the way somebody wants to hear it. The claim stays
+inside what the filter actually tested, which is a 1,000 sqft flat at each
+area's own basis price across the 86 researched areas, not every address in
+the city. Only the budget's area count does this; the project count prints
+its number either way.
 
 **There is no "next fact" teaser.** Teasing a fact is worse than showing one.
 The rotation dots stay.

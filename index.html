@@ -1651,7 +1651,9 @@ td,th{border-color:var(--line)}
 .rvstat{display:flex;align-items:baseline;gap:11px;padding:10px 0;
  border-top:1px solid rgba(255,255,255,.18)}
 .rvstat:first-child{border-top:0;padding-top:2px}
-.rvstat b{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.rvstat b{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1;white-space:nowrap}
+/* "All 86" is longer than a count and must not squeeze the reason beside it */
+.rvstat.good b{font-size:21px}
 .rvstat span{font-size:12.5px;line-height:1.45;opacity:.9}
 .rvstat em{display:block;font-style:normal;font-weight:700;opacity:.78;font-size:11px;
  letter-spacing:.04em;text-transform:uppercase}
@@ -10855,17 +10857,25 @@ function rulesStats(){
  const cap=budCap(), seg=segList(), st=[];
  if(cap){
  const n=AREAS.filter(a=>basisVal(a)*1000>cap*1.05).length;
- st.push({n:n,of:AREAS.length,what:n===1?'area':'areas',
-  why:'where a 1,000 sqft flat lands above your ceiling'});
+ /* a zero is the same information read the dull way round. "Your budget
+ reaches all 86" is the fact; "0 of 86 excluded" is the arithmetic that
+ produced it. The count still comes off the filter either way, and the
+ claim stays inside what the filter actually tested: a 1,000 sqft flat at
+ each area's own basis price, across the areas we have researched. */
+ st.push(n===0
+  ? {n:'All '+AREAS.length,unit:'areas reached',good:true,
+     why:'a 1,000 sqft flat sits inside your ceiling everywhere we have researched'}
+  : {n:n,unit:'of '+AREAS.length+' '+(n===1?'area':'areas'),
+     why:'where a 1,000 sqft flat lands above your ceiling'});
  }
  if(seg){
  const n=SOC.filter(s=>seg.indexOf(s.seg)<0).length;
- st.push({n:n,of:SOC.length,what:n===1?'project':'projects',
+ st.push({n:n,unit:'of '+SOC.length+' '+(n===1?'project':'projects'),
   why:'at a possession stage outside your timeline'});
  }
  if(FLOODHIDE){
  const n=AREAS.filter(a=>floodOf(a).tier==='high').length;
- st.push({n:n,of:AREAS.length,what:n===1?'area':'areas',
+ st.push({n:n,unit:'of '+AREAS.length+' '+(n===1?'area':'areas'),
   why:'on BBMP’s high flood-risk list, which you chose to hide'});
  }
  return st;
@@ -10896,8 +10906,8 @@ function scrProfile(){
    +'<span class="rvchip">Change</span></button>').join('')
  +'</div></div>';
  const ruled=st.length
-  ? '<div class="rvstats">'+st.map(x=>'<div class="rvstat">'
-    +'<b>'+x.n+'</b><span><em>of '+x.of+' '+x.what+'</em>'+esc(x.why)+'</span></div>').join('')+'</div>'
+  ? '<div class="rvstats">'+st.map(x=>'<div class="rvstat'+(x.good?' good':'')+'">'
+    +'<b>'+esc(String(x.n))+'</b><span><em>'+esc(x.unit)+'</em>'+esc(x.why)+'</span></div>').join('')+'</div>'
     +'<p class="rvnote">Nothing is deleted. Excluded places still appear, marked, '
     +'so you can see what you are turning down.</p>'
   : '<p class="rvnote">Nothing is excluded. Every researched area and project is in scope.</p>';
