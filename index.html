@@ -5103,9 +5103,19 @@ function uiIcon(name,tone,box){
  and return HTML strings — no state, no side effects, safe to call from any
  render path. Documented in CLAUDE.md under "Component library". */
 
-/* a metric: caps label, big value, optional sub-line */
+/* ---- one escaping rule for the whole library ----
+ A builder escapes nothing a call site composes; the call site escapes its own
+ data. That was already true of factorBar's label, of metricTile's value and
+ sub-line and of calloutCard's body, and it is why every factor row carries a
+ working "i". metricTile's label and calloutCard's title were the two
+ exceptions, and they were exactly the two slots call sites try to put an
+ infoDot into: four of them rendered the markup as visible text, and the
+ button, never being an element, could never be tapped. Where a label really
+ does carry data it is escaped at the call site, which also stops those two
+ sites being escaped twice. */
+/* a metric: caps label, big value, optional sub-line. label takes markup. */
 function metricTile(label,value,sub){
- return '<div class="mtile"><span class="ml">'+esc(label)+'</span>'
+ return '<div class="mtile"><span class="ml">'+label+'</span>'
   +'<span class="mv">'+value+'</span>'
   +(sub?'<span class="ms">'+sub+'</span>':'')+'</div>';
 }
@@ -5136,11 +5146,11 @@ function factorBar(label,value,max,right){
   +'<span class="fbt"><i style="width:'+pct.toFixed(1)+'%"></i></span>'
   +'<span class="fbv">'+(right!==undefined?right:value.toFixed(1))+'</span></div>';
 }
-/* tone: warn | risk | ok */
+/* tone: warn | risk | ok. title takes markup, like the body. */
 function calloutCard(tone,title,body){
  const ico={warn:'!',risk:'!',ok:'✓'}[tone]||'!';
  return '<div class="ui-call '+tone+'"><div class="ch"><span class="ci">'+ico+'</span>'
-  +esc(title)+'</div><div class="cb">'+body+'</div></div>';
+  +title+'</div><div class="cb">'+body+'</div></div>';
 }
 /* NOT called sourceFooter: a provenance footer for a society already owns that
  name further down, and the later declaration silently wins. */

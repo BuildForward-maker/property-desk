@@ -796,15 +796,40 @@ strings, hold no state.
 
 | Builder | Notes |
 |---|---|
-| `metricTile(label, value, sub)` | tile background, caps label, 20px/800 value |
+| `metricTile(label, value, sub)` | tile background, caps label, 20px/800 value. label takes markup |
 | `badge(text, tone)` | `ok` \| `neutral` \| `warn` \| `risk` |
 | `segmented(options, active, attr)` | active is a white pill on a tile track |
 | `chip(text, active, icon, attr)` | active is `--primary` |
 | `scoreBadge(n)` | rounded square, coloured by band |
 | `factorBar(label, value, max, right)` | label, track, value |
-| `calloutCard(tone, title, body)` | `warn` \| `risk` \| `ok` |
+| `calloutCard(tone, title, body)` | `warn` \| `risk` \| `ok`. title takes markup |
 | `srcFooter(src, asOf)` | **not** `sourceFooter` — see below |
 | `explainButton(topic, mode, label)` | the "i", 44px reach around a 22px circle |
+
+### One escaping rule, and it is the call site's job
+
+**A builder escapes nothing a call site composes. The call site escapes its own
+data.** `factorBar`'s label, `metricTile`'s value and sub-line and
+`calloutCard`'s body already worked this way, which is why every factor row
+carries a working "i".
+
+`metricTile`'s **label** and `calloutCard`'s **title** were the two exceptions,
+and they were exactly the two slots a call site wants to put an `infoDot` into.
+Four of them shipped the markup as visible text on live panels — the Registered
+deeds tile on all 86 areas, the high flood-risk callout, and both `srcTag`
+provenance labels on every project, which quietly undid the rule that a RERA
+figure must read as more trustworthy than a broker one. A button that is text
+is never an element, so those sheets could not be opened at all.
+
+The same asymmetry bit in the other direction: the two call sites that pass
+real data into those slots escape it themselves, so they were escaped twice.
+`Post & Telegraph Layout` read as `Post &amp; Telegraph Layout` on its locality
+panel. Seven of the 1,791 localities carry an `&` or an apostrophe; no area
+name does, which is why the project panel's `esc(ar.n)` never showed it.
+
+Before adding an argument to a builder, decide which side escapes it and keep
+the whole library on one answer. A scanner over every call site is four lines
+of Python and would have caught all four.
 
 Two naming hazards, both live:
 
