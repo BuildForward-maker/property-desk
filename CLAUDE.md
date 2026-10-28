@@ -1629,21 +1629,39 @@ presentations.
 Chips keep the 999px pill; Filters takes 13px, because it is a control and
 not a lens.
 
+**"N more" is an inactive chip, not a lesser control.** It was a dashed
+outline on a transparent ground at 13px/700, and on a row of solid pills it
+read as a placeholder rather than as something tappable. Every property is
+the chip's now, colour included; only the chevron is drawn separately, and it
+stays `--muted`. Grepping for what a thing should match is cheaper than
+inventing a second appearance for it.
+
+**The row is measured across its content box.** `renderLensRow()` passed
+`getBoundingClientRect().width` to `lensFit()`, which is the border box and
+28px wider than the space the chips actually have, so the row fitted one chip
+too many and pushed Filters 8px past its own right padding. It reads
+`clientWidth` minus the two paddings instead. The inset is 14px on each side,
+the same as every other panel, and that is the number to check: left inset
+14, right inset 14, chips, "N more" and Filters all 44px tall. One chip fewer
+at 1280 is the correct consequence, not a regression.
+
 ### The chip row: the cut, not the layout
 
-The scroller and Filters are two flex siblings that divide the row. Neither is
-positioned, neither is `width:100%` with the other layered on it, and the gap
-between their border boxes is 12px at every width: 672–1156 then 1168 at 1280,
-672–1316 then 1328 at 1440, and the whole row with no Filters button at 375.
-**They have never overlapped by a pixel.**
+**This describes the scroller, which no longer exists** — the section above
+replaced it. It is kept because the finding is what sent the round there.
 
-What reads as a chip running under the button is the **cut**. The scrollport
-is narrower than its content at every width (744px of chips in 484, 644 and
-311), so some chip always lands on the right edge, and 34px of fade is not
+The scroller and Filters were two flex siblings that divided the row. Neither
+was positioned, neither was `width:100%` with the other layered on it, and the
+gap between their border boxes was 12px at every width: 672–1156 then 1168 at
+1280, 672–1316 then 1328 at 1440, and the whole row with no Filters button at
+375. **They never overlapped by a pixel.**
+
+What read as a chip running under the button was the **cut**. The scrollport
+was narrower than its content at every width (744px of chips in 484, 644 and
+311), so some chip always landed on the right edge, and 34px of fade was not
 enough to kill a 13.5px glyph: half a letter sat legibly twelve pixels from
-the button and the eye joined them up. The fade is 56px now, and it lives on
-the base `.lens .toggle` rule rather than in the desktop block — the phone is
-where the row is tightest and it had **no fade at all**.
+the button and the eye joined them up. Widening the fade to 56px treated the
+symptom; removing the overflow was the fix.
 
 `.atend` clears the mask when there is nothing left to scroll, so the last
 chip is fully readable at the end of the scroll: measured 993–1155 inside a

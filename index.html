@@ -1325,11 +1325,16 @@ td,th{border-color:var(--line)}
  font-family:var(--font);font-size:13.5px;font-weight:600;white-space:nowrap;
  cursor:pointer;flex:0 0 auto}
 .lchip.on{background:var(--grad-primary);border-color:transparent;color:#fff}
-.lensmore{display:inline-flex;align-items:center;gap:5px;min-height:var(--tap);
- padding:9px 13px;border-radius:var(--r-chip);border:1px dashed var(--line);
- background:none;color:var(--muted);font:inherit;font-size:13px;font-weight:700;
- white-space:nowrap;cursor:pointer;flex:0 0 auto}
+/* the same box as an inactive chip, because a dashed outline on an otherwise
+ solid row reads as a placeholder rather than a control. Every property is the
+ chip's, colour included; only the chevron is drawn separately. */
+.lensmore{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);
+ padding:9px 15px;border-radius:var(--r-chip);border:1px solid var(--line);
+ background:var(--tile);color:var(--muted);font-family:var(--font);font-size:13.5px;
+ font-weight:600;white-space:nowrap;cursor:pointer;flex:0 0 auto}
+.lensmore span{color:var(--muted);font-size:15px;line-height:1}
 .lensmore:hover{border-color:var(--primary);color:var(--primary)}
+.lensmore:hover span{color:var(--primary)}
 /* Filters is a control, not a lens, so it takes the square-ish radius and
  never the 999px pill the chips use */
 .lensfilt{display:inline-flex;align-items:center;gap:7px;min-height:var(--tap);
@@ -9561,7 +9566,10 @@ function renderLensRow(){
   +uiIcon('filter','nav',false)+pill+'</button>';
  }else{
  row.className='lens';
- const w=row.getBoundingClientRect().width;
+ /* the content box, not the border box: the row carries 14px of inset on
+  each side, and measuring across it put Filters 8px past the padding */
+ const cs=getComputedStyle(row);
+ const w=row.clientWidth-parseFloat(cs.paddingLeft||0)-parseFloat(cs.paddingRight||0);
  /* Filters and the overflow control are both accounted for before a single
   chip is placed, which is the step the scroller version skipped */
  const fit=lensFit(w);
