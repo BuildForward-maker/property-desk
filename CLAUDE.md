@@ -1066,6 +1066,16 @@ sign-in gate, the intake overlay (which carries the review and the placard
 with it) and Home. `z-index:-1`, `pointer-events:none`, `aria-hidden`. It is
 a `background-image` data URI, so it costs no request and no library.
 
+**Anything inside a grained host that fills itself with `--bg` paints a flat
+patch over the grain and reads as a strip of the wrong colour.** `.iqtop` did
+exactly that: a 530x18 band above the question number on every desktop
+question screen. Its background is a phone thing, there to hide options
+scrolling under a sticky header, and desktop is not sticky, so the background
+had nothing to do but cover the texture. The grain is the reason a rule that
+had been harmless for months became visible; before adding a flat `--bg` fill
+anywhere inside `#intake`, `#gate` or `#sec-home`, check it against the
+ground it is sitting on.
+
 ### Screen zero leads with the questions
 
 The microphone was the loud option and the questions the quiet one, which put

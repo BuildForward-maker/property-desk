@@ -1570,7 +1570,6 @@ td,th{border-color:var(--line)}
 /* ---- the profile, building ----
  One line above the button on a phone, a card in the right column on desktop.
  The dots are the seven questions; a filled one is an answer given. */
-.iqfnlwrap{flex:1;min-width:0}
 .ipline{display:flex;align-items:center;gap:9px;height:42px;padding:0 12px;
  margin:6px 0 8px;background:var(--card);border-radius:var(--r-seg);
  box-shadow:0 1px 2px rgba(17,17,26,.05)}
@@ -1839,15 +1838,21 @@ td,th{border-color:var(--line)}
   .iwrap{max-width:1120px;display:grid;grid-template-columns:1.12fr 1fr;
  grid-template-rows:auto 1fr auto;column-gap:52px;padding:40px 32px 48px;
  align-items:start;min-height:100%}
+  /* The sticky background below is a phone thing: it exists to hide options
+   scrolling under the header. Desktop is not sticky, so the only thing that
+   background does is paint a flat patch of --bg over the grain, which read
+   as a pale strip 530x18 above the question number. Anything that sits in a
+   grained host and fills itself with --bg will do the same. */
   .iqtop{grid-column:1;grid-row:1;position:relative;padding:0 0 18px;
- align-items:flex-start;flex-wrap:wrap;max-width:540px;min-height:0}
+ align-items:flex-start;flex-wrap:wrap;max-width:540px;min-height:0;
+ background:none}
   .iqtop .iqnav.ghost{display:none}
   /* Back sits in the overlay's own margin rather than in the row, where it
    cost the screen 54px and moved everything beside it between question one
    and question two */
   .iqtop .iqnav{position:absolute;left:-58px;top:-2px}
   .iqtop .iqskip.top{order:1;margin-left:auto}
-  .iqfnlwrap{display:none}
+  .iqtop .iqspacer{display:none}
   /* the building line is the phone's; desktop gets the card instead */
   .ipline{display:none}
   .iqbody{grid-column:1;grid-row:2;padding:0;max-width:540px}
@@ -11199,20 +11204,6 @@ function iqExit(i){
  if(i>0)return '';                          /* started: Back covers it */
  return '<button class="iqskip wide" id="iSkip">Browse without answering</button>';
 }
-/* ---- the stepped funnel ----
- One component at both widths. Each block is how much of the field is still
- in play after that question has been answered, so the shape is the search
- narrowing rather than a progress bar pretending to be one.
-
- **Two of the seven narrow the areas: budget, and since the ceiling, the
- commute.** Zones is a preference by design and the timeline narrows projects
- rather than areas, so those say what they changed instead of printing a cut
- of zero. Every count comes off `areaStages()`, which is the same predicate
- the five are filtered by, so the funnel cannot drift from the shortlist. */
-function areasUnder(cap){
- if(!cap)return AREAS.length;
- return AREAS.filter(a=>basisVal(a)*1000<=cap*1.05).length;
-}
 /* ---- what is excluded, in one place ----
  The five, the funnel, the review waterfall and the rules-out card all read
  this. Four copies of the same arithmetic is how a funnel comes to disagree
@@ -11320,7 +11311,7 @@ function iqChrome(i){
    :'<span class="iqnav ghost"></span>';
  return '<div class="iqtop">'
   +(i>0?'<button class="iqnav" id="iBack" aria-label="Back">‹</button>':'<span class="iqnav ghost"></span>')
-  +'<div class="iqfnlwrap"></div>'
+  +'<div class="iqspacer"></div>'
   +skip+'</div>';
 }
 /* ---- the facts ----
