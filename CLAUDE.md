@@ -685,8 +685,12 @@ is only its fallback. Primary buttons, score badges and bar fills all carry
     --r-card 22 --r-tile 15 --r-seg 12 --r-chip 999
     --s-screen 18 --s-cards 14 --s-in 14 --tap 44
 
-Two fonts: **Manrope** carries every readable word, **Space Grotesk**
-(`--label`) is for caps labels and badges only and never for body text.
+Three fonts. **Manrope** carries every readable word, **Space Grotesk**
+(`--label`) is for caps labels and badges only and never for body text, and
+**Instrument Serif** (`--serif`) carries exactly two things: the intake
+question at 42px on desktop, and the fact card's claim line at 23px. It is
+not a UI face and must not spread; if a third place wants it, the question is
+why that place is trying to sound like the question.
 Nothing interactive goes under `--tap`.
 
 Every foreground/background pair in use clears 4.5:1. The tightest is the
@@ -1287,6 +1291,48 @@ and read as sitting half outside the card. The desktop rule gives that band
 26px on the right and bottom. Measure it as the gap between the control's box
 and the band's border box, not against the content box, which is zero by
 definition.
+
+### The intake has two columns and a fact that is not about us
+
+Above 1024 `.iwrap` becomes a grid: the question at a 540px cap on the left
+with Continue at the foot of its column, and `.iqfact` on the right,
+vertically centred. Below it the same markup is the phone screen it always
+was, and `.iqfact` collapses to `.iffoot`, two muted lines and a 13px glyph
+under Continue.
+
+**The phone must not grow, and it did not.** Every question screen measures
+exactly what it measured before the fact existed. The footnote is paid for
+out of `.iqbody`'s bottom padding, which was 110px to keep the last option
+clear of the sticky footer and is now 29px: a `position:sticky` footer
+un-sticks into flow at the end of the scroll, so most of that padding was
+never doing anything.
+
+**`FACTS` holds seven, one per question, rotating, and none of them is about
+this product.** A fact that sells the thing somebody is already using is an
+advertisement wearing a figure, and it makes the other six less believable.
+Each carries its source, and where the number is market convention rather
+than a statute the source says so rather than dressing it up.
+
+Two specificity traps, both hit while building this:
+
+- `.iwrap h2` is (0,1,1) and beats `.iqh` at (0,1,0), so the desktop rule has
+  to be `.iwrap h2.iqh`.
+- The desktop `.iqbody{max-width:540px}` caps the placard too, because the
+  placard is also an `.iqbody`. It is undone by
+  `#intake .iwrap:has(.plgrid) .iqbody{max-width:none}`.
+
+### The placard is a grid, and the map always names all five
+
+Four children of `.plgrid`, **placed** rather than reordered: map and the
+how-this-was-worked-out card and the projects in column 1, the ranked areas
+spanning column 2. Below 1024 `.plgrid` is `display:contents`, so the phone
+sees DOM order, which is the order it has always had.
+
+**The locked placard shows all five pins, named.** It used to show one.
+Hiding which five they are was the only thing the lock did that persuaded
+nobody: seeing the shape of the answer is what makes the ranked detail behind
+it worth signing in for, and the caption says exactly where the line is.
+`renderPlacardMap()` is always passed the full five.
 
 ### The greeting, and the one rule the sub-line has to keep
 

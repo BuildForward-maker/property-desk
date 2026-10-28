@@ -7,7 +7,7 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 
 <style>
 :root{
@@ -61,6 +61,9 @@
  labels and badges only and never for body text */
 --font:"Manrope","Helvetica Neue",Arial,sans-serif;
 --label:"Space Grotesk","Helvetica Neue",Arial,sans-serif;
+/* the third family, and the only one that is not a UI face: it carries the
+   intake question and the fact claim, nothing else */
+--serif:"Instrument Serif",Georgia,"Times New Roman",serif;
 --line-soft:#EDF0F8;   /* a lighter divider, inside cards */
 --accent:#1D4ED8}      /* the one blue, for links and focus rings */
 *{box-sizing:border-box}html,body{margin:0;padding:0}
@@ -1544,7 +1547,11 @@ td,th{border-color:var(--line)}
 .iqskip.wide:hover{border-color:var(--ink);color:var(--ink)}
 .iqskip{border:0;background:none;color:var(--muted);font-family:var(--font);font-size:14px;
  font-weight:600;cursor:pointer;min-height:var(--tap);padding:0 6px;flex:0 0 auto}
-.iqbody{flex:1;padding:8px 0 110px}
+/* 110px of bottom padding existed to keep the last option clear of the
+ sticky footer. The footer un-sticks into flow at the end of the scroll, so
+ most of it was never needed, and the footnote now lives in that space
+ rather than on top of it: the question screens are the height they were. */
+.iqbody{flex:1;padding:8px 0 29px}
 .iqn{font-family:var(--label);font-size:11px;font-weight:600;letter-spacing:.08em;
  text-transform:uppercase;color:var(--muted);margin-bottom:10px}
 .iqh{font-size:28px;font-weight:800;line-height:1.18;letter-spacing:-.02em;margin:0 0 8px}
@@ -1570,6 +1577,92 @@ td,th{border-color:var(--line)}
 .iqfoot .act{width:100%;font-size:15.5px}
 .iqfoot .act[disabled]{background:var(--tile);border-color:var(--line);color:var(--muted);
  cursor:not-allowed}
+/* ---- the fact ----
+ On a phone it is a footnote under Continue: two muted lines and a small
+ glyph, 11.5px, and nothing else of the card renders. It must never compete
+ with the question, so everything that would make it a card is display:none
+ until there is a second column to put it in. */
+.iqfact .ifcard,.iqfact .ifnext,.iqfact .ifdots{display:none}
+.iqskip.top{display:none}
+.iffoot{display:flex;gap:7px;align-items:flex-start;font-size:11.5px;line-height:1.45;
+ color:var(--muted);margin:10px 0 0;padding-bottom:4px}
+.iffoot .ico-g{flex:0 0 auto;color:var(--slate);margin-top:1px}
+.iffoot .ico-g svg{width:13px;height:13px}
+.iffoot b{font-weight:700;color:var(--slate)}
+.ifcard{background:var(--grad-primary);color:#fff;border-radius:24px;padding:26px 24px}
+.ifkick{font-family:var(--label);font-size:10.5px;font-weight:600;letter-spacing:.09em;
+ text-transform:uppercase;opacity:.82;margin-bottom:12px}
+.ifnum{font-size:44px;font-weight:800;letter-spacing:-.025em;line-height:1}
+.ifclaim{font-family:var(--serif);font-size:23px;font-weight:400;line-height:1.26;
+ margin:10px 0 14px;letter-spacing:0}
+.ifdetail{font-size:13.5px;line-height:1.6;opacity:.92;margin:0 0 14px}
+.ifsrc{font-size:11.5px;opacity:.74;margin:0;line-height:1.45}
+.ifnext{background:var(--card);border-radius:var(--r-tile);padding:14px 16px;margin-top:12px}
+.ifnext .ifkick{color:var(--muted);opacity:1;margin-bottom:6px}
+.ifnext p{margin:0;font-size:13px;color:var(--ink);line-height:1.45}
+.ifdots{display:flex;gap:6px;justify-content:center;margin-top:14px}
+.ifdots i{width:6px;height:6px;border-radius:50%;background:var(--line);display:block}
+.ifdots i.on{background:var(--primary)}
+
+/* the pin carries its name. White label, small, and it never takes the tap:
+ the dot does. */
+.scoredot.pinned{overflow:visible}
+.scoredot .pinlab{position:absolute;left:50%;top:100%;transform:translateX(-50%);
+ margin-top:3px;background:rgba(255,255,255,.94);color:var(--ink);font-family:var(--font);
+ font-style:normal;font-size:9.5px;font-weight:700;line-height:1.3;white-space:nowrap;
+ padding:1px 5px;border-radius:3px;pointer-events:none;
+ box-shadow:0 1px 3px rgba(20,18,43,.18)}
+.plcap{font-size:12.5px;color:var(--muted);margin:8px 0 0;line-height:1.5}
+.plgrid{display:contents}
+
+/* ---- the placard, two columns ----
+ The same four children, placed rather than reordered: the phone sees them in
+ DOM order through display:contents, and only the grid changes at 1024. */
+@media(min-width:1024px){
+  #intake .plgrid{display:grid;grid-template-columns:1.15fr 1fr;
+ column-gap:28px;align-items:start}
+  .plmap{grid-column:1;grid-row:1}
+  .plmodel{grid-column:1;grid-row:2}
+  .plprojects{grid-column:1;grid-row:3}
+  .plareas{grid-column:2;grid-row:1 / span 3}
+  .plmap #pMap{height:330px}
+  .plprojects .loccard{margin-bottom:0}
+  .plprojects .plrow2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  /* the placard is the one intake screen that wants the window. The 540px
+ cap belongs to a question, not to this. */
+  #intake .iwrap:has(.plgrid){max-width:1120px;padding:28px 32px 48px}
+  #intake .iwrap:has(.plgrid) .iqbody{max-width:none;padding:0}
+}
+
+/* ---- the intake, two columns ----
+ Above 1024 the question stops being a phone screen centred in a window. The
+ left column is the question at a readable 540px; the right is a fact that
+ has nothing to do with this product, because a fact that sells the thing you
+ are already using is an advertisement wearing a figure. */
+@media(min-width:1024px){
+  .iwrap{max-width:1120px;display:grid;grid-template-columns:1.12fr 1fr;
+ grid-template-rows:auto 1fr auto;column-gap:52px;padding:40px 32px 48px;
+ align-items:start;min-height:100%}
+  .iqtop{grid-column:1;grid-row:1;position:static;padding:0 0 18px}
+  .iqbody{grid-column:1;grid-row:2;padding:0;max-width:540px}
+  .iqfoot{grid-column:1;grid-row:3;position:static;background:none;box-shadow:none;
+ border-radius:0;padding:20px 0 0;margin:0;max-width:540px;align-self:end}
+  .iqfact{grid-column:2;grid-row:1 / span 3;align-self:center;max-width:380px}
+  .iqfact .ifcard,.iqfact .ifnext{display:block}
+  .iqfact .ifdots{display:flex}
+  .iffoot{display:none}
+  .iqn{color:var(--primary)}
+  /* .iwrap h2 is 0,1,1 and would otherwise keep its 34px Manrope */
+  .iwrap h2.iqh{font-family:var(--serif);font-size:42px;font-weight:400;line-height:1.08;
+ letter-spacing:-.01em;margin:0 0 12px}
+  .iqskip.top{display:inline-block;background:none;border:0;cursor:pointer;
+ font:inherit;font-size:13px;color:var(--muted);text-decoration:underline;
+ padding:0 2px;width:auto;min-height:var(--tap)}
+  .iqfoot .iqskip:not(.top){display:none}
+  /* the review and the placard keep one column: they are not a question */
+  .iwrap:not(:has(.iqfact)){display:flex;max-width:560px;padding:0 var(--s-screen)}
+}
+
 /* ---- profile confirmation ---- */
 .pcards{display:flex;flex-direction:column;gap:10px;margin-top:16px}
 .pcard{position:relative;display:block;width:100%;text-align:left;background:var(--card);
@@ -10529,10 +10622,79 @@ function iqChrome(i){
  const total=iqTotal();
  const dots=Array.from({length:total},(_,n)=>
    '<i class="'+(n===i?'on':(n<i?'past':''))+'"></i>').join('');
+ /* the desktop row carries Skip as well. It is a second element rather than
+ the footer one moved, because moving it would change the phone, where the
+ named exit belongs under Continue. One is hidden at each width. */
+ const skip=iqExit(i)?'<button class="iqskip top" id="iSkipTop">Browse without answering</button>'
+   :'<span class="iqnav ghost"></span>';
  return '<div class="iqtop">'
   +(i>0?'<button class="iqnav" id="iBack" aria-label="Back">‹</button>':'<span class="iqnav ghost"></span>')
   +'<div class="iqdots" aria-label="Question '+(i+1)+' of '+total+'">'+dots+'</div>'
-  +'<span class="iqnav ghost"></span></div>';
+  +skip+'</div>';
+}
+/* ---- the facts ----
+ One per question, rotating, and none of them about this product. A fact that
+ sells the thing you are already using is an advertisement wearing a figure,
+ and it would make the other six less believable. Each carries where it comes
+ from; where the number is a market convention rather than a statute, the
+ source says that rather than dressing it up. */
+const FACTS=[
+ {n:'10 months',
+  claim:'of rent is the Bengaluru deposit norm, and no law anywhere requires it.',
+  detail:'Mumbai asks two or three, Delhi often one. Karnataka has no cap and has not '
+   +'adopted the Model Tenancy Act, so ten is market convention and negotiable. In newer '
+   +'gated stock it has already fallen to three or six.',
+  src:'Market convention. Karnataka has not adopted the Model Tenancy Act 2021.'},
+ {n:'30 to 40%',
+  claim:'of what you are sold is corridor, lift and clubhouse.',
+  detail:'That gap between super built-up and carpet area is the loading factor. RERA says '
+   +'compare on carpet, which is the floor you can actually stand on.',
+  src:'Real Estate (Regulation and Development) Act 2016, which defines carpet area.'},
+ {n:'11 months',
+  claim:'is how long almost every rent agreement here runs.',
+  detail:'At twelve, registration becomes compulsory, so the eleventh month is where the '
+   +'market stopped. It is the paperwork deciding the lease, not the tenant or the owner.',
+  src:'Registration Act 1908: a lease of twelve months or more must be registered.'},
+ {n:'1537',
+  claim:'is when Hebbal Lake was dug.',
+  detail:'Bengaluru\u2019s lakes are man-made tanks formed by damming valleys, not natural '
+   +'water bodies. The flat ground beside them is the old tank bed, which is why some '
+   +'layouts flood and the one next door does not.',
+  src:'Kempe Gowda-era tank construction; the lake records BBMP and KSNDMC still work from.'},
+ {n:'7.6%',
+  claim:'goes to stamp duty, cess and registration above \u20b945 lakh.',
+  detail:'Registration alone doubled from 1% to 2% in August 2025. On a \u20b91 crore flat '
+   +'that is about \u20b97.6 lakh that never touches the seller.',
+  src:'Karnataka stamp duty and registration charges, as revised August 2025.'},
+ {n:'The higher',
+  claim:'of the price you pay or the guidance value is what stamp duty is charged on.',
+  detail:'Negotiating below guidance saves you nothing on duty. The government has already '
+   +'decided what that address is worth for its own purposes, and it does not move.',
+  src:'Karnataka Stamp Act: duty on the greater of consideration and guidance value.'},
+ {n:'40 to 50%',
+  claim:'of Bengaluru rents rather than owns, making it India\u2019s largest rental market.',
+  detail:'That is why yields hold here when they sag elsewhere: the tenant demand is not a '
+   +'forecast, it is half the city.',
+  src:'Widely reported estimate. The exact share moves with the source and the definition.'}
+];
+function factAt(i){ return FACTS[((i%FACTS.length)+FACTS.length)%FACTS.length]; }
+function iqFact(i){
+ const f=factAt(i), nx=factAt(i+1);
+ const dots=FACTS.map((_,n)=>'<i class="'+(n===(((i%FACTS.length)+FACTS.length)%FACTS.length)?'on':'')+'"></i>').join('');
+ return '<aside class="iqfact" aria-label="Did you know">'
+ +'<div class="ifcard">'
+  +'<div class="ifkick">Did you know</div>'
+  +'<div class="ifnum">'+esc(f.n)+'</div>'
+  +'<p class="ifclaim">'+esc(f.claim)+'</p>'
+  +'<p class="ifdetail">'+esc(f.detail)+'</p>'
+  +'<p class="ifsrc">'+esc(f.src)+'</p>'
+ +'</div>'
+ +'<div class="ifnext"><span class="ifkick">Next</span>'
+  +'<p>'+esc(nx.n)+' '+esc(nx.claim)+'</p></div>'
+ +'<div class="ifdots" aria-hidden="true">'+dots+'</div>'
+ +'<p class="iffoot"><span class="ico-g">'+uiIcon('info','nav',false)+'</span>'
+  +'<span><b>'+esc(f.n)+'</b> '+esc(f.claim)+'<br>'+esc(f.src)+'</span></p>'
+ +'</aside>';
 }
 function iqOption(d,o){
  return '<button type="button" class="iopt'+(o.on?' on':'')+'" data-'+d.attr+'="'+esc(o.k)+'"'
@@ -10555,7 +10717,8 @@ function scrQuestion(key){
   +'</div>'
   +'<div class="iqfoot"><button class="act" id="iNext"'+(d.done?'':' disabled')+'>'
   +(i+1===iqTotal()?'Review my answers':'Continue')+'</button>'
-  +(i===0?iqExit(i):'')+'</div>';
+  +(i===0?iqExit(i):'')+'</div>'
+  +iqFact(i);
 }
 
 /* ---- profile confirmation ----
@@ -10840,7 +11003,11 @@ function renderPlacardMap(areas){
  areas.forEach(a=>{
  if(typeof a.lat!=='number')return;
  const c=commuteScore(a,hubs), n=areaFit(a), b=scoreBand(n);
- const ic=L.divIcon({className:'scoredot '+b.k,html:'<span>'+n+'</span>',
+ /* the name rides with the score. Hiding which five they are was the one
+ thing the lock did that persuaded nobody: seeing the shape of the answer
+ is what makes the ranked detail behind it worth signing in for. */
+ const ic=L.divIcon({className:'scoredot pinned '+b.k,
+ html:'<span>'+n+'</span><em class="pinlab">'+esc(a.n)+'</em>',
  iconSize:[34,34],iconAnchor:[17,17]});
  const mk=L.marker([a.lat,a.lng],{icon:ic,keyboard:false});
  mk.bindTooltip(a.n+(c?' \u2014 '+c.mins+' min to '+HUBLABEL[c.hub]:''),
@@ -10932,20 +11099,28 @@ function placardLive(){
    +(m!==null?'<span class="minchip">'+m+' min to office</span>':'')
    +'</span></button>';
  };
+ /* two across on desktop, one column on a phone, same cards either way */
  const socRows=locked
  ? socCard(socs[0])+lockWrap(socs.slice(1).map(socCard).join(''),socs.length-1,socs.length,'projects')
- : socs.map(socCard).join('');
- /* the map names an area in its tooltip and opens it on a tap, so a locked
- placard puts one pin on it rather than handing over the four it just hid */
- setTimeout(()=>renderPlacardMap(locked?areas.slice(0,1):areas),0);
+ : '<div class="plrow2">'+socs.map(socCard).join('')+'</div>';
+ setTimeout(()=>renderPlacardMap(areas),0);
+ /* four children of one grid, placed explicitly at 1024 and display:contents
+ below it, so the phone keeps the order it has always had: map, areas,
+ projects, how this was worked out. */
  return placardHead()
-  +'<div class="mapcard" style="margin-top:14px"><div id="pMap"></div></div>'
+  +'<div class="plgrid">'
+  +'<div class="plmap"><div class="mapcard" style="margin-top:14px"><div id="pMap"></div></div>'
+  +(locked?'<p class="plcap">All five, named. The list below is what needs an account.</p>':'')
+  +'</div>'
+  +'<div class="plareas">'
   +'<div class="resh"><h3>Areas to look in</h3><small>ranked on your answers</small></div>'
-  +areaRows
+  +areaRows+'</div>'
+  +'<div class="plprojects">'
   +'<div class="resh"><h3>Top projects for you</h3><small>'
   +esc(segList()?segList().map(SEGLAB).join(', ').toLowerCase():'no timing filter')+'</small></div>'
-  +socRows
-  +modelCard('live')
+  +socRows+'</div>'
+  +'<div class="plmodel">'+modelCard('live')+'</div>'
+  +'</div>'
   +placardFoot();
 }
 /* ---- investment ---- */
@@ -11046,6 +11221,7 @@ function wireIntake(){
  IPHASE='q'; iStep=nextUnanswered(0); renderIntake();});
 
  if(g('iSkip'))g('iSkip').addEventListener('click',skipIntake);
+ if(g('iSkipTop'))g('iSkipTop').addEventListener('click',skipIntake);
  if(g('iBack'))g('iBack').addEventListener('click',()=>{
  if(IPHASE==='caught'){IPHASE='voice'; renderIntake(); return;}
  iStep=Math.max(0,iStep-1); renderIntake();});
