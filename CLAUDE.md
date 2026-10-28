@@ -960,12 +960,13 @@ Four rules the component carries, each of which cost a pass to find:
 `.fstep.now` so the question you are standing on still reads as the one you
 are standing on.
 
-**Only budget reduces the area count.** There is no commute filter and no
-zone filter in this app — zones are a preference by `ZONE_PENALTY`, timeline
-narrows projects rather than areas, and the rest move weights. A funnel line
-that claims otherwise is inventing a filter. `funnelSteps` therefore says what
-each question *did* ("This changes the weighting, not the shortlist") rather
-than printing a cut of zero.
+**Two things reduce the area count: budget, and the commute ceiling.** Zones
+are a preference by `ZONE_PENALTY`, the timeline narrows projects rather than
+areas, and the rest move weights, so those say what the question *did* ("This
+changes the weighting, not the shortlist") rather than printing a cut of zero.
+Every count comes off `areaStages()`, which is the predicate the five are
+filtered by, so a funnel line cannot claim a filter the shortlist does not
+run.
 
 **The funnel is what "Question 2 of 7" used to say.** On a phone the words are
 visually hidden and the numbered blocks carry it, which is where the screen
@@ -981,11 +982,11 @@ alignment the row exists to hold.
 
 ### The waterfall on the review screen
 
-`areaWaterfall()` draws the stages in the gradient card, and it draws **only
-filters that exist**: all of Bengaluru, within your budget, and off the flood
-list where `FLOODHIDE` is set. A stage that removed nothing is shown at full
-width with a dash; a stage that is not a filter is not shown at all, because a
-labelled bar tells a buyer that filter ran.
+`areaWaterfall()` folds over `areaStages()` rather than listing the filters a
+second time, so a filter added to the five appears here without anything being
+kept in step by hand. A stage that removed nothing is shown at full width with
+a dash; a stage that is not switched on is not drawn at all, because a labelled
+bar tells a buyer that filter ran.
 
 `.wrow` sets `line-height:1.3`. At body's 1.55 the three stages cost the
 review screen 15px it does not have.
@@ -1011,6 +1012,70 @@ points are clear, in a 14px strip between them. The bottom-right one reads.
 Lifting it above the band would put decoration over content, and moving it
 would not be a corner. The intake, which is where the empty space actually is,
 shows both.
+
+### The commute ceiling is a filter, and the buyer sets it
+
+Question six asks two things, because how you travel and how far you will go
+are one decision and an eighth question would have made the flow longer to say
+less. `IQ_CMAX` holds the four bands, `INTAKE.commuteMax` holds the answer and
+`CMAX_DEFAULT` is `'60'`: a profile written before this round has no answer and
+reads as an hour, which the review row labels **as a default** so nobody is
+held to a number they never chose. `cmaxBlock()` renders it and **hides itself
+where no workplace is set**, because a ceiling with nothing to measure from is
+a control that does nothing. Each band carries how many areas survive it, so
+the choice is made against the consequence.
+
+**It is a filter, not a weight, and it does not touch the score.** This is the
+same shape as budget, and the reason matters: `areaFit` answers how well a
+place suits this person, and the ceiling answers whether they would make the
+journey. Zeroing the score would conflate the two and would tell a buyer that
+Devanahalli is a bad area rather than a far one. The digests prove it: across
+all four states `areaFit` and `socFit` are **byte-identical** to before, while
+the personal area and project *rankings* both move.
+
+    commuteCeiling()   null for an investor, null with no workplace, else the
+                       chosen minutes. Those two nulls are not the same as 'any'
+                       and must stay separate in the copy.
+    commuteMinsOf(x)   peak minutes on the chosen journey, worse of two hubs,
+                       which is exactly how commute is already scored
+    overCeiling(x)     minutes past it, 0 inside it, 0 when unknown
+
+**An unknown journey is never excluded.** Absence of a drive time is absence of
+evidence, which is the rule the flood layer keeps.
+
+Four places filter on it and all four read the same predicate: `topAreas`,
+`socGroups` (a project is scored from its own coordinate, so it takes the
+ceiling directly rather than inheriting its area's verdict), `rankedAreas`
+**only when `RANKMODE` is `you`**, and `areaStages()` for the funnel and the
+waterfall. **`investScore`, `investFull`, `priScore` and `sweetScore` must
+never see it** — they are the comparable numbers every buyer reads on every
+panel, and Ranked overall is their list.
+
+**What the ceiling removes is shown, not swallowed.** `commuteMisses()` returns
+the areas that pass everything else and fail only the commute, nearest first;
+`commuteMissHTML()` is the collapsed line under the five ("7 more fit
+everything except the commute. The closest is Sahakar Nagar at 63 minutes, 3
+over your hour") with the gap per area and the next band one tap away through
+`raiseCeiling()`. It shows **through the placard's lock**, because those are
+areas the desk is not recommending and rule 9 is that browsing reads
+everything. `ceilingVerdict(a)` says the same thing on an excluded area's
+Overview, next to the minutes it is about and nowhere else.
+
+**Under three survivors is not a shortlist.** `ceilingThinHTML()` replaces the
+ranking with the three closest misses and the next band up, which is CLAUDE.md's
+"a ranking is only meaningful if the top result is actually good" applied to a
+filter the buyer can undo. `topAreas` still backfills to five, and every
+backfilled card names the filter it broke through `fcardWhyIn()` — the budget
+backfill had been silent about it, and a second silent reason would have made
+the five unreadable.
+
+**At the hour it rarely reaches the five, and that is the honest reading.**
+Across 96 hub/budget/travel combinations the 1-hour default changes the top five
+areas in **none** of them and the top five projects in 6; 45 minutes changes 6
+and 19; 30 minutes changes 56 and 66. The commute penalty already pushes a
+74-minute area to 82nd of 86, so what the default buys is a ranked list that
+cannot contain it and a line that names what went, not a different top five.
+Do not "fix" that by tightening the default.
 
 ### One way out, and somewhere to land
 
@@ -1542,12 +1607,13 @@ about 230px each) and its generic twin at ~2.81, **Listings** (the full director
 **guide articles**, and **Home** at ~1.36. Screen zero fits one screen with no
 scroll, and must stay that way.
 
-The intake's own measurements at 375x812, which the funnel round held flat:
-screen zero 812, Q1 812, Q2 1000, Q3 846, Q4 812, Q5 897, Q6 812, Q7 812,
-review 1216. Every one is at or under what it was before the funnel, because
-the two lines it adds were paid for out of the hidden "Question N of 7" and
-the padding under the options. Measure against these, not against a
-remembered number.
+The intake's own measurements at 375x812: screen zero 812, Q1 812, Q2 1000,
+Q3 846, Q4 812, Q5 897, Q6 **967**, Q7 812, review **1304**. The funnel round
+held every one of these flat; the commute ceiling then bought Q6 155px for its
+own control and the review 88px for the third waterfall stage and the longer
+travel row. Both are new content rather than a second copy of something, and
+both stay inside the two-screen rule at 1.19 and 1.61. Measure against these,
+not against a remembered number.
 
 Market's head is the sub-tabs and the microphone on one row, with the heading
 visually hidden and the section's top padding cut to 18px. Adding anything to

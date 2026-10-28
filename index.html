@@ -1565,6 +1565,25 @@ td,th{border-color:var(--line)}
 .fstep.now em{color:var(--primary);font-weight:800}
 .fnlnum,.fnlwhy{display:none}
 .fnlsay{margin:6px 0 10px}
+/* ---- the commute ceiling, question six ----
+ A second control under the travel modes, not an eighth question: how you
+ travel and how far you will go are one decision. Each band carries how many
+ areas survive it, so the choice is made against the consequence rather than
+ against a number. */
+.cmax{margin:16px 0 0;padding:14px;background:var(--tile);border-radius:var(--r-tile)}
+.cmax h4{margin:0 0 4px;font-size:13.5px;font-weight:800;color:var(--ink);line-height:1.35}
+.cmaxsub{margin:0 0 10px;font-size:11.5px;color:var(--muted);line-height:1.45}
+.cmaxopts{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.cmaxopt{display:flex;flex-direction:column;align-items:flex-start;gap:2px;
+ min-height:var(--tap);padding:8px 11px;border:1.5px solid var(--line);
+ background:var(--card);border-radius:var(--r-seg);cursor:pointer;
+ font:inherit;text-align:left;color:var(--ink)}
+.cmaxopt.on{border-color:var(--primary);background:var(--grad-primary);color:#fff}
+.cm-l{font-size:12.5px;font-weight:700;line-height:1.3}
+.cm-n{font-family:var(--label);font-size:10px;letter-spacing:.06em;color:var(--muted)}
+.cmaxopt.on .cm-n{color:rgba(255,255,255,.88)}
+.cmaxnote{margin:9px 0 0;font-size:11.5px;color:var(--muted);line-height:1.45}
+@media(min-width:1024px){.cmaxopts{grid-template-columns:1fr 1fr}}
 /* the 29px under the options existed to keep the last one clear of the
  sticky footer. The count and cause now stand in that gap, so the screen
  does not pay for the space twice. */
@@ -1831,6 +1850,35 @@ td,th{border-color:var(--line)}
 .minchip{display:inline-flex;align-items:center;background:var(--tint);color:var(--primary);
  border-radius:var(--r-chip);padding:5px 11px;font-size:12.5px;font-weight:700;
  margin-top:9px;margin-right:6px}
+/* a card that is here despite breaking a filter says so in the chip it
+ already had, rather than looking identical to the ones that passed */
+.minchip.far{background:var(--warn-bg);color:var(--warn-fg)}
+.loccard.broke{border:1.5px dashed var(--warn-fg)}
+/* ---- what the ceiling cost ----
+ Collapsed, because it answers a question most people will not ask, and in
+ full when they do. The gap in minutes is the whole point: three over and
+ forty over are not the same area. */
+.cmiss{margin:4px 0 14px;background:var(--card);border-radius:var(--r-tile);
+ border:1px solid var(--line-soft)}
+.cmiss summary{list-style:none;cursor:pointer;padding:12px 14px;min-height:var(--tap);
+ display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);
+ line-height:1.45}
+.cmiss summary::-webkit-details-marker{display:none}
+.cmiss summary b{color:var(--ink);font-weight:800}
+.cmiss summary::after{content:'\203A';margin-left:auto;font-size:18px;color:var(--muted);
+ transform:rotate(90deg);transition:transform .18s ease}
+.cmiss[open] summary::after{transform:rotate(-90deg)}
+.cmbody{padding:0 14px 14px}
+.cmrow{display:flex;align-items:center;gap:10px;width:100%;min-height:var(--tap);
+ padding:8px 0;background:none;border:0;border-top:1px solid var(--line-soft);
+ font:inherit;cursor:pointer;text-align:left;color:var(--ink)}
+.cmn{flex:1;min-width:0;font-size:13px;font-weight:700;display:flex;flex-direction:column}
+.cmn small{font-size:11px;font-weight:400;color:var(--muted)}
+.cmm{font-size:12.5px;font-weight:700;color:var(--ink);white-space:nowrap}
+.cmo{font-family:var(--label);font-size:11px;font-weight:700;color:var(--warn-fg);
+ white-space:nowrap;min-width:28px;text-align:right}
+.cmmore{margin:10px 0 0;font-size:11.5px;color:var(--muted)}
+.cmraise{margin-top:12px}
 .rankcard{background:var(--card);border-radius:var(--r-card);padding:var(--s-in);
  margin-bottom:12px;border:1.5px solid transparent}
 .rankcard.top{border-color:var(--primary)}
@@ -4720,10 +4768,14 @@ function tunedChips(){
  workplace chip would be asking for an answer the desk no longer wants */
  if(inv)return chip('goal','Buying for', gl?gl.lab:'')
    +chip('budget','Budget', b?(b.cap?'up to '+cr(b.cap):'no ceiling'):'');
+ const cm=commuteMaxOpt();
  return chip('work','Workplace', hubs.length?hubs.map(h=>HUBLABEL[h]).join(' + ')
      :((INTAKE.workplace||[]).length?'no commute weighting':''))
   +chip('budget','Budget', b?(b.cap?'up to '+cr(b.cap):'no ceiling'):'')
-  +chip('travel','Travel', tr?tr.lab:'');
+  +chip('travel','Travel', tr?tr.lab:'')
+  /* the ceiling is a filter, so it belongs with the other two filters rather
+   than only inside the intake somebody has already finished */
+  +(hubs.length?chip('cmax','Commute', cm?(cm.mins==null?'no limit':'under '+ceilPhrase(cm)):''):'');
 }
 function renderTuned(){
  const host=document.getElementById('tunedBar'); if(!host)return;
@@ -4772,6 +4824,11 @@ function openChip(which){
    +IQ_BUDGET.map(o=>opt('budget',o.k,o.lab,INTAKE.budget===o.k)).join('')+'</div>';
  if(which==='travel')inner='<h5>How you get around</h5><div class="chipopts">'
    +IQ_TRAVEL.map(o=>opt('travel',o.k,o.lab,INTAKE.travel===o.k)).join('')+'</div>';
+ if(which==='cmax')inner='<h5>The longest you would do, each way, on a bad day</h5>'
+   +'<p style="font-size:12px;color:var(--muted);margin:0 0 8px">Measured at peak on the '
+   +'journey you chose. Anywhere past it drops out of your five and is listed underneath '
+   +'it with the gap.</p><div class="chipopts">'
+   +IQ_CMAX.map(o=>opt('cmax',o.k,o.lab,(INTAKE.commuteMax||CMAX_DEFAULT)===o.k)).join('')+'</div>';
  if(which==='goal')inner='<h5>What are you buying this for?</h5><div class="chipopts">'
    +IQ_GOAL.map(o=>opt('goal',o.k,o.lab,INTAKE.goal===o.k)).join('')+'</div>';
  host.innerHTML='<div class="chipedit">'+inner+'</div>';
@@ -4795,9 +4852,10 @@ function openChip(which){
  if(kind==='budget')INTAKE.budget=val;
  if(kind==='travel')INTAKE.travel=val;
  if(kind==='goal')INTAKE.goal=val;
+ if(kind==='cmax')INTAKE.commuteMax=val;
  await saveIntake();
  applyIntake();
- renderTuned(); openChip(which); renderRanked(true); renderHeat();
+ renderTuned(); openChip(which); renderYourFive(); renderRanked(true); renderHeat();
  toast('Re-ranked');
  }));
 }
@@ -4805,8 +4863,11 @@ function openChip(which){
 /* the ranked list itself, with movement made visible */
 function rankedAreas(){
  /* zone is a preference here too: penalised in the ordering, never excluded */
- const pool=AREAS.slice();
  const personal=RANKMODE==='you'&&personalised();
+ /* Ranked for you is the personal ranking, so the ceiling applies: an area
+  past it is not a worse answer, it is not an answer. Ranked overall is the
+  comparable view every buyer sees and is never filtered. */
+ const pool=personal?AREAS.filter(withinCommute):AREAS.slice();
  const score=a=>personal?areaFit(a)*zoneFactor(a.z):areaOverall(a);
  return pool.map(a=>({a,s:score(a)})).sort((x,y)=>y.s-x.s);
 }
@@ -5971,6 +6032,82 @@ function sqftFor(a,cap){
  const basis=basisVal(a); if(!basis||!cap)return null;
  return Math.round(cap/basis);
 }
+/* ---- what the ceiling cost, on screen ----
+ A filter that removes things silently is a blunt instrument. These are the
+ areas that failed only the commute, nearest first, with the gap in minutes,
+ and the next band up is one tap away. Collapsed, because it is the answer to
+ a question most people will not ask, and open it is the answer in full. */
+function commuteMissHTML(){
+ const m=commuteMisses(); if(!m)return '';
+ const rows=m.rows, f=rows[0], nx=nextCeiling();
+ const row=r=>'<button type="button" class="cmrow" data-openanl="'+esc(r.a.n)+'">'
+  +'<span class="cmn">'+esc(r.a.n)+'<small>'+esc(r.a.z+' Bengaluru')+'</small></span>'
+  +'<span class="cmm">'+r.mins+' min</span>'
+  +'<span class="cmo">+'+r.over+'</span>'
+  +scoreBadge(r.fit,'sm')+'</button>';
+ return '<details class="cmiss"><summary><span>'
+ +'<b>'+rows.length+(rows.length===1?' more fits':' more fit')
+ +'</b> everything except the commute. The closest is <b>'+esc(f.a.n)+'</b> at '
+ +f.mins+' minutes, '+f.over+' over your '+ceilWord()+'.'
+ +'</span></summary><div class="cmbody">'
+ +rows.slice(0,8).map(row).join('')
+ +(rows.length>8?'<p class="cmmore">and '+(rows.length-8)+' further out.</p>':'')
+ +(nx?'<button type="button" class="act ghost small cmraise" data-raise="'+esc(nx.k)+'">'
+   +(nx.mins==null?'Drop the ceiling altogether':'Raise it to '+ceilPhrase(nx))+'</button>':'')
+ +'</div></details>';
+}
+/* CLAUDE.md: a ranking is only meaningful if the top result is good. Where
+ the ceiling leaves almost nothing, say so and name the way out rather than
+ presenting two survivors as a shortlist. */
+function ceilingThinHTML(){
+ if(commuteCeiling()==null)return '';
+ const kept=areasPassing(null).length;
+ if(kept>=3)return '';
+ const m=commuteMisses(); const nx=nextCeiling();
+ const three=m?m.rows.slice(0,3):[];
+ return calloutCard('warn',
+ kept?('Only '+kept+' area'+(kept===1?' fits':'s fit')+' your '+ceilWord())
+   :('Nothing fits your '+ceilWord()),
+ 'That is too few to rank, so here are the three closest instead: '
+ +three.map(r=>'<strong>'+esc(r.a.n)+'</strong> at '+r.mins+' min, '+r.over+' over')
+    .join('; ')+'.'
+ +(nx?' <button type="button" class="ilink" data-raise="'+esc(nx.k)+'">'
+   +(nx.mins==null?'Drop the ceiling':'Try '+ceilPhrase(nx))+'</button>':''));
+}
+async function raiseCeiling(k){
+ INTAKE.commuteMax=k;
+ try{await saveIntake();}catch(e){}
+ try{applyIntake();}catch(e){}
+ const iv=document.getElementById('intake');
+ if(iv&&iv.classList.contains('on')){renderIntake();}
+ else{
+ try{renderTuned();}catch(e){}
+ try{renderYourFive();}catch(e){}
+ try{renderRanked(true);}catch(e){}
+ try{renderHeat();}catch(e){}
+ }
+ try{toast('Ceiling now '+ceilPhrase());}catch(e){}
+}
+function wireCeiling(host){
+ if(!host)return;
+ host.querySelectorAll('[data-raise]').forEach(b=>b.addEventListener('click',e=>{
+ e.preventDefault(); e.stopPropagation(); raiseCeiling(b.dataset.raise);}));
+ host.querySelectorAll('.cmrow[data-openanl]').forEach(b=>b.addEventListener('click',()=>
+ showArea(b.dataset.openanl)));
+}
+/* why a card is here when it broke a filter. The backfill was already silent
+ about the budget; a second silent reason would have made the five unreadable. */
+function fcardWhyIn(a){
+ if(!a._far&&!a._over)return '';
+ const why=[];
+ if(a._far>0)why.push('it is <strong>'+commuteMinsOf(a)+' minutes</strong> at peak, '
+ +a._far+' past your '+ceilWord());
+ if(a._over)why.push('a flat here costs more than your all-in ceiling');
+ return calloutCard('warn',
+ a._far>0?('Past your '+ceilWord()):'Above your budget',
+ esc(a.n)+' is here because fewer than five areas fit everything: '
+ +why.join(', and ')+'.');
+}
 function fiveCard(a,i,peers){
  const cap=budCap();
  const sq=sqftFor(a,cap);
@@ -6003,6 +6140,7 @@ function fiveCard(a,i,peers){
     +'<small>more than '+beat+' of your '+peers.length+' options</small></span>':'')
   +(c?'<span class="fq fq-row"><em>Drive to '+esc(HUBLABEL[c.hub]||'work')+'</em><b>'+c.mins
     +' min</b>'+(best!==null&&c.mins===best?'<span class="ftag">shortest</span>':'')+'</span>':'')
+  +fcardWhyIn(a)
   +risk
   +'</button>';
 }
@@ -6088,10 +6226,13 @@ function renderYourFive(){
  host.innerHTML='<div class="fintro"><span>Five of '+AREAS.length
   +', chosen from your answers</span>'
   +'<button class="ilink" id="fiveWhy">Why these?</button></div>'
+  +ceilingThinHTML()
   +five.map((a,i)=>fiveCard(a,i,five)).join('')
+  +commuteMissHTML()
   +'<button type="button" class="widercard" data-gomarket="1">'
   +'<b>Looking wider?</b><span>See what is moving across Bengaluru</span></button>';
- host.querySelectorAll('[data-openanl]').forEach(b=>
+ wireCeiling(host);
+ host.querySelectorAll('.fcard[data-openanl],.loccard[data-openanl]').forEach(b=>
  b.addEventListener('click',()=>showArea(b.dataset.openanl)));
  host.querySelectorAll('[data-gomarket]').forEach(b=>
  b.addEventListener('click',()=>goSection('market')));
@@ -6100,9 +6241,11 @@ function renderYourFive(){
  const f=areaFitFull(five[0]);
  openSlide('Why these five','How the shortlist was chosen',
    '<p style="font-size:14.5px;line-height:1.6">Every researched area was scored against '
-   +'your answers, then the five that scored highest and sit inside your ceiling were kept. '
-   +'Nothing was filtered out, an area outside your preferred zones can still appear, '
-   +'marked.</p>'
+   +'your answers, then the five that scored highest were kept from the ones inside '
+   +'your budget'+(commuteCeiling()!=null?' and inside your '+ceilWord():'')+'. '
+   +'Zones are still a preference, so an area outside yours can appear, marked'
+   +(commuteCeiling()!=null?'; anything past the '+ceilWord()+' is listed underneath '
+     +'with the gap in minutes':'')+'.</p>'
    +'<div class="block"><h2 style="font-size:15px">What counted, and how much</h2>'
    +f.parts.map(p=>factorBar(esc(p.label)+infoDot(FACTORTERM[p.k]||'fit-score',p.label)
       +'<span class="fbw">'+Math.round(p.weight*100)+'%</span>',p.v*10,10,
@@ -8579,6 +8722,9 @@ function wireSlideLinks(){
  b.addEventListener('click',()=>showArea(b.dataset.openarea)));
  document.querySelectorAll('#soBody [data-help]').forEach(b=>
  b.addEventListener('click',()=>openHelp(b.dataset.help)));
+ document.querySelectorAll('#soBody [data-raise]').forEach(b=>
+ b.addEventListener('click',e=>{e.preventDefault();raiseCeiling(b.dataset.raise);
+  closeSlide();}));
  wireFactorDocs();
 }
 
@@ -8586,6 +8732,23 @@ function wireSlideLinks(){
 /* ---- an area, as five tabs ----
  This was two panels: a summary and a "full read" that restated most of it.
  One panel now, and the full read is the Score tab. */
+/* Why an area with a good personal fit is not in the five. The score is
+ unchanged on purpose: it answers how well the place suits them, and the
+ ceiling answers whether they would make the journey. Saying only the first
+ would leave a buyer reading 74 and wondering where it went. It lives on
+ Overview beside the minutes it is about, and nowhere else. */
+function ceilingVerdict(a){
+ if(!personalised()||INTAKE.purpose==='invest')return '';
+ const over=overCeiling(a); if(!over)return '';
+ const nx=nextCeiling();
+ return calloutCard('warn','Past your '+ceilWord(),
+ 'At <strong>'+commuteMinsOf(a)+' minutes</strong> at peak this is '+over
+ +' over the longest you said you would do, so it is left out of your five '
+ +'and your ranking. The fit score beside it is unchanged: it is what the '
+ +'place is worth to you, not whether you would make the trip.'
+ +(nx?' <button type="button" class="ilink" data-raise="'+esc(nx.k)+'">'
+   +(nx.mins==null?'Drop the ceiling':'Raise it to '+ceilPhrase(nx))+'</button>':''));
+}
 function areaPanelTabs(a){
  const iv=investFull(a), n=iv.score, bas=priceBasis(a), st=stageOf(a), y=yieldOf(a);
  const gap=frothPct(a);
@@ -8615,6 +8778,7 @@ function areaPanelTabs(a){
    +metricTile('Price growth', growthOf(a)+'% a year',
  kfVerified(a)?'Knight Frank H1 2026 · was '+a.growth25+'%':'portal-derived')
    +'</div>'
+   +ceilingVerdict(a)
    +commuteHTML(a,true)
    +'<div class="so-one"><p class="hl">The one thing</p><p>'+oneThing(a)+'</p></div>',
 
@@ -9799,6 +9963,18 @@ const IQ_TRAVEL=[
  {k:'mix', lab:'A mix of both', note:'Scored on whichever is faster', metro:0.35, drive:1.0, mode:'mix'},
  {k:'rare', lab:'I rarely commute', note:'Commute barely counts', metro:0.06, drive:0.18, mode:'car'}
 ];
+/* The ceiling is theirs to set. A threshold we invent is arbitrary and
+ somebody will always disagree with it; the one thing a buyer can actually
+ answer is how long they would do on a bad day. It sits under the travel
+ modes because it only means anything once the journey is chosen. */
+const IQ_CMAX=[
+ {k:'30', lab:'Up to 30 min', mins:30},
+ {k:'45', lab:'Up to 45 min', mins:45},
+ {k:'60', lab:'Up to 1 hour', mins:60},
+ {k:'any',lab:'I will go further for the right place', mins:null,
+  note:'No ceiling. The commute still counts, it just stops ruling anywhere out.'}
+];
+const CMAX_DEFAULT='60';
 const IQ_HOUSE=[
  {k:'solo', lab:'Just me', note:'Proximity and easy resale'},
  {k:'couple',lab:'A couple', note:'Proximity and easy resale'},
@@ -9820,7 +9996,7 @@ const SEGS=[
  {k:'plotted', lab:'Plotted', note:'plotted development in a gated layout'}
 ];
 const SEGLAB=k=>(SEGS.find(s=>s.k===k)||{lab:k}).lab;
-let INTAKE={purpose:null,budget:null,timeline:null,zones:[],workplace:[],travel:null,household:null,goal:null,voice:null,done:false,skipped:false};
+let INTAKE={purpose:null,budget:null,timeline:null,zones:[],workplace:[],travel:null,commuteMax:null,household:null,goal:null,voice:null,done:false,skipped:false};
 let iStep=0;
 
 async function saveIntake(){
@@ -9964,6 +10140,62 @@ function commuteBand(mins){
  if(mins<=50)return 'long';
  return 'punishing';
 }
+/* ---- the commute ceiling ----
+ The penalty above moves a weight, and a weight can be outvoted: somebody who
+ said Bellandur and a car could still be shown Devanahalli at 78 peak minutes
+ because everything else about it scored. A ceiling is a filter, like budget,
+ and like budget it changes the list rather than the score. An area past it
+ keeps whatever fit it earned on the factors and is shown as out of reach,
+ because that number answers "how well does this suit me" and the ceiling
+ answers a different question.
+
+ Four rules it keeps:
+ - measured on the journey they said they would make, at peak, against the
+   worse of two workplaces, which is exactly how commute is already scored
+ - no workplace means no ceiling. There is nothing to be far from.
+ - an investor has no ceiling, because they do not live there
+ - an unknown journey is never excluded. Absence of a drive time is absence
+   of evidence, which is the rule the flood layer keeps. */
+function commuteMaxOpt(){
+ return IQ_CMAX.find(o=>o.k===(INTAKE.commuteMax||CMAX_DEFAULT))||null;
+}
+function commuteMaxSet(){ return !!INTAKE.commuteMax; }
+function commuteCeiling(){
+ if(INTAKE.purpose==='invest')return null;
+ if(!selectedHubs().length)return null;
+ const o=commuteMaxOpt();
+ return o?o.mins:null;
+}
+function commuteMinsOf(x){
+ const hubs=selectedHubs(); if(!hubs.length)return null;
+ const c=commuteScore(x,hubs);
+ return c?c.mins:null;
+}
+/* minutes past the ceiling, 0 when inside it or when it does not apply */
+function overCeiling(x){
+ const cap=commuteCeiling(); if(cap==null)return 0;
+ const m=commuteMinsOf(x); if(m==null)return 0;
+ return m>cap?(m-cap):0;
+}
+function withinCommute(x){ return overCeiling(x)===0; }
+/* the next band up, for the one-tap offer where the ceiling bit too hard */
+function nextCeiling(){
+ const i=IQ_CMAX.findIndex(o=>o.k===(INTAKE.commuteMax||CMAX_DEFAULT));
+ return (i>=0&&i<IQ_CMAX.length-1)?IQ_CMAX[i+1]:null;
+}
+/* two forms, because "your hour" and "up to an hour" are both wanted and
+ "your an hour" is neither. ceilWord follows a possessive, ceilPhrase stands
+ on its own. */
+function ceilWord(o){
+ const x=o||commuteMaxOpt();
+ if(!x||x.mins==null)return 'commute';
+ return x.mins===60?'hour':(x.mins+' minutes');
+}
+function ceilPhrase(o){
+ const x=o||commuteMaxOpt();
+ if(!x||x.mins==null)return 'no limit';
+ return x.mins===60?'an hour':(x.mins+' minutes');
+}
 /* The whole metro journey: walk to the station, ride, interchange, walk at the
  other end. Precomputed offline and stored as mt alongside dt. */
 function metroToHubs(x,hubs){
@@ -10042,10 +10274,13 @@ function areaFitFull(a){
  let total=0; w.parts.forEach(p=>total+=p.contrib);
  /* no commute, so no commute penalty: an investor does not live there */
  const penalty=invest?0:commutePenalty(f.cm?f.cm.mins:null);
+ /* the ceiling is a filter, so it does not touch the number: this area still
+  fits the factors as well as it ever did, and that is what the score says.
+  It rides alongside so the panel can state why it is not in the five. */
  return {score:Math.round(total*(1-penalty)*100), parts:w.parts, dropped:w.dropped,
  mode:invest?'invest':'live', goal:invest?(INTAKE.goal||'both'):null,
  commute:f.cm, metro:metroScore(a), tech:f.tp, budget:f.bf,
- pipe:f.pf, infraNow:f.nf, penalty:penalty};
+ pipe:f.pf, infraNow:f.nf, penalty:penalty, over:invest?0:overCeiling(a)};
 }
 const PART_LABELS=[
  ['commute','Commute to your workplace'],['metro','Metro access'],
@@ -10139,13 +10374,32 @@ function topAreas(n){
  const cap=budCap();
  const affordable=a=>!cap||basisVal(a)*1000<=cap*1.05;
  const rank=a=>areaFit(a)*zoneFactor(a.z);
- const inb=AREAS.filter(affordable).sort((x,y)=>rank(y)-rank(x));
+ /* budget and the commute ceiling are both hard: an area past either is not
+  a worse answer, it is not an answer. Zones stay a preference. */
+ const keep=a=>affordable(a)&&withinCommute(a);
+ const inb=AREAS.filter(keep).sort((x,y)=>rank(y)-rank(x));
  const out=inb.slice(0,n).map(a=>inZone(a.z)?a:Object.assign({},a,{_outzone:true}));
  if(out.length>=n)return out;
+ /* not enough survive, so the gap is filled and every filler says which
+  filter it broke. A list that silently mixes them is the thing the five
+  exist to avoid. */
  const have={}; out.forEach(o=>have[o.n]=1);
  return out.concat(AREAS.filter(a=>!have[a.n]).sort((x,y)=>rank(y)-rank(x))
-   .slice(0,n-out.length).map(a=>Object.assign({},a,{_over:true,
+   .slice(0,n-out.length).map(a=>Object.assign({},a,{
+     _over:!affordable(a), _far:overCeiling(a),
      _outzone:!inZone(a.z)})));
+}
+/* ---- what the ceiling cost ----
+ An area three minutes over is not an area forty over, and a filter that says
+ nothing about what it removed is a blunt one. These are the areas that pass
+ everything else and fail only the commute, nearest first. */
+function commuteMisses(){
+ const cap=commuteCeiling(); if(cap==null)return null;
+ const others=stagesOn(null).filter(st=>st.k!=='commute');
+ const rows=AREAS.filter(a=>others.every(st=>st.ok(a))&&overCeiling(a)>0)
+   .map(a=>({a:a,mins:commuteMinsOf(a),over:overCeiling(a),fit:areaFit(a)}))
+   .sort((x,y)=>x.over-y.over||y.fit-x.fit);
+ return rows.length?{cap:cap,rows:rows}:null;
 }
 /* Is the chosen zone simply wrong for this commute? */
 function zoneAdvice(){
@@ -10173,10 +10427,17 @@ function socGroups(n){
  const rank=(x,y)=>socFit(y)*zoneFactor(y.z)-socFit(x)*zoneFactor(x.z);
  const budgetOk=s=>!cap||s.lo<=cap*1.05;
  const timingOk=s=>!seg||seg.indexOf(s.seg)>=0;
- const match=SOC.filter(s=>budgetOk(s)&&timingOk(s)).sort(rank);
- const near=SOC.filter(s=>!(budgetOk(s)&&timingOk(s))).sort(rank)
+ /* a project is scored from its own coordinate, so it takes the ceiling
+  directly rather than inheriting its area's verdict. Leaving projects out
+  of it would have put a 72-minute tower under a shortlist whose areas were
+  all inside the hour, which reads as the filter having failed. */
+ const commuteOk=s=>withinCommute(s);
+ const keep=s=>budgetOk(s)&&timingOk(s)&&commuteOk(s);
+ const match=SOC.filter(keep).sort(rank);
+ const near=SOC.filter(s=>!keep(s)).sort(rank)
    .map(s=>Object.assign({},s,{
-     _over:!budgetOk(s), _seg:!timingOk(s), _outzone:!inZone(s.z)}));
+     _over:!budgetOk(s), _seg:!timingOk(s), _far:overCeiling(s),
+     _outzone:!inZone(s.z)}));
  return {
  match: match.slice(0,n).map(s=>inZone(s.z)?s:Object.assign({},s,{_outzone:true})),
  near: near.slice(0,3),
@@ -10763,6 +11024,7 @@ function iqDef(key){
  h:'This picks which journey is measured, not how heavily it counts.',
  kind:'single', attr:'travel',
  opts:IQ_TRAVEL.map(o=>({k:o.k,lab:o.lab,note:o.note,on:INTAKE.travel===o.k})),
+ after:cmaxBlock(),
  done:!!INTAKE.travel};
  case 'goal': return {t:'What are you buying this for?',
  h:'Income and growth are not the same bet, and the desk weights them differently.',
@@ -10776,6 +11038,36 @@ function iqDef(key){
  done:!!INTAKE.household};
  }
  return null;
+}
+/* ---- the commute ceiling, asked where the journey is chosen ----
+ It is a second control on question six rather than a question of its own:
+ "how will you travel" and "how far will you go" are one decision, and an
+ eighth question for it would have made the flow longer to say less. It is
+ hidden where there is no workplace, because a ceiling with nothing to
+ measure from is a control that does nothing. */
+function cmaxBlock(){
+ if(!selectedHubs().length)return '';
+ const cur=INTAKE.commuteMax||CMAX_DEFAULT;
+ const hubs=selectedHubs();
+ const n=AREAS.filter(a=>{const c=commuteScore(a,hubs);return c&&c.mins!=null;}).length;
+ return '<div class="cmax">'
+ +'<h4>What is the longest you would do, each way, on a bad day?</h4>'
+ +'<p class="cmaxsub">Measured at peak on the journey you just chose'
+ +(hubs.length>1?', against the worse of your two workplaces':'')
+ +'. Anywhere past it drops out of your five.</p>'
+ +'<div class="cmaxopts">'
+ +IQ_CMAX.map(o=>{
+  const left=o.mins==null?n:AREAS.filter(a=>{const c=commuteScore(a,hubs);
+   return c&&c.mins!=null&&c.mins<=o.mins;}).length;
+  return '<button type="button" class="cmaxopt'+(cur===o.k?' on':'')+'"'
+   +' data-cmax="'+esc(o.k)+'" aria-pressed="'+(cur===o.k)+'">'
+   +'<span class="cm-l">'+esc(o.lab)+'</span>'
+   +'<span class="cm-n">'+left+' areas</span></button>';
+ }).join('')
+ +'</div>'
+ +(commuteMaxOpt()&&commuteMaxOpt().mins==null
+   ?'<p class="cmaxnote">'+esc(IQ_CMAX[IQ_CMAX.length-1].note)+'</p>':'')
+ +'</div>';
 }
 /* the chrome every question shares */
 /* ---- one way out, never two ----
@@ -10795,22 +11087,52 @@ function iqExit(i){
  in play after that question has been answered, so the shape is the search
  narrowing rather than a progress bar pretending to be one.
 
- **Only one of the seven actually narrows the areas, and the funnel says so.**
- The filters that cut the field are the ones rulesStats() uses, which is the
- budget against area prices and the timeline against possession stages. Zones
- is a preference by design, and there is no commute cut-off anywhere in this
- app: a question that does not reduce keeps its block at full height and says
- what it changed instead. Inventing a reachability filter to make the picture
- livelier would make the funnel disagree with the shortlist, which is the one
- thing it must never do. */
+ **Two of the seven narrow the areas: budget, and since the ceiling, the
+ commute.** Zones is a preference by design and the timeline narrows projects
+ rather than areas, so those say what they changed instead of printing a cut
+ of zero. Every count comes off `areaStages()`, which is the same predicate
+ the five are filtered by, so the funnel cannot drift from the shortlist. */
 function areasUnder(cap){
  if(!cap)return AREAS.length;
  return AREAS.filter(a=>basisVal(a)*1000<=cap*1.05).length;
 }
+/* ---- what is excluded, in one place ----
+ The five, the funnel, the review waterfall and the rules-out card all read
+ this. Four copies of the same arithmetic is how a funnel comes to disagree
+ with the screen it leads to, and a buyer told 41 areas fit and then shown
+ one of the other 45 stops believing either number.
+
+ `qi` is the question at or after which a stage can apply. Budget is its own
+ question; the commute ceiling becomes computable the moment a workplace
+ exists, because the mode and the ceiling both carry a default, so it belongs
+ to `work` and is re-evaluated when `travel` changes either of them. The flood
+ toggle is not an intake question and applies whenever it is on. */
+function areaStages(){
+ const cap=budCap(), qi=k=>{const i=iqList().indexOf(k); return i<0?0:i;};
+ return [
+ {k:'budget', qi:qi('budget'), lab:'Within your budget', on:!!cap,
+  ok:a=>basisVal(a)*1000<=cap*1.05,
+  cut:n=>'Your budget just ruled out '+n+' of them.'},
+ {k:'commute',qi:qi('work'), lab:'Within your commute', on:commuteCeiling()!=null,
+  ok:a=>withinCommute(a),
+  cut:n=>'Your commute just ruled out '+n+' of them.'},
+ {k:'flood', qi:0, lab:'Off the flood list', on:FLOODHIDE,
+  ok:a=>!floodHidden(a),
+  cut:n=>'Hiding the high flood-risk list ruled out '+n+' of them.'}
+ ];
+}
+/* every stage in play, or only those reachable by question i */
+function stagesOn(i){
+ return areaStages().filter(st=>st.on&&(i==null||INTAKE.done||i>=st.qi));
+}
+function areasPassing(i){
+ const on=stagesOn(i);
+ return AREAS.filter(a=>on.every(st=>st.ok(a)));
+}
 function funnelSteps(cur){
  const keys=iqList(), total=AREAS.length;
  const segNow=segList();
- let n=total;
+ let before=total;
  /* zones and work report done:true before anybody has seen them, and the
   rest carry a default. A question nobody has reached yet is not answered,
   whatever its definition says, or the funnel fills before the first tap.
@@ -10818,27 +11140,41 @@ function funnelSteps(cur){
  return keys.map((k,i)=>{
  const d=iqDef(k), reached=INTAKE.done||i<=cur;
  const done=reached&&!!(d&&d.done);
- const before=n;
+ const n=done?areasPassing(i).length:before;
+ const cut=before-n;
  let cause='';
- if(k==='budget'){
-  if(done){ n=areasUnder(budCap());
-  const cut=before-n;
-  cause=cut?('Your budget just ruled out '+cut+' of them.')
-   :('Your budget reaches all '+total+'.'); }
- }else if(k==='time'){
-  if(done&&segNow){ const out=SOC.filter(x=>segNow.indexOf(x.seg)<0).length;
+ if(done){
+  if(cut>0){
+  /* the stage that newly came into play is the one that bit */
+  const was=stagesOn(i-1).map(x=>x.k);
+  const fresh=stagesOn(i).filter(x=>was.indexOf(x.k)<0);
+  const st=fresh[0]||stagesOn(i).slice(-1)[0];
+  cause=st?st.cut(cut):('This ruled out '+cut+' of them.');
+  }
+  else if(k==='budget')cause='Your budget reaches all '+total+'.';
+  else if(k==='work'||k==='travel')cause=commuteCause();
+  else if(k==='time'&&segNow){ const out=SOC.filter(x=>segNow.indexOf(x.seg)<0).length;
   cause='This narrows the projects, not the areas: '+out+' of '+SOC.length
    +' sit outside your timeline.'; }
- }else if(k==='zones'){
-  if(done)cause='A preference, not a filter. Nothing is ruled out.';
- }else if(k==='travel'){
-  if(done)cause='This changes which journey is measured, not the shortlist.';
- }else if(done){
-  cause='This changes the weighting, not the shortlist.';
+  else if(k==='zones')cause='A preference, not a filter. Nothing is ruled out.';
+  else cause='This changes the weighting, not the shortlist.';
  }
- return {k:k,i:i,n:n,total:total,done:done,cut:before-n,cause:cause,
+ before=n;
+ return {k:k,i:i,n:n,total:total,done:done,cut:cut,cause:cause,
   state:i<cur?'past':(i===cur?'now':'next')};
  });
+}
+/* the two commute questions when the ceiling took nothing. Three states, and
+ they are not interchangeable: no workplace means there is nothing to be far
+ from, no ceiling means they chose that, and a ceiling that reaches
+ everywhere left is a fact worth stating rather than a zero worth printing. */
+function commuteCause(){
+ if(!selectedHubs().length)
+ return 'No workplace, so nothing is ruled out on distance.';
+ const o=commuteMaxOpt();
+ if(!o||o.mins==null)
+ return 'No ceiling on the commute, so nothing is ruled out on distance.';
+ return 'Everywhere still in play is inside your '+ceilWord(o)+'.';
 }
 function iqFunnel(i){
  const steps=funnelSteps(i), total=AREAS.length;
@@ -10964,6 +11300,7 @@ function scrQuestion(key){
   +'<p class="iqhelp">'+esc(d.h)+'</p>'
   +(d.note?'<p class="iqnote">'+d.note+'</p>':'')
   +'<div class="iopts">'+d.opts.map(o=>iqOption(d,o)).join('')+'</div>'
+  +(d.after||'')
   +'<div class="fnlsay">'+funnelLines(i)+'</div>'
   +'</div>'
   +'<div class="iqfoot"><button class="act" id="iNext"'+(d.done?'':' disabled')+'>'
@@ -10972,6 +11309,23 @@ function scrQuestion(key){
   +iqFact(i);
 }
 
+/* the travel row carries both halves of one answer */
+function travelLine(){
+ const tr=travelOpt();
+ if(!tr)return 'not set';
+ if(!selectedHubs().length)return tr.lab;
+ const o=commuteMaxOpt();
+ return tr.lab+' \u00b7 '+(o&&o.mins==null?'no distance limit':'up to '+ceilPhrase(o));
+}
+function ceilingLine(){
+ const o=commuteMaxOpt();
+ if(!o||o.mins==null)
+ return 'No ceiling on distance, so nowhere is ruled out on the commute.';
+ const n=AREAS.filter(a=>overCeiling(a)>0).length;
+ return n
+ ? ('<strong>'+n+'</strong> of '+AREAS.length+' areas sit past '+ceilPhrase(o)+' at peak and are left out.')
+ : ('Every area we have researched is inside '+ceilPhrase(o)+' at peak.');
+}
 /* ---- profile confirmation ----
  Nothing is recommended until the person agrees we understood them. Each
  answer is tappable and jumps back to its own question, so correcting one does
@@ -11002,7 +11356,14 @@ function profileRows(){
  else rows.push(
   ['work','Weekday destination', work.length?work.join(' and '):'not set',
  work.length>1?'Scored against <strong>the worse</strong> of the two commutes.':'','techpark'],
-  ['travel','Travel mode', tr?tr.lab:'not set', tr?tr.note:'','car']);
+  /* the ceiling rides on the travel row rather than becoming an eighth: how
+   you travel and how far you will go are one decision, and the card is
+   built to hold seven rows whole. The default is named as a default, so
+   somebody who never saw the control knows it is theirs to change. */
+  ['travel','Travel and how far', travelLine(),
+ selectedHubs().length
+   ? (ceilingLine()+(commuteMaxSet()?'':' <em>Our default, tap to change.</em>'))
+   : (tr?tr.note:''),'car']);
  if(!inv)rows.push(['house','Household', hh?hh.lab:'not set', hh?hh.note:'','people']);
  return rows;
 }
@@ -11014,6 +11375,10 @@ function rulesOut(){
  if(cap){
  const n=AREAS.filter(a=>basisVal(a)*1000>cap*1.05).length;
  if(n)out.push(n+' of '+AREAS.length+' areas where a 1,000 sqft flat lands above your ceiling');
+ }
+ if(commuteCeiling()!=null){
+ const n=AREAS.filter(a=>overCeiling(a)>0).length;
+ if(n)out.push(n+' of '+AREAS.length+' areas past your '+ceilWord()+' at peak');
  }
  if(seg){
  const n=SOC.filter(s=>seg.indexOf(s.seg)<0).length;
@@ -11043,6 +11408,15 @@ function rulesStats(){
   : {n:n,unit:'of '+AREAS.length+' '+(n===1?'area':'areas'),
      why:'where a 1,000 sqft flat lands above your ceiling'});
  }
+ if(commuteCeiling()!=null){
+ const n=AREAS.filter(a=>overCeiling(a)>0).length;
+ /* the same turn-the-zero-round rule the budget row keeps */
+ st.push(n===0
+  ? {n:'Every area',unit:'inside your '+ceilWord(),good:true,
+     why:'nothing we have researched is further than that at peak'}
+  : {n:n,unit:'of '+AREAS.length+' '+(n===1?'area':'areas'),
+     why:'further than your '+ceilWord()+' at peak, on the journey you chose'});
+ }
  if(seg){
  const n=SOC.filter(s=>seg.indexOf(s.seg)<0).length;
  st.push({n:n,unit:'of '+SOC.length+' '+(n===1?'project':'projects'),
@@ -11056,23 +11430,20 @@ function rulesStats(){
  return st;
 }
 /* ---- the area waterfall ----
- The stages are the filters that exist, and only those. There is no
- "reachable from work" row because there is no commute cut-off anywhere in
- this app, and a stage drawn at full width with a dash would still tell a
- buyer that such a filter ran and found nothing, which is not true. A stage
- that exists and removed nothing is shown at full width with a dash; a stage
- that does not exist is not drawn. */
+ The stages are the filters that exist, and only those: it folds over
+ `areaStages()` rather than listing them again, so a filter added to the five
+ appears here and nowhere has to be kept in step by hand. A stage that exists
+ and removed nothing is shown at full width with a dash; a stage that does not
+ exist is not drawn, because a labelled bar tells a buyer that filter ran. */
 function areaWaterfall(){
  const total=AREAS.length, out=[{lab:'All of Bengaluru',n:total,cut:0,pct:100}];
- let n=total;
- const cap=budCap();
- if(cap){ const after=areasUnder(cap);
- out.push({lab:'Within your budget',n:after,cut:n-after,pct:Math.round((after/total)*100)});
- n=after; }
- if(FLOODHIDE){ const after=AREAS.filter(a=>floodOf(a).tier!=='high'
-  &&basisVal(a)*1000<=(cap||Infinity)*1.05).length;
- out.push({lab:'Off the flood list',n:after,cut:n-after,pct:Math.round((after/total)*100)});
- n=after; }
+ const on=stagesOn(null);
+ let kept=AREAS.slice();
+ on.forEach(st=>{
+ kept=kept.filter(st.ok);
+ out.push({lab:st.lab,n:kept.length,cut:0,pct:Math.round((kept.length/total)*100)});
+ });
+ for(let i=1;i<out.length;i++)out[i].cut=out[i-1].n-out[i].n;
  return out;
 }
 /* ---- the review, one card ----
@@ -11292,6 +11663,7 @@ function nearBlockHTML(g){
  const why=[];
  if(g.near.some(s=>s._over)&&cap)why.push('cost more than '+cr(cap));
  if(g.near.some(s=>s._seg)&&seg)why.push('are outside your timing');
+ if(g.near.some(s=>s._far>0))why.push('sit past your '+ceilWord());
  return '<div class="nearblock"><div class="resh"><h3>Closest matches outside your criteria</h3>'
   +'<small>not counted above</small></div>'
   +'<p class="nb-why">These '+(why.length?why.join(', and '):'miss one of your filters')
@@ -11404,12 +11776,15 @@ function placardLive(){
  const locked=!canSave();
  const areaCard=a=>{
  const m=mins(a);
- return '<button type="button" class="loccard" data-openarea="'+esc(a.n)+'">'
+ return '<button type="button" class="loccard'+(a._far>0||a._over?' broke':'')
+   +'" data-openarea="'+esc(a.n)+'">'
    +'<span class="lh"><span class="ln"><b>'+esc(a.n)+'</b>'
    +'<span>'+esc(a.z+' Bengaluru · '+a.cor)+'</span>'
    +'<span class="lrank">'+rankLabel(a,areaFit)+'</span></span>'
    +scoreBadge(areaFit(a))+'</span>'
-   +(m!==null?'<span class="minchip">'+m+' min to '+esc(HUBLABEL[hub]||'work')+'</span>':'')
+   +(m!==null?'<span class="minchip'+(a._far>0?' far':'')+'">'+m+' min to '
+     +esc(HUBLABEL[hub]||'work')+(a._far>0?', '+a._far+' over':'')+'</span>':'')
+   +(a._over?'<span class="minchip far">above your budget</span>':'')
    +floodLine(a)+'</button>';
  };
  /* locked: the first in full, as the richer card that carries the rank, the
@@ -11446,7 +11821,11 @@ function placardLive(){
   +'</div>'
   +'<div class="plareas">'
   +'<div class="resh"><h3>Areas to look in</h3><small>ranked on your answers</small></div>'
-  +areaRows+'</div>'
+  +ceilingThinHTML()
+  +areaRows
+  /* the near misses show through the lock: they are what the ceiling removed,
+   not what the desk recommends, and rule 9 is that browsing reads everything */
+  +commuteMissHTML()+'</div>'
   +'<div class="plprojects">'
   +'<div class="resh"><h3>Top projects for you</h3><small>'
   +esc(segList()?segList().map(SEGLAB).join(', ').toLowerCase():'no timing filter')+'</small></div>'
@@ -11517,6 +11896,8 @@ function wireIntake(){
  INTAKE.goal=b.dataset.goal; save(); renderIntake();}));
  document.querySelectorAll('#iwrap [data-travel]').forEach(b=>b.addEventListener('click',()=>{
  INTAKE.travel=b.dataset.travel; save(); renderIntake();}));
+ document.querySelectorAll('#iwrap [data-cmax]').forEach(b=>b.addEventListener('click',()=>{
+ INTAKE.commuteMax=b.dataset.cmax; save(); renderIntake();}));
  document.querySelectorAll('#iwrap [data-zone]').forEach(b=>b.addEventListener('click',()=>{
  const z=b.dataset.zone;
  if(z==='__any')INTAKE.zones=[];
@@ -11571,6 +11952,11 @@ function wireIntake(){
  if(i>=0){IPHASE='q'; iStep=i; renderIntake();}}));
  document.querySelectorAll('#iwrap [data-openarea]').forEach(b=>b.addEventListener('click',()=>{
  closeIntake(); showArea(b.dataset.openarea);}));
+ /* the near-miss list and its one-tap way out, on the placard as in Explore */
+ document.querySelectorAll('#iwrap [data-raise]').forEach(b=>b.addEventListener('click',e=>{
+ e.preventDefault(); e.stopPropagation(); raiseCeiling(b.dataset.raise);}));
+ document.querySelectorAll('#iwrap .cmrow[data-openanl]').forEach(b=>b.addEventListener('click',()=>{
+ closeIntake(); showArea(b.dataset.openanl);}));
  document.querySelectorAll('#iwrap [data-opensoc]').forEach(b=>b.addEventListener('click',()=>{
  closeIntake(); openProperty(b.dataset.opensoc);}));
  /* the placard's lock. The answers are already saved, and the flag is what
