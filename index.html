@@ -1309,8 +1309,23 @@ td,th{border-color:var(--line)}
 .lens{margin:0 0 var(--s-cards);gap:8px}
 .lens>span:first-child{width:100%;font-family:var(--label);font-size:11px;font-weight:600;
  letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+/* ---- the chip scroller ----
+ The scroller and Filters are two flex siblings that divide the row: neither
+ is positioned, neither overlaps the other, and the gap between their border
+ boxes is 12px at every width. What read as a chip running under the button
+ was not an overlap at all, it was the cut: 34px of fade is not enough to
+ kill a 13.5px glyph, so a half-letter sat legibly twelve pixels from the
+ button and the eye joined them up. 56px removes the letter.
+
+ The fade belongs here rather than in the desktop block because the phone is
+ where the row is tightest — 311px of scrollport for 744px of chips — and it
+ had no fade at all. `.atend` clears it when there is nothing left to scroll,
+ driven by exleftFade() on scroll and on resize. */
 .lens .toggle{display:flex;gap:8px;border:0;overflow-x:auto;max-width:100%;
- scrollbar-width:none;padding:1px}
+ scrollbar-width:none;padding:1px;
+ -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 56px),transparent);
+ mask-image:linear-gradient(to right,#000 calc(100% - 56px),transparent)}
+.lens .toggle.atend{-webkit-mask-image:none;mask-image:none}
 .lens .toggle::-webkit-scrollbar{display:none}
 .lens .toggle button{min-height:var(--tap);padding:9px 15px;border-radius:var(--r-chip);
  border:1px solid var(--line);background:var(--tile);color:var(--muted);
@@ -2245,14 +2260,12 @@ td,th{border-color:var(--line)}
  It was 38px against the chips' 44, 3px off their vertical centre, and a 2px
  radius inherited from .toggle's own border, so the row read as a chip sliced
  in half with a button stranded beyond the cut. The scroller now ends 12px
- before it, and the cut is a 34px fade rather than a sliced chip. */
+ before it. The fade itself lives on the base rule, below, because the phone
+ needs it more than the desktop does and never had one. */
   #sec-explore.on>#p-heat>.lens{align-items:center}
   /* 4px of margin on top of the row's own 8px gap is the 12px gap, measured
    between the scroller's border box and the button's, not guessed */
-  #sec-explore.on>#p-heat>.lens .toggle{margin-right:4px;
- -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 34px),transparent);
- mask-image:linear-gradient(to right,#000 calc(100% - 34px),transparent)}
-  #sec-explore.on>#p-heat>.lens .toggle.atend{-webkit-mask-image:none;mask-image:none}
+  #sec-explore.on>#p-heat>.lens .toggle{margin-right:4px}
   #sec-explore.on>#p-heat>.lens .exfilt{min-height:var(--tap);height:var(--tap);
  border-radius:11px;padding:0 16px;align-self:center}
   /* --- the left column scrolls, and says so ---

@@ -1574,6 +1574,28 @@ loud one carries it on desktop and the quiet one is hidden there; a phone
 keeps both, which is why the rule is scoped to the breakpoint rather than
 deleted from `renderTuned()`.
 
+### The chip row: the cut, not the layout
+
+The scroller and Filters are two flex siblings that divide the row. Neither is
+positioned, neither is `width:100%` with the other layered on it, and the gap
+between their border boxes is 12px at every width: 672–1156 then 1168 at 1280,
+672–1316 then 1328 at 1440, and the whole row with no Filters button at 375.
+**They have never overlapped by a pixel.**
+
+What reads as a chip running under the button is the **cut**. The scrollport
+is narrower than its content at every width (744px of chips in 484, 644 and
+311), so some chip always lands on the right edge, and 34px of fade is not
+enough to kill a 13.5px glyph: half a letter sat legibly twelve pixels from
+the button and the eye joined them up. The fade is 56px now, and it lives on
+the base `.lens .toggle` rule rather than in the desktop block — the phone is
+where the row is tightest and it had **no fade at all**.
+
+`.atend` clears the mask when there is nothing left to scroll, so the last
+chip is fully readable at the end of the scroll: measured 993–1155 inside a
+scrollport ending at 1156, 13px clear of Filters. Measure this by the boxes
+and by a screenshot at the end of the scroll, not by the boxes alone — the
+boxes were right the whole time.
+
 ### The header band has a gutter wider than its own corner
 
 `.sechead` is a full-bleed white card with `margin:0 -18px` and
