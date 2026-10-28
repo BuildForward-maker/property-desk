@@ -1427,6 +1427,26 @@ td,th{border-color:var(--line)}
 #keep p{font-size:13.5px;color:var(--muted);line-height:1.55;margin:0 0 18px}
 #keep .kbtns{display:flex;flex-direction:column;gap:9px}
 #keep .kbtns .act{width:100%;justify-content:center}
+/* ---- the placard, one free and the rest locked ----
+ Answering is free and the first answer is free with it, because a locked
+ screen that shows nothing teaches nothing. What is behind the card is the
+ other four, and the blur is deliberately readable as shape and not as text:
+ 3.5px at half opacity leaves a card you can see the size of and not read. */
+.plockwrap{position:relative}
+.plockwrap .plocked{filter:blur(3.5px);opacity:.5;pointer-events:none;user-select:none}
+.plockcard{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+ width:min(320px,calc(100% - 24px));background:var(--card);border-radius:var(--r-card);
+ padding:20px 18px 18px;text-align:center;box-shadow:var(--shadow-primary)}
+.plockcard .pli{width:44px;height:44px;border-radius:var(--r-tile);background:var(--tint);
+ display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:var(--primary)}
+.plockcard .pli svg{width:22px;height:22px}
+.plockcard h4{font-family:var(--font);font-size:17px;font-weight:800;letter-spacing:-.01em;
+ margin:0 0 14px;line-height:1.2}
+.plockcard .act{width:100%;justify-content:center}
+.plockcard small{display:block;margin-top:10px;font-size:12px;color:var(--muted)}
+.bestfit{display:inline-block;font-family:var(--label);font-size:10px;font-weight:700;
+ letter-spacing:.07em;text-transform:uppercase;color:#fff;background:var(--grad-primary);
+ border-radius:var(--r-chip);padding:3px 9px;margin-bottom:8px}
 /* asked once, after there is something worth being reached about */
 .mobask{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--primary);
  border-radius:var(--r-tile);padding:12px 14px;margin-bottom:var(--s-cards);
@@ -4278,6 +4298,7 @@ function kfChartHTML(a){
  good verified good bg, good stroke */
 const ICONS={
  rail:'<rect x="3" y="4" width="14" height="12" rx="1.6"/><path d="M8 4v12"/><path d="M12.4 8.4 10.8 10l1.6 1.6"/>',
+ lock:'<rect x="4.2" y="8.6" width="11.6" height="8" rx="1.8"/><path d="M7.2 8.6V6.4a2.8 2.8 0 0 1 5.6 0v2.2"/>',
  mic:'<rect x="7.6" y="2.6" width="4.8" height="9" rx="2.4"/><path d="M4.8 9.4a5.2 5.2 0 0 0 10.4 0"/><path d="M10 14.6V17.4M7.4 17.4h5.2"/>',
  home:'<path d="M3.2 8.4 10 3l6.8 5.4"/><path d="M5 7.9V16a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V7.9"/><path d="M8.2 17v-4.4h3.6V17"/>',
  explore:'<circle cx="10" cy="10" r="7"/><path d="m12.8 7.2-1.6 4-4 1.6 1.6-4z"/>',
@@ -10297,7 +10318,8 @@ function placardHead(){
   +'<div class="iqdots"></div>'
   +'<span class="iqnav ghost"></span></div>'
   +'<div class="iqbody"><div class="iqn">'+(inv?'Investment':'Best fit for you')+'</div>'
-  +'<h2 class="iqh">'+(inv?'Where money grows':'Best fit for you')+'</h2>'
+  +'<h2 class="iqh">'+(inv?'Where money grows':'Best fit for you')
+  +(firstName()?', '+esc(firstName()):'')+'</h2>'
   +'<p class="iqhelp">'+esc(summaryLine())+'</p>';
 }
 /* The placard's own map. A second Leaflet instance rather than the Explore
@@ -10358,11 +10380,32 @@ function floodLine(a){
   +(f.pocket?', '+esc(f.pocket):'')+'</span>';
 }
 /* ---- self-use ---- */
+/* ---- the lock on the placard ----
+ The first result is given in full, with everything that makes it worth
+ having: the rank, what the budget buys, the commute against the other four,
+ and the risk if there is one. What an account buys is the other four, so
+ they are behind the card rather than absent, and the answers that produced
+ them are kept whichever way the person goes. */
+const NUMWORD=['no','one','two','three','four','five'];
+function placardLocked(nHidden,nTotal,noun){
+ return '<div class="plockcard">'
+ +'<span class="pli">'+uiIcon('lock','nav',false)+'</span>'
+ +'<h4>'+(NUMWORD[nHidden]||nHidden)[0].toUpperCase()+(NUMWORD[nHidden]||nHidden).slice(1)
+ +' more '+noun+' fit you</h4>'
+ +'<button type="button" class="act" data-placardsignin="1">Sign in to see all '
+ +(NUMWORD[nTotal]||nTotal)+'</button>'
+ +'<small>Your answers are kept either way</small></div>';
+}
+function lockWrap(innerHTML,nHidden,nTotal,noun){
+ return '<div class="plockwrap"><div class="plocked" aria-hidden="true">'+innerHTML+'</div>'
+ +placardLocked(nHidden,nTotal,noun)+'</div>';
+}
 function placardLive(){
  const areas=topAreas(5), g=socGroups(5), socs=g.match.slice(0,5);
  const hubs=selectedHubs(), hub=hubs[0]||null;
  const mins=a=>{const c=commuteScore(a,hubs); return c?c.mins:null;};
- const areaRows=areas.map(a=>{
+ const locked=!canSave();
+ const areaCard=a=>{
  const m=mins(a);
  return '<button type="button" class="loccard" data-openarea="'+esc(a.n)+'">'
    +'<span class="lh"><span class="ln"><b>'+esc(a.n)+'</b>'
@@ -10371,8 +10414,14 @@ function placardLive(){
    +scoreBadge(areaFit(a))+'</span>'
    +(m!==null?'<span class="minchip">'+m+' min to '+esc(HUBLABEL[hub]||'work')+'</span>':'')
    +floodLine(a)+'</button>';
- }).join('');
- const socRows=socs.map(s=>{
+ };
+ /* locked: the first in full, as the richer card that carries the rank, the
+ budget bar, the commute superlative and the risk; the other four behind it */
+ const areaRows=locked
+ ? '<div class="bestfit">Best fit</div>'+fiveCard(areas[0],0,areas)
+   +lockWrap(areas.slice(1).map(areaCard).join(''),areas.length-1,areas.length,'areas')
+ : areas.map(areaCard).join('');
+ const socCard=s=>{
  const ar=areaForSoc(s), m=ar?mins(ar):null;
  const sq=(typeof socSqft==='function')?socSqft(s):{v:1000,known:false};
  return '<button type="button" class="loccard" data-opensoc="'+esc(slug(s.n))+'">'
@@ -10384,9 +10433,13 @@ function placardLive(){
    +badge(cr(s.lo)+'–'+cr(s.hi),'neutral')
    +(m!==null?'<span class="minchip">'+m+' min to office</span>':'')
    +'</span></button>';
- }).join('');
- /* rendered after the markup lands, so the element exists */
- setTimeout(()=>renderPlacardMap(areas),0);
+ };
+ const socRows=locked
+ ? socCard(socs[0])+lockWrap(socs.slice(1).map(socCard).join(''),socs.length-1,socs.length,'projects')
+ : socs.map(socCard).join('');
+ /* the map names an area in its tooltip and opens it on a tap, so a locked
+ placard puts one pin on it rather than handing over the four it just hid */
+ setTimeout(()=>renderPlacardMap(locked?areas.slice(0,1):areas),0);
  return placardHead()
   +'<div class="mapcard" style="margin-top:14px"><div id="pMap"></div></div>'
   +'<div class="resh"><h3>Areas to look in</h3><small>ranked on your answers</small></div>'
@@ -10400,7 +10453,8 @@ function placardLive(){
 /* ---- investment ---- */
 function placardInvest(){
  const ranked=AREAS.slice().sort((a,b)=>investScore(b)-investScore(a)).slice(0,3);
- const rows=ranked.map((a,i)=>{
+ const locked=!canSave();
+ const rankCard=(a,i)=>{
  const f=investFull(a);
  const pick=k=>{const p=f.parts.find(x=>x.k===k); return p?p.v10:0;};
  const liq=liquidityScore(a);
@@ -10421,7 +10475,11 @@ function placardInvest(){
    +factorBar('Rental return',pick('rent'),10,pick('rent').toFixed(1))
    +factorBar('Future pipeline',pick('pipe'),10,pick('pipe').toFixed(1))
    +'</div>'+floodLine(a)+worry+'</div>';
- }).join('');
+ };
+ const rows=locked
+ ? '<div class="bestfit">Best fit</div>'+rankCard(ranked[0],0)
+   +lockWrap(ranked.slice(1).map(rankCard).join(''),ranked.length-1,ranked.length,'locations')
+ : ranked.map(rankCard).join('');
  return placardHead()
   +'<div class="resh"><h3>Ranked one to three</h3><small>of all '+AREAS.length+' researched areas</small></div>'
   +rows
@@ -10507,6 +10565,13 @@ function wireIntake(){
  closeIntake(); showArea(b.dataset.openarea);}));
  document.querySelectorAll('#iwrap [data-opensoc]').forEach(b=>b.addEventListener('click',()=>{
  closeIntake(); openProperty(b.dataset.opensoc);}));
+ /* the placard's lock. The answers are already saved, and the flag is what
+ brings somebody back to this screen after the magic link reloads the page
+ rather than dropping them on Home or, worse, at question one. */
+ document.querySelectorAll('#iwrap [data-placardsignin]').forEach(b=>b.addEventListener('click',async()=>{
+ try{ await saveIntake(); await local.set('placardback',1); }catch(e){}
+ closeIntake(); openGate('signin');
+ }));
  document.querySelectorAll('#iwrap [data-goexplore]').forEach(b=>b.addEventListener('click',()=>{
  closeIntake(); goSection('explore');}));
  document.querySelectorAll('#iwrap [data-restart]').forEach(b=>b.addEventListener('click',()=>{
@@ -11151,6 +11216,15 @@ async function boot(){
  try{GREETED=!!(await local.get('greeted')); await local.set('greeted',1);}catch(e){}
  try{MOBASKED=!!(await local.get('mobasked'));}catch(e){}
  if(!readHash())goSection('home',null,{silent:true});
+ /* somebody who signed in from the locked placard comes back to it complete,
+ not to Home and not to question one */
+ let back=false; try{ back=!!(await local.get('placardback')); }catch(e){}
+ if(back&&signedIn()&&INTAKE.done){
+ try{ await local.set('placardback',0); }catch(e){}
+ openIntake(resultsStep());
+ return;
+ }
+ if(back&&signedIn()){ try{ await local.set('placardback',0); }catch(e){} }
  /* first run only: no answers and never skipped. The gate comes first where
  there is one: the intake opens when it closes, from afterGate(). */
  if(!INTAKE.done && !INTAKE.skipped && !gateOpen()) openIntake(0);

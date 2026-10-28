@@ -136,6 +136,32 @@ of both.
 The badge says "Browsing. Nothing is saved." with a Sign in link, because the
 state is a choice rather than a failure and should carry its own way out.
 
+### 11. The placard gives the first result and locks the rest
+
+Answering all seven questions is free and so is the first answer, because a
+locked screen that shows nothing teaches nothing about whether the product is
+any good. The top card renders in full, as `fiveCard` rather than the smaller
+`loccard`, so it carries the things that make a result worth having: the rank,
+what the budget buys with its bar, the commute with its superlative, and the
+risk callout if there is one. A `Best fit` badge sits above it.
+
+The rest sit under `lockWrap()`: `blur(3.5px)` at `opacity:.5`, which leaves a
+card you can see the shape of and cannot read, with `placardLocked()` centred
+over them. Live hides four areas and four projects, investment hides two
+locations, and the copy counts in words off the actual array rather than
+being written out.
+
+**The map takes the same cut.** Its pins carry the area name in a tooltip and
+open the area on a tap, so a locked placard is passed `areas.slice(0,1)`.
+Blurring four cards while naming them on the map above would be theatre.
+
+**Answers survive, and so does the place in the flow.** The button writes
+`placardback` and saves the intake before opening the gate; the magic link
+reloads the page, and `boot()` reads the flag and reopens the intake at
+`resultsStep()`. Somebody who signs in from the lock lands on the complete
+placard, never on Home and never at question one. The flag is cleared on the
+way in, including when they arrive signed in without finished answers.
+
 ### 10. The mobile number is asked after the shortlist, not at the gate
 
 Optional at sign-up, and deliberately not promoted later to required. An
