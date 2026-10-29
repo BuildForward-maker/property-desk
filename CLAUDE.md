@@ -697,7 +697,18 @@ The two new ones are the two exceptions a display face has: the entry
 headline is the same role as the intake question, which is the screen's one
 large statement, and a wordmark is a wordmark. Neither is a label, a value or
 a line of prose, and nothing on either screen beside them is serif.
-Nothing interactive goes under `--tap`.
+Nothing interactive goes under `--tap`. **Two documented exceptions, and no
+more:** `.act.small` and `.act.tiny` sit at 38px. Form controls used to be a
+third, at 39px, and are not any more.
+
+**The field radius is `--r-seg`, not `--r-tile`.** Every field redesigned by
+hand had already settled on 12px (`.pickpop input`, `.gcard input`,
+`.mobask input`, `#fbSheet textarea`); `--r-tile` belongs to the 44px search
+field, which is a bigger control. A generic field rounder than every designed
+one would have been backwards, so the generic rule takes 12px and the search
+field keeps 15px. The command palette's input is the one field with no radius
+at all, deliberately: it is full-bleed against the top of its modal, and a
+corner there would be a gap.
 
 Every foreground/background pair in use clears 4.5:1. The tightest is the
 info dot's ink on the ground at 4.75. Re-check with the ratio helper before
@@ -752,6 +763,19 @@ anybody had looked at. The segment row is `.psteps`.
 A new panel label reusing the name inherited both and came out 42px tall
 instead of 13, on four panels at once. **Grep for a class before you style
 it**, exactly as for a function. That one is now `.mpl`.
+
+**`.toggle` and `.segmented` are the inverse, and it is the more expensive
+shape.** Nothing collided: they are one component under two names, both
+starting from the same pre-redesign rule, and the redesign simply never found
+the second one. So Listings' segment filter went on painting as a square
+near-black box while Market's period and zone filters, the same control, were
+a white pill on a tile track, and no rule anywhere was in conflict to give it
+away. A collision shows up as something visibly wrong; a missed twin just goes
+on looking like the old design, which is why this one survived longest.
+`.toggle` is joined to `.segmented`'s rules rather than given a copy of their
+values, so there is still exactly one place the control is described. **Grep
+for the other name before redesigning a component**, which is the same habit
+one step earlier than grepping before you style.
 
 ### One file, no module scope
 
@@ -1299,16 +1323,17 @@ not move at all, at either width, which is the `.tiny` decision paying for
 itself. The scoring digest is identical: `fnv 88857624 / djb 512a245a`, 3,492
 lines.
 
-**Two pre-redesign selectors beside it look like the same bug and are not.**
-`.toggle`, `.toggle button` and the `input/select/textarea` rule at
-`border-radius:2px` have **no later rule competing with them at all**, so
-nothing is being shadowed and deleting them would reveal the UA default rather
-than a better rule. They are simply un-redesigned, and it shows: 15 visible
-form controls still render at 2px against the 3 that were redesigned one at a
-time by scope (`.searchrow input`, `.gcard input`, `.pickpop input`), and the
-one `.toggle` that reaches the screen, on Listings, is still a square box with
-a 1px `--ink` border. Giving those a token-shaped rule is authoring a
-component, not fixing a specificity bug, and it is its own round.
+**Two pre-redesign selectors beside it looked like the same bug and were
+not.** `.toggle`, `.toggle button` and the `input/select/textarea` rule at
+`border-radius:2px` had **no later rule competing with them at all**, so
+nothing was being shadowed and deleting them would have revealed the UA
+default rather than a better rule. They were simply un-redesigned: 18 of the
+26 form controls that reach the screen still painted at 2px against the 4
+redesigned one at a time by scope, and the one `.toggle` on screen was a
+square box with a 1px `--ink` border. **Both are done**, in the round after
+this one, by stating the tokens rather than by deleting anything. See
+"`.toggle` and `.segmented` are the inverse" above, and "the form control"
+in the file itself.
 
 ### What the funnel left behind
 
@@ -2050,6 +2075,17 @@ broken.
 A ranking is only meaningful if the top result is actually good. Where every
 candidate scores badly, say so explicitly rather than presenting a sorted list
 of bad options.
+
+### The digest only means something on a freshly loaded page
+
+`areaFitFull`, `personalWeights` and `factorValues(a,'live')` all read
+`INTAKE`, and `factorValues` reaches `selectedHubs()` for the commute term.
+A tab that has been driven through a click sweep has a workplace and a budget
+left on it, so the first block of the digest hashes a different commute for
+every area and the whole thing comes back different on code that did not
+change. It is the same lesson as the console buffer below, one layer in: the
+page remembers, and a reading taken after a sweep is a reading of the sweep.
+Open a tab for the digest, run it first, and hash nothing else in it.
 
 ### The console buffer is sticky
 

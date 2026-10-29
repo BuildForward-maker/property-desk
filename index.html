@@ -376,12 +376,17 @@ details.bd[open] summary:before{transform:rotate(90deg)}
  font-style:italic}
 #pipeFirm.on,#floodHide.on,#pipeFirm[aria-pressed="true"],#floodHide[aria-pressed="true"]{
  background:var(--primary);color:#fff;border-color:var(--primary)}
-.filtercard .toggle{display:flex;gap:8px;border:0;padding:1px}
+/* This `.toggle` is the one that is NOT a segmented control: it is a row of
+ lens chips, and it was already redesigned as one. Now that `.toggle` carries
+ the segmented track, this row has to say it does not want it, or a grey track
+ appears behind chips that are already sitting on a grey card. */
+.filtercard .toggle{display:flex;gap:8px;border:0;padding:1px;background:none;
+ border-radius:0;width:auto;overflow:visible}
 .filtercard .toggle button{min-height:var(--tap);padding:9px 15px;border-radius:var(--r-chip);
  border:1px solid var(--line);background:var(--tile);color:var(--muted);font-family:var(--font);
  font-size:13.5px;font-weight:600;white-space:nowrap}
 .filtercard .toggle button[aria-pressed="true"]{background:var(--primary);
- border-color:var(--primary);color:#fff}
+ border-color:var(--primary);color:#fff;box-shadow:none}
 /* ---- flood: a warning, never a number ----
  High renders as a callout rather than a quiet row, because a figure a buyer
  has to hunt for is the opposite of a warning. */
@@ -574,8 +579,13 @@ details.bd[open] summary:before{transform:rotate(90deg)}
 .segbar .lab{font-size:12.5px;color:var(--muted);margin-right:4px}
 .segbar .toggle{flex-wrap:wrap}
 .segbar .toggle button small{font-size:11px;opacity:.7;margin-left:3px;font-weight:400}
-@media(max-width:620px){.segbar .toggle{border:0;gap:5px}
- .segbar .toggle button{border:1px solid var(--line)}}
+/* The <620px block that stood here gave each segment its own 1px border and
+ took the enclosing one away. It existed because the pre-redesign `.toggle`
+ was a single box around the row, which could not wrap at a phone's width
+ without cutting itself in half. The segmented track wraps, so the
+ compensation is obsolete and its per-button borders would now draw outlines
+ on pills sitting inside a track. `flex-wrap:wrap` above is what keeps the six
+ segments wrapping rather than scrolling, which is the lens row's rule. */
 /* NOT .pbar: that is the 5px track inside .pbars, with overflow:hidden, and
  this is a row of six segments. Sharing the name meant the phone rendered
  36px of segments inside a 5px box and clipped 31 of them, while the desktop
@@ -671,8 +681,27 @@ color:var(--muted);background:var(--tile);white-space:nowrap}
 /* label plus hint is one dense two-part block, so the label's own lines
    are tight rather than on the page's 1.55. */
 .field label:has(.hint){line-height:normal}
+/* ---- the form control ----
+ This rule kept its pre-redesign 2px corners and a literal #fff through the
+ whole redesign, not because anything beat it but because nothing was ever
+ written to replace it. Unlike `button.act` it was shadowing nothing, so
+ deleting it would have revealed the UA default rather than a better rule:
+ the fix is to state the tokens here.
+
+ --r-seg, not --r-tile. 12px is what every field redesigned by hand already
+ uses (.pickpop input, .gcard input, .mobask input, #fbSheet textarea);
+ --r-tile is reserved for the 44px search field, and a generic field rounder
+ than every designed one would be backwards. Side padding goes 10px to 12px
+ because at 10px the text starts where the 12px curve ends, which is what
+ .pickpop input already settled on.
+
+ min-height is --tap because a select is interactive and the token says so in
+ words. These were 39px: the only controls in the app under the line, now
+ that .act.small and .act.tiny are the documented 38px exceptions. The cost is
+ ~5px per field, and no screen with a field on it is near its budget. */
 input[type=number],input[type=text],input[type=date],select,textarea{width:100%;font:inherit;font-size:14px;
-padding:8px 10px;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:2px}
+min-height:var(--tap);padding:9px 12px;border:1px solid var(--line);background:var(--card);
+color:var(--ink);border-radius:var(--r-seg)}
 textarea{min-height:72px;resize:vertical;line-height:1.45}
 input[type=range]{width:100%;accent-color:var(--accent)}
 input:focus-visible,select:focus-visible,button:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
@@ -2568,13 +2597,29 @@ td,th{border-color:var(--line)}
 .act.ghost{background:var(--tile);border-color:var(--line);color:var(--ink)}
 .act.small{min-height:38px;padding:8px 13px;font-size:13px}
 .act.tiny{min-height:38px;padding:6px 8px;font-size:12px;font-weight:500}
-.segmented{display:flex;gap:4px;background:var(--tile);border-radius:var(--r-seg);padding:4px;
+/* ---- the segmented control, under both of its names ----
+ `.toggle` is `.segmented`'s un-redesigned twin. Both started as the same
+ pre-redesign rule, inline-flex in a 1px --ink box at 2px, and the redesign
+ only ever found one of the two names, so Listings' segment filter kept
+ painting as a square near-black box while Market's period and zone filters
+ beside it were a white pill on a tile track. That is the fourth time two
+ names for one component have cost a round here, after .mtile / .mktile,
+ .pl / .mpl and sourceFooter / srcFooter, and the first where the cost was
+ the redesign missing one rather than one silently winning.
+
+ It is joined here rather than given its own copy of these values, so there
+ is still exactly one place the segmented control is described. Both names
+ compose the same way: the pre-redesign layer above still supplies `cursor`,
+ `appearance` and the inherited line-height to the buttons, which this rule
+ has never set. The stale `border` and `border-radius` up there are fully
+ overridden for both and left alone, so the two names stay identical. */
+.segmented,.toggle{display:flex;gap:4px;background:var(--tile);border-radius:var(--r-seg);padding:4px;
  border:0;width:fit-content;max-width:100%;overflow-x:auto}
-.segmented button{border:0;background:transparent;border-radius:9px;min-height:38px;
+.segmented button,.toggle button{border:0;background:transparent;border-radius:9px;min-height:38px;
  padding:7px 14px;font-family:var(--font);font-size:13.5px;font-weight:600;color:var(--muted);
  white-space:nowrap}
-.segmented button[aria-pressed="true"]{background:var(--card);color:var(--ink);
- box-shadow:0 1px 2px rgba(15,23,42,.08)}
+.segmented button[aria-pressed="true"],.toggle button[aria-pressed="true"]{background:var(--card);
+ color:var(--ink);box-shadow:0 1px 2px rgba(15,23,42,.08)}
 
 /* ---- slide-over: a bottom sheet on a phone, a panel on desktop ---- */
 .slideover{background:var(--card)}
