@@ -3,6 +3,43 @@
 Property Desk — a single-file research and tracking tool for a Bengaluru property
 search. The entire app is `index.html` (~2,600 lines).
 
+## How to work in this repo
+
+These come before everything below. Each one is here because it was broken
+once, and each break cost a round that produced nothing.
+
+### Never change the git remote
+
+`origin` is shared with GitHub Desktop, which is how this repo is actually
+pushed. Switching it to SSH to work around a missing credential broke that
+setup, and the only thing it bought was a host-key prompt that the terminal
+could not answer anyway. If a git operation fails on authentication, **that is
+the end of the attempt**: say so and hand it back. Do not reach for SSH, a
+token, a credential helper, or a second remote. `git remote set-url` is not a
+tool available for fixing your own access.
+
+### Never use worktrees
+
+Work in `~/Desktop/PSP/property-desk`, on `main`. A worktree puts the commits
+on a branch in a directory GitHub Desktop is not looking at, so the work looks
+missing on GitHub while a second checkout quietly holds it, and the way out is
+a merge and a branch deletion that nobody asked for. One checkout, one branch,
+no exceptions.
+
+### Never push
+
+**Commit only.** Pushing is done from GitHub Desktop, by hand, deliberately.
+This also means: do not open pull requests, do not set an upstream, do not
+delete remote branches, and do not run `git fetch` or `git ls-remote` to find
+out what is on GitHub. Finish the work, commit it, say what the commit is, and
+stop there.
+
+A corollary learned the hard way: **a failed network command is not evidence
+about the remote.** `git ls-remote` failing on host-key verification says
+nothing about which branches exist, and it was read here as "nothing was
+pushed" when in fact the branch had been pushed two minutes earlier. If you
+cannot see the remote, say you cannot see it.
+
 ## Hard rules
 
 These are not preferences. Breaking any of them breaks how the tool is used and
