@@ -1005,12 +1005,24 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
  color:var(--ink)}
 .ezcity{font-family:var(--label);font-size:9.5px;font-weight:700;letter-spacing:.1em;
  text-transform:uppercase;color:var(--muted);margin-top:3px;line-height:1}
-.ezin{margin-left:auto;background:none;border:0;cursor:pointer;font-family:var(--font);
- font-size:13px;font-weight:600;color:var(--muted);min-height:var(--tap);padding:0 4px}
-.ezin:hover{color:var(--primary)}
+.ezin{margin-left:auto;background:var(--tile);border:1px solid var(--line);
+ cursor:pointer;font-family:var(--font);font-size:12.5px;font-weight:600;
+ color:var(--muted);min-height:38px;padding:0 13px;border-radius:var(--r-chip);
+ display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.ezin:hover{border-color:var(--primary)}
+.ezinq{color:var(--muted)}
+.ezingo{color:var(--primary);font-weight:700}
+/* The question half is the whole point of the pill: it names who the link is
+ for so a first-timer does not read it as a step. It does not fit beside the
+ brand at 390, so the row wraps and the pill takes its own line rather than
+ dropping the words. The screen has the room now that four elements went. */
+@media(max-width:560px){
+  .ezbrand{flex-wrap:wrap;row-gap:10px}
+  .ezin{margin-left:auto;order:3}
+}
 #intake .ezwrap h2.ezh{font-family:var(--serif);font-weight:400;font-size:36px;
  line-height:1.02;letter-spacing:-.01em;color:var(--ink);text-align:center;
- margin:16px 0 0}
+ margin:auto 0 0}
 .ezlede{margin:10px auto 0;max-width:580px;font-size:13.5px;line-height:1.5;
  color:var(--muted);text-align:center}
 .ezcards{display:grid;gap:9px;margin-top:16px;align-items:stretch}
@@ -1034,9 +1046,41 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 .ezpri{color:var(--primary)}
 .ezwrn{color:var(--warn-fg)}
 .ezrsk{color:var(--risk-fg)}
-/* three source lines cost the phone three rows for one idea */
-.ezsrcline{margin:9px 0 0;font-size:10px;line-height:1.4;color:var(--muted);
- text-align:center}
+/* ---- the phone's proof: one card, three columns ----
+ Three stacked cards measured 308px of a 844px screen. Three columns divided
+ by hairlines measure about a third of that, and the difference is what pays
+ for dropping the lede, the lead-in and the two footnotes. Same three figures,
+ same order, compressed rather than cut: the long explanation each card
+ carried moves into the sheet behind .ezsrclink, so nothing is lost, it is
+ one tap away instead of permanently on screen. */
+.ezstrip{display:grid;grid-template-columns:repeat(3,1fr);margin-top:16px;
+ background:var(--card);border-radius:20px;padding:14px 4px;
+ box-shadow:0 2px 10px rgba(20,18,43,.06)}
+.ezcol{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+ gap:5px;padding:0 6px;text-align:center}
+.ezcol + .ezcol{border-left:1px solid var(--line-soft)}
+/* a display number is not a column of figures, so it does not take body's
+ tabular-nums, same reason as .ezfig */
+.ezsfig{font-size:25px;font-weight:800;line-height:1.02;letter-spacing:-.025em;
+ font-variant-numeric:lining-nums}
+/* five characters do not fit a third of 375 at 25 */
+.ezsfig.ezssm{font-size:21px}
+.ezslab{font-family:var(--label);font-size:10px;font-weight:700;letter-spacing:.05em;
+ text-transform:uppercase;line-height:1.25;color:var(--muted)}
+.ezsrclink{display:block;margin:10px auto 0;background:none;border:0;cursor:pointer;
+ font-family:var(--font);font-size:12px;font-weight:600;color:var(--muted);
+ min-height:var(--tap);padding:0 12px}
+.ezsrclink:hover{color:var(--primary)}
+/* Two auto margins, not one. The ask stays pinned to the bottom because a
+ primary button on a phone belongs under the thumb, but with the lede, the
+ lead-in, the sources line and the minutes note gone there is far more free
+ space than there was, and a single auto margin dumped all of it above the
+ button as one empty band. Splitting it between here and .ezh centres the
+ proof in what is left and reads as composition rather than as a gap.
+
+ The matching `margin-top:auto` has to go on `#intake .ezwrap h2.ezh`, not on
+ a bare `.ezh`: that selector is (1,2,1) and a bare class is (0,1,0), which is
+ the same trap this file already records for `.iqh` against `.iwrap h2`. */
 .ezask{margin-top:auto;padding-top:16px;flex:0 0 auto}
 .ezsub{margin:0 auto 12px;max-width:560px;font-size:13px;line-height:1.5;
  color:var(--ink);text-align:center}
@@ -1065,6 +1109,18 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 .ezmicg .ico-g svg{width:16px;height:16px}
 .ezmins{margin:7px 0 0;font-size:11.5px;line-height:1.4;color:var(--muted);
  text-align:center}
+/* ---- the phone's entry screen is five elements ----
+ It was nine: brand, headline, lede, three cards, a sources line, a lead-in,
+ the button, the two links and a "takes four minutes" note. Four of those were
+ saying what the screen already says. The lede restates the headline in
+ smaller type; the sources line repeats what each card's own source carries;
+ the lead-in describes the button it sits on top of; and the minutes note is a
+ cost nobody weighs before they have read the proof. The strip keeps the
+ proof, and the explanations behind it keep everything the cards said.
+ Desktop keeps all of it: it has the room, and the cards there are the
+ argument rather than a summary of it. */
+.ezcards{display:none}
+.ezlede,.ezsub,.ezmins{display:none}
 /* one markup, two wordings: the phone gets the shorter of each pair */
 .ezlong{display:none}
 .ezshort{display:inline}
@@ -1073,9 +1129,13 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
  max-width:1000px;padding:28px 32px;min-height:100%}
   .ezwrap{flex:0 0 auto;padding:0}
   .ezbrand{margin-bottom:26px}
+  /* margin:0 here is what undoes the phone's centring auto margin; the wrap
+   is content-sized on desktop, so there is no free space to share anyway */
   #intake .ezwrap h2.ezh{font-size:54px;margin:0}
   .ezlede{font-size:15px;margin-top:14px}
-  .ezcards{grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}
+  .ezcards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}
+  .ezlede,.ezsub,.ezmins{display:block}
+  .ezstrip,.ezsrclink{display:none}
   /* sideways on a phone, a column on desktop, so the children's grid
    placement simply stops applying rather than needing to be undone */
   .ezcard{display:flex;flex-direction:column;padding:20px;
@@ -1085,7 +1145,6 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
   .ezsay{font-size:13px;margin-top:8px}
   .ezsrc{display:block;margin-top:auto;padding-top:14px;font-size:10px;
  line-height:1.4;color:var(--muted)}
-  .ezsrcline{display:none}
   .ezask{margin-top:30px}
   .ezsub{font-size:15px;margin-bottom:16px}
   .act.ezgo{width:fit-content;margin:0 auto;padding:0 34px;
@@ -1708,6 +1767,62 @@ td,th{border-color:var(--line)}
  that save stay where they are and look live, because a greyed-out row teaches
  nothing and a wall in front of the product teaches less. The tap is what
  explains the cost, once, in a sheet that sits above whatever is open. */
+/* ---- the sign-in sheet ----
+ The gate stopped being the first screen, so signing in stopped being a screen
+ too. It opens over the entry page, which means the three findings that are
+ the argument for an account are still visible behind the thing asking for
+ one. Same shape as #keep: a centred modal on desktop, a bottom sheet with a
+ handle on a phone, and the same overlay registry, registered top:true so
+ Escape reaches it before the intake underneath. */
+#signinSheet{position:fixed;inset:0;z-index:var(--z-gate);display:none}
+#signinSheet.on{display:block}
+#signinSheet .siscrim{position:absolute;inset:0;background:rgba(20,18,43,.32)}
+#signinSheet .sicard{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+ width:min(420px,calc(100vw - 36px));max-height:calc(100vh - 40px);overflow-y:auto;
+ background:var(--card);border-radius:var(--r-card);padding:26px 24px 20px;
+ box-shadow:0 24px 60px rgba(20,18,43,.28)}
+#signinSheet .siX{position:absolute;top:10px;right:10px}
+@media(max-width:620px){
+  #signinSheet .sicard{left:0;right:0;top:auto;bottom:0;width:auto;transform:none;
+ max-height:88vh;border-radius:24px 24px 0 0;
+ padding:22px 18px calc(18px + env(safe-area-inset-bottom))}
+  /* the grip says it can be dragged down, which on a phone it can */
+  #signinSheet .sicard::before{content:"";position:absolute;top:9px;left:50%;
+ transform:translateX(-50%);width:38px;height:4px;border-radius:999px;
+ background:var(--line)}
+  #signinSheet .siX{top:14px;right:12px}
+}
+#signinSheet h2{font-family:var(--serif);font-weight:400;font-size:28px;
+ letter-spacing:-.01em;line-height:1.08;margin:0 0 8px;color:var(--ink)}
+#signinSheet .silede{font-size:13.5px;color:var(--muted);line-height:1.5;margin:0 0 18px}
+#signinSheet .sifield{margin-bottom:12px}
+#signinSheet .sifield label{display:block;font-family:var(--label);font-size:10px;
+ font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+ margin-bottom:6px}
+/* input[type=email] is not in the generic form rule and never has been: that
+ rule names number, text and date only, so the gate styles its own field by
+ scope and this sheet has to as well. 16px, because anything smaller makes
+ iOS zoom the page on focus. */
+#signinSheet .sifield input{width:100%;box-sizing:border-box;font:inherit;
+ font-size:16px;min-height:var(--tap);padding:11px 13px;border:1px solid var(--line);
+ border-radius:var(--r-seg);background:var(--card);color:var(--ink)}
+#signinSheet .sifield input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+#signinSheet .sinote{font-size:11.5px;color:var(--muted);text-align:center;margin:9px 0 0}
+#signinSheet .act{width:100%;justify-content:center}
+#signinSheet .sierr{background:var(--risk-bg);color:var(--risk-fg);border-radius:var(--r-seg);
+ padding:9px 11px;font-size:12.5px;line-height:1.45;margin:0 0 12px}
+#signinSheet .siok{background:var(--good-bg);color:var(--good-fg);border-radius:var(--r-seg);
+ padding:9px 11px;font-size:12.5px;line-height:1.45;margin:0 0 12px}
+/* the divider names who the half below it is for */
+.sidiv{display:flex;align-items:center;gap:10px;margin:20px 0 14px;
+ font-family:var(--label);font-size:9.5px;font-weight:700;letter-spacing:.1em;
+ text-transform:uppercase;color:var(--muted)}
+.sidiv::before,.sidiv::after{content:"";flex:1;height:1px;background:var(--line)}
+/* the way out that is not the X: somebody who tapped Sign in by mistake is
+ one tap from the thing they actually wanted */
+#signinSheet .sinew{width:100%;justify-content:center}
+#signinSheet .sifoot{font-size:11.5px;color:var(--muted);line-height:1.5;
+ text-align:center;margin:10px 0 0}
 #keep{position:fixed;inset:0;z-index:var(--z-gate);display:none}
 #keep.on{display:block}
 #keep .kscrim{position:absolute;inset:0;background:rgba(20,18,43,.34)}
@@ -3006,6 +3121,7 @@ footer{padding:10px 0 0;border-top:1px solid var(--line);margin-top:18px}
   <div class="kbtns"><button type="button" class="act" id="fbSend">Send</button>
   <button type="button" class="act ghost" id="fbNo">Not now</button></div>
 </div></div>
+<div id="signinSheet" role="dialog" aria-modal="true" aria-labelledby="siTitle"><div class="siscrim"></div><div class="sicard" id="siCard"><button type="button" class="pclose siX" aria-label="Close">×</button><div id="siBody"></div></div></div>
 <div id="keep" role="dialog" aria-modal="true" aria-labelledby="keepTitle"><div class="kscrim"></div><div class="kcard"><h2 id="keepTitle">Sign in to keep this</h2><p id="keepLine"></p><div class="kbtns"><button type="button" class="act" id="keepGo">Email me a link</button><button type="button" class="act ghost" id="keepNo">Not now</button></div></div></div>
 <div id="gate" data-grain role="dialog" aria-modal="true" aria-label="Sign in to Property Desk"><div class="gwrap" id="gwrap"></div></div>
 <div id="intake" data-grain role="dialog" aria-modal="true" aria-label="Set up your search"><button class="pclose" id="intakeClose" aria-label="Close" title="Close" hidden>✕</button><div class="iwrap" id="iwrap"></div></div>
@@ -4329,7 +4445,7 @@ function setConn(state,text){
  el.innerHTML='<span class="connpill warn">Browsing. Nothing is saved. '
   +'<button type="button" class="ilink" id="connSignIn">Sign in</button></span>';
  const si=document.getElementById('connSignIn');
- if(si)si.addEventListener('click',()=>openGate('signin'));
+ if(si)si.addEventListener('click',()=>openSignin());
  return;
  }
  if(state==='live'){
@@ -4497,7 +4613,9 @@ async function initSupabase(){
  if(!session||!session.user){
  AUTH.state='out'; MODE='local';
  setConn('local','Not signed in. Local mode');
- openGate('signin');
+ /* the gate used to open itself here, which made it the first thing anybody
+  saw. It is a sheet now and boot() decides the first screen: the entry
+  page, whose proof is what earns the four minutes the questions cost. */
  return false;
  }
  AUTH.user=session.user;
@@ -4551,6 +4669,82 @@ async function enterWorkspace(){
  app. The only way past it is a button that says what it does, and on the
  first screen one of those buttons is "Browse without an account". */
 let GATE={view:'signin',busy:false,err:'',ok:'',email:'',sentAt:0,tick:null};
+/* ---- signing in, as a sheet over the entry page ----
+ It renders the two pre-auth views, signin and sent, from the same GATE object
+ the full gate uses, so there is one piece of state and not two that can
+ disagree. The post-link views, profile and denied, stay on #gate: they arrive
+ after a reload with no entry screen behind them to preserve, and the profile
+ form needs the room. */
+function signinOpen(){ return document.getElementById('signinSheet').classList.contains('on'); }
+function openSignin(view){
+ GATE.view=view||'signin'; GATE.err=''; GATE.ok='';
+ document.getElementById('signinSheet').classList.add('on');
+ renderSignin();
+ const f=document.getElementById('siEmail'); if(f)setTimeout(()=>f.focus(),60);
+}
+function closeSignin(){
+ if(GATE.tick){clearInterval(GATE.tick);GATE.tick=null;}
+ document.getElementById('signinSheet').classList.remove('on');
+}
+function renderSignin(){
+ const host=document.getElementById('siBody'); if(!host)return;
+ const err=GATE.err?'<div class="sierr">'+gEsc(GATE.err)+'</div>':'';
+ const ok=GATE.ok?'<div class="siok">'+gEsc(GATE.ok)+'</div>':'';
+ if(GATE.view==='sent'){
+ const left=Math.max(0,60-Math.round((Date.now()-GATE.sentAt)/1000));
+ host.innerHTML='<h2 id="siTitle">Check your email</h2>'
+  +'<p class="silede">The link signs you in and expires in an hour. We sent it to '
+  +'<b>'+gEsc(GATE.email)+'</b>.</p>'+err+ok
+  +'<button type="button" class="act ghost" id="siResend"'+(left?' disabled':'')+'>'
+  +(left?'Resend in '+left+'s':'Send it again')+'</button>'
+  +'<p class="sinote">Opening it on your phone works too. It does not have to be '
+  +'this browser.</p>'
+  +'<div class="sidiv">Wrong address?</div>'
+  +'<button type="button" class="act ghost sinew" id="siBack">Use a different email</button>';
+ } else {
+ host.innerHTML='<h2 id="siTitle">Welcome back</h2>'
+  +'<p class="silede">Your areas, your shortlist and your notes are where you '
+  +'left them.</p>'+err+ok
+  +'<div class="sifield"><label for="siEmail">Email</label>'
+  +'<input id="siEmail" type="email" inputmode="email" autocomplete="email" '
+  +'spellcheck="false" placeholder="you@example.com" value="'+gEsc(GATE.email)+'"></div>'
+  +'<button type="button" class="act" id="siSend"'+(GATE.busy?' disabled':'')+'>'
+  +(GATE.busy?'Sending':'Email me a link')+'</button>'
+  +'<p class="sinote">No password. We send a one-tap link.</p>'
+  +'<div class="sidiv">New here?</div>'
+  +'<button type="button" class="act ghost sinew" id="siNew">Answer 7 questions first</button>'
+  +'<p class="sifoot">We only ask for an email when there is something worth '
+  +'keeping.</p>';
+ }
+ wireSignin();
+}
+function wireSignin(){
+ const g=id=>document.getElementById(id);
+ const fail=e=>{GATE.busy=false;GATE.err=gateMsg(e);renderSignin();};
+ if(g('siSend'))g('siSend').addEventListener('click',async()=>{
+ const em=(g('siEmail').value||'').trim();
+ if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){
+  GATE.err='That does not look like an email address.';renderSignin();return;}
+ GATE.email=em; GATE.busy=true; GATE.err=''; renderSignin();
+ try{ await sendMagicLink(em); logEvent('sign-in started'); GATE.busy=false;
+  GATE.sentAt=Date.now(); GATE.view='sent'; renderSignin();
+  GATE.tick=setInterval(()=>{
+   if(GATE.view!=='sent'||!signinOpen()){clearInterval(GATE.tick);GATE.tick=null;return;}
+   renderSignin(); if(Date.now()-GATE.sentAt>60000){clearInterval(GATE.tick);GATE.tick=null;} },1000);
+ }catch(e){ logEvent('sign-in failed'); fail(e); }});
+ if(g('siEmail'))g('siEmail').addEventListener('keydown',e=>{if(e.key==='Enter')g('siSend').click();});
+ if(g('siResend'))g('siResend').addEventListener('click',async()=>{
+ try{ await sendMagicLink(GATE.email); GATE.sentAt=Date.now(); GATE.ok='Sent again.'; renderSignin(); }
+ catch(e){ fail(e); }});
+ if(g('siBack'))g('siBack').addEventListener('click',()=>{
+ GATE.view='signin';GATE.err='';GATE.ok='';renderSignin();});
+ /* the way out that is not the X */
+ if(g('siNew'))g('siNew').addEventListener('click',()=>{
+ closeSignin();
+ const i=document.getElementById('intake');
+ if(!i.classList.contains('on'))openIntake(0);
+ IPHASE='q'; iStep=0; renderIntake();});
+}
 function gateOpen(){ return document.getElementById('gate').classList.contains('on'); }
 function openGate(view){
  GATE.view=view||'signin'; GATE.err=''; GATE.ok='';
@@ -5043,7 +5237,7 @@ function closeKeep(){ document.getElementById('keep').classList.remove('on'); }
  const no=document.getElementById('keepNo'); if(no)no.addEventListener('click',closeKeep);
  const sc=el.querySelector('.kscrim'); if(sc)sc.addEventListener('click',closeKeep);
  const go=document.getElementById('keepGo');
- if(go)go.addEventListener('click',()=>{closeKeep();closeSlide();openGate('signin');});
+ if(go)go.addEventListener('click',()=>{closeKeep();closeSlide();openSignin();});
 })();
 const KEEP={
  track:'Tracked flats stay on your desk, and follow you to any device you sign in on.',
@@ -6680,7 +6874,7 @@ function renderYourFive(){
  host.innerHTML=fiveLockCard();
  const b=document.getElementById('fiveLockGo');
  if(b)b.addEventListener('click',()=>{
-  if(personalised())openGate('signin'); else openIntake(0);
+  if(personalised())openSignin(); else openIntake(0);
  });
  return;
  }
@@ -11488,7 +11682,11 @@ function openIntake(step,opts){
  the only argument for answering seven questions, and withholding those
  from every browser that is not Chrome would be withholding the argument.
  The "say it out loud" line is what hides where the API is missing. */
- IPHASE=(!step && !INTAKE.done && !VSEEN && !(opts&&opts.skipVoice))
+ /* opts.entry is the landing case: the entry screen is the first screen for
+  anybody without a session, including somebody who has answered already and
+  is simply signed out, so it is not gated on INTAKE.done or VSEEN there. */
+ IPHASE=((opts&&opts.entry)
+   || (!step && !INTAKE.done && !VSEEN && !(opts&&opts.skipVoice)))
    ? 'voice' : 'q';
  VSEEN=true;
  const x=document.getElementById('intakeClose');
@@ -11720,6 +11918,37 @@ function ezFacts(){
  }
  return out;
 }
+/* The phone's proof is one card of three columns rather than three stacked
+ cards: 220px of figures against 308, which is what buys the room to drop the
+ lede, the lead-in and the two footnotes. It is built from the SAME ezFacts()
+ the desktop cards use, so there is still nothing typed into this screen and a
+ re-merge that moves the median moves both shapes at once.
+
+ The third label stays "At high flood risk" rather than compressing to "areas
+ that flood". 11 is the high tier of a published list, not a count of areas
+ that flood, and the shorter wording is exactly the quiet overstatement the
+ unknown-tier rule exists to prevent. The sheet behind the link carries what
+ sits under each figure. */
+function ezStrip(){
+ const f=ezFacts(); if(!f.length)return '';
+ return '<div class="ezstrip">'
+  +f.map(x=>'<div class="ezcol">'
+    +'<div class="ezsfig '+x.tone+(x.sm?' ezssm':'')+'">'+esc(x.small)+'</div>'
+    +'<div class="ezslab">'+esc(x.lab)+'</div>'
+   +'</div>').join('')
+ +'</div>'
+ +'<button type="button" class="ezsrclink" id="ezWhere">Where these come from '
+  +'<span aria-hidden="true">\u2193</span></button>';
+}
+/* the same three explanations the desktop cards carry, as one sheet */
+function openEzSource(){
+ const rows=ezFacts().map(f=>'<div class="block">'
+   +'<h2><span class="'+f.tone+'">'+esc(f.big)+'</span> '+esc(f.lab)+'</h2>'
+   +'<p>'+esc(f.say)+'</p>'
+   +'<p class="lede" style="margin:0">'+esc(f.src)+'</p>'
+  +'</div>').join('');
+ openSlide('Where these come from','Every figure on this screen is read off the data, not written in.',rows);
+}
 function ezCard(f){
  return '<div class="ezcard">'
   +'<div class="ezfig '+f.tone+(f.sm?' ezsm':'')+'">'
@@ -11740,13 +11969,20 @@ function scrVoice(){
    +'<span class="ezid"><span class="ezname">Property Desk</span>'
     +'<span class="ezcity">Bengaluru</span></span>'
    +(AUTH.state==='out'
-     ?'<button type="button" class="ezin" id="ezSignin">Sign in</button>':'')
+     ?'<button type="button" class="ezin" id="ezSignin">'
+      /* it names who it is for, so a first-timer does not read it as a
+       step they have to take. Somebody with answers already knows, and
+       the long form in front of them would be noise. */
+      +(hasProfile()?'Sign in'
+        :'<span class="ezinq">Already have an account?</span> '
+         +'<span class="ezingo">Sign in</span>')
+      +'</button>':'')
   +'</div>'
   +'<h2 class="ezh">The things nobody tells you<br>before you buy</h2>'
   +'<p class="ezlede">Portals show you what sellers are asking. We show you what '
    +'deeds record, what the market is actually doing, and which areas flood.</p>'
   +'<div class="ezcards">'+ezFacts().map(ezCard).join('')+'</div>'
-  +'<p class="ezsrcline">Knight Frank, the Karnataka registry and BBMP · 2026</p>'
+  +ezStrip()
   +'<div class="ezask">'
    +'<p class="ezsub">'
     +'<span class="ezlong">Answer seven questions and we will score every researched '
@@ -11761,9 +11997,15 @@ function scrVoice(){
        +' aria-expanded="'+(!!open)+'">'
        +'<span class="ezmicg">'+uiIcon('mic','nav',false)+'</span>'
        +'<span>Say it out loud</span></button>':'')
-    +'<button type="button" class="ezlink" id="iSkip">'
-     +'<span class="ezlong">Look around first</span>'
-     +'<span class="ezshort">Look around</span></button>'
+    /* One way out, and hasProfile() picks which. The entry screen is now
+     the landing page for a returning-but-signed-out person too, and they
+     have the X: drawing the named exit as well would put a Skip and an X
+     on the same screen, which is the one thing that rule forbids. This is
+     the same test iqExit() makes on question 1. */
+    +(hasProfile()?''
+      :'<button type="button" class="ezlink" id="iSkip">'
+       +'<span class="ezlong">Look around first</span>'
+       +'<span class="ezshort">Look around</span></button>')
    +'</div>'
    +(open
     ?'<div class="vopen">'
@@ -12881,10 +13123,15 @@ function wireIntake(){
  /* opening the mic is a render, not a permission prompt: the microphone is
   still only asked for on the tap of the button inside */
  if(g('vSay'))g('vSay').addEventListener('click',()=>{VOPEN=!VOPEN; renderIntake();});
- /* the entry screen's one way to an account. Nothing is saved yet, so there
-  is nothing to carry across: close and hand over to the gate. */
+ /* the entry screen's one way to an account. The sheet opens OVER it rather
+  than replacing it: the three findings are the argument for having an
+  account, so they stay on screen behind the thing asking for one. The mic
+  stops, because a sheet on top is not a place to still be listening. */
  if(g('ezSignin'))g('ezSignin').addEventListener('click',()=>{
- vStop(); closeIntake(); openGate('signin');});
+ vStop(); openSignin();});
+ /* the phone's strip is the three figures without their explanations; this
+  is where the explanations went, so nothing the cards said is lost */
+ if(g('ezWhere'))g('ezWhere').addEventListener('click',openEzSource);
  if(g('vGo'))g('vGo').addEventListener('click',()=>{
  IPHASE='q'; iStep=nextUnanswered(0); renderIntake();});
 
@@ -12925,7 +13172,7 @@ function wireIntake(){
  rather than dropping them on Home or, worse, at question one. */
  document.querySelectorAll('#iwrap [data-placardsignin]').forEach(b=>b.addEventListener('click',async()=>{
  try{ await saveIntake(); await local.set('placardback',1); }catch(e){}
- closeIntake(); openGate('signin');
+ closeIntake(); openSignin();
  }));
  document.querySelectorAll('#iwrap [data-goexplore]').forEach(b=>b.addEventListener('click',()=>{
  closeIntake(); goSection('explore');}));
@@ -13423,7 +13670,7 @@ function renderAccount(){
   +'nothing leaves this browser.</p>'
   +'<button class="act small" id="acSignIn">Sign in</button>';
  const b=document.getElementById('acSignIn');
- if(b)b.addEventListener('click',()=>{closeModals();openGate('signin');});
+ if(b)b.addEventListener('click',()=>{closeModals();openSignin();});
  return;
  }
  const p=AUTH.profile||{};
@@ -13497,6 +13744,14 @@ registerOverlay({el:'intake', close:skipIntake, backdrop:false, swipe:false,
 /* top:true, so Escape reaches it above a detail panel it was opened from.
  Registered here rather than beside closeKeep, because DISMISS is declared
  further down and a const does not hoist. */
+/* top:true, as the lock sheets are: it can open over the intake, and Escape
+ has to reach the thing on top however early anything registered. */
+registerOverlay({el:'signinSheet', close:closeSignin, top:true,
+ isOpen:signinOpen, backdrop:false});
+(function(){
+ const sc=document.querySelector('#signinSheet .siscrim');
+ if(sc)sc.addEventListener('click',closeSignin);
+})();
 registerOverlay({el:'keep', close:closeKeep, top:true, backdrop:false, swipe:false,
  isOpen:()=>document.getElementById('keep').classList.contains('on')});
 registerOverlay({el:'fbSheet', close:closeFeedback, top:true, backdrop:false, swipe:false,
@@ -13604,9 +13859,16 @@ async function boot(){
  return;
  }
  if(back&&signedIn()){ try{ await local.set('placardback',0); }catch(e){} }
- /* first run only: no answers and never skipped. The gate comes first where
- there is one: the intake opens when it closes, from afterGate(). */
- if(!INTAKE.done && !INTAKE.skipped && !gateOpen()) openIntake(0);
+ /* ---- what the first screen is ----
+  A session goes straight to Home: they have been through all of this and the
+  proof is an argument for an account they already have. Everybody else lands
+  on the entry screen, including somebody who answered on this device and is
+  merely signed out, because that is the screen that says what the thing is.
+  The sign-in sheet opens on top of it on demand and never on load.
+
+  INTAKE.skipped still holds. "Look around first" is the one named exit and
+  it has to survive a reload, or it is not an exit, it is a pause. */
+ if(!signedIn() && !INTAKE.skipped && !gateOpen()) openIntake(0,{entry:true});
 }
 
 /* ----- setup form ----- */

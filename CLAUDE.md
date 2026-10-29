@@ -369,7 +369,8 @@ workspace in the link is told so.
 
     off     no #cfg at all, so there is nothing to sign in to: local mode,
             no gate, the whole app. This is the file:// case and rule 1.
-    out     there is a backend and nobody is signed in: local mode, gate
+    out     there is a backend and nobody is signed in: local mode, and the
+            ENTRY SCREEN, not a gate. Signing in is a sheet on top of it.
     new     signed in, profile not written: the profile screen
     in      signed in, profile saved, a member: the app, shared
     denied  signed in, not a member of this workspace: said plainly
@@ -1103,7 +1104,93 @@ the tilted table with a callout naming the change; the personal-fit line on a
 location's Score tab passes it. A sheet showing 21% beside a score computed on
 26% is the stale copy the "reads the live table" rule exists to prevent.
 
-### Screen zero is the entry screen
+### The entry screen is the landing page, and signing in is a sheet on it
+
+**The gate used to open itself.** `initSupabase()` called `openGate('signin')`
+the moment it found no session, which made a form the first thing anybody saw:
+the app asked for an email before it had said what it was. It does not any
+more. `boot()` decides the first screen, and the rule is one line:
+
+    a session            Home. They have been through this, and the proof is
+                         an argument for an account they already have.
+    no session           the entry screen, whether or not they have answered
+                         before, because that is the screen that says what
+                         the thing is.
+    INTAKE.skipped       nothing. "Look around first" is the named exit and
+                         it has to survive a reload or it is a pause.
+
+`openIntake(0,{entry:true})` is what forces the entry phase: `IPHASE` was
+gated on `!INTAKE.done && !VSEEN`, which is right for "offered once per
+session" and wrong for a landing page, because somebody who answered on this
+device and is merely signed out still lands here.
+
+**Signing in is `#signinSheet`**, not a screen: a 420px centred modal on
+desktop, a bottom sheet with a grip on a phone, a `rgba(20,18,43,.32)` scrim,
+and the same shape as `#keep` because it is the same kind of thing. It joins
+`registerOverlay` with **`top:true`**, as the lock sheets do, so Escape
+reaches it before the intake it is sitting on. The reason it is a sheet is
+that the three findings stay visible behind it: they are the argument for
+having an account, so they should still be on screen while the thing asks
+for one.
+
+It renders the two **pre-auth** views, `signin` and `sent`, from the same
+`GATE` object the full gate uses, so there is one piece of state and not two
+that can disagree. `profile` and `denied` stay on `#gate`: they arrive after a
+reload with no entry screen behind them to preserve, and the profile form
+needs the room.
+
+**The second button is the point.** "Answer 7 questions first" is a way out of
+the sheet that is not the X, for somebody who tapped Sign in by mistake. The
+divider above it reads NEW HERE?, so the half it belongs to is named.
+
+**`input[type=email]` is not in the generic form rule** and never has been:
+that rule names `number`, `text` and `date` only. The gate styles its own
+field by scope and this sheet has to as well, at 16px, because anything
+smaller makes iOS zoom the page on focus.
+
+**The link that opens it names who it is for.** "Already have an account?
+<b>Sign in</b>" in a soft pill, so a first-timer does not read it as a step
+they have to take. With a stored profile it is just "Sign in": they know. The
+question half does not fit beside the brand at 390, so the brand row wraps and
+the pill takes its own line rather than dropping the words, which is the half
+that does the work.
+
+### The phone's proof is one card, and the screen is five elements
+
+The phone had nine: brand, headline, lede, three cards, a sources line, a
+lead-in, the button, the two links and a "takes four minutes" note. Four of
+those said what the screen already said. The lede restates the headline in
+smaller type; the sources line repeats what each card's own source carries;
+the lead-in describes the button directly beneath it; and the minutes note is
+a cost nobody weighs before they have read the proof. All four are **deleted
+on the phone and kept on desktop**, which has the room.
+
+`ezStrip()` is three columns divided by hairlines, built from the **same
+`ezFacts()`** the desktop cards use, so there is still nothing typed into this
+screen and a re-merge that moves the median moves both shapes at once. 79px at
+390 and 84px at 375, against 308 for the three stacked cards. Figures at 25px,
+dropping to 21px for the five-character one, exactly as `.ezfig` does and for
+the same reason.
+
+**The third label stays "At high flood risk".** A brief asked for "areas that
+flood". 11 is the high tier of a published list, not a count of areas that
+flood, and the shorter wording is the quiet overstatement the unknown-tier
+rule exists to prevent, one level up. The compression is in the layout, not in
+what the figure claims.
+
+Nothing the cards said is lost: the sentence and the source each card carried
+move into the sheet behind **"Where these come from"**, which reuses
+`openSlide` and so inherits the dismissal registry.
+
+**The space the four removals left is shared, not dumped.** `.ezask` keeps
+`margin-top:auto` because a primary button on a phone belongs under the thumb,
+but one auto margin put all the new slack above the button as a single empty
+band. `#intake .ezwrap h2.ezh` takes a matching `margin:auto 0 0` so the free
+space splits and the proof sits centred in what is left. It has to go on that
+selector and not on a bare `.ezh`: (1,2,1) against (0,1,0), which is the same
+trap this file already records for `.iqh` against `.iwrap h2`.
+
+### What screen zero was for
 
 Before question 1 sits the screen that has to earn the four minutes the
 questions are about to cost. `IPHASE` is `'voice' | 'caught' | 'q'` and sits
@@ -1146,12 +1233,20 @@ not 106. Those are a record of where research effort went rather than a
 property of the city, they move every round, and a promise built on one ages
 badly. The copy says "every researched area".
 
-**Measured, and these are the numbers to measure against.** 375x812: total
-**812**, no scroll, the ask group on `margin-top:auto` and 18px of wrap
-padding under the last line, which is the padding and not an empty band.
-390x844: total **844**, no scroll. 1280x800: 686px of content centred in
-800, no scroll. Adding anything to this screen has to come out of something
-else.
+**Measured, and these are the numbers to measure against.** The phone is five
+blocks plus the source link, six in all; desktop is eight.
+
+    375x812    812, no scroll   brand 80, headline 73, strip 84, link 44,
+                                ask 120
+    390x844    844, no scroll   brand 80, headline 73, strip 79, link 44,
+                                ask 120
+    1280x800   800, no scroll   brand 38, headline 110, lede 45,
+                                cards 184, ask 221
+
+The brand row is 80 rather than 38 on the phone because the sign-in pill
+wraps to its own line there. Adding anything to this screen still has to come
+out of something else; there is slack now, and slack is what the centring
+margins are spending.
 
 One markup, two shapes, breaking at 1024. The cards are a column on desktop
 with the source pinned to the bottom by `margin-top:auto`; on a phone they
@@ -1441,7 +1536,12 @@ which one exists:
   somewhere to return to, so closing returns them there — the section
   underneath is untouched, so Market > Compare is still Market > Compare.
 - **Without one**, no X at all. One named exit, **"Browse without answering"**,
-  at the foot of screen zero and of question 1 only. Not "Skip": that implies
+  at the foot of screen zero and of question 1 only. `scrVoice()` makes the
+  same `hasProfile()` test `iqExit()` does, and it has to: the entry screen is
+  the landing page for a returning-but-signed-out person now, and that person
+  has the X, so drawing the named exit as well would put a Skip and an X on
+  one screen. It did, for exactly as long as it took to measure the four
+  states, which is the argument for measuring them. Not "Skip": that implies
   losing nothing, and what is lost is every personalised thing downstream.
   After question 1 there is no exit, because they have started and Back is the
   way back. The review screen and the placard have none either.
