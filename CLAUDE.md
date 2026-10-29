@@ -1244,21 +1244,71 @@ X, and this screen has the named exit and no X, which is what `hasProfile()`
 decides. Sign in is the account door, and the gate it opens carries its own
 "Browse without an account".
 
-### `button.act` beats everything, and every primary button in the app is wrong
+### `button.act` beat everything for the whole life of the redesign
 
-Near the top of the file, in the surviving pre-redesign layer, sits
-`button.act{...background:var(--ink);border-radius:2px;font-size:14px}`. It is
-**(0,1,1)**, and both `.act` and every modifier written since are (0,1,0), so
-the rule that was meant to replace it never has. Every `<button class="act">`
-in the app renders as a flat `--ink` rectangle at 2px rather than the
-`--grad-primary` pill the tokens describe, which is the one thing the design
-token section says must never happen.
+Near the top of the file, in the pre-redesign layer, sat
+`button.act{...background:var(--ink);border-radius:2px;font-size:14px}` at
+**(0,1,1)**. `.act` and every modifier written to replace it are (0,1,0), so
+the replacement never once won, and every `<button class="act">` in the app
+painted as a flat `--ink` rectangle with 2px corners instead of the
+`--grad-primary` pill at `--r-tile` that the tokens describe. **It is fixed.**
+The block is deleted, not demoted and not out-specified at the call sites.
 
-This is a bug, it is app-wide, and it is **not fixed**. The entry screen
-states its own button at `#intake button.ezgo`, which wins, and nothing else
-is touched, because repainting every primary button in the app is a round of
-its own with its own screenshots. Fixing it means deleting the old rule and
-checking all sixteen screens, not adding specificity in sixteen places.
+**One exception is why it survived this long.** `.act,.iqfoot .act{background:
+var(--grad-primary)}` is (0,2,0) in its second half, so the intake's Continue
+button, the most-looked-at primary button in the app, did take the gradient.
+It took nothing else: it was a gradient *rectangle* with 2px corners and a
+1.5px `--ink` border. A gradient showing up where you look first is a good way
+to stop looking.
+
+**Deleting a rule means reading what it alone supplied.** `.act` sets no
+font-size, no line-height and no cursor, and a `<button>` inherits none of the
+three from the page, so all three now sit on `.act`: `font-size:14px` as
+before, `line-height:inherit` (which is exactly what `font:inherit` was
+giving it, so a button in a table still sits on the table's `normal` and one
+in prose on the page's 1.55), and `cursor:pointer`.
+
+**`.small` and `.tiny` are two rules now, and that is the deliberate part.**
+The later layer had written `.act.small,.act.tiny{min-height:38px;padding:8px
+13px;font-size:13px}` while the old block was still winning, so nobody ever
+saw that it collapses tiny into small. `.small` takes those values, which cost
+it 4px of width and nothing else, because `min-height:38px` was already
+governing its height and the old 5px vertical padding was never visible.
+`.tiny` keeps the 12px, the 500 and the 8px side padding it has always painted
+with, because four call sites choose it over `.small` on purpose and three of
+them are density-critical: two stacked buttons in each of the 106 Listings
+rows, and one button inline inside a sentence in search. Collapsing it would
+have widened the Listings action column and set 212 table buttons at weight
+700. **Neither goes under 38px**, which is already below `--tap` and is not to
+be taken further.
+
+`#intake button.ezgo` was a workaround for this bug and says so no longer. It
+is `.act.ezgo` now, an ordinary (0,2,0) modifier stating the one thing the
+entry screen's button genuinely is, which is a wider, taller, fully round
+pill. Its `opacity:1` went with the `button.act:hover{opacity:.87}` it existed
+to undo.
+
+**What it cost, measured rather than eyeballed.** 338 `.act` instances across
+43 screens and overlays at 375x812 and 1280x800, against `git show
+HEAD:index.html` served on a second port: same 338 buttons, same eleven
+computed-style groups with the same counts, every one of them now at 15px with
+a gradient or its designed ghost fill. Every screen height is within 1px.
+`.iqfoot .act` goes 45.02 to 46.02, which carries intake q2, q3, q5 and q6 up
+by one pixel at both widths and the review screen by one at 375. Listings does
+not move at all, at either width, which is the `.tiny` decision paying for
+itself. The scoring digest is identical: `fnv 88857624 / djb 512a245a`, 3,492
+lines.
+
+**Two pre-redesign selectors beside it look like the same bug and are not.**
+`.toggle`, `.toggle button` and the `input/select/textarea` rule at
+`border-radius:2px` have **no later rule competing with them at all**, so
+nothing is being shadowed and deleting them would reveal the UA default rather
+than a better rule. They are simply un-redesigned, and it shows: 15 visible
+form controls still render at 2px against the 3 that were redesigned one at a
+time by scope (`.searchrow input`, `.gcard input`, `.pickpop input`), and the
+one `.toggle` that reaches the screen, on Listings, is still a square box with
+a 1px `--ink` border. Giving those a token-shaped rule is authoring a
+component, not fixing a specificity bug, and it is its own round.
 
 ### What the funnel left behind
 

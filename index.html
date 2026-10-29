@@ -680,12 +680,13 @@ input:focus-visible,select:focus-visible,button:focus-visible,textarea:focus-vis
 .rowout.total{border-bottom:0;border-top:1.5px solid var(--ink);margin-top:6px;padding-top:11px;font-weight:700;font-size:16px}
 .rowout span:last-child{font-weight:600}
 .bignum{font-family:var(--font);font-size:40px;line-height:1;margin:4px 0 2px}
-button.act{font:inherit;font-size:14px;font-weight:600;padding:9px 16px;border:1.5px solid var(--ink);
-background:var(--ink);color:var(--bg);border-radius:2px;cursor:pointer}
-button.act.ghost{background:none;color:var(--ink)}
-button.act.small{padding:5px 11px;font-size:13px;border-width:1px}
-button.act.tiny{padding:3px 8px;font-size:12px;border-width:1px;font-weight:500}
-button.act:hover{opacity:.87}
+/* The pre-redesign `button.act` block stood here. It was (0,1,1) and every
+   rule written to replace it is (0,1,0), so for the whole life of the
+   redesign it won on background, border, radius, padding, size and weight:
+   every primary button in the app painted as a flat --ink rectangle with 2px
+   corners. It is deleted rather than demoted, and the three things it alone
+   supplied (font-size, the inherited line-height, the pointer) are stated on
+   `.act` itself, below, where the rest of the button already lives. */
 .toggle{display:inline-flex;border:1px solid var(--ink);border-radius:2px;overflow:hidden}
 .toggle button{font:inherit;font-size:13px;padding:6px 14px;border:0;background:none;cursor:pointer;color:var(--muted)}
 .toggle button[aria-pressed="true"]{background:var(--ink);color:var(--bg);font-weight:600}
@@ -1010,17 +1011,18 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 .ezask{margin-top:auto;padding-top:16px;flex:0 0 auto}
 .ezsub{margin:0 auto 12px;max-width:560px;font-size:13px;line-height:1.5;
  color:var(--ink);text-align:center}
-/* `button.act` at the top of the file (the pre-redesign layer: flat --ink,
- 2px radius, 14px/600) is (0,1,1) and beats both `.act` and `.ezgo`, so a
- primary button does not currently get the gradient pill the tokens
- describe. That is an app-wide bug and not this screen's to fix, so the
- entry screen states what its own button is at a specificity that wins and
- touches nothing else. */
-#intake button.ezgo{display:flex;align-items:center;justify-content:center;
+/* This was `#intake button.ezgo`, written at a specificity that could beat the
+ pre-redesign `button.act` block while that block was still painting every
+ primary button flat. The block is gone, so the id and the element qualifier
+ go with it: ezgo is an ordinary `.act` modifier now, and (0,2,0) is all it
+ needs to state the one thing it genuinely is, which is a wider, taller, fully
+ round pill. The `opacity:1` went too, with the `button.act:hover{opacity:.87}`
+ it was undoing. */
+.act.ezgo{display:flex;align-items:center;justify-content:center;
  width:100%;min-height:52px;padding:0 22px;border:0;border-radius:var(--r-chip);
  background:var(--grad-primary);color:#fff;font-family:var(--font);
  font-size:15.5px;font-weight:700;box-shadow:var(--shadow-primary);cursor:pointer}
-#intake button.ezgo:hover{filter:brightness(1.06);opacity:1}
+.act.ezgo:hover{filter:brightness(1.06)}
 .ezalt{display:flex;align-items:center;justify-content:center;margin-top:8px}
 .ezlink{display:inline-flex;align-items:center;justify-content:center;gap:7px;
  background:none;border:0;cursor:pointer;font-family:var(--font);font-size:13px;
@@ -1057,7 +1059,7 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
   .ezsrcline{display:none}
   .ezask{margin-top:30px}
   .ezsub{font-size:15px;margin-bottom:16px}
-  #intake button.ezgo{width:fit-content;margin:0 auto;padding:0 34px;
+  .act.ezgo{width:fit-content;margin:0 auto;padding:0 34px;
  min-height:58px;font-size:17px}
   .ezalt{margin-top:14px}
   .ezmins{margin-top:12px}
@@ -2545,12 +2547,27 @@ td,th{border-color:var(--line)}
   .sec{max-width:820px}
 }
 
-/* ---- buttons ---- */
-.act{font-family:var(--font);font-weight:700;border-radius:var(--r-tile);
- min-height:var(--tap);padding:10px 16px;border:1px solid var(--primary);
- background:var(--primary);color:#fff}
+/* ---- buttons ----
+ This is the whole button. font-size, line-height and cursor are here because
+ the deleted `button.act` block was the only thing supplying them: `.act` has
+ never set them, and a button takes neither the page's size nor a pointer from
+ the UA. `line-height:inherit` is what `font:inherit` gave it, so a button in a
+ table still sits on the table's `normal` and one in prose on the page's 1.55.
+
+ small and tiny are two rules, not one. They were written as one while the old
+ block was still winning, so the author never saw tiny collapse into small.
+ Four call sites pick tiny over small deliberately, and three of them are
+ density-critical: two stacked buttons in each of the 106 Listings rows, and
+ one button inline inside a sentence in search. tiny therefore keeps the size,
+ weight and side padding it has always painted with. Neither goes under 38px,
+ which is already below --tap and is not to be taken further. */
+.act{font-family:var(--font);font-size:14px;line-height:inherit;font-weight:700;
+ border-radius:var(--r-tile);min-height:var(--tap);padding:10px 16px;
+ border:1px solid var(--primary);background:var(--primary);color:#fff;
+ cursor:pointer}
 .act.ghost{background:var(--tile);border-color:var(--line);color:var(--ink)}
-.act.small,.act.tiny{min-height:38px;padding:8px 13px;font-size:13px}
+.act.small{min-height:38px;padding:8px 13px;font-size:13px}
+.act.tiny{min-height:38px;padding:6px 8px;font-size:12px;font-weight:500}
 .segmented{display:flex;gap:4px;background:var(--tile);border-radius:var(--r-seg);padding:4px;
  border:0;width:fit-content;max-width:100%;overflow-x:auto}
 .segmented button{border:0;background:transparent;border-radius:9px;min-height:38px;
