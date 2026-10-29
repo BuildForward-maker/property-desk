@@ -18,13 +18,33 @@ the end of the attempt**: say so and hand it back. Do not reach for SSH, a
 token, a credential helper, or a second remote. `git remote set-url` is not a
 tool available for fixing your own access.
 
-### Never use worktrees
+### Never create a worktree, and do not try to escape the one you are in
 
-Work in `~/Desktop/PSP/property-desk`, on `main`. A worktree puts the commits
-on a branch in a directory GitHub Desktop is not looking at, so the work looks
-missing on GitHub while a second checkout quietly holds it, and the way out is
-a merge and a branch deletion that nobody asked for. One checkout, one branch,
-no exceptions.
+**Worktrees are the app's choice, not yours, and this file cannot turn them
+off.** A session is placed in `<repo>/.claude/worktrees/<name>` on a branch of
+its own before your first turn, and the only thing that governs it is
+Settings → Claude Code, which is the user's. An earlier version of this rule
+read "never use worktrees", which was unenforceable: the worktree was removed
+at the end of a round and the app had made a new one on the same branch by the
+next message, so the rule read as broken through no fault of anything written
+here. **If a worktree looks like the problem, say so and point at Settings.
+Do not remove one to satisfy a rule in this file.**
+
+What is yours:
+
+- **Work in whatever checkout you are handed**, whether that is the worktree
+  or `~/Desktop/PSP/property-desk`. Do not reach across into the other one.
+- **Never create another.** No `git worktree add`, and no second checkout to
+  work around anything.
+- **Never remove the one you are in** unless the user asks for it in words.
+  It ends the session mid-command, and it is almost never what they wanted.
+
+**The branch is merged at the end of each round, by the user, in GitHub
+Desktop.** That is how a session's commits reach `main` and then GitHub. So
+the end of your job is a commit on the branch you were given and a sentence
+saying what it is. Do not merge it yourself, do not delete it afterwards, and
+do not treat a session branch as a problem to be cleaned up: it is merged and
+then it costs nothing.
 
 ### Never push
 
