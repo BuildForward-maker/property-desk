@@ -1327,12 +1327,9 @@ makes this one tolerable is not the transform:
 - **Five seconds a slide, not three.** Long enough to read a heading, two
   ticks and a figure without hurrying.
 - **It stops for good on any interaction** — a swipe, a tap anywhere on the
-  track, or focusing a dot. `ezTouched()` sets `EZSTOP` and clears the
+  track, or an arrow key. `ezTouched()` sets `EZSTOP` and clears the
   interval, and nothing restarts it.
-- **Swipeable**, with a 30px threshold and a test that the drag was more
-  horizontal than vertical, so a vertical scroll is not a page turn. The
-  dots are real buttons with a **44px reach from a pseudo-element** and an
-  8px body, which is the rule the info dot already keeps.
+- **The swipe is the control, and there are no dots.** See below.
 - **Two passes, then it rests on slide one.** Six advances from slide one
   land back on slide one. A page that never stops moving is a page nobody
   settles on.
@@ -1342,13 +1339,49 @@ makes this one tolerable is not the transform:
   no transform, dots hidden, and 1135px of scroll in an 844px window.
 - **400ms, `transform` only.**
 
+### The swipe is the control, and the next card's edge is the indicator
+
+The dots are gone. What says there is more is the **next card's own edge**:
+the slide is 92% of the track and the 8% left over is a 16px gap plus about
+12px of the card behind it. A carousel that shows a sliver of the next thing
+does not need a row of indicators to explain itself, and the row was costing
+34px on the one screen that has none to spare.
+
+**Pointer events, not touch.** Responsive mode in a desktop browser fires no
+touch events at all, and that is where this gets tested, so a mouse drag and
+a finger are the same gesture. `touch-action:pan-y` hands the browser the
+vertical scroll and keeps the horizontal.
+
+The card follows the hand and then settles. Past a quarter of the slide
+(`EZTHROW`) or on a flick (under 300ms and over `EZFLICKPX`) it advances;
+anything less springs back. It **does not wrap**: at either end the drag is
+damped to a third, which says "that is the end" in the only language a
+gesture has.
+
+**`EZFLICKPX` is 56 and not 40, and that is not arbitrary.** A synthetic
+drag is always fast, so at 40 a deliberate 40px nudge counted as a flick and
+advanced, which is precisely what "anything less springs back" rules out.
+56 leaves a 40px drag unambiguously short at any speed and still catches a
+real flick, which on a phone is nearer 100px. The two rules overlap at the
+boundary and the boundary has to be chosen rather than inherited.
+
+**The offsets are pixels, measured off the slides' own boxes**, because with
+a peek the step is slide width plus gap and that is not a round fraction of
+anything. `ezSlideX()` also **clamps the last slide to the end of the
+track**, so it finishes flush with a 12px sliver of slide 2 behind it rather
+than dragging a band of nothing in on the right. Measured at 390: the step
+is 342, slide 3 would be at 684 and sits at 655.
+
+**Arrows are the way through for anybody who cannot swipe.** Left and right
+move between slides when the track has focus; the tab stop is set in script
+and only exists below 1024, because on desktop there is nothing to move.
+
 **The live region speaks only after somebody has taken hold of it.**
-`ezGoSlide(i, byUser)` writes to `#ezLive` on a swipe or a dot and never on
-a tick, because an automatic change must not interrupt a screen reader
+`ezGoSlide(i, byUser)` writes to `#ezLive` on a swipe or an arrow and never
+on a tick, because an automatic change must not interrupt a screen reader
 mid-sentence. The track is a group with `aria-roledescription="carousel"`,
-each slide carries `"2 of 3, See what buyers paid"`, off-screen slides take
-`aria-hidden` (they hold nothing focusable), and the dots carry
-`aria-label` and `aria-current`.
+each slide carries `"2 of 3, See what buyers paid"`, and off-screen slides
+take `aria-hidden` (they hold nothing focusable).
 
 **The timer has two guards, and `ezLive()` is both of them.** `renderIntake`
 replaces `#iwrap` on every render and `closeIntake` hides `#intake` without
@@ -1402,18 +1435,22 @@ which is the distinction that rule is about.
 **Measured, and these are the numbers to measure against.**
 
     375x812    812, no scroll   brand 80, headline 104, slide 321,
-                                dots 20, ask 139, margins 47 + 47
+                                ask 139, margins 64 + 64
     390x844    844, no scroll   brand 80, headline 69, slide 321,
-                                dots 20, ask 139, margins 80 + 80
+                                ask 139, margins 97 + 97
+    1280x800   800, no scroll   cards 293 at 172 / 489.33 / 806.66
 
 The slide is 321.38: 319 of content, plus the 1px border the phone's card
-carries top and bottom. Removing the hairline took 1px off it.
+carries top and bottom.
 
-**The three cards are the same height at 375 now**, all 321.38 naturally,
-so nothing is being stretched there at all. At 390 cards 2 and 3 tie at
-321.38 and card 1 is 20px shorter. Card 2's second tick is what closed that:
-it took the shortest card to the existing maximum rather than past it, so
-the slide did not grow.
+**All three cards are the same height at both phone widths**, 321.38
+naturally, so nothing is stretched at all. The 92% slide narrowed the column
+enough that card 1's ticks wrap to match the other two.
+
+**The dots' 34px went back to the margins**, 17 to each, which is why they
+read 64 and 97 rather than 47 and 80. The slide is set by its tallest card
+and is not a number to tune, so spending that again means the card's own
+metrics. It is the slack to take from if a later round wants it.
     1280x800   800, no scroll   brand 38, headline 110, lede 22,
                                 cards 294, ask 137
 

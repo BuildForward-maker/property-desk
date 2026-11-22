@@ -1050,17 +1050,6 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
  wins. Desktop shipped card 3 with all six ticks and 30px of overflow for
  exactly as long as it took to measure it. */
 .ezbt.ezbtnarrow{display:none}
-.ezdots{display:flex;align-items:center;justify-content:center;gap:9px;
- margin-top:14px;height:20px}
-/* an 8px dot with a 44px reach from a pseudo-element: the reach grows, the
- dot does not, which is the same rule the info dot keeps */
-.ezdot{position:relative;appearance:none;border:0;padding:0;cursor:pointer;
- width:8px;height:8px;border-radius:999px;background:var(--line);flex:none;
- transition:width .25s ease, background .25s ease}
-.ezdot::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;
- transform:translate(-50%,-50%)}
-.ezdot.on{width:20px;background:var(--primary)}
-.ezdot:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
 /* the announcement is text for a screen reader and nothing for an eye */
 .ezlive{position:absolute;width:1px;height:1px;overflow:hidden;
  clip:rect(0 0 0 0);white-space:nowrap;margin:0}
@@ -1151,15 +1140,24 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 @media(max-width:1023px){
   .ezlede{display:none}
   #intake .ezwrap h2.ezh{font-size:34px}
-  .ezcards{display:flex;align-items:stretch;gap:0;
- transform:translateX(var(--ezx,0%));transition:transform .4s ease}
+  /* the gap and the 92% are what leave about 12px of the next card showing
+   at the right, which is the whole indicator now that the dots are gone.
+   touch-action:pan-y hands the browser the vertical scroll and keeps the
+   horizontal, which is the axis this reads. */
+  .ezcarousel{touch-action:pan-y}
+  .ezcarousel:focus-visible{outline:2px solid var(--accent);outline-offset:3px;
+ border-radius:26px}
+  .ezcards{display:flex;align-items:stretch;gap:16px;
+ transform:translateX(var(--ezx,0px));transition:transform .4s ease}
   /* tinted with a hairline rather than white with a shadow: on a near-white
    ground a white card has no edge, and a border plus a shadow are two ways
    of saying the same thing. The square inverts to white so it stays the
    lighter object on the card. */
-  .ezbc{flex:0 0 100%;min-width:100%;display:flex;flex-direction:column;
+  .ezbc{flex:0 0 92%;min-width:0;display:flex;flex-direction:column;
  padding:30px 26px;border-radius:24px;background:var(--tint);
- border:1px solid var(--line);box-shadow:none}
+ border:1px solid var(--line);box-shadow:none;
+  /* a drag must not start a text selection or a long-press image menu */
+ user-select:none;-webkit-user-select:none}
   /* the square is bigger here than on desktop, because here it is the only
    thing competing with a 25px heading rather than one of three in a row */
   .ezbi{width:52px;height:52px;border-radius:16px;background:var(--card)}
@@ -1181,7 +1179,6 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
   .ezcarousel{overflow:visible}
   .ezcards{display:grid;gap:9px;transform:none;transition:none}
   .ezbc{min-width:0}
-  .ezdots{display:none}
 }
 @media(min-width:1024px){
   #intake .iwrap:has(.ezwrap){display:flex;flex-direction:column;
@@ -1195,7 +1192,6 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
   /* the viewport stops being a box, so .ezcards is a direct grid child of
    .ezwrap and the desktop row is exactly what it was */
   .ezcarousel{display:contents}
-  .ezdots{display:none}
   .ezcards{grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
   .ezbc{display:flex;flex-direction:column;padding:22px;
  box-shadow:0 4px 18px rgba(20,18,43,.07)}
@@ -12074,12 +12070,18 @@ function ezCard(f,i,n){
 const EZSLIDES=3, EZPASSES=2, EZEVERY=5000;
 let EZROT=null, EZSLIDE=0, EZTURNS=0, EZSTOP=false, EZDRAG=null;
 const ezNarrow=()=>window.innerWidth<1024;
-function ezDots(n){
- let out='<div class="ezdots" role="group" aria-label="Choose a slide">';
- for(let i=0;i<n;i++)out+='<button type="button" class="ezdot'+(i?'':' on')+'"'
-   +' data-slide="'+i+'" aria-label="Slide '+(i+1)+' of '+n+'"'
-   +' aria-current="'+(i?'false':'true')+'"></button>';
- return out+'</div><p class="ezlive" id="ezLive" role="status" aria-live="polite"></p>';
+/* The dots are gone. What says there is more is the next card's own edge,
+ showing at the right: the slide is 92% of the track and the 8% left over is
+ a 16px gap plus about 12px of the card behind it. A carousel that shows a
+ sliver of the next thing does not need a row of indicators to explain
+ itself, and the row was costing 34px on the one screen that has none.
+
+ Nothing that could only be reached by a dot is lost: the swipe is the
+ control, and the arrow keys are the way through for anybody who cannot
+ make one. The live region stays, because a screen reader still needs to be
+ told what just changed. */
+function ezLiveRegion(){
+ return '<p class="ezlive" id="ezLive" role="status" aria-live="polite"></p>';
 }
 /* The track has to exist AND the overlay has to be open. closeIntake() hides
  #intake without re-rendering #iwrap, so the track survives a close: without
@@ -12108,16 +12110,25 @@ function ezRotTick(){
  ezGoSlide(EZSLIDE+1,false);
  if(EZTURNS>=EZSLIDES*EZPASSES){EZSTOP=true;ezRotStop();}
 }
+/* Where the track sits for slide i, in pixels off the slides' own boxes
+ rather than a percentage. With a peek the step is slide width plus gap,
+ which is not a round fraction of anything, and the last slide is CLAMPED to
+ the end of the track so it finishes flush rather than dragging a band of
+ nothing in behind it. */
+function ezSlideX(i){
+ const t=document.getElementById('ezTrack');
+ if(!t||!t.children.length)return 0;
+ const k=Math.max(0,Math.min(t.children.length-1,i));
+ const want=t.children[k].offsetLeft-t.children[0].offsetLeft;
+ return Math.min(want,Math.max(0,t.scrollWidth-t.clientWidth));
+}
 function ezGoSlide(i,byUser){
  const t=document.getElementById('ezTrack'); if(!t)return;
  const n=t.children.length; if(!n)return;
  EZSLIDE=((i%n)+n)%n;
- t.style.setProperty('--ezx',(-EZSLIDE*100)+'%');
+ t.style.transition='';
+ t.style.setProperty('--ezx',(-ezSlideX(EZSLIDE))+'px');
  [...t.children].forEach((s,k)=>s.setAttribute('aria-hidden',k===EZSLIDE?'false':'true'));
- document.querySelectorAll('.ezdot').forEach((d,k)=>{
- d.classList.toggle('on',k===EZSLIDE);
- d.setAttribute('aria-current',k===EZSLIDE?'true':'false');
- });
  if(byUser){
  const live=document.getElementById('ezLive');
  if(live)live.textContent='Slide '+(EZSLIDE+1)+' of '+n+': '
@@ -12126,30 +12137,88 @@ function ezGoSlide(i,byUser){
 }
 /* one hand on it is enough: the timer dies and does not come back */
 function ezTouched(){ EZSTOP=true; ezRotStop(); }
-function ezWireCarousel(){
+/* ---- the swipe ----
+ POINTER events, not touch: responsive mode in a desktop browser fires no
+ touch events at all, and that is where this gets tested. A mouse drag and a
+ finger are the same gesture here.
+
+ The card follows the hand and then settles. Past a quarter of the slide, or
+ a flick (short and fast), it advances; anything less springs back. It does
+ NOT wrap: at either end the drag is damped to a third so it resists and
+ returns, which says "that is the end" in the only language a gesture has. */
+/* EZFLICKPX sits clear of 40 on purpose. A synthetic drag is always fast, so
+ at 40 a deliberate 40px nudge counted as a flick and advanced, which is the
+ one thing "anything less springs back" rules out. 56 leaves a 40px drag
+ unambiguously short at any speed and still catches a real flick, which on a
+ phone is nearer 100px. */
+const EZTHROW=0.25, EZFLICKMS=300, EZFLICKPX=56, EZBAND=0.33;
+function ezDragStart(e){
+ if(!ezNarrow())return;
  const t=document.getElementById('ezTrack'); if(!t)return;
- EZSLIDE=0; EZTURNS=0; EZSTOP=false; EZDRAG=null;
- t.style.setProperty('--ezx','0%');
- t.addEventListener('pointerdown',e=>{EZDRAG={x:e.clientX,y:e.clientY};});
- t.addEventListener('pointercancel',()=>{EZDRAG=null;});
- t.addEventListener('pointerup',e=>{
+ EZDRAG={x:e.clientX,y:e.clientY,at:Date.now(),from:ezSlideX(EZSLIDE),
+  moved:false,id:e.pointerId};
+}
+function ezDragMove(e){
+ const d=EZDRAG; if(!d)return;
+ const t=document.getElementById('ezTrack'); if(!t)return;
+ const dx=e.clientX-d.x, dy=e.clientY-d.y;
+ if(!d.moved){
+ if(Math.abs(dx)<6&&Math.abs(dy)<6)return;
+  /* a vertical drag is the page scrolling, not a page turning */
+ if(Math.abs(dy)>Math.abs(dx)){EZDRAG=null;return;}
+ d.moved=true; ezTouched();
+ t.style.transition='none';
+ if(t.setPointerCapture){try{t.setPointerCapture(d.id);}catch(err){}}
+ }
+ const n=t.children.length;
+ const end=(EZSLIDE===0&&dx>0)||(EZSLIDE===n-1&&dx<0);
+ t.style.setProperty('--ezx',(-(d.from)+dx*(end?EZBAND:1))+'px');
+}
+function ezDragEnd(e){
  const d=EZDRAG; EZDRAG=null;
  if(!ezNarrow())return;
- ezTouched();                       /* a tap counts as much as a swipe */
- if(!d)return;
- const dx=e.clientX-d.x, dy=e.clientY-d.y;
- if(Math.abs(dx)>=30&&Math.abs(dx)>Math.abs(dy))ezGoSlide(EZSLIDE+(dx<0?1:-1),true);
+ const t=document.getElementById('ezTrack'); if(!t)return;
+ ezTouched();                          /* a tap counts as much as a swipe */
+ if(!d||!d.moved){ezGoSlide(EZSLIDE,false);return;}
+ const dx=e.clientX-d.x, ms=Date.now()-d.at;
+ const w=t.children[0].getBoundingClientRect().width||1;
+ const far=Math.abs(dx)>w*EZTHROW;
+ const flick=ms<EZFLICKMS&&Math.abs(dx)>EZFLICKPX;
+ let next=EZSLIDE;
+ if(far||flick)next=EZSLIDE+(dx<0?1:-1);
+ ezGoSlide(Math.max(0,Math.min(t.children.length-1,next)),true);
+}
+function ezWireCarousel(){
+ const t=document.getElementById('ezTrack'); if(!t)return;
+ const vp=t.parentElement;
+ EZSLIDE=0; EZTURNS=0; EZSTOP=false; EZDRAG=null;
+ t.style.setProperty('--ezx','0px');
+ t.addEventListener('pointerdown',ezDragStart);
+ t.addEventListener('pointermove',ezDragMove);
+ t.addEventListener('pointerup',ezDragEnd);
+ t.addEventListener('pointercancel',()=>{EZDRAG=null;ezGoSlide(EZSLIDE,false);});
+ /* neither a keyboard nor a screen reader can swipe, so the arrows are the
+  way through. The tab stop only exists where there is something to move. */
+ if(vp){
+ vp.addEventListener('keydown',e=>{
+  if(!ezNarrow())return;
+  if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight')return;
+  e.preventDefault(); ezTouched();
+  const n=t.children.length;
+  ezGoSlide(Math.max(0,Math.min(n-1,EZSLIDE+(e.key==='ArrowRight'?1:-1))),true);
  });
- document.querySelectorAll('.ezdot').forEach(b=>{
- b.addEventListener('click',()=>{ezTouched();ezGoSlide(+b.dataset.slide,true);});
- b.addEventListener('focus',ezTouched);
- });
+ }
+ ezRotSync();
  ezRotStart();
 }
 /* crossing the breakpoint with the screen open: the transform is scoped to
- the mobile query so nothing moves on desktop, but the timer has to know */
+ the mobile query so nothing moves on desktop, but the timer has to know, the
+ pixel offsets change with the width, and the tab stop belongs to the phone */
 function ezRotSync(){
  if(!ezLive()){ezRotStop();return;}
+ const t=document.getElementById('ezTrack'), vp=t&&t.parentElement;
+ if(vp)vp.setAttribute('tabindex',ezNarrow()?'0':'-1');
+ if(t&&ezNarrow())t.style.setProperty('--ezx',(-ezSlideX(EZSLIDE))+'px');
  if(!ezNarrow()||EZSTOP||mktReduced())ezRotStop(); else if(!EZROT)ezRotStart();
 }
 function scrVoice(){
@@ -12179,7 +12248,7 @@ function scrVoice(){
      +' aria-label="What this desk shows you">'
      +'<div class="ezcards" id="ezTrack">'
       +f.map((x,i)=>ezCard(x,i,f.length)).join('')
-     +'</div></div>'+ezDots(f.length);})()
+     +'</div></div>'+ezLiveRegion();})()
   +'<div class="ezask">'
    +'<button type="button" class="act ezgo" id="vTap">Find areas that fit me'
     +'<span class="ezarrow">'+uiIcon('next','nav',false)+'</span></button>'
