@@ -1214,12 +1214,36 @@ stranger has not asked for yet. **If a figure is ever typed in here, the
 source has to come back with it**, because then the screen would be making a
 claim rather than printing one.
 
-**Card 1 carries `--tint` so the eye lands somewhere first.** No new colour
-entered the palette for it: every surface, rule and glyph on this screen
-resolves to `--card`, `--tile`, `--tint`, `--line`, `--line-soft`, `--ink`,
+**The two widths diverge on colour, and that is the point.** On desktop the
+three cards are a row, so all three are `--card` with a `--tint` square:
+three identical cards read as one set, where two plus a highlighted one read
+as a hierarchy that is not there. On a phone there is one slide at a time
+and nothing to highlight against, and a white card on a near-white ground
+has no edge, so the slide is `--tint` with a **1px `--line` border**, no
+shadow, and its square inverted to white. One component, two treatments.
+
+No new colour entered the palette for either: every surface, rule and glyph
+on this screen resolves to `--card`, `--tile`, `--tint`, `--line`, `--ink`,
 `--muted` or `--primary`, and the only gradients are `--grad-primary` on the
 pill and the two orbs at alpha. **Nothing cream or off-white**: the three
 light surfaces are #FFFFFF, #F7F6FE and #EDEBFE, which are all cool.
+
+**Measured on `--tint`, because a tinted card is where contrast goes
+first**: `--muted` 5.85:1 for the caption and the ticks, `--primary` 6.74:1
+for the figure, `--ink` 15.56:1 for the heading. All clear 4.5, so nothing
+had to be darkened. On `--card` the same three are 6.85, 7.90 and 18.24.
+
+**The hairline is the one thing the tint costs.** `--line` on `--tint` is
+**1.07:1** against 1.25 on white, so the rule between the ticks and the
+figure is nearly invisible on a phone. It is decorative and `aria-hidden`,
+and nothing depends on seeing it, but it is a real loss and there is no
+"line on tint" token to fix it with. Darkening it means an alpha of `--ink`
+rather than a token, which is a decision to take deliberately rather than
+quietly.
+
+There is no `.ezlead` any more. It carried three rules, all of which this
+change removed, and a class with no rules is a question the next reader has
+to answer by grepping.
 
 **The unit is its own slot.** Card 3's figure is `11` with `areas` in
 `.ezbnu`, never the string "11 areas", which is the same rule `metricTile`
@@ -1361,10 +1385,15 @@ which is the distinction that rule is about.
 
 **Measured, and these are the numbers to measure against.**
 
-    375x812    812, no scroll   brand 80, headline 104, slide 320,
-                                dots 20, ask 139, margins 47 + 47
-    390x844    844, no scroll   brand 80, headline 69, slide 320,
-                                dots 20, ask 139, margins 81 + 81
+    375x812    812, no scroll   brand 80, headline 104, slide 322,
+                                dots 20, ask 139, margins 46 + 46
+    390x844    844, no scroll   brand 80, headline 69, slide 322,
+                                dots 20, ask 139, margins 80 + 80
+
+The slide is 322.38 rather than 320.38 because the phone's card gained a 1px
+border top and bottom. The **content box is still exactly 320**: nothing
+inside the card moved, the box grew by its own border, and each margin gave
+up the 1px that is half of it.
     1280x800   800, no scroll   brand 38, headline 110, lede 22,
                                 cards 294, ask 137
 

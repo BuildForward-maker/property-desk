@@ -1033,9 +1033,13 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
  lets you do, then a hairline and the figure that proves the desk can do it.
  The figure sits BELOW the rule because it is the evidence, not the pitch.
 
- The first card takes --tint so the eye lands somewhere. Nothing new enters
- the palette for it: --tint is the same token the badges, the icon squares
- and the bar tracks already use. */
+ The two widths diverge on colour, deliberately. On desktop the three cards
+ are a row, and three identical white ones read as one set where two plus a
+ highlighted one read as a hierarchy that is not there. On a phone there is
+ one slide at a time, so there is nothing to highlight against, and white on
+ a near-white ground has no edge: the slide takes --tint with a --line
+ border and inverts its square to white. One component, two treatments, and
+ no new token for either. */
 /* the viewport. display:contents on desktop, so .ezcards is a direct grid
  child of .ezwrap exactly as it was before the carousel existed. */
 .ezcarousel{margin-top:14px;overflow:hidden}
@@ -1062,7 +1066,6 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
  clip:rect(0 0 0 0);white-space:nowrap;margin:0}
 .ezbc{background:var(--card);border-radius:20px;padding:14px;
  box-shadow:0 2px 10px rgba(20,18,43,.06)}
-.ezbc.ezlead{background:var(--tint);box-shadow:none}
 /* The square and the heading are one row, centred on each other. Stacked,
  the square floated alone above a heading that started 44px down the card
  and the eye read the glyph first; beside it, the heading is the first thing
@@ -1073,8 +1076,6 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 .ezbi{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;
  width:48px;height:48px;border-radius:14px;background:var(--tint);
  color:var(--primary)}
-/* the lead card IS --tint, so its square inverts rather than disappearing */
-.ezbc.ezlead .ezbi{background:var(--card)}
 .ezbi .ico-g svg{width:22px;height:22px}
 .ezbh{font-family:var(--serif);font-weight:400;font-size:21px;line-height:1.12;
  letter-spacing:-.01em;color:var(--ink);margin:0;min-width:0}
@@ -1088,7 +1089,6 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 /* margin-top:auto pins the proof to the foot of every card, so the grid
  equalises the heights without anybody typing a min-height */
 .ezrule{height:1px;background:var(--line);margin-top:10px}
-.ezbc.ezlead .ezrule{background:var(--line-soft)}
 /* a display number is not a column of figures, so it does not take body's
  tabular-nums: at this weight it set "11" with a gap down the middle */
 .ezbn{margin-top:9px;font-size:36px;font-weight:800;line-height:1;
@@ -1132,16 +1132,6 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 .ezalt .ezlink + .ezlink{border-left:1px solid var(--line)}
 .ezmicg{display:inline-flex;width:16px;height:16px;opacity:.85}
 .ezmicg .ico-g svg{width:16px;height:16px}
-/* ---- the phone: one card in full, two as rows ----
- Three full cards do not fit 844, and the answer is not to shrink all three.
- The lead card keeps everything, because it is the argument; the other two
- keep the half a reader needs from a glance, which is the figure and what it
- is of. The ticks they drop describe the same product the lead card has
- already described.
-
- Scoped to the phone rather than written mobile-first and undone: a
- `.ezbc:not(.ezlead)` rule is (0,2,0) and the desktop `.ezbc` is (0,1,0), so
- undoing it would have meant matching the specificity in nine places. */
 /* ---- the phone: one slide at a time ----
  Three cards stacked left each about 130px and two of them collapsed to a
  figure and a heading. One slide gets all three the full card: a 48px square
@@ -1158,11 +1148,16 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
   #intake .ezwrap h2.ezh{font-size:34px}
   .ezcards{display:flex;align-items:stretch;gap:0;
  transform:translateX(var(--ezx,0%));transition:transform .4s ease}
+  /* tinted with a hairline rather than white with a shadow: on a near-white
+   ground a white card has no edge, and a border plus a shadow are two ways
+   of saying the same thing. The square inverts to white so it stays the
+   lighter object on the card. */
   .ezbc{flex:0 0 100%;min-width:100%;display:flex;flex-direction:column;
- padding:30px 26px;border-radius:24px}
+ padding:30px 26px;border-radius:24px;background:var(--tint);
+ border:1px solid var(--line);box-shadow:none}
   /* the square is bigger here than on desktop, because here it is the only
    thing competing with a 25px heading rather than one of three in a row */
-  .ezbi{width:52px;height:52px;border-radius:16px}
+  .ezbi{width:52px;height:52px;border-radius:16px;background:var(--card)}
   .ezbh{font-size:25px}
   .ezbt{margin-top:14px;gap:12px}
   .ezbt li{font-size:14px;line-height:1.45}
@@ -1200,7 +1195,6 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
   .ezcards{grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
   .ezbc{display:flex;flex-direction:column;padding:22px;
  box-shadow:0 4px 18px rgba(20,18,43,.07)}
-  .ezbc.ezlead{box-shadow:0 4px 18px rgba(67,56,202,.10)}
   .ezbi{width:48px;height:48px;border-radius:14px}
   .ezbi .ico-g svg{width:22px;height:22px}
   .ezbh{font-size:23px}
@@ -11971,7 +11965,7 @@ function ezFacts(){
   merge replaced still read growthPortal. */
  const sr=AREAS.find(a=>a.n==='Sarjapur Road');
  if(sr&&sr.growth25!=null&&sr.growth26!=null){
- out.push({lead:true, icon:'growth',
+ out.push({icon:'growth',
   /* the <br> is the call site's own markup, not data, so ezCard does not
    escape this field. Two lines on every card keeps the three headings on
    one baseline, which is what lets the grid equalise them. The space
@@ -12038,7 +12032,7 @@ function ezCard(f,i,n){
  const tick='<span class="ezbk">'+uiIcon('check','nav',false)+'</span>';
  const list=(arr,cls)=>'<ul class="ezbt '+cls+'">'
    +arr.map(t=>'<li>'+tick+'<span>'+esc(t)+'</span></li>').join('')+'</ul>';
- return '<div class="ezbc'+(f.lead?' ezlead':'')+'" role="group"'
+ return '<div class="ezbc" role="group"'
   +' aria-roledescription="slide" aria-label="'+(i+1)+' of '+n+', '+esc(ezTitle(f))+'"'
   +' data-title="'+esc(ezTitle(f))+'">'
   +'<div class="ezbhead">'
