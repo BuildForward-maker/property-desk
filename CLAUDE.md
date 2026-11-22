@@ -745,16 +745,18 @@ is only its fallback. Primary buttons, score badges and bar fills all carry
 
 Three fonts. **Manrope** carries every readable word, **Space Grotesk**
 (`--label`) is for caps labels and badges only and never for body text, and
-**Instrument Serif** (`--serif`) carries four things and no more: the intake
-question at 42px on desktop, the fact card's claim line at 23px, the entry
-screen's headline at 54px (36 on a phone) and the wordmark beside the brand
-mark at 18px. It is not a UI face and must not spread; if a fifth place wants
-it, the question is why that place is trying to sound like the question.
+**Instrument Serif** (`--serif`) is the display face and carries three roles
+and no more: the **screen's one large statement** (the intake question at
+42px on desktop, the entry screen's headline at 54px and 36 on a phone), the
+**entry screen's three card headings** at 23px and 21px, and the **wordmark**
+beside the brand mark at 18px. The fact card's claim line at 23px is the
+first of those roles on a card of its own.
 
-The two new ones are the two exceptions a display face has: the entry
-headline is the same role as the intake question, which is the screen's one
-large statement, and a wordmark is a wordmark. Neither is a label, a value or
-a line of prose, and nothing on either screen beside them is serif.
+It is not a UI face and must not spread. Nothing that is a label, a value, a
+figure or a line of prose takes it: on the entry screen the headings are
+serif and the ticks, the figures, the captions and the sources are all
+Manrope, which is the line. If a fourth role wants it, the question is why
+that place is trying to sound like the question.
 Nothing interactive goes under `--tap`. **Two documented exceptions, and no
 more:** `.act.small` and `.act.tiny` sit at 38px. Form controls used to be a
 third, at 39px, and are not any more.
@@ -855,7 +857,9 @@ three names:
 ### Icons
 
 One function, `uiIcon(name, tone, box)`, inline SVG, no font and no library.
-Every glyph is 20x20, 1.7 stroke, round caps and joins, no fill. 24 of them.
+Every glyph is 20x20, 1.7 stroke, round caps and joins, no fill. 26 of them.
+`tag` and `check` were drawn for the entry screen's benefit cards: `verified`
+is the circled check and is too heavy to sit four times in one list.
 `box` false draws the glyph bare for use inside a button.
 
 **The tone carries meaning and must not be mixed for looks**: `nav` for
@@ -1155,40 +1159,99 @@ question half does not fit beside the brand at 390, so the brand row wraps and
 the pill takes its own line rather than dropping the words, which is the half
 that does the work.
 
-### The phone's proof is one card, and the screen is five elements
+### The entry screen is three named benefits, not three figures
 
-The phone had nine: brand, headline, lede, three cards, a sources line, a
-lead-in, the button, the two links and a "takes four minutes" note. Four of
-those said what the screen already said. The lede restates the headline in
-smaller type; the sources line repeats what each card's own source carries;
-the lead-in describes the button directly beneath it; and the minutes note is
-a cost nobody weighs before they have read the proof. All four are **deleted
-on the phone and kept on desktop**, which has the room.
+A number alone is a fact, and a fact is not a reason to carry on. The screen
+showed +43%, 16% -> 3% and 11, each under a caps label, and a stranger had to
+work out for themselves what any of it bought them. It is three **named
+benefits** now, and the figure is the evidence underneath each one rather
+than the offer itself.
 
-`ezStrip()` is three columns divided by hairlines, built from the **same
-`ezFacts()`** the desktop cards use, so there is still nothing typed into this
-screen and a re-merge that moves the median moves both shapes at once. 79px at
-390 and 84px at 375, against 308 for the three stacked cards. Figures at 25px,
-dropping to 21px for the five-character one, exactly as `.ezfig` does and for
-the same reason.
+Each card is: an icon in a `--tint` square, a two-line heading in Instrument
+Serif, ticked lines saying what you can do, a hairline, and then the figure
+at 44px/800 in `--primary` with its caption and its source. **The figure sits
+below the rule** because it is the proof and not the pitch, and a reader who
+has just been told what the card is for reads it as evidence rather than as a
+statistic.
 
-**The third label stays "At high flood risk".** A brief asked for "areas that
-flood". 11 is the high tier of a published list, not a count of areas that
-flood, and the shorter wording is the quiet overstatement the unknown-tier
-rule exists to prevent, one level up. The compression is in the layout, not in
-what the figure claims.
+    1  Property market investment trends   growth icon, --tint card
+       Compare locations, price per sq ft and growth trends
+       See where price growth is rising or slowing
+       16% -> 3%   Price growth slowed on Sarjapur Road
+       Knight Frank, H1 2025 and H1 2026
 
-Nothing the cards said is lost: the sentence and the source each card carried
-move into the sheet behind **"Where these come from"**, which reuses
-`openSlide` and so inherits the dismissal registry.
+    2  See what buyers paid                tag icon
+       Compare asking prices with registered sale prices
+       +43%        Median asking-price gap in the sample
+       Karnataka registry, Sept 2026
 
-**The space the four removals left is shared, not dumped.** `.ezask` keeps
-`margin-top:auto` because a primary button on a phone belongs under the thumb,
-but one auto margin put all the new slack above the button as a single empty
-band. `#intake .ezwrap h2.ezh` takes a matching `margin:auto 0 0` so the free
-space splits and the proof sits centred in what is left. It has to go on that
-selector and not on a bare `.ezh`: (1,2,1) against (0,1,0), which is the same
-trap this file already records for `.iqh` against `.iwrap h2`.
+    3  Know the neighbourhood              location icon, four ticks, two columns
+       Upcoming property projects / Government updates
+       Metro progress / Commute times and flood risk
+       11 areas    Classified as high flood risk
+       BBMP and KSNDMC, May 2026
+
+**Every figure is still read off the data.** `ezFacts()` returns all three
+from `AREAS`; nothing on this screen is typed in, and a card whose figure
+cannot be computed is dropped rather than faked. Card 1 reads `growth25` and
+`growth26`, card 2 `frothMedian()` over `frothList()`, card 3 the count of
+areas whose `floodOf()` tier is high.
+
+**Card 1 carries `--tint` so the eye lands somewhere first.** No new colour
+entered the palette for it: every surface, rule and glyph on this screen
+resolves to `--card`, `--tile`, `--tint`, `--line`, `--line-soft`, `--ink`,
+`--muted` or `--primary`, and the only gradients are `--grad-primary` on the
+pill and the two orbs at alpha. **Nothing cream or off-white**: the three
+light surfaces are #FFFFFF, #F7F6FE and #EDEBFE, which are all cool.
+
+**The unit is its own slot.** Card 3's figure is `11` with `areas` in
+`.ezbnu`, never the string "11 areas", which is the same rule `metricTile`
+keeps: concatenated, the unit sets at 44px and the pair reads as one word.
+It is also what lets the phone stack them in a 74px column.
+
+**"Classified as high flood risk", not "areas that flood".** 11 is the high
+tier of a published list; 24 areas are on the lists in all. The caption names
+the classification rather than asserting the event, which is the unknown-tier
+rule one level up.
+
+**`.ezbt2` sets 12px rather than 13.** That is a property of the two-column
+modifier and not a context override: half the width is half the characters,
+and at 13px "Upcoming property projects" took three lines in a column meant
+to hold two.
+
+### The phone keeps the lead card whole and collapses the other two
+
+Three full cards do not fit 844, and the answer is not to shrink all three.
+The lead card keeps everything, because it is the argument. Cards 2 and 3
+become one row each: the figure in a **fixed 74px column** so both line up,
+the heading and the caption beside it, with the icon, the ticks and the rule
+dropped. The ticks they lose describe the same product the lead card has
+already described.
+
+The three sources collapse into **one shared line** built from the same
+objects, so a source cannot be stated in one place and missing from another.
+It is a compression and not a removal: a claim without a date is marketing,
+and the date stays on screen.
+
+Scoped in `@media(max-width:1023px)` rather than written mobile-first and
+undone. `.ezbc:not(.ezlead)` is (0,2,0) against the desktop `.ezbc` at
+(0,1,0), so undoing it would have meant matching the specificity in nine
+places.
+
+**The space the collapse leaves is shared, not dumped.** `.ezask` keeps
+`margin-top:auto` because a primary button on a phone belongs under the
+thumb, but one auto margin put all the slack above the button as a single
+empty band. `#intake .ezwrap h2.ezh` takes a matching `margin:auto 0 0` so
+the free space splits. It has to go on that selector and not on a bare
+`.ezh`: (1,2,1) against (0,1,0), which is the same trap this file already
+records for `.iqh` against `.iwrap h2`.
+
+**A space before a `<br>` is load-bearing.** The headings are written
+`'See what <br>buyers paid'`. The phone sets that break `display:none` for
+the collapsed rows, and `display:none` on a `<br>` takes the line break *and*
+the word gap with it, which is how "See whatbuyers paid" shipped for one
+round of measuring. At the end of a line the space collapses, so desktop is
+unchanged.
 
 ### What screen zero was for
 
@@ -1197,64 +1260,36 @@ questions are about to cost. `IPHASE` is `'voice' | 'caught' | 'q'` and sits
 in front of `iStep` in `renderIntake()`; it is offered once per session and
 never to somebody editing an answer.
 
-**It is no longer gated on SpeechRecognition**, and the old rule saying it
-must be is gone with the reason it existed. Screen zero WAS the microphone;
-it is now the three findings that are the only argument for answering seven
-questions, and withholding those from every browser that is not Chrome would
-be withholding the argument. The **"Say it out loud" line** is what hides
-where the API is missing, exactly as the header mic's own button does. The
-"speaking needs Chrome" line on question 1 is unchanged.
-
-**Three proof cards, and every figure is read off the data.** `ezFacts()`
-returns them from `AREAS`; nothing on the screen is typed in. The first
-screen anybody sees is the worst place in the app to keep a stale copy, and
-a re-merge that moves the median has to move this screen with it.
-
-    +43%        asking over deeds    frothMedian(), with Begur's own gap
-    16% -> 3%   Sarjapur Road        growth25 and growth26, against the
-                                     growthPortal figure the merge replaced
-    11          at high flood risk   the high tier of FLOOD, with the count
-                                     at lower tiers stated beside it
-
-**Each carries its source and its date, and that is not decoration.** A claim
-without a date is marketing; with one it is a finding a stranger can go and
-check. On a phone the three source lines collapse to one shared line, because
-three rows for one idea is not a trade a 812px screen can make.
-
-Two things the figures taught, both now enforced in `ezFacts()` rather than
-written down: **the froth card disappears below `FROTH_FLOOR`** rather than
-printing a median of two, and **11 is the high tier, not the flood list** —
-24 areas are on the published lists, so the card says what sits under the
-figure. A bare "11 areas on the flood list" is the quiet "low" that the
-unknown-tier rule exists to prevent, one level up.
+**It is not gated on SpeechRecognition**, and the old rule saying it must be
+is gone with the reason it existed. Screen zero WAS the microphone; it is now
+the only argument for answering seven questions, and withholding that from
+every browser that is not Chrome would be withholding the argument. The
+**"Answer by voice" line** is what hides where the API is missing, exactly as
+the header mic's own button does. The "speaking needs Chrome" line on
+question 1 is unchanged.
 
 **No count of researched areas or projects appears anywhere on it.** Not 86,
 not 106. Those are a record of where research effort went rather than a
 property of the city, they move every round, and a promise built on one ages
-badly. The copy says "every researched area".
+badly. Card 3's "11 areas" is a published finding and not a coverage count,
+which is the distinction that rule is about.
 
-**Measured, and these are the numbers to measure against.** The phone is five
-blocks plus the source link, six in all; desktop is eight.
+**Measured, and these are the numbers to measure against.**
 
-    375x812    812, no scroll   brand 80, headline 73, strip 84, link 44,
-                                ask 120
-    390x844    844, no scroll   brand 80, headline 73, strip 79, link 44,
-                                ask 120
-    1280x800   800, no scroll   brand 38, headline 110, lede 45,
-                                cards 184, ask 221
+    375x812    812, no scroll   brand 80, headline 110, cards 413,
+                                source line 14, ask 139
+    390x844    844, no scroll   brand 80, headline 110, cards 395,
+                                source line 14, ask 139
+    1280x800   800, no scroll   brand 38, headline 110, lede 22,
+                                cards 346, ask 137
 
 The brand row is 80 rather than 38 on the phone because the sign-in pill
-wraps to its own line there. Adding anything to this screen still has to come
-out of something else; there is slack now, and slack is what the centring
-margins are spending.
-
-One markup, two shapes, breaking at 1024. The cards are a column on desktop
-with the source pinned to the bottom by `margin-top:auto`; on a phone they
-turn sideways with the figure in a **fixed 74px column** so all three line up
-down the page, placed explicitly by row because a grid cell is not a stack.
-`16->3%` drops to 19px there: five characters do not fit 74px at 24.
-`.ezlong` and `.ezshort` carry the two wordings of the sub-line, the exit and
-that figure, so there is one template and not two.
+wraps to its own line there. 1280 had 36px of overflow until three things
+moved: the wrap padding from 28 to 22, the sub-line's cap from 580 to 680 so
+it is one line rather than two with "them." alone on the second, and
+`.ezbt2` to 12px. 375 had 5px until the wrap padding, the card gap, the rule
+and the figure each gave up two. **Adding anything to this screen has to come
+out of something else**, and at 375 there is nothing left over.
 
 Two soft radial orbs sit at `z-index:-2` against the grain's `-1`, both
 inside `#intake`'s own stacking context, so they paint above its background
@@ -1403,17 +1438,25 @@ ground it is sitting on.
 
 ### The ask, and the one way out
 
-**Answer 7 questions** is the gradient pill and carries the Enter keycap.
-Under it sit two quiet plain-text options divided by a 1px rule: **Say it out
-loud**, which `VOPEN` unfolds in place, and **Look around first**, which is
-the intake's one named exit and is still `#iSkip`. The mic still asks for
-permission on its own tap and never on render. The header mic on the five
-sections is untouched.
+**Find areas that fit me** is the gradient pill and carries an arrow glyph.
+Under it, **7 questions · About 4 minutes**: the cost is stated once, in
+one line, under the thing it is the cost of. Then two quiet plain-text
+options divided by a 1px rule: **Answer by voice**, which `VOPEN` unfolds in
+place, and **Look around first**, which is the intake's one named exit and is
+still `#iSkip`. The mic still asks for permission on its own tap and never on
+render. The header mic on the five sections is untouched.
 
-The keycap used to be a lie. `wireIntakeKeys` looked for `#iNext` or
-`#iConfirm` on Enter and screen zero's primary is `#vTap`, so the glyph was
-drawn on a button the key could not reach. It falls through to `#vTap` now.
-A keycap on a button Enter does not reach is worse than no keycap.
+**The button names the outcome, not the work.** "Answer 7 questions" is what
+the person has to do; "Find areas that fit me" is what they get for doing it,
+and the seven questions are still stated, one line down, where they read as a
+price rather than as the offer.
+
+The pill carried the Enter keycap and now carries the arrow. Enter still
+reaches it: `wireIntakeKeys` falls through to `#vTap` after `#iNext` and
+`#iConfirm`, which is the fix for the round where the keycap was drawn on a
+button the key could not reach. Nothing advertises it now, which is honest in
+the other direction, and the fall-through stays because removing it would
+make Enter dead on the one screen that has a single obvious action.
 
 **Sign in is not a second exit.** The one-way-out rule is about Skip against
 X, and this screen has the named exit and no X, which is what `hasProfile()`
@@ -2165,7 +2208,7 @@ Known and accepted exceptions: **Explore > Your 5** (~2.65 — five cards at
 about 230px each) and its generic twin at ~2.81, **Listings** (the full
 directory of 106), the long-form **guide articles**, **Home** at ~1.36, and
 **Explore > Map** at ~2.79. The entry screen fits one screen with no scroll
-at 375x812 and at 390x844, and must stay that way.
+at 375x812, 390x844 and 1280x800, and must stay that way at all three.
 
 Map is on that list for a reason worth stating: at 375 it is 2,268px, of
 which the map itself is 420. The other 1,006 is the filter card, the band

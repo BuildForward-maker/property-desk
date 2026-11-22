@@ -985,7 +985,7 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
  record of where research effort went, they move every round, and a promise
  built on one ages badly. */
 .ezwrap{position:relative;display:flex;flex-direction:column;flex:1;width:100%;
- padding:14px 0 18px;box-sizing:border-box}
+ padding:12px 0 14px;box-sizing:border-box}
 /* two soft orbs under the grain. z-index -2 against the grain's -1, both
  inside #intake's own stacking context, so they sit above its background and
  below every word on the screen. */
@@ -1023,80 +1023,80 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 #intake .ezwrap h2.ezh{font-family:var(--serif);font-weight:400;font-size:36px;
  line-height:1.02;letter-spacing:-.01em;color:var(--ink);text-align:center;
  margin:auto 0 0}
-.ezlede{margin:10px auto 0;max-width:580px;font-size:13.5px;line-height:1.5;
+/* 680, not 580: at 15px the sub-line is one line at 680 and two at 580,
+ and the second line was the single word "them." */
+.ezlede{margin:10px auto 0;max-width:680px;font-size:13.5px;line-height:1.5;
  color:var(--muted);text-align:center}
-.ezcards{display:grid;gap:9px;margin-top:16px;align-items:stretch}
-/* the figure sits in a fixed column so all three line up down the phone,
- and the label and the line share the column beside it. Placed, not
- auto-placed: a grid cell is not a stack. */
-.ezcard{background:var(--card);border-radius:20px;padding:13px 14px;
- box-shadow:0 2px 10px rgba(20,18,43,.06);
- display:grid;grid-template-columns:74px 1fr;column-gap:12px;align-items:start}
-/* body's tabular-nums is for columns of figures; a display number is not a
- column, and at 24px/800 it set "11" with a visible gap down the middle */
-.ezfig{grid-column:1;grid-row:1 / span 2;font-size:24px;font-weight:800;
- line-height:1.05;letter-spacing:-.02em;font-variant-numeric:lining-nums}
-/* five characters will not fit 74px at 24 */
-.ezfig.ezsm{font-size:19px}
-.ezlab{grid-column:2;grid-row:1;font-family:var(--label);font-size:9.5px;
- font-weight:700;letter-spacing:.07em;text-transform:uppercase;line-height:1.3}
-.ezsay{grid-column:2;grid-row:2;margin:4px 0 0;font-size:12.5px;line-height:1.45;
- color:var(--muted)}
-.ezsrc{display:none}
-.ezpri{color:var(--primary)}
-.ezwrn{color:var(--warn-fg)}
-.ezrsk{color:var(--risk-fg)}
-/* ---- the phone's proof: one card, three columns ----
- Three stacked cards measured 308px of a 844px screen. Three columns divided
- by hairlines measure about a third of that, and the difference is what pays
- for dropping the lede, the lead-in and the two footnotes. Same three figures,
- same order, compressed rather than cut: the long explanation each card
- carried moves into the sheet behind .ezsrclink, so nothing is lost, it is
- one tap away instead of permanently on screen. */
-.ezstrip{display:grid;grid-template-columns:repeat(3,1fr);margin-top:16px;
- background:var(--card);border-radius:20px;padding:14px 4px;
+/* ---- the three benefit cards ----
+ A number alone is a fact; a number under a heading is a reason to carry on.
+ So each card is a named benefit first: an icon, a two-line heading, what it
+ lets you do, then a hairline and the figure that proves the desk can do it.
+ The figure sits BELOW the rule because it is the evidence, not the pitch.
+
+ The first card takes --tint so the eye lands somewhere. Nothing new enters
+ the palette for it: --tint is the same token the badges, the icon squares
+ and the bar tracks already use. */
+.ezcards{display:grid;gap:9px;margin-top:14px;align-items:stretch}
+.ezbc{background:var(--card);border-radius:20px;padding:14px;
  box-shadow:0 2px 10px rgba(20,18,43,.06)}
-.ezcol{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
- gap:5px;padding:0 6px;text-align:center}
-.ezcol + .ezcol{border-left:1px solid var(--line-soft)}
+.ezbc.ezlead{background:var(--tint);box-shadow:none}
+.ezbi{display:inline-flex;align-items:center;justify-content:center;
+ width:34px;height:34px;border-radius:11px;background:var(--tint);
+ color:var(--primary)}
+/* the lead card IS --tint, so its square inverts rather than disappearing */
+.ezbc.ezlead .ezbi{background:var(--card)}
+.ezbi .ico-g svg{width:18px;height:18px}
+.ezbh{font-family:var(--serif);font-weight:400;font-size:21px;line-height:1.12;
+ letter-spacing:-.01em;color:var(--ink);margin:10px 0 0}
+.ezbt{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}
+.ezbt li{display:flex;align-items:flex-start;gap:7px;font-size:12.5px;
+ line-height:1.4;color:var(--muted)}
+.ezbk{display:inline-flex;flex:0 0 auto;color:var(--primary);margin-top:1px}
+/* .ico-g svg is (0,1,1) and declared later, so a sized glyph needs the same
+ shape to win. Same reason as .ezmicg. */
+.ezbk .ico-g svg{width:14px;height:14px}
+/* margin-top:auto pins the proof to the foot of every card, so the grid
+ equalises the heights without anybody typing a min-height */
+.ezrule{height:1px;background:var(--line);margin-top:10px}
+.ezbc.ezlead .ezrule{background:var(--line-soft)}
 /* a display number is not a column of figures, so it does not take body's
- tabular-nums, same reason as .ezfig */
-.ezsfig{font-size:25px;font-weight:800;line-height:1.02;letter-spacing:-.025em;
- font-variant-numeric:lining-nums}
-/* five characters do not fit a third of 375 at 25 */
-.ezsfig.ezssm{font-size:21px}
-.ezslab{font-family:var(--label);font-size:10px;font-weight:700;letter-spacing:.05em;
- text-transform:uppercase;line-height:1.25;color:var(--muted)}
-.ezsrclink{display:block;margin:10px auto 0;background:none;border:0;cursor:pointer;
- font-family:var(--font);font-size:12px;font-weight:600;color:var(--muted);
- min-height:var(--tap);padding:0 12px}
-.ezsrclink:hover{color:var(--primary)}
-/* Two auto margins, not one. The ask stays pinned to the bottom because a
- primary button on a phone belongs under the thumb, but with the lede, the
- lead-in, the sources line and the minutes note gone there is far more free
- space than there was, and a single auto margin dumped all of it above the
- button as one empty band. Splitting it between here and .ezh centres the
- proof in what is left and reads as composition rather than as a gap.
+ tabular-nums: at this weight it set "11" with a gap down the middle */
+.ezbn{margin-top:9px;font-size:36px;font-weight:800;line-height:1;
+ letter-spacing:-.03em;color:var(--primary);font-variant-numeric:lining-nums}
+/* the unit is its own slot and is never concatenated into the value, the
+ same rule metricTile keeps */
+.ezbnu{font-size:.42em;font-weight:700;letter-spacing:0;margin-left:6px}
+.ezbcap{margin:5px 0 0;font-size:12.5px;line-height:1.4;color:var(--muted)}
+.ezbsrc{margin-top:7px;font-size:10px;line-height:1.4;color:var(--muted)}
+.ezsrcline{margin:9px 0 0;font-size:10px;line-height:1.4;color:var(--muted);
+ text-align:center}
+/* ---- the ask ----
+ Two auto margins, not one. The ask stays pinned to the bottom because a
+ primary button on a phone belongs under the thumb, but a single auto margin
+ dumped all the free space above the button as one empty band. Splitting it
+ between here and .ezh centres the proof in what is left and reads as
+ composition rather than as a gap.
 
  The matching `margin-top:auto` has to go on `#intake .ezwrap h2.ezh`, not on
  a bare `.ezh`: that selector is (1,2,1) and a bare class is (0,1,0), which is
  the same trap this file already records for `.iqh` against `.iwrap h2`. */
-.ezask{margin-top:auto;padding-top:16px;flex:0 0 auto}
-.ezsub{margin:0 auto 12px;max-width:560px;font-size:13px;line-height:1.5;
- color:var(--ink);text-align:center}
+.ezask{margin-top:auto;padding-top:14px;flex:0 0 auto}
 /* This was `#intake button.ezgo`, written at a specificity that could beat the
  pre-redesign `button.act` block while that block was still painting every
  primary button flat. The block is gone, so the id and the element qualifier
  go with it: ezgo is an ordinary `.act` modifier now, and (0,2,0) is all it
  needs to state the one thing it genuinely is, which is a wider, taller, fully
- round pill. The `opacity:1` went too, with the `button.act:hover{opacity:.87}`
- it was undoing. */
+ round pill. */
 .act.ezgo{display:flex;align-items:center;justify-content:center;
  width:100%;min-height:52px;padding:0 22px;border:0;border-radius:var(--r-chip);
  background:var(--grad-primary);color:#fff;font-family:var(--font);
  font-size:15.5px;font-weight:700;box-shadow:var(--shadow-primary);cursor:pointer}
 .act.ezgo:hover{filter:brightness(1.06)}
-.ezalt{display:flex;align-items:center;justify-content:center;margin-top:8px}
+.ezarrow{display:inline-flex;margin-left:9px}
+.ezarrow .ico-g svg{width:17px;height:17px}
+.ezmeta{margin:9px 0 0;font-size:11.5px;line-height:1.4;color:var(--muted);
+ text-align:center}
+.ezalt{display:flex;align-items:center;justify-content:center;margin-top:4px}
 .ezlink{display:inline-flex;align-items:center;justify-content:center;gap:7px;
  background:none;border:0;cursor:pointer;font-family:var(--font);font-size:13px;
  font-weight:600;color:var(--muted);min-height:var(--tap);padding:0 14px}
@@ -1104,55 +1104,70 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 .ezlink.on{color:var(--primary)}
 .ezalt .ezlink + .ezlink{border-left:1px solid var(--line)}
 .ezmicg{display:inline-flex;width:16px;height:16px;opacity:.85}
-/* .ico-g svg is (0,1,1) and declared later, so the glyph needs the same
- shape as every other sized icon in the file to win */
 .ezmicg .ico-g svg{width:16px;height:16px}
-.ezmins{margin:7px 0 0;font-size:11.5px;line-height:1.4;color:var(--muted);
- text-align:center}
-/* ---- the phone's entry screen is five elements ----
- It was nine: brand, headline, lede, three cards, a sources line, a lead-in,
- the button, the two links and a "takes four minutes" note. Four of those were
- saying what the screen already says. The lede restates the headline in
- smaller type; the sources line repeats what each card's own source carries;
- the lead-in describes the button it sits on top of; and the minutes note is a
- cost nobody weighs before they have read the proof. The strip keeps the
- proof, and the explanations behind it keep everything the cards said.
- Desktop keeps all of it: it has the room, and the cards there are the
- argument rather than a summary of it. */
-.ezcards{display:none}
-.ezlede,.ezsub,.ezmins{display:none}
-/* one markup, two wordings: the phone gets the shorter of each pair */
-.ezlong{display:none}
-.ezshort{display:inline}
+/* ---- the phone: one card in full, two as rows ----
+ Three full cards do not fit 844, and the answer is not to shrink all three.
+ The lead card keeps everything, because it is the argument; the other two
+ keep the half a reader needs from a glance, which is the figure and what it
+ is of. The ticks they drop describe the same product the lead card has
+ already described.
+
+ Scoped to the phone rather than written mobile-first and undone: a
+ `.ezbc:not(.ezlead)` rule is (0,2,0) and the desktop `.ezbc` is (0,1,0), so
+ undoing it would have meant matching the specificity in nine places. */
+@media(max-width:1023px){
+  .ezlede{display:none}
+  .ezbsrc{display:none}
+  .ezbc:not(.ezlead){display:grid;grid-template-columns:74px 1fr;
+ column-gap:12px;align-items:center;padding:12px 14px}
+  .ezbc:not(.ezlead) .ezbi,
+  .ezbc:not(.ezlead) .ezbt,
+  .ezbc:not(.ezlead) .ezrule{display:none}
+  .ezbc:not(.ezlead) .ezbn{grid-column:1;grid-row:1 / span 2;margin:0;
+ font-size:27px}
+  /* "11" and "areas" stack in a 74px column rather than shrinking to fit */
+  .ezbc:not(.ezlead) .ezbnu{display:block;margin:2px 0 0;font-size:.46em}
+  .ezbc:not(.ezlead) .ezbh{grid-column:2;grid-row:1;margin:0;font-size:17px;
+ line-height:1.15}
+  .ezbc:not(.ezlead) .ezbh br{display:none}
+  .ezbc:not(.ezlead) .ezbcap{grid-column:2;grid-row:2;margin:3px 0 0;
+ font-size:12px}
+}
 @media(min-width:1024px){
-  #intake .iwrap:has(.ezwrap){display:flex;flex-direction:column;justify-content:center;
- max-width:1000px;padding:28px 32px;min-height:100%}
+  #intake .iwrap:has(.ezwrap){display:flex;flex-direction:column;
+ justify-content:center;max-width:1000px;padding:22px 32px;min-height:100%}
   .ezwrap{flex:0 0 auto;padding:0}
-  .ezbrand{margin-bottom:26px}
+  .ezbrand{margin-bottom:22px}
   /* margin:0 here is what undoes the phone's centring auto margin; the wrap
    is content-sized on desktop, so there is no free space to share anyway */
   #intake .ezwrap h2.ezh{font-size:54px;margin:0}
   .ezlede{font-size:15px;margin-top:14px}
-  .ezcards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}
-  .ezlede,.ezsub,.ezmins{display:block}
-  .ezstrip,.ezsrclink{display:none}
-  /* sideways on a phone, a column on desktop, so the children's grid
-   placement simply stops applying rather than needing to be undone */
-  .ezcard{display:flex;flex-direction:column;padding:20px;
+  .ezcards{grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+  .ezbc{display:flex;flex-direction:column;padding:22px;
  box-shadow:0 4px 18px rgba(20,18,43,.07)}
-  .ezfig,.ezfig.ezsm{font-size:30px}
-  .ezlab{font-size:10px;margin-top:7px}
-  .ezsay{font-size:13px;margin-top:8px}
-  .ezsrc{display:block;margin-top:auto;padding-top:14px;font-size:10px;
- line-height:1.4;color:var(--muted)}
-  .ezask{margin-top:30px}
-  .ezsub{font-size:15px;margin-bottom:16px}
+  .ezbc.ezlead{box-shadow:0 4px 18px rgba(67,56,202,.10)}
+  .ezbi{width:38px;height:38px;border-radius:12px}
+  .ezbi .ico-g svg{width:20px;height:20px}
+  .ezbh{font-size:23px;margin-top:14px}
+  .ezbt{margin-top:12px;gap:8px}
+  .ezbt li{font-size:13px}
+  /* four ticks in two columns, so the card holding four is not twice as
+   tall as the card holding one. The 12px is a property of this modifier
+   and not a context override: half the width is half the characters, and
+   at 13px "Upcoming property projects" took three lines in a column meant
+   to hold two. */
+  .ezbt2{grid-template-columns:1fr 1fr;column-gap:10px}
+  .ezbt2 li{font-size:12px;gap:6px}
+  .ezrule{margin-top:auto}
+  .ezbn{font-size:44px;margin-top:14px}
+  .ezbcap{font-size:13px;margin-top:6px}
+  .ezbsrc{margin-top:9px}
+  .ezsrcline{display:none}
+  .ezask{margin-top:26px;padding-top:0}
   .act.ezgo{width:fit-content;margin:0 auto;padding:0 34px;
  min-height:58px;font-size:17px}
-  .ezalt{margin-top:14px}
-  .ezmins{margin-top:12px}
-  .ezlong{display:inline}
-  .ezshort{display:none}
+  .ezmeta{font-size:12.5px;margin-top:11px}
+  .ezalt{margin-top:6px}
 }
 /* ---- the header microphone. The affordance now, the asking later. ---- */
 .hdrmic{appearance:none;border:0;cursor:pointer;width:38px;height:38px;min-width:38px;
@@ -5704,6 +5719,12 @@ const ICONS={
  hospital:'<rect x="3.4" y="3.4" width="13.2" height="13.2" rx="2.4"/><path d="M10 6.6v6.8M6.6 10h6.8"/>',
  techpark:'<path d="M3 17h14"/><rect x="4" y="6.6" width="5" height="10.4" rx="1"/><rect x="11" y="3" width="5" height="14" rx="1"/><path d="M6 9.2h1M6 12h1M13 5.8h1M13 8.6h1M13 11.4h1"/>',
  growth:'<path d="M3 14.6 7.6 10l3 3 5.4-6"/><path d="M12.6 7h3.4v3.4"/>',
+ /* the price tag and the bare tick, drawn for the entry screen's benefit
+  cards. Same house rules as the other 24: 20x20, 1.7 stroke, round caps
+  and joins, no fill. `verified` is the circled check and is too heavy for
+  a list of four, which is why the bare one exists. */
+ tag:'<path d="M10.8 2.8h5a1.4 1.4 0 0 1 1.4 1.4v5a1.4 1.4 0 0 1-.41.99l-6.6 6.6a1.4 1.4 0 0 1-1.98 0l-5-5a1.4 1.4 0 0 1 0-1.98l6.6-6.6a1.4 1.4 0 0 1 .99-.41z"/><circle cx="13.6" cy="6.4" r="1.15"/>',
+ check:'<path d="M4.4 10.4 8 14l7.6-8.4"/>',
  location:'<path d="M10 17.4s5.4-4.6 5.4-8.6a5.4 5.4 0 0 0-10.8 0c0 4 5.4 8.6 5.4 8.6z"/><circle cx="10" cy="8.6" r="2"/>',
  caution:'<path d="M10 3.4 2.9 16a1 1 0 0 0 .9 1.5h12.4a1 1 0 0 0 .9-1.5z"/><path d="M10 8.2v3.6M10 14.2v.1"/>',
  flood:'<path d="M2.6 13.4c1.3 0 1.3 1.2 2.6 1.2s1.3-1.2 2.6-1.2 1.3 1.2 2.6 1.2 1.3-1.2 2.6-1.2 1.3 1.2 2.6 1.2"/><path d="M2.6 16.8c1.3 0 1.3 1.2 2.6 1.2"/><path d="M10 2.6s3.6 3.9 3.6 6.2a3.6 3.6 0 0 1-7.2 0C6.4 6.5 10 2.6 10 2.6z"/>',
@@ -11857,106 +11878,106 @@ function vWave(){
 }
 /* ---- screen zero: the entry screen ----
  It used to open "Tell me what you're looking for" over a microphone, which
- asks a stranger for four minutes and hands back nothing. It spends thirty
- seconds earning them instead: three findings this desk holds and a listing
- site does not, each carrying the source and the date that make it
- checkable, and then the ask. A claim without a date is marketing; with one
- it is something a stranger can go and verify.
+ asks a stranger for four minutes and hands back nothing. Then it showed
+ three findings, which was better and still not an offer: a number alone is
+ a fact, and a fact is not a reason to carry on.
 
- Every figure comes from ezFacts(), which reads AREAS. Nothing on this
- screen is typed in, so a re-merge cannot leave the first screen anybody
- sees quoting a market that has since moved. It is the worst place in the
- app to keep a stale copy.
+ It is three NAMED BENEFITS now, each with a figure under it. The heading
+ says what you get, the ticks say what that means, and the figure is the
+ evidence that the desk can actually do it. The figure is the proof, not
+ the pitch, which is why it sits below the hairline rather than above the
+ heading.
 
- No count of researched areas or projects appears anywhere on it. Those are
- a record of where research effort went rather than a property of the city,
- they move every round, and a promise built on one ages badly.
+ Every figure still comes from ezFacts(), which reads AREAS. Nothing on
+ this screen is typed in, so a re-merge cannot leave the first screen
+ anybody sees quoting a market that has since moved, and a card whose
+ figure cannot be computed is dropped rather than faked.
 
- It is no longer gated on SpeechRecognition. Screen zero WAS the microphone
- when that rule was written; the microphone is now one quiet line on it, and
+ Each card keeps its source and its date. A claim without a date is
+ marketing; with one it is something a stranger can go and check. They are
+ not dropped for cleanliness: the phone collapses them into one shared
+ line, which is the compression this screen is allowed and the removal it
+ is not.
+
+ It is not gated on SpeechRecognition. Screen zero WAS the microphone when
+ that rule was written; the microphone is now one quiet line on it, and
  gating the whole screen would hide the only argument for answering from
  every browser that is not Chrome. The line itself still disappears where
  SpeechRecognition is missing, exactly as the header mic does. */
 function ezFacts(){
  const out=[];
- const med=frothMedian();
- /* below FROTH_FLOOR there is no median to show, so the card goes rather
-  than printing a figure nobody could defend. The other two stand alone. */
- if(med!==null){
- const bg=AREAS.find(a=>/^Begur/.test(a.n));
- const bgv=bg?frothPct(bg):null;
- out.push({tone:'ezpri', big:'+'+med+'%', small:'+'+med+'%',
- lab:'Asking over deeds',
- say:'The median gap between what sellers advertise and what the sub-registrar '
-   +'records.'+(bgv!==null?' In Begur it is '+bgv+'%.':''),
- src:'Karnataka registry · Sept 2026'});
- }
+ /* the lead card. Sarjapur Road is the one the desk can prove a portal
+  cannot: Knight Frank measured the collapse while the portal figure the
+  merge replaced still read growthPortal. */
  const sr=AREAS.find(a=>a.n==='Sarjapur Road');
  if(sr&&sr.growth25!=null&&sr.growth26!=null){
- out.push({tone:'ezwrn', sm:true,
- big:sr.growth25+'% → '+sr.growth26+'%',
- small:sr.growth25+'→'+sr.growth26+'%',
- lab:'Sarjapur Road, in one year',
- say:'Its price growth collapsed'
-   +(sr.growthPortal!=null
-     ?' while the portal figure still read '+sr.growthPortal+'%':'')
-   +'. A listing carries a price, never a direction.',
- src:'Knight Frank · H1 2025 and H1 2026'});
+ out.push({lead:true, icon:'growth',
+  /* the <br> is the call site's own markup, not data, so ezCard does not
+   escape this field. Two lines on every card keeps the three headings on
+   one baseline, which is what lets the grid equalise them. The space
+   BEFORE it is load-bearing: the phone sets the break display:none for the
+   collapsed rows, and display:none on a <br> takes the line break and the
+   word gap with it, which is how "See whatbuyers paid" shipped. At the end
+   of a line the space collapses, so desktop is unchanged. */
+ head:'Property market <br>investment trends',
+ ticks:['Compare locations, price per sq ft and growth trends',
+        'See where price growth is rising or slowing'],
+ fig:sr.growth25+'% → '+sr.growth26+'%',
+ cap:'Price growth slowed on '+sr.n,
+ who:'Knight Frank', when:'H1 2025 and H1 2026'});
+ }
+ /* below FROTH_FLOOR there is no median to show, so the card goes rather
+  than printing a figure nobody could defend. The other two stand alone. */
+ const med=frothMedian();
+ if(med!==null){
+ out.push({icon:'tag',
+ head:'See what <br>buyers paid',
+ ticks:['Compare asking prices with registered sale prices'],
+ fig:'+'+med+'%',
+  /* "in the sample" is load-bearing: this is the median of the locations
+   where deeds are actually published, not of the city. */
+ cap:'Median asking-price gap in the sample',
+ who:'Karnataka registry', when:'Sept 2026'});
  }
  const tierOf=a=>floodOf(a).tier;
  const hi=AREAS.filter(a=>tierOf(a)==='high').length;
- const rest=AREAS.filter(a=>tierOf(a)==='medium'||tierOf(a)==='low').length;
  if(hi){
- out.push({tone:'ezrsk', big:String(hi), small:String(hi),
- lab:'At high flood risk',
-  /* the figure is the high tier, not the whole list, so the line says what
-   sits under it. 11 read as "the flood list" would be the quiet "low"
-   that the unknown-tier rule exists to prevent, one level up. */
- say:'Named repeatedly across BBMP’s lists and the 2022, 2024 and May 2026 '
-   +'events.'+(rest?' '+rest+' more sit at lower tiers.':''),
- src:'BBMP and KSNDMC · '+FLOOD.asOf});
+ out.push({icon:'location', two:true,
+ head:'Know the <br>neighbourhood',
+ ticks:['Upcoming property projects','Government updates',
+        'Metro progress','Commute times and flood risk'],
+  /* the unit is its own slot and is never welded onto the figure, the same
+   rule metricTile keeps: concatenated, "11 areas" sets at 44px and reads
+   as one string. */
+ fig:String(hi), unit:'areas',
+  /* "classified as", not "that flood". It is the high tier of a published
+   list, and the shorter wording is the quiet overstatement the unknown-
+   tier rule exists to prevent, one level up. */
+ cap:'Classified as high flood risk',
+ who:'BBMP and KSNDMC', when:FLOOD.asOf});
  }
  return out;
 }
-/* The phone's proof is one card of three columns rather than three stacked
- cards: 220px of figures against 308, which is what buys the room to drop the
- lede, the lead-in and the two footnotes. It is built from the SAME ezFacts()
- the desktop cards use, so there is still nothing typed into this screen and a
- re-merge that moves the median moves both shapes at once.
-
- The third label stays "At high flood risk" rather than compressing to "areas
- that flood". 11 is the high tier of a published list, not a count of areas
- that flood, and the shorter wording is exactly the quiet overstatement the
- unknown-tier rule exists to prevent. The sheet behind the link carries what
- sits under each figure. */
-function ezStrip(){
+/* the phone drops each card's own source and carries one line for the set.
+ The names are read off the same objects, so a source cannot be stated in
+ one place and missing from the other. */
+function ezSrcLine(){
  const f=ezFacts(); if(!f.length)return '';
- return '<div class="ezstrip">'
-  +f.map(x=>'<div class="ezcol">'
-    +'<div class="ezsfig '+x.tone+(x.sm?' ezssm':'')+'">'+esc(x.small)+'</div>'
-    +'<div class="ezslab">'+esc(x.lab)+'</div>'
-   +'</div>').join('')
- +'</div>'
- +'<button type="button" class="ezsrclink" id="ezWhere">Where these come from '
-  +'<span aria-hidden="true">\u2193</span></button>';
-}
-/* the same three explanations the desktop cards carry, as one sheet */
-function openEzSource(){
- const rows=ezFacts().map(f=>'<div class="block">'
-   +'<h2><span class="'+f.tone+'">'+esc(f.big)+'</span> '+esc(f.lab)+'</h2>'
-   +'<p>'+esc(f.say)+'</p>'
-   +'<p class="lede" style="margin:0">'+esc(f.src)+'</p>'
-  +'</div>').join('');
- openSlide('Where these come from','Every figure on this screen is read off the data, not written in.',rows);
+ return '<p class="ezsrcline">'+esc(f.map(x=>x.who).join(', '))+' · 2026</p>';
 }
 function ezCard(f){
- return '<div class="ezcard">'
-  +'<div class="ezfig '+f.tone+(f.sm?' ezsm':'')+'">'
-   +'<span class="ezlong">'+esc(f.big)+'</span>'
-   +'<span class="ezshort">'+esc(f.small)+'</span></div>'
-  +'<div class="ezlab '+f.tone+'">'+esc(f.lab)+'</div>'
-  +'<p class="ezsay">'+esc(f.say)+'</p>'
-  +'<div class="ezsrc">'+esc(f.src)+'</div>'
+ const tick='<span class="ezbk">'+uiIcon('check','nav',false)+'</span>';
+ return '<div class="ezbc'+(f.lead?' ezlead':'')+'">'
+  +'<span class="ezbi">'+uiIcon(f.icon,'nav',false)+'</span>'
+  +'<h3 class="ezbh">'+f.head+'</h3>'
+  +'<ul class="ezbt'+(f.two?' ezbt2':'')+'">'
+   +f.ticks.map(t=>'<li>'+tick+'<span>'+esc(t)+'</span></li>').join('')
+  +'</ul>'
+  +'<div class="ezrule" aria-hidden="true"></div>'
+  +'<div class="ezbn">'+esc(f.fig)
+   +(f.unit?'<span class="ezbnu">'+esc(f.unit)+'</span>':'')+'</div>'
+  +'<p class="ezbcap">'+esc(f.cap)+'</p>'
+  +'<div class="ezbsrc">'+esc(f.who+' · '+f.when)+'</div>'
  +'</div>';
 }
 function scrVoice(){
@@ -11978,34 +11999,28 @@ function scrVoice(){
          +'<span class="ezingo">Sign in</span>')
       +'</button>':'')
   +'</div>'
-  +'<h2 class="ezh">The things nobody tells you<br>before you buy</h2>'
-  +'<p class="ezlede">Portals show you what sellers are asking. We show you what '
-   +'deeds record, what the market is actually doing, and which areas flood.</p>'
+  +'<h2 class="ezh">Know what to pay.<br>Know where it’s worth buying.</h2>'
+  +'<p class="ezlede">Compare Bengaluru neighbourhoods by price, growth and '
+   +'what’s changing around them.</p>'
   +'<div class="ezcards">'+ezFacts().map(ezCard).join('')+'</div>'
-  +ezStrip()
+  +ezSrcLine()
   +'<div class="ezask">'
-   +'<p class="ezsub">'
-    +'<span class="ezlong">Answer seven questions and we will score every researched '
-     +'area against your commute, your budget and your timing.</span>'
-    +'<span class="ezshort">Seven questions, then every researched area scored '
-     +'against your commute, budget and timing.</span></p>'
-   +'<button type="button" class="act ezgo" id="vTap">Answer 7 questions'
-    +'<span class="kcap kent" aria-hidden="true">↵</span></button>'
+   +'<button type="button" class="act ezgo" id="vTap">Find areas that fit me'
+    +'<span class="ezarrow">'+uiIcon('next','nav',false)+'</span></button>'
+   +'<p class="ezmeta">7 questions · About 4 minutes</p>'
    +'<div class="ezalt">'
     +(SPEECHOK
       ?'<button type="button" class="ezlink'+(open?' on':'')+'" id="vSay"'
        +' aria-expanded="'+(!!open)+'">'
        +'<span class="ezmicg">'+uiIcon('mic','nav',false)+'</span>'
-       +'<span>Say it out loud</span></button>':'')
-    /* One way out, and hasProfile() picks which. The entry screen is now
-     the landing page for a returning-but-signed-out person too, and they
-     have the X: drawing the named exit as well would put a Skip and an X
-     on the same screen, which is the one thing that rule forbids. This is
-     the same test iqExit() makes on question 1. */
+       +'<span>Answer by voice</span></button>':'')
+    /* One way out, and hasProfile() picks which. The entry screen is the
+     landing page for a returning-but-signed-out person too, and they have
+     the X: drawing the named exit as well would put a Skip and an X on the
+     same screen, which is the one thing that rule forbids. This is the same
+     test iqExit() makes on question 1. */
     +(hasProfile()?''
-      :'<button type="button" class="ezlink" id="iSkip">'
-       +'<span class="ezlong">Look around first</span>'
-       +'<span class="ezshort">Look around</span></button>')
+      :'<button type="button" class="ezlink" id="iSkip">Look around first</button>')
    +'</div>'
    +(open
     ?'<div class="vopen">'
@@ -12021,7 +12036,6 @@ function scrVoice(){
      +'<p class="vlimit">I am reading for budget, location and timing. '
      +'The questions above cover the rest.</p>'
     +'</div>':'')
-   +'<p class="ezmins">Takes about four minutes</p>'
   +'</div>'
  +'</div>';
 }
@@ -13129,9 +13143,6 @@ function wireIntake(){
   stops, because a sheet on top is not a place to still be listening. */
  if(g('ezSignin'))g('ezSignin').addEventListener('click',()=>{
  vStop(); openSignin();});
- /* the phone's strip is the three figures without their explanations; this
-  is where the explanations went, so nothing the cards said is lost */
- if(g('ezWhere'))g('ezWhere').addEventListener('click',openEzSource);
  if(g('vGo'))g('vGo').addEventListener('click',()=>{
  IPHASE='q'; iStep=nextUnanswered(0); renderIntake();});
 
