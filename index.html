@@ -1086,13 +1086,18 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 /* .ico-g svg is (0,1,1) and declared later, so a sized glyph needs the same
  shape to win. Same reason as .ezmicg. */
 .ezbk .ico-g svg{width:14px;height:14px}
-/* margin-top:auto pins the proof to the foot of every card, so the grid
- equalises the heights without anybody typing a min-height */
-.ezrule{height:1px;background:var(--line);margin-top:10px}
+/* The hairline between the ticks and the figure is gone: the gap was
+ already doing the separating and the rule drew a division that was not
+ there. It was also the thing carrying `margin-top:auto`, which is what
+ pins the proof to the foot of every card so the grid can equalise the
+ heights without anybody typing a min-height. That job moves here, and the
+ minimum gap becomes padding rather than margin: `auto` collapses to zero
+ on the tallest card, and padding does not. */
 /* a display number is not a column of figures, so it does not take body's
  tabular-nums: at this weight it set "11" with a gap down the middle */
-.ezbn{margin-top:9px;font-size:36px;font-weight:800;line-height:1;
- letter-spacing:-.03em;color:var(--primary);font-variant-numeric:lining-nums}
+.ezbn{margin-top:auto;padding-top:19px;font-size:36px;font-weight:800;
+ line-height:1;letter-spacing:-.03em;color:var(--primary);
+ font-variant-numeric:lining-nums}
 /* the unit is its own slot and is never concatenated into the value, the
  same rule metricTile keeps */
 .ezbnu{font-size:.42em;font-weight:700;letter-spacing:0;margin-left:6px}
@@ -1165,8 +1170,7 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
    four stubs for the two desktop columns */
   .ezbc:has(.ezbtnarrow) .ezbtwide{display:none}
   .ezbt.ezbtnarrow{display:grid}
-  .ezrule{margin-top:auto}
-  .ezbn{font-size:50px;margin-top:22px}
+  .ezbn{font-size:50px;padding-top:22px}
   .ezbcap{font-size:13px;margin-top:6px}
 }
 /* No rotation, no transition, no dots: the three cards stack and the page
@@ -1207,13 +1211,12 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
    to hold two. */
   .ezbt2{grid-template-columns:1fr 1fr;column-gap:10px}
   .ezbt2 li{font-size:12px;gap:6px}
-  /* every card's rule is pushed to the foot of its own flex column, so with
-   the grid equalising the heights the three hairlines land on one y
-   whatever each card holds above them: card 2 has one tick, card 1 two and
-   card 3 four in two columns. Measured at 1280, all three at the same top
-   to the hundredth of a pixel. */
-  .ezrule{margin-top:auto}
-  .ezbn{font-size:52px;margin-top:16px}
+  /* every card's figure is pushed to the foot of its own flex column, so
+   with the grid equalising the heights the three land on one y whatever
+   each card holds above them: card 2 has two ticks, card 1 two and card 3
+   four in two columns. Measured at 1280, all three at the same top to the
+   hundredth of a pixel. */
+  .ezbn{font-size:52px;padding-top:16px}
   .ezbcap{font-size:13.5px;margin-top:7px}
   .ezask{margin-top:26px;padding-top:0}
   .act.ezgo{width:fit-content;margin:0 auto;padding:0 34px;
@@ -11986,7 +11989,10 @@ function ezFacts(){
  if(med!==null){
  out.push({icon:'tag',
  head:'See what <br>buyers paid',
- ticks:['Compare asking prices with registered sale prices'],
+ ticks:['Compare asking prices with registered sale prices',
+  /* what somebody does with the comparison, so it earns its line rather
+   than padding one out to match the card beside it */
+        'Spot where sellers are asking far above the record'],
  fig:'+'+med+'%',
   /* "in the sample" is load-bearing: this is the median of the locations
    where deeds are actually published, not of the city. */
@@ -12041,7 +12047,6 @@ function ezCard(f,i,n){
   +'</div>'
   +list(f.ticks,'ezbtwide'+(f.two?' ezbt2':''))
   +(f.ticksNarrow?list(f.ticksNarrow,'ezbtnarrow'):'')
-  +'<div class="ezrule" aria-hidden="true"></div>'
   +'<div class="ezbn">'+esc(f.fig)
    +(f.unit?'<span class="ezbnu">'+esc(f.unit)+'</span>':'')+'</div>'
   +'<p class="ezbcap">'+esc(f.cap)+'</p>'

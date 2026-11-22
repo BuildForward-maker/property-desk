@@ -1168,11 +1168,16 @@ benefits** now, and the figure is the evidence underneath each one rather
 than the offer itself.
 
 Each card is: a 48px `--tint` square holding the icon **beside** a two-line
-heading in Instrument Serif, ticked lines saying what you can do, a hairline,
-and then the figure at 52px/800 in `--primary` with its caption. **The figure
-sits below the rule** because it is the proof and not the pitch, and a reader
-who has just been told what the card is for reads it as evidence rather than
-as a statistic.
+heading in Instrument Serif, two ticked lines saying what you can do, and
+then the figure at 52px/800 in `--primary` with its caption. **The figure
+sits last** because it is the proof and not the pitch, and a reader who has
+just been told what the card is for reads it as evidence rather than as a
+statistic.
+
+There was a hairline between the ticks and the figure and it is gone: the
+gap was already separating them and the rule drew a division that was not
+there. It was also 1.07:1 against the phone's tinted card, so it had become
+a line nobody could see doing a job nobody needed.
 
 **The square and the heading are one row, centred on each other.** Stacked,
 the square floated alone above a heading that started 44px down the card, and
@@ -1183,19 +1188,26 @@ and the heading's centre are the same y on all three cards. It cost nothing
 to find 52px a card, because the space came from a gap rather than from
 shrinking anything.
 
-    1  Property market investment trends   growth icon, --tint card
+    1  Property market investment trends   growth icon
        Compare locations, price per sq ft and growth trends
        See where price growth is rising or slowing
        16% -> 3%   Price growth slowed on Sarjapur Road
 
     2  See what buyers paid                tag icon
        Compare asking prices with registered sale prices
+       Spot where sellers are asking far above the record
        +43%        Median asking-price gap in the sample
 
     3  Know the neighbourhood              location icon, four ticks, two columns
        Upcoming property projects / Government updates
        Metro progress / Commute times and flood risk
        11 areas    Classified as high flood risk
+
+**Card 2's second tick is what you do with the first, not padding.** It had
+one line against card 1's two and card 3's four, which left a hole; the line
+that fills it names the action the comparison is for rather than restating
+the comparison. A tick that could be deleted without losing a capability is
+the filler the option rule already forbids one screen along.
 
 **Every figure is still read off the data.** `ezFacts()` returns all three
 from `AREAS`; nothing on this screen is typed in, and a card whose figure
@@ -1260,12 +1272,16 @@ modifier and not a context override: half the width is half the characters,
 and at 13px "Upcoming property projects" took three lines in a column meant
 to hold two.
 
-**All three hairlines sit on one y, and `.ezrule{margin-top:auto}` is the
-whole mechanism.** Card 2 has one tick, card 1 two and card 3 four in two
-columns, so without it card 2's rule would float high. The auto margin pushes
-every rule to the foot of its own flex column and the grid equalises the
-heights, so the three land together whatever sits above them. Measured at
-1280: all three at the same top to the hundredth of a pixel.
+**All three figures sit on one y, and `.ezbn{margin-top:auto}` is the whole
+mechanism.** It was on the hairline until the hairline went. The auto margin
+pushes the figure to the foot of its own flex column and the grid equalises
+the heights, so the three land together whatever sits above them. Measured at
+1280: all three at 464.88, the same to the hundredth of a pixel.
+
+**The minimum gap above the figure is `padding-top`, not `margin-top`.** On
+the tallest card the auto margin resolves to zero, and a margin would have
+taken the gap with it. Padding does not collapse, so the figure keeps its 16
+on desktop and 22 on the phone whether or not there is free space above it.
 
 ### The phone shows one card at a time
 
@@ -1385,15 +1401,19 @@ which is the distinction that rule is about.
 
 **Measured, and these are the numbers to measure against.**
 
-    375x812    812, no scroll   brand 80, headline 104, slide 322,
-                                dots 20, ask 139, margins 46 + 46
-    390x844    844, no scroll   brand 80, headline 69, slide 322,
+    375x812    812, no scroll   brand 80, headline 104, slide 321,
+                                dots 20, ask 139, margins 47 + 47
+    390x844    844, no scroll   brand 80, headline 69, slide 321,
                                 dots 20, ask 139, margins 80 + 80
 
-The slide is 322.38 rather than 320.38 because the phone's card gained a 1px
-border top and bottom. The **content box is still exactly 320**: nothing
-inside the card moved, the box grew by its own border, and each margin gave
-up the 1px that is half of it.
+The slide is 321.38: 319 of content, plus the 1px border the phone's card
+carries top and bottom. Removing the hairline took 1px off it.
+
+**The three cards are the same height at 375 now**, all 321.38 naturally,
+so nothing is being stretched there at all. At 390 cards 2 and 3 tie at
+321.38 and card 1 is 20px shorter. Card 2's second tick is what closed that:
+it took the shortest card to the existing maximum rather than past it, so
+the slide did not grow.
     1280x800   800, no scroll   brand 38, headline 110, lede 22,
                                 cards 294, ask 137
 
