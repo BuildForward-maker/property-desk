@@ -1036,7 +1036,30 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
  The first card takes --tint so the eye lands somewhere. Nothing new enters
  the palette for it: --tint is the same token the badges, the icon squares
  and the bar tracks already use. */
-.ezcards{display:grid;gap:9px;margin-top:14px;align-items:stretch}
+/* the viewport. display:contents on desktop, so .ezcards is a direct grid
+ child of .ezwrap exactly as it was before the carousel existed. */
+.ezcarousel{margin-top:14px;overflow:hidden}
+.ezcards{display:grid;gap:9px;align-items:stretch}
+/* The narrow tick list only exists on the one card that has both, and the
+ selector has to carry .ezbt with it: `.ezbtnarrow` alone is (0,1,0), the
+ same as the `.ezbt{display:grid}` declared below it, and the later one
+ wins. Desktop shipped card 3 with all six ticks and 30px of overflow for
+ exactly as long as it took to measure it. */
+.ezbt.ezbtnarrow{display:none}
+.ezdots{display:flex;align-items:center;justify-content:center;gap:9px;
+ margin-top:14px;height:20px}
+/* an 8px dot with a 44px reach from a pseudo-element: the reach grows, the
+ dot does not, which is the same rule the info dot keeps */
+.ezdot{position:relative;appearance:none;border:0;padding:0;cursor:pointer;
+ width:8px;height:8px;border-radius:999px;background:var(--line);flex:none;
+ transition:width .25s ease, background .25s ease}
+.ezdot::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;
+ transform:translate(-50%,-50%)}
+.ezdot.on{width:20px;background:var(--primary)}
+.ezdot:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+/* the announcement is text for a screen reader and nothing for an eye */
+.ezlive{position:absolute;width:1px;height:1px;overflow:hidden;
+ clip:rect(0 0 0 0);white-space:nowrap;margin:0}
 .ezbc{background:var(--card);border-radius:20px;padding:14px;
  box-shadow:0 2px 10px rgba(20,18,43,.06)}
 .ezbc.ezlead{background:var(--tint);box-shadow:none}
@@ -1119,28 +1142,44 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
  Scoped to the phone rather than written mobile-first and undone: a
  `.ezbc:not(.ezlead)` rule is (0,2,0) and the desktop `.ezbc` is (0,1,0), so
  undoing it would have meant matching the specificity in nine places. */
+/* ---- the phone: one slide at a time ----
+ Three cards stacked left each about 130px and two of them collapsed to a
+ figure and a heading. One slide gets all three the full card: a 48px square
+ beside a 23px heading, ticks at 13.5px, the rule pushed down and the figure
+ at 46px.
+
+ **The track's height is the tallest slide and never changes.** It is not a
+ number anybody typed: `align-items:stretch` on a flex row makes every slide
+ the height of the tallest, and the row is the height of its tallest item. A
+ height that changed per slide would move the button under the thumb every
+ five seconds, which is worse than any amount of empty card. */
 @media(max-width:1023px){
   .ezlede{display:none}
-  .ezbc:not(.ezlead){display:grid;grid-template-columns:74px 1fr;
- column-gap:12px;align-items:center;padding:12px 14px}
-  .ezbc:not(.ezlead) .ezbi,
-  .ezbc:not(.ezlead) .ezbt,
-  .ezbc:not(.ezlead) .ezrule{display:none}
-  .ezbc:not(.ezlead) .ezbn{grid-column:1;grid-row:1 / span 2;margin:0;
- font-size:28px}
-  /* "11" and "areas" stack in a 74px column rather than shrinking to fit */
-  .ezbc:not(.ezlead) .ezbnu{display:block;margin:2px 0 0;font-size:.46em}
-  /* the wrapper is what the grid places now; the square inside it is the
-   thing that is hidden, so the flex row collapses to the heading alone and
-   the 16px gap goes with it */
-  .ezbc:not(.ezlead) .ezbhead{grid-column:2;grid-row:1}
-  .ezbc:not(.ezlead) .ezbh{font-size:17px;line-height:1.15}
-  .ezbc:not(.ezlead) .ezbh br{display:none}
-  .ezbc:not(.ezlead) .ezbcap{grid-column:2;grid-row:2;margin:3px 0 0;
- font-size:12.5px}
-  /* the lead card is the only one that still shows the square, and the
-   space the sources left pays for the figure */
-  .ezbc.ezlead .ezbn{font-size:42px}
+  #intake .ezwrap h2.ezh{font-size:34px}
+  .ezcards{display:flex;align-items:stretch;gap:0;
+ transform:translateX(var(--ezx,0%));transition:transform .4s ease}
+  .ezbc{flex:0 0 100%;min-width:100%;display:flex;flex-direction:column;
+ padding:26px 24px;border-radius:24px}
+  .ezbh{font-size:23px}
+  .ezbt{margin-top:14px;gap:9px}
+  .ezbt li{font-size:13.5px;line-height:1.45}
+  /* the card that has both lists shows the two-line one here and keeps the
+   four stubs for the two desktop columns */
+  .ezbc:has(.ezbtnarrow) .ezbtwide{display:none}
+  .ezbt.ezbtnarrow{display:grid}
+  .ezrule{margin-top:auto}
+  .ezbn{font-size:46px;margin-top:16px}
+  .ezbcap{font-size:13px;margin-top:6px}
+}
+/* No rotation, no transition, no dots: the three cards stack and the page
+ scrolls, which is what it did before the carousel and what this setting is
+ asking for. The timer is stopped in script as well, because a media query
+ cannot clear a setInterval. */
+@media(max-width:1023px) and (prefers-reduced-motion:reduce){
+  .ezcarousel{overflow:visible}
+  .ezcards{display:grid;gap:9px;transform:none;transition:none}
+  .ezbc{min-width:0}
+  .ezdots{display:none}
 }
 @media(min-width:1024px){
   #intake .iwrap:has(.ezwrap){display:flex;flex-direction:column;
@@ -1151,6 +1190,10 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
    is content-sized on desktop, so there is no free space to share anyway */
   #intake .ezwrap h2.ezh{font-size:54px;margin:0}
   .ezlede{font-size:15px;margin-top:14px}
+  /* the viewport stops being a box, so .ezcards is a direct grid child of
+   .ezwrap and the desktop row is exactly what it was */
+  .ezcarousel{display:contents}
+  .ezdots{display:none}
   .ezcards{grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
   .ezbc{display:flex;flex-direction:column;padding:22px;
  box-shadow:0 4px 18px rgba(20,18,43,.07)}
@@ -9027,6 +9070,7 @@ function mapKickSoon(){
  MAPKICK=setTimeout(()=>{MAPKICK=null;mapKick();},120);
 }
 window.addEventListener('resize',mapKickSoon);
+window.addEventListener('resize',ezRotSync);
 /* the quadrant lists show fewer rows on a phone, so a width change has to
  re-render them. It is the same four panels either way; only the row counts
  differ, which is why this is a re-render and not a second component. */
@@ -11744,6 +11788,7 @@ async function skipIntake(){
  if(first){goSection('explore'); setExploreMode(defaultExploreMode());}
 }
 function closeIntake(){
+ ezRotStop();
  document.getElementById('intake').classList.remove('on');
  document.body.style.overflow='';
 }
@@ -11958,6 +12003,11 @@ function ezFacts(){
  head:'Know the <br>neighbourhood',
  ticks:['Upcoming property projects','Government updates',
         'Metro progress','Commute times and flood risk'],
+  /* four ticks in two columns is a desktop shape. One slide at a time has
+   the width for sentences, so the phone gets the same four facts as two
+   lines rather than four stubs in a column 150px wide. */
+ ticksNarrow:['Upcoming property projects and government updates',
+              'Metro progress, commute times and flood risk'],
   /* the unit is its own slot and is never welded onto the figure, the same
    rule metricTile keeps: concatenated, "11 areas" sets at 44px and reads
    as one string. */
@@ -11980,21 +12030,125 @@ function ezFacts(){
  every detail panel, through srcFooter and in the method sheets. This is the
  entry screen declining to spend four lines on provenance a stranger has not
  asked for yet, not the app dropping a claim's date. */
-function ezCard(f){
+const ezTitle=f=>f.head.replace(/\s*<br>\s*/,' ');
+function ezCard(f,i,n){
  const tick='<span class="ezbk">'+uiIcon('check','nav',false)+'</span>';
- return '<div class="ezbc'+(f.lead?' ezlead':'')+'">'
+ const list=(arr,cls)=>'<ul class="ezbt '+cls+'">'
+   +arr.map(t=>'<li>'+tick+'<span>'+esc(t)+'</span></li>').join('')+'</ul>';
+ return '<div class="ezbc'+(f.lead?' ezlead':'')+'" role="group"'
+  +' aria-roledescription="slide" aria-label="'+(i+1)+' of '+n+', '+esc(ezTitle(f))+'"'
+  +' data-title="'+esc(ezTitle(f))+'">'
   +'<div class="ezbhead">'
    +'<span class="ezbi">'+uiIcon(f.icon,'nav',false)+'</span>'
    +'<h3 class="ezbh">'+f.head+'</h3>'
   +'</div>'
-  +'<ul class="ezbt'+(f.two?' ezbt2':'')+'">'
-   +f.ticks.map(t=>'<li>'+tick+'<span>'+esc(t)+'</span></li>').join('')
-  +'</ul>'
+  +list(f.ticks,'ezbtwide'+(f.two?' ezbt2':''))
+  +(f.ticksNarrow?list(f.ticksNarrow,'ezbtnarrow'):'')
   +'<div class="ezrule" aria-hidden="true"></div>'
   +'<div class="ezbn">'+esc(f.fig)
    +(f.unit?'<span class="ezbnu">'+esc(f.unit)+'</span>':'')+'</div>'
   +'<p class="ezbcap">'+esc(f.cap)+'</p>'
  +'</div>';
+}
+/* ---- the phone's carousel ----
+ Three cards stacked on a phone left each about 130px, which crushed the type
+ to the floor of readable. One slide at a time gives each of them the room it
+ needs. Desktop is untouched: above 1024 the same three cards sit side by side
+ and none of this applies, which is why the transform lives inside the mobile
+ media query rather than in an inline style a query cannot beat.
+
+ Auto-rotating panels are among the least-read things on any page, so the
+ rules matter more than the mechanism:
+
+   five seconds, not three, which is long enough to read a heading, two ticks
+     and a figure without hurrying
+   it STOPS FOR GOOD on any interaction, and the timer does not restart
+   two passes and then it rests on slide one; a page that never stops moving
+     is a page nobody settles on
+   prefers-reduced-motion stops it dead and the three cards stack and scroll,
+     which is what that setting is for
+   the live region speaks only after somebody has taken hold of it, because
+     an automatic change must not interrupt a screen reader mid-sentence */
+const EZSLIDES=3, EZPASSES=2, EZEVERY=5000;
+let EZROT=null, EZSLIDE=0, EZTURNS=0, EZSTOP=false, EZDRAG=null;
+const ezNarrow=()=>window.innerWidth<1024;
+function ezDots(n){
+ let out='<div class="ezdots" role="group" aria-label="Choose a slide">';
+ for(let i=0;i<n;i++)out+='<button type="button" class="ezdot'+(i?'':' on')+'"'
+   +' data-slide="'+i+'" aria-label="Slide '+(i+1)+' of '+n+'"'
+   +' aria-current="'+(i?'false':'true')+'"></button>';
+ return out+'</div><p class="ezlive" id="ezLive" role="status" aria-live="polite"></p>';
+}
+/* The track has to exist AND the overlay has to be open. closeIntake() hides
+ #intake without re-rendering #iwrap, so the track survives a close: without
+ the second half of this test a resize could start a timer rotating a
+ carousel nobody can see. */
+function ezLive(){
+ const iv=document.getElementById('intake');
+ return !!(document.getElementById('ezTrack')&&iv&&iv.classList.contains('on'));
+}
+function ezRotStop(){ if(EZROT){clearInterval(EZROT);EZROT=null;} }
+function ezRotStart(){
+ ezRotStop();
+ /* mktReduced() is the file's one reduced-motion test and is reused rather
+  than duplicated. A media query cannot stop a setInterval, which is why this
+  one lives in script at all. */
+ if(EZSTOP||mktReduced()||!ezNarrow())return;
+ if(!ezLive())return;
+ EZROT=setInterval(ezRotTick,EZEVERY);
+}
+function ezRotTick(){
+ /* the entry screen can go away under the timer, and a stale interval
+  translating a grid behind the questions is exactly the bug this guard and
+  the ezRotStop() in renderIntake and closeIntake exist for */
+ if(!ezLive()){ezRotStop();return;}
+ EZTURNS++;
+ ezGoSlide(EZSLIDE+1,false);
+ if(EZTURNS>=EZSLIDES*EZPASSES){EZSTOP=true;ezRotStop();}
+}
+function ezGoSlide(i,byUser){
+ const t=document.getElementById('ezTrack'); if(!t)return;
+ const n=t.children.length; if(!n)return;
+ EZSLIDE=((i%n)+n)%n;
+ t.style.setProperty('--ezx',(-EZSLIDE*100)+'%');
+ [...t.children].forEach((s,k)=>s.setAttribute('aria-hidden',k===EZSLIDE?'false':'true'));
+ document.querySelectorAll('.ezdot').forEach((d,k)=>{
+ d.classList.toggle('on',k===EZSLIDE);
+ d.setAttribute('aria-current',k===EZSLIDE?'true':'false');
+ });
+ if(byUser){
+ const live=document.getElementById('ezLive');
+ if(live)live.textContent='Slide '+(EZSLIDE+1)+' of '+n+': '
+   +(t.children[EZSLIDE].dataset.title||'');
+ }
+}
+/* one hand on it is enough: the timer dies and does not come back */
+function ezTouched(){ EZSTOP=true; ezRotStop(); }
+function ezWireCarousel(){
+ const t=document.getElementById('ezTrack'); if(!t)return;
+ EZSLIDE=0; EZTURNS=0; EZSTOP=false; EZDRAG=null;
+ t.style.setProperty('--ezx','0%');
+ t.addEventListener('pointerdown',e=>{EZDRAG={x:e.clientX,y:e.clientY};});
+ t.addEventListener('pointercancel',()=>{EZDRAG=null;});
+ t.addEventListener('pointerup',e=>{
+ const d=EZDRAG; EZDRAG=null;
+ if(!ezNarrow())return;
+ ezTouched();                       /* a tap counts as much as a swipe */
+ if(!d)return;
+ const dx=e.clientX-d.x, dy=e.clientY-d.y;
+ if(Math.abs(dx)>=30&&Math.abs(dx)>Math.abs(dy))ezGoSlide(EZSLIDE+(dx<0?1:-1),true);
+ });
+ document.querySelectorAll('.ezdot').forEach(b=>{
+ b.addEventListener('click',()=>{ezTouched();ezGoSlide(+b.dataset.slide,true);});
+ b.addEventListener('focus',ezTouched);
+ });
+ ezRotStart();
+}
+/* crossing the breakpoint with the screen open: the transform is scoped to
+ the mobile query so nothing moves on desktop, but the timer has to know */
+function ezRotSync(){
+ if(!ezLive()){ezRotStop();return;}
+ if(!ezNarrow()||EZSTOP||mktReduced())ezRotStop(); else if(!EZROT)ezRotStart();
 }
 function scrVoice(){
  const live=!!VREC, open=VOPEN||live;
@@ -12018,7 +12172,12 @@ function scrVoice(){
   +'<h2 class="ezh">Know what to pay.<br>Know where it’s worth buying.</h2>'
   +'<p class="ezlede">Compare Bengaluru neighbourhoods by price, growth and '
    +'what’s changing around them.</p>'
-  +'<div class="ezcards">'+ezFacts().map(ezCard).join('')+'</div>'
+  +(()=>{const f=ezFacts();
+    return '<div class="ezcarousel" role="group" aria-roledescription="carousel"'
+     +' aria-label="What this desk shows you">'
+     +'<div class="ezcards" id="ezTrack">'
+      +f.map((x,i)=>ezCard(x,i,f.length)).join('')
+     +'</div></div>'+ezDots(f.length);})()
   +'<div class="ezask">'
    +'<button type="button" class="act ezgo" id="vTap">Find areas that fit me'
     +'<span class="ezarrow">'+uiIcon('next','nav',false)+'</span></button>'
@@ -12691,6 +12850,9 @@ function scrProfile(){
 }
 
 function renderIntake(){
+ /* every render replaces #iwrap, so a running carousel timer would be left
+  pointing at a track that no longer exists */
+ ezRotStop();
  const w=document.getElementById('iwrap');
  const x=document.getElementById('intakeClose');
  if(x)x.hidden=!hasProfile();
@@ -13152,6 +13314,7 @@ function wireIntake(){
  /* opening the mic is a render, not a permission prompt: the microphone is
   still only asked for on the tap of the button inside */
  if(g('vSay'))g('vSay').addEventListener('click',()=>{VOPEN=!VOPEN; renderIntake();});
+ ezWireCarousel();
  /* the entry screen's one way to an account. The sheet opens OVER it rather
   than replacing it: the three findings are the argument for having an
   account, so they stay on screen behind the thing asking for one. The mic

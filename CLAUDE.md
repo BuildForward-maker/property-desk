@@ -1243,23 +1243,85 @@ every rule to the foot of its own flex column and the grid equalises the
 heights, so the three land together whatever sits above them. Measured at
 1280: all three at the same top to the hundredth of a pixel.
 
-### The phone keeps the lead card whole and collapses the other two
+### The phone shows one card at a time
 
-Three full cards do not fit 844, and the answer is not to shrink all three.
-The lead card keeps everything, because it is the argument. Cards 2 and 3
-become one row each: the figure in a **fixed 74px column** so both line up,
-the heading and the caption beside it, with the icon, the ticks and the rule
-dropped. The ticks they lose describe the same product the lead card has
-already described.
+Three cards stacked on a phone left each about 130px, and two of them had
+collapsed to a figure and a heading with their ticks dropped. One slide at a
+time gives all three the whole card: the 48px square beside a 23px heading,
+ticks at 13.5px, the rule pushed down and the figure at 46px. Nothing is
+abbreviated any more; it is paged instead.
 
-The lead card keeps the square beside its heading; cards 2 and 3 hide the
-square, so the flex row collapses to the heading alone and the 16px gap goes
-with it. It is `.ezbhead` that the grid places, not `.ezbh`.
+**The track's height is the tallest slide and never changes**, and it is not
+a number anybody typed. `align-items:stretch` on a flex row makes every
+slide the height of the tallest, and the row is the height of its tallest
+item, so the measurement is the browser's and it survives a copy change. A
+height that moved per slide would move the button under the thumb every five
+seconds, which is worse than any amount of empty card.
+
+Which card is tallest depends on the width, which is the argument for
+measuring rather than picking one: at 390 cards 1 and 3 tie at 272.42, and
+at 375 card 3's two lines wrap and it alone sets 291.99.
+
+**Card 3 carries two tick lists.** Four stubs in two columns is a desktop
+shape; one slide has the width for sentences, so the phone gets the same
+four facts as two lines. `ezFacts()` holds both, `ezCard` renders both and a
+media query hides one, so there is no width test in script.
+
+**`.ezbt.ezbtnarrow`, not `.ezbtnarrow`.** A bare class is (0,1,0), exactly
+the same as the `.ezbt{display:grid}` declared below it, and the later rule
+wins: desktop shipped card 3 with all six ticks and 30px of overflow for as
+long as it took to measure it. This is the same hazard as `.iqh` against
+`.iwrap h2`, one step smaller.
 
 Scoped in `@media(max-width:1023px)` rather than written mobile-first and
-undone. `.ezbc:not(.ezlead)` is (0,2,0) against the desktop `.ezbc` at
-(0,1,0), so undoing it would have meant matching the specificity in nine
-places.
+undone. Above 1024 `.ezcarousel` is `display:contents`, so `.ezcards` is a
+direct grid child of `.ezwrap` and the desktop row is **byte-for-byte what
+it was**: cards at 172, 489.33 and 806.66, all 294.41 tall, hairlines at
+464.38, no dots and no timer.
+
+### The carousel's rules matter more than its mechanism
+
+Auto-rotating panels are among the least-read things on any page, so what
+makes this one tolerable is not the transform:
+
+- **Five seconds a slide, not three.** Long enough to read a heading, two
+  ticks and a figure without hurrying.
+- **It stops for good on any interaction** — a swipe, a tap anywhere on the
+  track, or focusing a dot. `ezTouched()` sets `EZSTOP` and clears the
+  interval, and nothing restarts it.
+- **Swipeable**, with a 30px threshold and a test that the drag was more
+  horizontal than vertical, so a vertical scroll is not a page turn. The
+  dots are real buttons with a **44px reach from a pseudo-element** and an
+  8px body, which is the rule the info dot already keeps.
+- **Two passes, then it rests on slide one.** Six advances from slide one
+  land back on slide one. A page that never stops moving is a page nobody
+  settles on.
+- **`prefers-reduced-motion` stops it dead.** No rotation and no transition:
+  the three cards stack and the page scrolls, exactly as they did before the
+  carousel existed. Measured with the authored block active: `display:grid`,
+  no transform, dots hidden, and 1135px of scroll in an 844px window.
+- **400ms, `transform` only.**
+
+**The live region speaks only after somebody has taken hold of it.**
+`ezGoSlide(i, byUser)` writes to `#ezLive` on a swipe or a dot and never on
+a tick, because an automatic change must not interrupt a screen reader
+mid-sentence. The track is a group with `aria-roledescription="carousel"`,
+each slide carries `"2 of 3, See what buyers paid"`, off-screen slides take
+`aria-hidden` (they hold nothing focusable), and the dots carry
+`aria-label` and `aria-current`.
+
+**The timer has two guards, and `ezLive()` is both of them.** `renderIntake`
+replaces `#iwrap` on every render and `closeIntake` hides `#intake` without
+replacing it, so a running interval could be left pointing at a track that
+is gone **or** at one that is merely invisible. `ezLive()` tests that the
+track exists *and* that the overlay is open, and `ezRotStart`, `ezRotTick`
+and `ezRotSync` all ask it. Without the second half, a window resize behind
+a closed overlay would start a carousel nobody can see.
+
+`matchMedia` is used here for `prefers-reduced-motion` through the existing
+`mktReduced()`, and the breakpoint is `innerWidth` as everywhere else. A
+media query cannot clear a `setInterval`, which is the only reason any of
+this is in script.
 
 **The space the collapse leaves is shared, not dumped.** `.ezask` keeps
 `margin-top:auto` because a primary button on a phone belongs under the
@@ -1299,21 +1361,25 @@ which is the distinction that rule is about.
 
 **Measured, and these are the numbers to measure against.**
 
-    375x812    812, no scroll   brand 80, headline 110, cards 387, ask 139
-    390x844    844, no scroll   brand 80, headline 110, cards 368, ask 139
+    375x812    812, no scroll   brand 80, headline 104, slide 292,
+                                dots 20, ask 139
+    390x844    844, no scroll   brand 80, headline 69, slide 272,
+                                dots 20, ask 139
     1280x800   800, no scroll   brand 38, headline 110, lede 22,
                                 cards 294, ask 137
 
 The brand row is 80 rather than 38 on the phone because the sign-in pill
-wraps to its own line there. The desktop card came down from 346 to 294 when
-the square moved beside the heading and the sources went.
+wraps to its own line there. The headline is 34px on the phone, which is two
+lines at 390 and three at 375.
 
-**There is slack now, and the two auto margins spend it evenly.** `.ezask`
-and `#intake .ezwrap h2.ezh` each take an auto margin, so flexbox splits the
-free space between them: measured, 53.21px above the headline and 53.21px
-below the cards at 390, and 27.84 each at 375. That is composition, not a
-hole, and it is why the proof sits centred in what is left rather than
-pinned under the brand with a band under it.
+**There is slack, and the two auto margins spend it evenly.** `.ezask` and
+`#intake .ezwrap h2.ezh` each take an auto margin, so flexbox splits the free
+space between them: measured, 104.56px above the headline and 104.56 below
+the dots at 390, and 61.44 each at 375. That is composition rather than a
+hole, and it is the largest it has been, because the carousel took the proof
+block from 387 to 312. **If a later round wants that space, it is the slack
+to spend** — the slide's own height is set by its tallest card and is not a
+number to tune.
 
 1280 once had 36px of overflow, fixed by moving the wrap padding from 28 to
 22, the sub-line's cap from 580 to 680 so it is one line rather than two with
