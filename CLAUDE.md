@@ -1167,35 +1167,52 @@ work out for themselves what any of it bought them. It is three **named
 benefits** now, and the figure is the evidence underneath each one rather
 than the offer itself.
 
-Each card is: an icon in a `--tint` square, a two-line heading in Instrument
-Serif, ticked lines saying what you can do, a hairline, and then the figure
-at 44px/800 in `--primary` with its caption and its source. **The figure sits
-below the rule** because it is the proof and not the pitch, and a reader who
-has just been told what the card is for reads it as evidence rather than as a
-statistic.
+Each card is: a 48px `--tint` square holding the icon **beside** a two-line
+heading in Instrument Serif, ticked lines saying what you can do, a hairline,
+and then the figure at 52px/800 in `--primary` with its caption. **The figure
+sits below the rule** because it is the proof and not the pitch, and a reader
+who has just been told what the card is for reads it as evidence rather than
+as a statistic.
+
+**The square and the heading are one row, centred on each other.** Stacked,
+the square floated alone above a heading that started 44px down the card, and
+the eye read a glyph before it read a word. Side by side with a 16px gap, the
+heading is the first thing read and the square aligns to the whole two-line
+block rather than to its first line: measured at 1280, the square's centre
+and the heading's centre are the same y on all three cards. It cost nothing
+to find 52px a card, because the space came from a gap rather than from
+shrinking anything.
 
     1  Property market investment trends   growth icon, --tint card
        Compare locations, price per sq ft and growth trends
        See where price growth is rising or slowing
        16% -> 3%   Price growth slowed on Sarjapur Road
-       Knight Frank, H1 2025 and H1 2026
 
     2  See what buyers paid                tag icon
        Compare asking prices with registered sale prices
        +43%        Median asking-price gap in the sample
-       Karnataka registry, Sept 2026
 
     3  Know the neighbourhood              location icon, four ticks, two columns
        Upcoming property projects / Government updates
        Metro progress / Commute times and flood risk
        11 areas    Classified as high flood risk
-       BBMP and KSNDMC, May 2026
 
 **Every figure is still read off the data.** `ezFacts()` returns all three
 from `AREAS`; nothing on this screen is typed in, and a card whose figure
 cannot be computed is dropped rather than faked. Card 1 reads `growth25` and
 `growth26`, card 2 `frothMedian()` over `frothList()`, card 3 the count of
 areas whose `floodOf()` tier is high.
+
+**The source lines are not rendered on this screen, and that is a layout
+decision rather than a change of mind about dates.** `who` and `when` are
+still carried on every fact and are still read for nothing else; the figures
+are still computed rather than typed; and the same sources still appear on
+every detail panel through `srcFooter`, on the Prices and Risk tabs, and at
+the foot of every method sheet, which is where somebody who wants to check a
+claim goes. Four lines of 10px provenance under three cards is a footnote a
+stranger has not asked for yet. **If a figure is ever typed in here, the
+source has to come back with it**, because then the screen would be making a
+claim rather than printing one.
 
 **Card 1 carries `--tint` so the eye lands somewhere first.** No new colour
 entered the palette for it: every surface, rule and glyph on this screen
@@ -1219,6 +1236,13 @@ modifier and not a context override: half the width is half the characters,
 and at 13px "Upcoming property projects" took three lines in a column meant
 to hold two.
 
+**All three hairlines sit on one y, and `.ezrule{margin-top:auto}` is the
+whole mechanism.** Card 2 has one tick, card 1 two and card 3 four in two
+columns, so without it card 2's rule would float high. The auto margin pushes
+every rule to the foot of its own flex column and the grid equalises the
+heights, so the three land together whatever sits above them. Measured at
+1280: all three at the same top to the hundredth of a pixel.
+
 ### The phone keeps the lead card whole and collapses the other two
 
 Three full cards do not fit 844, and the answer is not to shrink all three.
@@ -1228,10 +1252,9 @@ the heading and the caption beside it, with the icon, the ticks and the rule
 dropped. The ticks they lose describe the same product the lead card has
 already described.
 
-The three sources collapse into **one shared line** built from the same
-objects, so a source cannot be stated in one place and missing from another.
-It is a compression and not a removal: a claim without a date is marketing,
-and the date stays on screen.
+The lead card keeps the square beside its heading; cards 2 and 3 hide the
+square, so the flex row collapses to the heading alone and the 16px gap goes
+with it. It is `.ezbhead` that the grid places, not `.ezbh`.
 
 Scoped in `@media(max-width:1023px)` rather than written mobile-first and
 undone. `.ezbc:not(.ezlead)` is (0,2,0) against the desktop `.ezbc` at
@@ -1276,20 +1299,28 @@ which is the distinction that rule is about.
 
 **Measured, and these are the numbers to measure against.**
 
-    375x812    812, no scroll   brand 80, headline 110, cards 413,
-                                source line 14, ask 139
-    390x844    844, no scroll   brand 80, headline 110, cards 395,
-                                source line 14, ask 139
+    375x812    812, no scroll   brand 80, headline 110, cards 387, ask 139
+    390x844    844, no scroll   brand 80, headline 110, cards 368, ask 139
     1280x800   800, no scroll   brand 38, headline 110, lede 22,
-                                cards 346, ask 137
+                                cards 294, ask 137
 
 The brand row is 80 rather than 38 on the phone because the sign-in pill
-wraps to its own line there. 1280 had 36px of overflow until three things
-moved: the wrap padding from 28 to 22, the sub-line's cap from 580 to 680 so
-it is one line rather than two with "them." alone on the second, and
-`.ezbt2` to 12px. 375 had 5px until the wrap padding, the card gap, the rule
-and the figure each gave up two. **Adding anything to this screen has to come
-out of something else**, and at 375 there is nothing left over.
+wraps to its own line there. The desktop card came down from 346 to 294 when
+the square moved beside the heading and the sources went.
+
+**There is slack now, and the two auto margins spend it evenly.** `.ezask`
+and `#intake .ezwrap h2.ezh` each take an auto margin, so flexbox splits the
+free space between them: measured, 53.21px above the headline and 53.21px
+below the cards at 390, and 27.84 each at 375. That is composition, not a
+hole, and it is why the proof sits centred in what is left rather than
+pinned under the brand with a band under it.
+
+1280 once had 36px of overflow, fixed by moving the wrap padding from 28 to
+22, the sub-line's cap from 580 to 680 so it is one line rather than two with
+"them." alone on the second, and `.ezbt2` to 12px. 375 had 5px until the wrap
+padding, the card gap, the rule and the figure each gave up two. **Anything
+added here still has to come out of something else**, and the slack above is
+what a round is allowed to spend before it starts taking.
 
 Two soft radial orbs sit at `z-index:-2` against the grain's `-1`, both
 inside `#intake`'s own stacking context, so they paint above its background

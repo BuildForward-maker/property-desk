@@ -1040,18 +1040,25 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 .ezbc{background:var(--card);border-radius:20px;padding:14px;
  box-shadow:0 2px 10px rgba(20,18,43,.06)}
 .ezbc.ezlead{background:var(--tint);box-shadow:none}
-.ezbi{display:inline-flex;align-items:center;justify-content:center;
- width:34px;height:34px;border-radius:11px;background:var(--tint);
+/* The square and the heading are one row, centred on each other. Stacked,
+ the square floated alone above a heading that started 44px down the card
+ and the eye read the glyph first; beside it, the heading is the first thing
+ read and the square aligns to the whole two-line block rather than to its
+ first line. About 40px a card, recovered by removing a gap rather than by
+ shrinking anything. */
+.ezbhead{display:flex;align-items:center;gap:16px}
+.ezbi{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;
+ width:48px;height:48px;border-radius:14px;background:var(--tint);
  color:var(--primary)}
 /* the lead card IS --tint, so its square inverts rather than disappearing */
 .ezbc.ezlead .ezbi{background:var(--card)}
-.ezbi .ico-g svg{width:18px;height:18px}
+.ezbi .ico-g svg{width:22px;height:22px}
 .ezbh{font-family:var(--serif);font-weight:400;font-size:21px;line-height:1.12;
- letter-spacing:-.01em;color:var(--ink);margin:10px 0 0}
-.ezbt{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}
+ letter-spacing:-.01em;color:var(--ink);margin:0;min-width:0}
+.ezbt{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:7px}
 .ezbt li{display:flex;align-items:flex-start;gap:7px;font-size:12.5px;
- line-height:1.4;color:var(--muted)}
-.ezbk{display:inline-flex;flex:0 0 auto;color:var(--primary);margin-top:1px}
+ line-height:1.5;color:var(--muted)}
+.ezbk{display:inline-flex;flex:0 0 auto;color:var(--primary);margin-top:2px}
 /* .ico-g svg is (0,1,1) and declared later, so a sized glyph needs the same
  shape to win. Same reason as .ezmicg. */
 .ezbk .ico-g svg{width:14px;height:14px}
@@ -1066,10 +1073,7 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
 /* the unit is its own slot and is never concatenated into the value, the
  same rule metricTile keeps */
 .ezbnu{font-size:.42em;font-weight:700;letter-spacing:0;margin-left:6px}
-.ezbcap{margin:5px 0 0;font-size:12.5px;line-height:1.4;color:var(--muted)}
-.ezbsrc{margin-top:7px;font-size:10px;line-height:1.4;color:var(--muted)}
-.ezsrcline{margin:9px 0 0;font-size:10px;line-height:1.4;color:var(--muted);
- text-align:center}
+.ezbcap{margin:6px 0 0;font-size:13.5px;line-height:1.4;color:var(--muted)}
 /* ---- the ask ----
  Two auto margins, not one. The ask stays pinned to the bottom because a
  primary button on a phone belongs under the thumb, but a single auto margin
@@ -1117,21 +1121,26 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
  undoing it would have meant matching the specificity in nine places. */
 @media(max-width:1023px){
   .ezlede{display:none}
-  .ezbsrc{display:none}
   .ezbc:not(.ezlead){display:grid;grid-template-columns:74px 1fr;
  column-gap:12px;align-items:center;padding:12px 14px}
   .ezbc:not(.ezlead) .ezbi,
   .ezbc:not(.ezlead) .ezbt,
   .ezbc:not(.ezlead) .ezrule{display:none}
   .ezbc:not(.ezlead) .ezbn{grid-column:1;grid-row:1 / span 2;margin:0;
- font-size:27px}
+ font-size:28px}
   /* "11" and "areas" stack in a 74px column rather than shrinking to fit */
   .ezbc:not(.ezlead) .ezbnu{display:block;margin:2px 0 0;font-size:.46em}
-  .ezbc:not(.ezlead) .ezbh{grid-column:2;grid-row:1;margin:0;font-size:17px;
- line-height:1.15}
+  /* the wrapper is what the grid places now; the square inside it is the
+   thing that is hidden, so the flex row collapses to the heading alone and
+   the 16px gap goes with it */
+  .ezbc:not(.ezlead) .ezbhead{grid-column:2;grid-row:1}
+  .ezbc:not(.ezlead) .ezbh{font-size:17px;line-height:1.15}
   .ezbc:not(.ezlead) .ezbh br{display:none}
   .ezbc:not(.ezlead) .ezbcap{grid-column:2;grid-row:2;margin:3px 0 0;
- font-size:12px}
+ font-size:12.5px}
+  /* the lead card is the only one that still shows the square, and the
+   space the sources left pays for the figure */
+  .ezbc.ezlead .ezbn{font-size:42px}
 }
 @media(min-width:1024px){
   #intake .iwrap:has(.ezwrap){display:flex;flex-direction:column;
@@ -1146,11 +1155,11 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
   .ezbc{display:flex;flex-direction:column;padding:22px;
  box-shadow:0 4px 18px rgba(20,18,43,.07)}
   .ezbc.ezlead{box-shadow:0 4px 18px rgba(67,56,202,.10)}
-  .ezbi{width:38px;height:38px;border-radius:12px}
-  .ezbi .ico-g svg{width:20px;height:20px}
-  .ezbh{font-size:23px;margin-top:14px}
-  .ezbt{margin-top:12px;gap:8px}
-  .ezbt li{font-size:13px}
+  .ezbi{width:48px;height:48px;border-radius:14px}
+  .ezbi .ico-g svg{width:22px;height:22px}
+  .ezbh{font-size:23px}
+  .ezbt{margin-top:16px;gap:10px}
+  .ezbt li{font-size:13px;line-height:1.5}
   /* four ticks in two columns, so the card holding four is not twice as
    tall as the card holding one. The 12px is a property of this modifier
    and not a context override: half the width is half the characters, and
@@ -1158,11 +1167,14 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
    to hold two. */
   .ezbt2{grid-template-columns:1fr 1fr;column-gap:10px}
   .ezbt2 li{font-size:12px;gap:6px}
+  /* every card's rule is pushed to the foot of its own flex column, so with
+   the grid equalising the heights the three hairlines land on one y
+   whatever each card holds above them: card 2 has one tick, card 1 two and
+   card 3 four in two columns. Measured at 1280, all three at the same top
+   to the hundredth of a pixel. */
   .ezrule{margin-top:auto}
-  .ezbn{font-size:44px;margin-top:14px}
-  .ezbcap{font-size:13px;margin-top:6px}
-  .ezbsrc{margin-top:9px}
-  .ezsrcline{display:none}
+  .ezbn{font-size:52px;margin-top:16px}
+  .ezbcap{font-size:13.5px;margin-top:7px}
   .ezask{margin-top:26px;padding-top:0}
   .act.ezgo{width:fit-content;margin:0 auto;padding:0 34px;
  min-height:58px;font-size:17px}
@@ -11958,18 +11970,23 @@ function ezFacts(){
  }
  return out;
 }
-/* the phone drops each card's own source and carries one line for the set.
- The names are read off the same objects, so a source cannot be stated in
- one place and missing from the other. */
-function ezSrcLine(){
- const f=ezFacts(); if(!f.length)return '';
- return '<p class="ezsrcline">'+esc(f.map(x=>x.who).join(', '))+' · 2026</p>';
-}
+/* The icon and the heading share a row, so the square aligns to the two-line
+ heading block rather than floating above a heading that starts low. The
+ heading is then the first thing read, which is the point of the card.
+
+ `who` and `when` are still carried on every fact and are deliberately NOT
+ rendered here any more. Nothing has been deleted from the data, the figures
+ are still computed rather than typed, and the same sources still appear on
+ every detail panel, through srcFooter and in the method sheets. This is the
+ entry screen declining to spend four lines on provenance a stranger has not
+ asked for yet, not the app dropping a claim's date. */
 function ezCard(f){
  const tick='<span class="ezbk">'+uiIcon('check','nav',false)+'</span>';
  return '<div class="ezbc'+(f.lead?' ezlead':'')+'">'
-  +'<span class="ezbi">'+uiIcon(f.icon,'nav',false)+'</span>'
-  +'<h3 class="ezbh">'+f.head+'</h3>'
+  +'<div class="ezbhead">'
+   +'<span class="ezbi">'+uiIcon(f.icon,'nav',false)+'</span>'
+   +'<h3 class="ezbh">'+f.head+'</h3>'
+  +'</div>'
   +'<ul class="ezbt'+(f.two?' ezbt2':'')+'">'
    +f.ticks.map(t=>'<li>'+tick+'<span>'+esc(t)+'</span></li>').join('')
   +'</ul>'
@@ -11977,7 +11994,6 @@ function ezCard(f){
   +'<div class="ezbn">'+esc(f.fig)
    +(f.unit?'<span class="ezbnu">'+esc(f.unit)+'</span>':'')+'</div>'
   +'<p class="ezbcap">'+esc(f.cap)+'</p>'
-  +'<div class="ezbsrc">'+esc(f.who+' · '+f.when)+'</div>'
  +'</div>';
 }
 function scrVoice(){
@@ -12003,7 +12019,6 @@ function scrVoice(){
   +'<p class="ezlede">Compare Bengaluru neighbourhoods by price, growth and '
    +'what’s changing around them.</p>'
   +'<div class="ezcards">'+ezFacts().map(ezCard).join('')+'</div>'
-  +ezSrcLine()
   +'<div class="ezask">'
    +'<button type="button" class="act ezgo" id="vTap">Find areas that fit me'
     +'<span class="ezarrow">'+uiIcon('next','nav',false)+'</span></button>'
