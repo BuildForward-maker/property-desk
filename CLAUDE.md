@@ -1329,7 +1329,7 @@ makes this one tolerable is not the transform:
 - **It stops for good on any interaction** — a swipe, a tap anywhere on the
   track, or an arrow key. `ezTouched()` sets `EZSTOP` and clears the
   interval, and nothing restarts it.
-- **The swipe is the control, and there are no dots.** See below.
+- **The swipe is the control and the dots are the indicator.** See below.
 - **Two passes, then it rests on slide one.** Six advances from slide one
   land back on slide one. A page that never stops moving is a page nobody
   settles on.
@@ -1339,13 +1339,27 @@ makes this one tolerable is not the transform:
   no transform, dots hidden, and 1135px of scroll in an 844px window.
 - **400ms, `transform` only.**
 
-### The swipe is the control, and the next card's edge is the indicator
+### The swipe is the control; the dots and the peek are the indicator
 
-The dots are gone. What says there is more is the **next card's own edge**:
-the slide is 92% of the track and the 8% left over is a 16px gap plus about
-12px of the card behind it. A carousel that shows a sliver of the next thing
-does not need a row of indicators to explain itself, and the row was costing
-34px on the one screen that has none to spare.
+Two things say "three cards, swipe", and **neither does it alone**. The peek
+is the **next card's own edge**: the slide is 92% of the track and the 8%
+left over is a 16px gap plus about 12px of the card behind it, which says
+there is more to the right and nothing else. The **dots** say how many there
+are and which one you are on, which is the half the peek cannot carry.
+
+They were removed for a round on the argument that the peek was enough. It
+is not: 12px of a neighbour tells somebody to swipe, not that there are
+three. The removal is recorded here because the reasoning was plausible and
+still wrong, and the test for "is this indicator doing anything" is whether
+you can state what it says that nothing else does.
+
+**The dots are an indicator and not a control.** Spans, not buttons: not
+tappable, not focusable, not in the tab order, and the row is `aria-hidden`
+because the track already announces "2 of 3" and a second voice saying the
+same thing is noise. They are quieter than the control they replaced, 6px
+against 8 and 18px active against 20, with no 44px reach because nothing
+there is a tap target. Verified by pressing Tab fourteen times and listing
+every stop: the carousel itself is one, no dot is.
 
 **Pointer events, not touch.** Responsive mode in a desktop browser fires no
 touch events at all, and that is where this gets tested, so a mouse drag and
@@ -1434,23 +1448,25 @@ which is the distinction that rule is about.
 
 **Measured, and these are the numbers to measure against.**
 
-    375x812    812, no scroll   brand 80, headline 104, slide 321,
-                                ask 139, margins 64 + 64
-    390x844    844, no scroll   brand 80, headline 69, slide 321,
-                                ask 139, margins 97 + 97
+    375x812    812, no scroll   brand 80, headline 104, slide 331,
+                                dots 6 + 10, ask 139, margins 51 + 51
+    390x844    844, no scroll   brand 80, headline 69, slide 331,
+                                dots 6 + 10, ask 139, margins 84 + 84
     1280x800   800, no scroll   cards 293 at 172 / 489.33 / 806.66
 
-The slide is 321.38: 319 of content, plus the 1px border the phone's card
+The slide is 331.38: 329 of content, plus the 1px border the phone's card
 carries top and bottom.
 
-**All three cards are the same height at both phone widths**, 321.38
-naturally, so nothing is stretched at all. The 92% slide narrowed the column
-enough that card 1's ticks wrap to match the other two.
+**All three cards are the same height at both phone widths**, so nothing is
+stretched at all. The 92% slide narrowed the column enough that card 1's
+ticks wrap to match the other two.
 
-**The dots' 34px went back to the margins**, 17 to each, which is why they
-read 64 and 97 rather than 47 and 80. The slide is set by its tallest card
-and is not a number to tune, so spending that again means the card's own
-metrics. It is the slack to take from if a later round wants it.
+**The margins are the screen's ledger and every round pays into it.** The
+dots cost 16 (a 6px row and a 10px margin) and the card took 10 more
+(padding 30/26 to 32/28, the figure 50 to 52, the gap above it 22 to 26), so
+97 and 64 became 84 and 51. The slide's height is set by its tallest card
+and is **not** a number to tune: anything that wants this space has to come
+out of the card's own metrics, and 375 is the width that runs out first.
     1280x800   800, no scroll   brand 38, headline 110, lede 22,
                                 cards 294, ask 137
 

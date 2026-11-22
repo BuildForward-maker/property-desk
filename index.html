@@ -1050,6 +1050,13 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
  wins. Desktop shipped card 3 with all six ticks and 30px of overflow for
  exactly as long as it took to measure it. */
 .ezbt.ezbtnarrow{display:none}
+/* quieter than the control they replaced: 6px against 8, 18px active
+ against 20, and no 44px reach, because nothing here is a tap target */
+.ezdots{display:flex;align-items:center;justify-content:center;gap:7px;
+ margin-top:10px}
+.ezdot{width:6px;height:6px;border-radius:999px;background:var(--line);
+ flex:none;transition:width .25s ease, background .25s ease}
+.ezdot.on{width:18px;background:var(--primary)}
 /* the announcement is text for a screen reader and nothing for an eye */
 .ezlive{position:absolute;width:1px;height:1px;overflow:hidden;
  clip:rect(0 0 0 0);white-space:nowrap;margin:0}
@@ -1154,7 +1161,7 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
    of saying the same thing. The square inverts to white so it stays the
    lighter object on the card. */
   .ezbc{flex:0 0 92%;min-width:0;display:flex;flex-direction:column;
- padding:30px 26px;border-radius:24px;background:var(--tint);
+ padding:32px 28px;border-radius:24px;background:var(--tint);
  border:1px solid var(--line);box-shadow:none;
   /* a drag must not start a text selection or a long-press image menu */
  user-select:none;-webkit-user-select:none}
@@ -1168,7 +1175,7 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
    four stubs for the two desktop columns */
   .ezbc:has(.ezbtnarrow) .ezbtwide{display:none}
   .ezbt.ezbtnarrow{display:grid}
-  .ezbn{font-size:50px;padding-top:22px}
+  .ezbn{font-size:52px;padding-top:26px}
   .ezbcap{font-size:13px;margin-top:6px}
 }
 /* No rotation, no transition, no dots: the three cards stack and the page
@@ -1179,6 +1186,8 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
   .ezcarousel{overflow:visible}
   .ezcards{display:grid;gap:9px;transform:none;transition:none}
   .ezbc{min-width:0}
+  /* three cards on screen at once need no indicator of how many there are */
+  .ezdots{display:none}
 }
 @media(min-width:1024px){
   #intake .iwrap:has(.ezwrap){display:flex;flex-direction:column;
@@ -1192,6 +1201,7 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
   /* the viewport stops being a box, so .ezcards is a direct grid child of
    .ezwrap and the desktop row is exactly what it was */
   .ezcarousel{display:contents}
+  .ezdots{display:none}
   .ezcards{grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
   .ezbc{display:flex;flex-direction:column;padding:22px;
  box-shadow:0 4px 18px rgba(20,18,43,.07)}
@@ -12070,16 +12080,24 @@ function ezCard(f,i,n){
 const EZSLIDES=3, EZPASSES=2, EZEVERY=5000;
 let EZROT=null, EZSLIDE=0, EZTURNS=0, EZSTOP=false, EZDRAG=null;
 const ezNarrow=()=>window.innerWidth<1024;
-/* The dots are gone. What says there is more is the next card's own edge,
- showing at the right: the slide is 92% of the track and the 8% left over is
- a 16px gap plus about 12px of the card behind it. A carousel that shows a
- sliver of the next thing does not need a row of indicators to explain
- itself, and the row was costing 34px on the one screen that has none.
+/* The dots are an INDICATOR and not a control. The peek says "there is more
+ to the right" and nothing else; it cannot say how many or which one, and
+ that is what the dots are for.
 
- Nothing that could only be reached by a dot is lost: the swipe is the
- control, and the arrow keys are the way through for anybody who cannot
- make one. The live region stays, because a screen reader still needs to be
- told what just changed. */
+ So they are spans, not buttons: not tappable, not focusable, not in the tab
+ order, and the row is aria-hidden because the track already announces "2 of
+ 3" to a screen reader and a second voice saying the same thing is noise.
+ The swipe and the arrow keys are the way through, and the dots never were
+ the only way to reach anything.
+
+ They were removed for a round and that was wrong: 12px of a neighbouring
+ card tells somebody to swipe, not that there are three cards. The two
+ together say it; neither does alone. */
+function ezDots(n){
+ let out='<div class="ezdots" aria-hidden="true">';
+ for(let i=0;i<n;i++)out+='<span class="ezdot'+(i?'':' on')+'"></span>';
+ return out+'</div>';
+}
 function ezLiveRegion(){
  return '<p class="ezlive" id="ezLive" role="status" aria-live="polite"></p>';
 }
@@ -12129,6 +12147,7 @@ function ezGoSlide(i,byUser){
  t.style.transition='';
  t.style.setProperty('--ezx',(-ezSlideX(EZSLIDE))+'px');
  [...t.children].forEach((s,k)=>s.setAttribute('aria-hidden',k===EZSLIDE?'false':'true'));
+ document.querySelectorAll('.ezdot').forEach((d,k)=>d.classList.toggle('on',k===EZSLIDE));
  if(byUser){
  const live=document.getElementById('ezLive');
  if(live)live.textContent='Slide '+(EZSLIDE+1)+' of '+n+': '
@@ -12248,7 +12267,7 @@ function scrVoice(){
      +' aria-label="What this desk shows you">'
      +'<div class="ezcards" id="ezTrack">'
       +f.map((x,i)=>ezCard(x,i,f.length)).join('')
-     +'</div></div>'+ezLiveRegion();})()
+     +'</div></div>'+ezDots(f.length)+ezLiveRegion();})()
   +'<div class="ezask">'
    +'<button type="button" class="act ezgo" id="vTap">Find areas that fit me'
     +'<span class="ezarrow">'+uiIcon('next','nav',false)+'</span></button>'
