@@ -1361,10 +1361,10 @@ which is the distinction that rule is about.
 
 **Measured, and these are the numbers to measure against.**
 
-    375x812    812, no scroll   brand 80, headline 104, slide 292,
-                                dots 20, ask 139
-    390x844    844, no scroll   brand 80, headline 69, slide 272,
-                                dots 20, ask 139
+    375x812    812, no scroll   brand 80, headline 104, slide 320,
+                                dots 20, ask 139, margins 47 + 47
+    390x844    844, no scroll   brand 80, headline 69, slide 320,
+                                dots 20, ask 139, margins 81 + 81
     1280x800   800, no scroll   brand 38, headline 110, lede 22,
                                 cards 294, ask 137
 
@@ -1372,14 +1372,22 @@ The brand row is 80 rather than 38 on the phone because the sign-in pill
 wraps to its own line there. The headline is 34px on the phone, which is two
 lines at 390 and three at 375.
 
-**There is slack, and the two auto margins spend it evenly.** `.ezask` and
-`#intake .ezwrap h2.ezh` each take an auto margin, so flexbox splits the free
-space between them: measured, 104.56px above the headline and 104.56 below
-the dots at 390, and 61.44 each at 375. That is composition rather than a
-hole, and it is the largest it has been, because the carousel took the proof
-block from 387 to 312. **If a later round wants that space, it is the slack
-to spend** — the slide's own height is set by its tallest card and is not a
-number to tune.
+**The slack goes into the card first and the two auto margins take what is
+left.** The phone's card is deliberately more generous than the desktop one:
+30px/26px padding against 22, a 52px square against 48, a 25px heading
+against 23, 14px ticks against 13 with a 12px gap, 22px between the rule and
+the figure, and a 50px figure against 52 at three times the width. That took
+the slide from 272 to 320 and the margins from 104 to 81 at 390.
+
+**The two widths cannot both land on the same margin, and that is
+arithmetic rather than a bug.** 844 is 32px taller than 812, and at 390 the
+headline wraps to two lines where at 375 it takes three, which is another
+34.68. Those 67px of extra free space at 390 split two ways are the 33.35
+that separates 47.24 from 80.59. Closing 390 to 40 would need a 401px
+slide, which is 47% of that screen for one card, so **the card is as large
+as it should get and 390 keeps its air**. Do not chase the two numbers
+together by typing a height: the slide's height is set by its tallest card
+and is the browser's measurement, not a constant.
 
 1280 once had 36px of overflow, fixed by moving the wrap padding from 28 to
 22, the sub-line's cap from 580 to 680 so it is one line rather than two with

@@ -1159,16 +1159,19 @@ kbd{font:inherit;font-size:10.5px;border:1px solid var(--line);padding:1px 4px;b
   .ezcards{display:flex;align-items:stretch;gap:0;
  transform:translateX(var(--ezx,0%));transition:transform .4s ease}
   .ezbc{flex:0 0 100%;min-width:100%;display:flex;flex-direction:column;
- padding:26px 24px;border-radius:24px}
-  .ezbh{font-size:23px}
-  .ezbt{margin-top:14px;gap:9px}
-  .ezbt li{font-size:13.5px;line-height:1.45}
+ padding:30px 26px;border-radius:24px}
+  /* the square is bigger here than on desktop, because here it is the only
+   thing competing with a 25px heading rather than one of three in a row */
+  .ezbi{width:52px;height:52px;border-radius:16px}
+  .ezbh{font-size:25px}
+  .ezbt{margin-top:14px;gap:12px}
+  .ezbt li{font-size:14px;line-height:1.45}
   /* the card that has both lists shows the two-line one here and keeps the
    four stubs for the two desktop columns */
   .ezbc:has(.ezbtnarrow) .ezbtwide{display:none}
   .ezbt.ezbtnarrow{display:grid}
   .ezrule{margin-top:auto}
-  .ezbn{font-size:46px;margin-top:16px}
+  .ezbn{font-size:50px;margin-top:22px}
   .ezbcap{font-size:13px;margin-top:6px}
 }
 /* No rotation, no transition, no dots: the three cards stack and the page
