@@ -704,6 +704,16 @@ min-height:var(--tap);padding:9px 12px;border:1px solid var(--line);background:v
 color:var(--ink);border-radius:var(--r-seg)}
 textarea{min-height:72px;resize:vertical;line-height:1.45}
 input[type=range]{width:100%;accent-color:var(--accent)}
+/* email and tel are NOT in the rule above, which names number, text and date
+ only, so they fall back to the browser's own 147px: in Settings that put a
+ 147px mobile field and a 147px email field beside a 569px name field. The
+ gate and the sign-in sheet already scope their own; this is the third place
+ that has to. 16px because anything smaller makes iOS zoom the page on
+ focus, the same reason the sign-in sheet gives. */
+#setAcct input[type=email],#setAcct input[type=tel]{width:100%;box-sizing:border-box;
+ font:inherit;font-size:16px;min-height:var(--tap);padding:9px 12px;
+ border:1px solid var(--line);background:var(--card);color:var(--ink);
+ border-radius:var(--r-seg)}
 input:focus-visible,select:focus-visible,button:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .rowout{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid var(--line-soft);font-size:14px}
 .rowout.total{border-bottom:0;border-top:1.5px solid var(--ink);margin-top:6px;padding-top:11px;font-weight:700;font-size:16px}
@@ -2000,6 +2010,21 @@ td,th{border-color:var(--line)}
 .acctrow{display:flex;justify-content:space-between;gap:12px;padding:8px 0;font-size:13px;
  border-bottom:1px solid var(--line-soft)}
 .acctrow:last-child{border-bottom:0}
+/* ---- who has access ----
+ Named .aclist rather than .acl: one letter from .act, which is a button, and
+ a typo there would style silently instead of failing. */
+.aclist{display:flex;flex-direction:column;border:1px solid var(--line);
+ border-radius:var(--r-seg);overflow:hidden}
+.acrow{display:flex;align-items:center;gap:10px;padding:10px 12px;
+ border-top:1px solid var(--line-soft);background:var(--card)}
+.acrow:first-child{border-top:0}
+.acwho{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.acwho b{font-size:13.5px;font-weight:700;color:var(--ink);
+ overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.acwho small{font-size:11.5px;color:var(--muted);
+ overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.acrole{font-family:var(--label);font-size:10px;font-weight:700;letter-spacing:.07em;
+ text-transform:uppercase;color:var(--muted);flex:0 0 auto}
 .acctrow span{color:var(--muted)}
 .acctrow b{font-weight:700;word-break:break-all;text-align:right}
 
@@ -4253,13 +4278,13 @@ alter publication supabase_realtime add table desk_prefs;</pre>
 
     <div class="step"><div class="num">5</div><div>
       <h3>Generate the shared link</h3>
-      <p style="font-size:14px">Fill this in and it builds the link. The workspace code keeps your data separate from anyone else using the same file, treat it like a password.</p>
+      <p style="font-size:14px">Fill this in and it builds the link. The workspace code names which workspace the link opens; it is not a password and holding it grants nothing. Who can read a workspace is decided by membership, and the only way in is somebody already in it adding you under Your account.</p>
       <div class="grid2" style="margin-top:14px">
         <div class="calc">
           <div class="field"><label for="cfUrl">Supabase Project URL</label><input type="text" id="cfUrl" placeholder="https://abcdefgh.supabase.co"></div>
           <div class="field"><label for="cfKey">anon public key</label><input type="text" id="cfKey" placeholder="eyJhbGciOiJIUzI1NiIs…"></div>
           <div class="field"><label for="cfBase">Where you hosted it <span class="hint">Paste the Netlify or Pages address. Leave blank to use this page's address.</span></label><input type="text" id="cfBase" placeholder="https://your-site.netlify.app"></div>
-          <div class="field"><label for="cfWs">Workspace code <span class="hint">Anyone with the link and this code can read and edit. Keep it long.</span></label>
+          <div class="field"><label for="cfWs">Workspace code <span class="hint">A name, not a key. Somebody who has it and is not a member is told the workspace is not shared with them.</span></label>
             <div style="display:flex;gap:8px"><input type="text" id="cfWs"><button class="act ghost small" id="genWs">New</button></div></div>
           <div class="field" style="margin-bottom:0"><label for="cfName">Your name <span class="hint">So each change is attributed in the activity feed</span></label><input type="text" id="cfName" placeholder="e.g. Arun"></div>
         </div>
@@ -4549,10 +4574,11 @@ function setConn(state,text){
  - A magic link is opened wherever the person reads their email, often not
  the device that asked for it, so the flow stays implicit rather than PKCE,
  whose verifier only exists in the browser that started it.
- - Somebody who already has rows keyed to a workspace with no membership row
- would lose them the moment the policies tightened. claimWorkspace() is the
- one-time door back in, and it is on the profile screen rather than buried
- in settings, because that is the first screen they will see. */
+ - There is no way into a workspace except being added by somebody already
+ in it. The one-time claim is gone: it existed to carry development rows
+ across the move to accounts, that move is done, and it was the last route
+ by which holding a code could become membership. A workspace with no
+ members is now unreachable rather than claimable. */
 let AUTH={user:null,profile:null,ws:[],state:'off',isAdmin:false};
 /* 'off'    no backend in the link: local mode, no gate
    'out'    there is a backend and nobody is signed in
@@ -4617,17 +4643,37 @@ async function saveProfile(name,mobile){
  return row;
 }
 const dupe=e=>/duplicate key|already exists|23505/i.test((e&&(e.message||e.details))||'');
-async function joinWorkspace(code,role){
+/* ---- a workspace is created, never claimed ----
+ joinWorkspace(code) is gone, and with it the only way a person could put
+ themselves into a workspace they were not added to. A code is not a key any
+ more: it names a workspace and grants nothing, and the one route in is an
+ existing member adding you.
+
+ The server generates the code, because the old client-side insert only
+ worked under the `ws_unclaimed()` arm of the wm_insert policy, and that arm
+ IS the claim. Dropping it without moving creation server-side would stop
+ anybody ever opening an account, which is the trap in deleting this: the
+ clause that let a stranger in was also the clause that let a new user
+ bootstrap. create_workspace() separates them.
+
+ WSNOSQL records the interim. Until the SQL in SETUP.md is run the function
+ does not exist, the old path still answers, and Settings says so rather
+ than letting a half-applied change look finished. */
+let WSNOSQL=false;
+async function createWorkspace(){
  if(!sb||!signedIn())throw new Error('Not signed in.');
- const w=(code||'').trim();
- if(!w)throw new Error('Enter the workspace code first.');
- const {error}=await sb.from('workspace_members')
- .insert({workspace:w,user_id:AUTH.user.id,role:role||'owner'});
- if(error&&!dupe(error))throw error;
+ const {data,error}=await sb.rpc('create_workspace');
+ if(!error&&data){ WSNOSQL=false; await loadMemberships(); return data; }
+ /* PGRST202 is "no such function": the accounts SQL has not been re-run. */
+ if(error&&(error.code!=='PGRST202'&&!/could not find the function/i.test(error.message||'')))throw error;
+ WSNOSQL=true;
+ const w=randomCode();
+ const {error:e2}=await sb.from('workspace_members')
+ .insert({workspace:w,user_id:AUTH.user.id,role:'owner'});
+ if(e2&&!dupe(e2))throw e2;
  await loadMemberships();
  return w;
 }
-async function createWorkspace(){ return joinWorkspace(randomCode(),'owner'); }
 /* Adding somebody is a lookup, never a sign-up. Creating an account for a
  person who has not asked for one would put their email in a table they
  never agreed to, so a miss says so plainly and stops. */
@@ -4641,6 +4687,27 @@ async function userIdByEmail(e){
  const {data,error}=await sb.rpc('user_id_by_email',{email:e});
  if(error)throw error;
  return data||null;
+}
+/* Who is in this workspace. It has to be an RPC for the same reason "add by
+ email" is one: `profiles_self` lets a person read their own row and nobody
+ else's, so a member can list the uuids in workspace_members and learn
+ nothing about whose they are. workspace_people() is security definer and
+ answers only for a workspace the caller is already a member of. */
+async function workspacePeople(){
+ if(!sb||!signedIn()||!CFG.w)return null;
+ const {data,error}=await sb.rpc('workspace_people',{w:CFG.w});
+ if(error){
+ if(error.code==='PGRST202'||/could not find the function/i.test(error.message||''))return 'nosql';
+ throw error;
+ }
+ return data||[];
+}
+async function removeMember(uid){
+ if(!sb||!signedIn())throw new Error('Not signed in.');
+ if(uid===AUTH.user.id)throw new Error('You cannot remove yourself.');
+ const {error}=await sb.from('workspace_members')
+ .delete().eq('workspace',CFG.w).eq('user_id',uid);
+ if(error)throw error;
 }
 async function addMemberByEmail(email){
  if(!sb||!signedIn())throw new Error('Not signed in.');
@@ -4844,16 +4911,6 @@ function gPrivacyLine(){
  +'account. Nothing is sold or shared. <button type="button" id="gPriv">'
  +'What we keep, and how to have it deleted</button></p>';
 }
-function gClaimBlock(){
- return '<div class="gsep"><h2>Already using Property Desk?</h2>'
- +'<p>If you have been working in a workspace already, enter its code and it '
- +'comes with you. Everything you have tracked stays where it is.</p>'
- +'<div class="gfield"><label for="gClaim">Workspace code</label>'
- +'<input id="gClaim" type="text" autocomplete="off" spellcheck="false" '
- +'placeholder="the code from your old link" value="'+gEsc(CFG&&CFG.w||'')+'"></div>'
- +'<button type="button" class="act ghost" id="gClaimGo" style="width:100%;justify-content:center">'
- +'Claim this workspace</button></div>';
-}
 function renderGate(){
  const host=document.getElementById('gwrap'); if(!host)return;
  const err=GATE.err?'<div class="gerr">'+gEsc(GATE.err)+'</div>':'';
@@ -4903,7 +4960,6 @@ function renderGate(){
   +'<div class="gread">'+gEsc((AUTH.user&&AUTH.user.email)||'')+'</div></div>'
   +'<button type="button" class="act" id="gSave"'+(GATE.busy?' disabled':'')+'>'
   +(GATE.busy?'Saving':'Save and continue')+'</button>'
-  +gClaimBlock()
   +gPrivacyLine()+'</div>';
  }
  else if(GATE.view==='denied'){
@@ -4915,7 +4971,6 @@ function renderGate(){
   +(AUTH.ws.length
    ?'<button type="button" class="act" id="gMine">Open my own workspace</button>'
    :'')
-  +gClaimBlock()
   +'<div class="gfoot"><button type="button" class="glink" id="gLocal">'
   +'Browse without an account</button> &middot; '
   +'<button type="button" class="glink" id="gOut">Sign out</button></div></div>';
@@ -4966,20 +5021,6 @@ function wireGate(){
   GATE.busy=false;
   const okNow=await enterWorkspace();
   if(okNow){ await afterSignIn(); afterGate(); }
- }catch(e){ fail(e); }});
- if(g('gClaimGo'))g('gClaimGo').addEventListener('click',async()=>{
- const code=(g('gClaim').value||'').trim();
- if(!code){GATE.err='Enter the workspace code first.';renderGate();return;}
- GATE.busy=true; GATE.err=''; renderGate();
- try{
-  await joinWorkspace(code,'owner');
-  CFG.w=code; writeCfgToUrl();
-  GATE.busy=false; GATE.ok='Claimed. Your existing work is back.';
-  if(AUTH.profile&&AUTH.profile.name){
-  const okNow=await enterWorkspace();
-  if(okNow){ await afterSignIn(); afterGate(); return; }
-  }
-  renderGate();
  }catch(e){ fail(e); }});
  if(g('gMine'))g('gMine').addEventListener('click',async()=>{
  CFG.w=AUTH.ws[0]; writeCfgToUrl();
@@ -5143,11 +5184,13 @@ function admHealth(){
  const wsSet={}; homeless.forEach(t=>{wsSet[t.workspace]=1;});
  if(homeless.length)bad.push(['Tracked flats in a workspace nobody belongs to',homeless.length,
   'Rows in '+Object.keys(wsSet).length+' workspace'+(Object.keys(wsSet).length===1?'':'s')
-  +' with no members. The claim flow on the profile screen is what recovers these.']);
+  +' with no members. There is no claim flow any more, so these are reachable '
+  +'only by a SQL insert into workspace_members.']);
  }
  const emptyWs=wsList.filter(w=>!ws[w].length);
  if(emptyWs.length)bad.push(['Workspaces with no members',emptyWs.length,
- 'Nothing in them can be read by anybody until somebody claims the code.']);
+ 'Unreachable. Nothing in them can be read by anybody, and holding the code '
+ +'no longer changes that.']);
  const rows=counts.map(c=>'<tr><td>'+c[0]+'</td><td class="num">'
  +(c[1]===null?'<span class="admmuted">could not read</span>':c[1])+'</td></tr>').join('');
  return '<div class="block"><h2 style="font-size:15px">Rows</h2>'
@@ -13966,25 +14009,25 @@ function renderAccount(){
  +'<button class="act small" id="acSave">Save profile</button>'
  +'<button class="act ghost small" id="acOut">Sign out</button></div>'
  +'<p id="acMsg" style="font-size:12.5px;color:var(--muted);margin:10px 0 0"></p>'
- /* sharing is a real need and stays for everyone. The raw workspace code and
- the claim box are ours: a string of random letters and a recovery hatch for
- a migration most people never lived through read as something broken, so
- they sit under Admin. */
- +'<div class="gsep" style="margin-top:18px"><h2 style="font-size:15px">Share with somebody</h2>'
- +'<p style="font-size:13px;color:var(--muted);margin:0 0 8px">They need an account here '
- +'first. Nothing is created for them, and a link on its own does not let anybody in.</p>'
- +'<div class="field"><label for="acAdd">Add somebody by email</label>'
- +'<input id="acAdd" type="email" inputmode="email" spellcheck="false" placeholder="partner@example.com"></div>'
- +'<button class="act ghost small" id="acAddGo">Add to this workspace</button>'
+ /* Sharing used to be two lines wedged under the profile with the raw
+  workspace code and a claim box beside them. It is the section now, because
+  it is the only thing on this screen somebody comes here to do. */
+ +'<div class="gsep" style="margin-top:18px"><h2 style="font-size:15px">Share with someone</h2>'
+ +'<div class="field"><label for="acAdd">Their email</label>'
+ +'<input id="acAdd" type="email" inputmode="email" spellcheck="false" '
+ +'placeholder="partner@example.com"></div>'
+ +'<button class="act ghost small" id="acAddGo">Add</button>'
  +'<p id="acAddMsg" style="font-size:12.5px;color:var(--muted);margin:10px 0 0"></p>'
+ +'<div id="acWho" style="margin-top:16px"></div>'
+  /* the one line that answers the question everybody asks next */
+ +'<p style="font-size:12.5px;color:var(--muted);line-height:1.5;margin:14px 0 0">'
+ +'They need their own account. Each person signs in with their own email and '
+ +'sees the same shortlist.</p>'
  +(adminAllowed()
   ?'<div class="field" style="margin-top:16px"><label>Workspace code</label>'
-   +'<div class="gread" style="word-break:break-all">'+esc(CFG&&CFG.w||'')+'</div></div>'
-   +'<div class="field"><label for="acClaim">Claim another workspace</label>'
-   +'<input id="acClaim" type="text" spellcheck="false" placeholder="a workspace code you already use">'
-   +'<span class="hint">For a workspace that predates accounts. Admin only.</span></div>'
-   +'<button class="act ghost small" id="acClaimGo">Claim it</button>'
-   +'<p id="acClaimMsg" style="font-size:12.5px;color:var(--muted);margin:10px 0 0"></p>'
+   +'<div class="gread" style="word-break:break-all">'+esc(CFG&&CFG.w||'')+'</div>'
+   +'<span class="hint">Names this workspace. It is not a key: holding it '
+   +'grants nothing, and the only way in is being added above.</span></div>'
   :'')
  +'</div>';
  const g=id=>document.getElementById(id);
@@ -14001,17 +14044,57 @@ function renderAccount(){
  say('acAddMsg','Looking that address up');
  try{
   const r=await addMemberByEmail(g('acAdd').value);
-  if(r.ok)say('acAddMsg',r.already?'They were already a member.':'Added. They will see this workspace next time they sign in.');
+  if(r.ok){say('acAddMsg',r.already?'They were already a member.':'Added. They will see this workspace next time they sign in.');
+  g('acAdd').value=''; paintWho();}
   else if(r.why==='self')say('acAddMsg','That is you.',1);
   else say('acAddMsg','No account here uses that address. Ask them to sign in once with it first, then add them. We do not create accounts for other people.',1);
  }catch(e){ say('acAddMsg',(e&&e.message)||'Could not add them.',1); }});
- if(g('acClaimGo'))g('acClaimGo').addEventListener('click',async()=>{
- const code=(g('acClaim').value||'').trim();
- if(!code){say('acClaimMsg','Enter the workspace code first.',1);return;}
- try{ await joinWorkspace(code,'owner'); CFG.w=code; writeCfgToUrl();
-  say('acClaimMsg','Claimed. Reloading into it.');
-  setTimeout(()=>location.reload(),700); }
- catch(e){ say('acClaimMsg',(e&&e.message)||'Could not claim that code.',1); }});
+ paintWho();
+}
+/* ---- who has access ----
+ Rendered after the fact rather than inline, because it is a round trip and
+ the rest of the screen should not wait for it. Three states and all three
+ are said out loud: the list, "only you", and the one where the function is
+ not in the database yet. */
+async function paintWho(){
+ const host=document.getElementById('acWho'); if(!host)return;
+ if(MODE!=='shared'){host.innerHTML='';return;}
+ host.innerHTML='<p style="font-size:12.5px;color:var(--muted);margin:0">Loading who has access</p>';
+ let people;
+ try{ people=await workspacePeople(); }
+ catch(e){ host.innerHTML='<p style="font-size:12.5px;color:var(--risk-fg);margin:0">'
+   +esc((e&&e.message)||'Could not read the member list.')+'</p>'; return; }
+ if(people===null){host.innerHTML='';return;}
+ if(people==='nosql'){
+ host.innerHTML='<p style="font-size:12.5px;color:var(--warn-fg);line-height:1.5;margin:0">'
+  +'The member list needs one function this database does not have yet. '
+  +'Re-run the accounts block in SETUP.md and it appears here. Adding and '
+  +'removing still work.</p>';
+ return;
+ }
+ const me=AUTH.user?AUTH.user.id:'';
+ const rows=people.map(pp=>{
+ const who=esc(pp.name||pp.email||'Someone');
+ const sub=pp.name&&pp.email?esc(pp.email):'';
+ const self=pp.id===me;
+ return '<div class="acrow"><span class="acwho"><b>'+who+(self?' (you)':'')+'</b>'
+  +(sub?'<small>'+sub+'</small>':'')+'</span>'
+  +(self?'<span class="acrole">'+esc(pp.role||'member')+'</span>'
+       :'<button class="act ghost tiny" data-rm="'+esc(pp.id)+'">Remove</button>')
+  +'</div>';
+ }).join('');
+ host.innerHTML='<div class="aclist">'+rows+'</div>'
+ +(people.length<2
+   ?'<p style="font-size:12.5px;color:var(--muted);margin:8px 0 0">'
+    +'Only you so far.</p>':'')
+ +'<p id="acRmMsg" style="font-size:12.5px;color:var(--muted);margin:8px 0 0"></p>';
+ host.querySelectorAll('[data-rm]').forEach(b=>b.addEventListener('click',async()=>{
+ const msg=document.getElementById('acRmMsg');
+ if(msg){msg.style.color='var(--muted)';msg.textContent='Removing';}
+ try{ await removeMember(b.dataset.rm); await paintWho(); }
+ catch(e){ if(msg){msg.style.color='var(--risk-fg)';
+  msg.textContent=(e&&e.message)||'Could not remove them.';} }
+ }));
 }
 document.getElementById('openSettings').addEventListener('click',openSettings);
 registerOverlay({el:'settingsModal', close:closeModals,

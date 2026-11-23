@@ -377,16 +377,39 @@ workspace in the link is told so.
 
 Three things ride on this and must not be undone:
 
-- **The claim is the migration.** Rows written before accounts carry a
-  workspace and no user, so tightening the policies would strand them. A
-  workspace with no members at all may be claimed once, by whoever holds its
-  code (`ws_unclaimed()` in the SQL); after that only a member can add anybody.
-  It is on the profile screen, the first screen an existing user sees, not
-  buried in settings. **Do not remove it** without a migration that assigns
-  every existing workspace an owner first.
+- **A code names a workspace. It is not a key, and there is no claim.** The
+  one-time claim existed to carry pre-accounts rows across; that migration is
+  done and it is gone, from the profile screen, from Settings and from the
+  `wm_insert` policy. A workspace with no members is **unreachable rather
+  than claimable**, and the only route in is an existing member adding you by
+  email. Rows stranded in an empty workspace are recovered by a SQL insert,
+  written down in SETUP.md, deliberately not by anything in the browser.
+
+  **Two things make that true, and the UI is neither of them.** The anon key
+  is public by design, so deleting a box changes nothing a console cannot
+  still do: the guarantee is the `wm_insert` policy reading `is_member(w)`
+  and nothing else. And the clause that let a stranger in was **also** the
+  clause that let a new account bootstrap its first workspace, so dropping it
+  alone would have stopped anybody ever signing up. Creation moved into
+  `create_workspace()`, a definer function that generates the code itself, so
+  there is nothing for a caller to choose.
+
+  `WSNOSQL` is the interim. Until that SQL is run the function is absent, the
+  client falls back to the old insert, and Settings says so rather than
+  letting a half-applied change look finished.
 - **Nobody is signed up on somebody else's behalf.** "Add by email" is a
   lookup. A miss says so and stops, because creating an account for a person
   who has not asked puts their address in a table they never agreed to.
+
+  Sharing is a section of Settings now rather than two lines wedged under the
+  profile: their email, Add, who currently has access with a Remove beside
+  everyone but you, and one line saying they need their own account. **Who
+  has access needs its own definer function** for the same reason the lookup
+  does: `profiles_self` lets somebody read their own row and nobody else's,
+  so a member can list the uuids in `workspace_members` and learn nothing
+  about whose they are. `workspace_people(w)` answers only for a workspace
+  the caller is already in, and the list says which of its three states it is
+  in, including the one where the function is not in the database yet.
   The lookup is the `user_id_by_email` RPC, **not** a select on `profiles`:
   a policy letting any signed-in person read profiles by email would hand
   them every name and mobile in the table to find one uuid. The function is

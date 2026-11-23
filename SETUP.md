@@ -116,13 +116,24 @@ The block above left every policy at `using (true)`, which means anyone holding
 the link can read and write that workspace. This second block replaces that with
 membership. Run it the same way, in SQL Editor.
 
-**Read the claim rule before you run it.** Rows already in your tables are keyed
-to a workspace and carry no user, so the moment these policies land, a workspace
-with no member row is a workspace nobody can read. `ws_unclaimed()` is the door
-back in: a signed-in person may add *themselves* to a workspace that has no
-members yet, once. After that first claim the door shuts, and only an existing
-member can add anybody else. The app puts this on the profile screen as
-"Already using Property Desk? Enter your workspace code."
+**There is no claim any more, and that is the point.** An earlier version let a
+signed-in person add themselves to a workspace that had no members yet, once,
+which was how pre-accounts rows were carried across. That migration is done and
+the clause is gone: **a workspace code grants nothing**, and the only way into a
+workspace is an existing member adding you by email.
+
+**If you ran the earlier block, re-run this one.** Deleting the claim box from
+the app changes nothing on its own: the anon key is public by design, so anyone
+could still have inserted into `workspace_members` from a console for as long as
+the `ws_unclaimed()` arm of `wm_insert` was there. The guarantee lives in these
+policies, not in the UI.
+
+**The trap in removing it**, written down because it is not obvious: that same
+clause was what let a *new* account create its first workspace. Drop it on its
+own and nobody can ever sign up again. Creation moves server-side instead, into
+`create_workspace()`, which generates the code itself so there is nothing for a
+caller to choose. Until you run this, the app falls back to the old client-side
+insert and says so in Settings.
 
 ```sql
 -- Property Desk: accounts. Run after the first block.
@@ -154,10 +165,37 @@ language sql security definer stable set search_path = public as $$
                  where workspace = w and user_id = auth.uid());
 $$;
 
-create or replace function ws_unclaimed(w text) returns boolean
+-- The workspace is generated here, not chosen by the caller. This replaces
+-- the ws_unclaimed() claim, which was both the migration door and the only
+-- way a new account could bootstrap itself.
+drop function if exists ws_unclaimed(text);
+
+create or replace function create_workspace() returns text
+language plpgsql security definer set search_path = public as $$
+declare w text;
+begin
+  if auth.uid() is null then raise exception 'not signed in'; end if;
+  w := encode(gen_random_bytes(9), 'hex');
+  insert into workspace_members(workspace, user_id, role)
+    values (w, auth.uid(), 'owner');
+  return w;
+end $$;
+revoke all on function create_workspace() from public;
+grant execute on function create_workspace() to authenticated;
+
+-- Who is in this workspace. profiles_self below means a member can read the
+-- uuids in workspace_members and learn nothing about whose they are, so the
+-- list has to be a definer function, gated on the caller already being in.
+create or replace function workspace_people(w text)
+returns table(id uuid, email text, name text, role text)
 language sql security definer stable set search_path = public as $$
-  select not exists (select 1 from workspace_members where workspace = w);
+  select p.id, p.email, p.name, m.role
+    from workspace_members m join profiles p on p.id = m.user_id
+   where m.workspace = w and is_member(w)
+   order by m.created_at;
 $$;
+revoke all on function workspace_people(text) from public;
+grant execute on function workspace_people(text) to authenticated;
 
 -- profiles: your own row, and nobody else's. There is deliberately no
 -- select-by-email policy: one would hand every name and mobile in the table
@@ -183,11 +221,10 @@ drop policy if exists wm_insert on workspace_members;
 drop policy if exists wm_delete on workspace_members;
 create policy wm_select on workspace_members for select
   using (user_id = auth.uid() or is_member(workspace));
+-- One rule, and it is the whole access model: only a member may add anybody,
+-- including themselves. A code on its own is a name, not a key.
 create policy wm_insert on workspace_members for insert
-  with check (
-    (user_id = auth.uid() and ws_unclaimed(workspace))  -- the one-time claim
-    or is_member(workspace)                              -- adding a partner
-  );
+  with check (is_member(workspace));
 create policy wm_delete on workspace_members for delete
   using (user_id = auth.uid() or is_member(workspace));
 
@@ -215,19 +252,19 @@ Then, in **Authentication → Providers**, make sure **Email** is on and
 **Authentication → URL Configuration**, add the address you published the file
 at to **Redirect URLs**, or the link will bounce.
 
-### Claim your existing workspace first
+### Carrying rows from before accounts
 
-If you were already using this before accounts, do this before anything else:
+There is no claim flow in the app any more, so this is a SQL job and it is
+deliberately not one anybody can do from the browser. Find the workspace code
+in your old `#cfg=` link, sign in once so you have a user id, then:
 
-1. Open your old link, the one with `#cfg=` in it.
-2. Sign in with your email.
-3. On the profile screen, your workspace code is already filled in. Press
-   **Claim this workspace**.
-4. Everything you had tracked is there.
+```sql
+insert into workspace_members (workspace, user_id, role)
+select 'your-old-code', id, 'owner' from auth.users where email = 'you@example.com';
+```
 
-If you skip it and sign in anyway, the app gives you a fresh empty workspace,
-and the old one sits unclaimed until you enter its code under
-**Settings → Claim another workspace**. Nothing is deleted either way.
+Everything keyed to that workspace is yours again. Anyone you want beside you
+goes in through **Settings → Share with someone**, not through this.
 
 ## 2d. What the admin view still wants
 
@@ -291,21 +328,34 @@ Press **Connect this browser**, then send the generated link to the other person
 Nine steps, in this order. Each one names the single thing to look at; if that
 thing is not there, stop there rather than carrying on.
 
-**1. Claim your existing workspace.** Open your old `#cfg=` link. Sign in with
-your email. On the profile screen the workspace code is already filled in.
-Press **Claim this workspace**.
+**1. Your existing rows.** If you had a workspace before accounts, run the
+insert under "Carrying rows from before accounts" above, then open your old
+`#cfg=` link and sign in.
 → *Look for:* your tracked flats, exactly as they were. If the board is empty,
-do not add anything: check the code against your old link first.
+do not add anything: check the code in the insert against your old link first.
 
 **2. The magic link itself.** Sign out, then sign in again with the same
 address.
 → *Look for:* the mail arrives within a minute; opening it lands you back in
 the app signed in, and the address bar reads `#cfg=` and not `?cfg=`.
 
-**3. A brand-new account.** Use a second address you control. Sign in, fill in
-the profile, do **not** claim anything.
+**3. A brand-new account.** Use a second address you control. Sign in and fill
+in the profile.
 → *Look for:* an empty board, Settings showing a workspace code that is not
-your first one, and your first account's flats nowhere in it.
+your first one, and your first account's flats nowhere in it. The code is
+generated by `create_workspace()` and is hex; a code in the old dashed
+letter-groups means the function is missing and the app fell back.
+
+**3b. A code is not a key.** Still signed in as the second account, open the
+browser console and run:
+
+```js
+await supabase.createClient(SB_URL, SB_KEY).from('workspace_members')
+  .insert({workspace:'your-first-accounts-code', user_id:'<this account id>'});
+```
+
+→ *Look for:* a row-level security error. If it succeeds, `wm_insert` still
+carries the `ws_unclaimed()` arm and the block in 2b has not been re-run.
 
 **4. The wall.** While signed in as the second account, paste your **first**
 account's full `#cfg=` link into the address bar and reload.
@@ -363,9 +413,9 @@ With the block in 2b, that is no longer true:
   person who is not a member of it is told so and sees nothing.
 - **There is no password to steal**, because there is not one. A magic link is
   single use and expires in an hour.
-- **An unclaimed workspace can be claimed once**, by whoever holds its code.
-  That is the door that lets your existing data through, and it shuts the
-  moment the first member exists.
+- **A workspace code grants nothing.** It names a workspace; it is not a key.
+  There is no claim, and a workspace with no members is unreachable rather
+  than claimable. The only route in is an existing member adding you.
 - **Nobody is signed up on somebody else's behalf.** Adding a partner by email
   only works if that address already has an account.
 
